@@ -80,7 +80,7 @@
 		4E6C527D1F7E9E4C00A187E9 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C527C1F7E9E4C00A187E9 /* Carbon.framework */; };
 		4E6C52881F7EA42700A187E9 /* NSArrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52851F7EA42700A187E9 /* NSArrayTests.m */; };
 		4E6C52891F7EA42700A187E9 /* NSStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52861F7EA42700A187E9 /* NSStringTests.m */; };
-		4E6C528A1F7EA42700A187E9 /* NSUtilitiesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52871F7EA42700A187E9 /* NSUtilitiesTests.m */; };
+		4E6C52901F7EB1E300A187E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4E6C528F1F7EB1E300A187E9 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -170,7 +170,7 @@
 		4E6C527C1F7E9E4C00A187E9 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4E6C52851F7EA42700A187E9 /* NSArrayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArrayTests.m; sourceTree = "<group>"; };
 		4E6C52861F7EA42700A187E9 /* NSStringTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringTests.m; sourceTree = "<group>"; };
-		4E6C52871F7EA42700A187E9 /* NSUtilitiesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUtilitiesTests.m; sourceTree = "<group>"; };
+		4E6C528F1F7EB1E300A187E9 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +223,7 @@
 				4E6C51F01F7E90B800A187E9 /* Extensions */,
 				4E6C525A1F7E943900A187E9 /* Legacy */,
 				4E6C52601F7E950900A187E9 /* Utilities */,
+				4E6C528F1F7EB1E300A187E9 /* Localizable.strings */,
 				4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */,
 				4E6C510B1F7E8EB700A187E9 /* Info.plist */,
 			);
@@ -347,7 +348,6 @@
 			children = (
 				4E6C52851F7EA42700A187E9 /* NSArrayTests.m */,
 				4E6C52861F7EA42700A187E9 /* NSStringTests.m */,
-				4E6C52871F7EA42700A187E9 /* NSUtilitiesTests.m */,
 			);
 			name = Functions;
 			sourceTree = "<group>";
@@ -478,6 +478,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E6C52901F7EB1E300A187E9 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,7 +535,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E6C52881F7EA42700A187E9 /* NSArrayTests.m in Sources */,
-				4E6C528A1F7EA42700A187E9 /* NSUtilitiesTests.m in Sources */,
 				4E6C52891F7EA42700A187E9 /* NSStringTests.m in Sources */,
 				4E6C51161F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m in Sources */,
 			);
