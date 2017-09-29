@@ -10,6 +10,6 @@
 
 @interface NSNotificationUtility : NSObject
 
-+(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withInfo:(NSString*)info withIcon:(NSImage*)icon;
++(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withInfo:(NSString*)info withIcon:(NSImage*)icon withActionButton:(NSString*)actionButton;
 
 @end

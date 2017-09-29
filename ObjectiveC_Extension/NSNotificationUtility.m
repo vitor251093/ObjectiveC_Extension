@@ -27,7 +27,7 @@
 
 @implementation NSNotificationUtility
 
-+(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withInfo:(NSString*)info withIcon:(NSImage*)icon
++(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withInfo:(NSString*)info withIcon:(NSImage*)icon withActionButton:(NSString*)actionButton
 {
     if (!IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR)
     {
@@ -64,7 +64,7 @@
     }
     
     [notification setHasActionButton:YES];
-    [notification setActionButtonTitle:NSLocalizedString(@"Play",nil)];
+    [notification setActionButtonTitle:actionButton];
     
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }

@@ -1,0 +1,43 @@
+/* 
+  Localizable.strings
+  ObjectiveC_Extension
+
+  Created by Vitor Marques de Miranda on 29/09/17.
+  Copyright © 2017 VitorMM. All rights reserved.
+*/
+
+// Misc
+"OK" = "OK";
+"Cancel" = "Annuleren";
+"Yes" = "Ja";
+"No" = "Nee";
+
+// NSAlert Extension
+"Success" = "Success";
+"Warning" = "Waarschuwing";
+"Error" = "Error";
+
+// NSData Extension
+//"Error while reading file data: %@" = "Erro enquanto lia dados de arquivo: %@";
+
+// NSString Extension
+"Error while reading file: %@" = "Fout tijdens lezen van bestand: %@";
+"Error while writting file: %@" = "Fout tijdens schrijven van bestand: %@";
+
+// NSFileManager Extension
+"Error while creating symbolic link: %@" = "Fout tijdens aanmaken symbolische link: %@";
+"Error while creating folder: %@" = "Fout tijdens aanmaken map: %@";
+"Error while moving file: %@" = "Fout tijdens verplaatsen bestand: %@";
+"Error while copying file: %@" = "Fout tijdens kopiëren bestand: %@";
+"Error while removing file: %@" = "Fout tijdens verwijderen bestand: %@";
+"Error while listing folder contents: %@" = "Fout tijdens opmaken inhoud folder: %@";
+//"Error while listing folder contents: %@ doesn't exist." = "Erro enquanto listava o conteúdo de pasta: %@ não existe.";
+//"Error while listing folder contents: %@ is not a folder." = "Erro enquanto listava o conteúdo de pasta: %@ não é uma pasta.";
+"Error while retrieving symbolic link destination: %@" = "Error tijdens het checken van de symbolische link bestemming %@";
+
+// NSTask Extension
+//"Path for %@ not found." = "Caminho para %@ não encontrado.";
+"File %@ not found." = "Bestand %@ niet gevonden.";
+"File %@ not runnable." = "Bestand %@ niet uitvoerbaar.";
+//"Directory %@ does not exists." = "Diretório %@ não existe.";
+

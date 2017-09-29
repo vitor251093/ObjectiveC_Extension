@@ -1,0 +1,45 @@
+/* 
+  Localizable.strings
+  ObjectiveC_Extension
+
+  Created by Vitor Marques de Miranda on 29/09/17.
+  Copyright © 2017 VitorMM. All rights reserved.
+*/
+
+/*
+// Misc
+"OK" = "OK";
+"Cancel" = "Cancelar";
+"Yes" = "Sim";
+"No" = "Não";
+
+// NSAlert Extension
+"Success" = "Sucesso";
+"Warning" = "Aviso";
+"Error" = "Erro";
+
+// NSData Extension
+"Error while reading file data: %@" = "Erro enquanto lia dados de arquivo: %@";
+
+// NSString Extension
+"Error while reading file: %@" = "Erro enquanto lia arquivo: %@";
+"Error while writting file: %@" = "Erro enquanto escrevia arquivo: %@";
+
+// NSFileManager Extension
+"Error while creating symbolic link: %@" = "Erro enquanto criava link simbólico: %@";
+"Error while creating folder: %@" = "Erro enquanto criava pasta: %@";
+"Error while moving file: %@" = "Erro enquanto movia arquivo: %@";
+"Error while copying file: %@" = "Erro enquanto copiava arquivo: %@";
+"Error while removing file: %@" = "Erro enquanto removia arquivo: %@";
+"Error while listing folder contents: %@" = "Erro enquanto listava o conteúdo de pasta: %@";
+"Error while listing folder contents: %@ doesn't exist." = "Erro enquanto listava o conteúdo de pasta: %@ não existe.";
+"Error while listing folder contents: %@ is not a folder." = "Erro enquanto listava o conteúdo de pasta: %@ não é uma pasta.";
+"Error while retrieving symbolic link destination: %@" = "Erro enquanto obtia destino de link simbólico: %@";
+
+// NSTask Extension
+"Path for %@ not found." = "Caminho para %@ não encontrado.";
+"File %@ not found." = "Arquivo %@ não encontrado.";
+"File %@ not runnable." = "Arquivo %@ não é executável.";
+"Directory %@ does not exists." = "Diretório %@ não existe.";
+
+*/
