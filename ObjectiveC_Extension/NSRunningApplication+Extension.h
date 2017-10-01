@@ -17,6 +17,7 @@
 -(BOOL)isVisible;
 
 -(NSArray*)windowsSizes;
+-(NSDictionary*)windowWithSize:(NSSize)size;
 -(BOOL)hasWindowWithSize:(NSSize)size;
 
 -(void)bringWindowsToFront;

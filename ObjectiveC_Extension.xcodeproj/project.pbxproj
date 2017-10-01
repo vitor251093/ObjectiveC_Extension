@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E231F911F8191DD00148A30 /* IODeviceSimulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E231F941F8191DD00148A30 /* IODeviceSimulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E231F921F8191DD00148A30 /* IODeviceSimulator.m */; };
 		4E6C51111F7E8EB700A187E9 /* ObjectiveC_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */; };
 		4E6C51161F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51151F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m */; };
 		4E6C51181F7E8EB700A187E9 /* ObjectiveC_Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -94,6 +96,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4E231F911F8191DD00148A30 /* IODeviceSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODeviceSimulator.h; sourceTree = "<group>"; };
+		4E231F921F8191DD00148A30 /* IODeviceSimulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODeviceSimulator.m; sourceTree = "<group>"; };
 		4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectiveC_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveC_Extension.h; sourceTree = "<group>"; };
 		4E6C510B1F7E8EB700A187E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -253,6 +257,8 @@
 				4E6C51E71F7E90A300A187E9 /* IODeviceObserver.m */,
 				4E6C51E81F7E90A300A187E9 /* IOKeycodeUsage.h */,
 				4E6C51E91F7E90A300A187E9 /* IOKeycodeUsage.m */,
+				4E231F911F8191DD00148A30 /* IODeviceSimulator.h */,
+				4E231F921F8191DD00148A30 /* IODeviceSimulator.m */,
 			);
 			name = Devices;
 			sourceTree = "<group>";
@@ -393,6 +399,7 @@
 				4E6C52351F7E911000A187E9 /* NSMutableAttributedString+Extension.h in Headers */,
 				4E6C523B1F7E911000A187E9 /* NSRunningApplication+Extension.h in Headers */,
 				4E6C526B1F7E953A00A187E9 /* NSNotificationUtility.h in Headers */,
+				4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* IOKeycodeUsage.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
 				4E6C525D1F7E944F00A187E9 /* SZJsonParser.h in Headers */,
@@ -526,6 +533,7 @@
 				4E6C52221F7E911000A187E9 /* NSArray+Extension.m in Sources */,
 				4E6C51ED1F7E90A300A187E9 /* IODeviceObserver.m in Sources */,
 				4E6C52421F7E911000A187E9 /* NSTask+Extension.m in Sources */,
+				4E231F941F8191DD00148A30 /* IODeviceSimulator.m in Sources */,
 				4E6C51EF1F7E90A300A187E9 /* IOKeycodeUsage.m in Sources */,
 				4E6C52401F7E911000A187E9 /* NSString+Extension.m in Sources */,
 				4E6C522A1F7E911000A187E9 /* NSDateFormatter+Extension.m in Sources */,

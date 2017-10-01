@@ -57,7 +57,7 @@
 {
     return [self.visibleWindows valueForKey:@"kCGWindowBounds"];
 }
--(BOOL)hasWindowWithSize:(NSSize)size
+-(NSDictionary*)windowWithSize:(NSSize)size
 {
     for (NSDictionary *window in self.visibleWindows)
     {
@@ -66,11 +66,15 @@
         CGFloat windowWidth  = [windowBounds[@"Width"]  doubleValue];
         if (ABS(size.width - windowWidth) < 0.1 && ABS(size.height - windowHeight) < 0.1)
         {
-            return true;
+            return window;
         }
     }
     
-    return false;
+    return nil;
+}
+-(BOOL)hasWindowWithSize:(NSSize)size
+{
+    return [self windowWithSize:size] != nil;
 }
 
 -(void)bringWindowsToFront
