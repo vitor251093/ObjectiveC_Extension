@@ -1,8 +1,10 @@
 # ObjectiveC_Extension
-Framework to add more features to Objective-C
+Once I started developing my skills in Objective-C, I've noticed that while many things were pretty easy to do, others could be heavily simplified. I started with a `NSUtilities` class, which later became lots of extensions splitted in `+Extension` files. At some point, I had a separated folder for extensions and classes which I would import to almost every Objective-C project that I was involved.
 
-## New features
-I will make a list with the included features during the new days.
+In order to improve that, I've decided to create a framework with those classes and extensions, in order to optimize my work. It should be useful for a large range of projects, so feel free to use it, and enjoy :)
+
+## New Classes (related with keycodes and devices)
+Those classes were made to simplify the use of HID devices input, making your code cleaner when working with them, and more Objective-C-like, since most of the code related with that is C-like and C++-like. It also gives you enums to find the value of virtual keycodes (useful to simulate keyboard key pressing) and usage keycodes (useful to detect which keyboard key was pressed).
 
 ### CGVirtualKeycodes
 A class which makes working with Mac Virtual Keycodes easier.
