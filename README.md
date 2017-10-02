@@ -375,6 +375,44 @@ Returns the size of a directory by summing the size of regular files in subpaths
 
 Returns the checksum of the specified file. The possible `checksum` values are "sha1" (40 digits) and "sha256" (64 digits).
 
+### NSImage
+
+```objectivec
++(NSImage*)imageWithData:(NSData*)data;
+```
+
+Init a `NSImage` with the contents of the `NSData` object.
+
+```objectivec
++(NSImage*)quickLookImageFromFileAtPath:(NSString*)arquivo;
+```
+
+Init a `NSImage` with the QuickLook image of the file at the specified path.
+
+```objectivec
++(NSImage*)imageFromFileAtPath:(NSString*)arquivo;
+```
+
+Init a `NSImage` with the contents of the image file at the specified path.
+
+```objectivec
++(NSImage*)transparentImageWithSize:(NSSize)size;
+```
+
+Init a `NSImage` of an empty image with the specified size.
+
+```objectivec
+-(BOOL)saveAsIcnsAtPath:(NSString*)icnsPath;
+```
+
+Write the existing `NSImage` at the specified path in the icns (macOS icon) format.
+
+```objectivec
+-(BOOL)writeToFile:(NSString*)file atomically:(BOOL)useAuxiliaryFile;
+```
+
+Write the existing `NSImage` at the specified path in the format specified by the extension of the last component of the given path. Compatible extensions are **bmp**, **gif**, **jpg**, **jp2**, **png** and **tiff**.
+
 ## New Classes (misc)
 
 ### NSComputerInformation
