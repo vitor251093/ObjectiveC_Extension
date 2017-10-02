@@ -229,4 +229,37 @@ Init a `NSAttributedString` using a `NSString` with a HTML page.
 
 Returns an HTML page with the text and formatting of the `NSAttributedString` object.
 
+### NSColor
+
+```objectivec
+RGBA(r,g,b,a)
+```
+
+Init a `NSColor` object with the specific levels of red, green, blue and alpha, from 0.0 to 255.0. Equivalent to `colorWithCalibratedRed:green:blue:alpha:`, but with a much smaller size.
+
+```objectivec
+RGB(r,g,b)
+```
+
+Init a `NSColor` object with the specific levels of red, green and blue, from 0.0 to 255.0. Equivalent to `RGBA(r,g,b,255.0)`.
+
+```objectivec
++(NSColor*)colorWithHexColorString:(NSString*)inColorString;
+```
+
+Init a `NSColor` object with the color specified by a RGB hex string. Example: "000000" returns the black color.
+
+```objectivec
+-(NSString*)hexColorString;
+```
+
+Returns a RGB hex string of the `NSColor` object. Example: The black color returns "000000".
+
+
+
+## New Classes (misc)
+
+### NSComputerInformation
+Used to retrieve informations about the computer hardware and software.
+
 
