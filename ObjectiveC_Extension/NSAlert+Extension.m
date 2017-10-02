@@ -74,6 +74,8 @@
 
 @implementation NSAlert (VMMAlert)
 
+static NSString* bundleName;
+
 +(NSString*)titleForAlertType:(NSAlertType)alertType
 {
     switch (alertType)
@@ -94,7 +96,9 @@
         default: break;
     }
     
-    NSString* placeholder = @""; // TODO: Find a better placeholder
+    if (bundleName) return bundleName;
+    
+    NSString* placeholder = @"Info";
     NSString* bundleNameKey = @"CFBundleName";
     
     NSString* bundlePath = [[NSBundle mainBundle] bundlePath];
@@ -102,9 +106,10 @@
     
     NSString* infoPlistPath = [[bundlePath stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Info.plist"];
     NSDictionary* infoPlist = [[NSDictionary alloc] initWithContentsOfFile:infoPlistPath];
-    if (!infoPlist || !infoPlist[bundleNameKey]) return placeholder;
+    if (!infoPlist || !infoPlist[bundleNameKey]) return bundlePath.stringByDeletingPathExtension.lastPathComponent;
     
-    return infoPlist[bundleNameKey];
+    bundleName = infoPlist[bundleNameKey];
+    return bundleName;
 }
 -(void)setIconWithAlertType:(NSAlertType)alertType
 {
