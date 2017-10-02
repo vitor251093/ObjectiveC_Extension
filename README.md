@@ -262,4 +262,68 @@ Returns a RGB hex string of the `NSColor` object. Example: The black color retur
 ### NSComputerInformation
 Used to retrieve informations about the computer hardware and software.
 
+```objectivec
++(NSDictionary*)graphicCardDictionary;
+```
 
+Dictionary with the informations available with the command `system_profiler SPDisplaysDataType` about the computer main graphic card. 
+
+```objectivec
++(NSString*)graphicCardModel;
+```
+
+Model name of the computer main graphic card.
+
+```objectivec
++(NSString*)graphicCardType;
+```
+
+Type of the computer main graphic card (Intel HD, Intel Iris, Intel GMA, NVIDIA or ATi/AMD). 
+
+```objectivec
++(NSString*)graphicCardDeviceID;
+```
+
+Device ID of the computer main graphic card.
+
+```objectivec
++(NSString*)graphicCardVendorID;
+```
+
+Vendor ID of the computer main graphic card.
+
+```objectivec
++(NSString*)graphicCardMemorySize;
+```
+
+Memory size of the computer main graphic card.
+
+```objectivec
++(NSString*)macOsVersion;
+```
+
+macOS version (not build version). Example: "10.13.1". Requires non-sandboxed application.
+
+```objectivec
++(BOOL)isSystemMacOsEqualOrSuperiorTo:(NSString*)version;
+```
+
+Returns true if the user macOS version is equal or superior to the specified version. Requires non-sandboxed application.
+
+```objectivec
+IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR
+IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR
+IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR
+IS_SYSTEM_MAC_OS_10_10_OR_SUPERIOR
+IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR
+IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR
+IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR
+```
+
+Defines that use `isSystemMacOsEqualOrSuperiorTo:`. Requires non-sandboxed application.
+
+```objectivec
++(BOOL)isUserStaffGroupMember;
+```
+
+Returns true if the user is member of the staff group in his computer.
