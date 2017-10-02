@@ -413,6 +413,30 @@ Write the existing `NSImage` at the specified path in the icns (macOS icon) form
 
 Write the existing `NSImage` at the specified path in the format specified by the extension of the last component of the given path. Compatible extensions are **bmp**, **gif**, **jpg**, **jp2**, **png** and **tiff**.
 
+### NSMenu
+Based in `NSMenu+Dark` (https://github.com/swillits/NSMenu-Dark). 
+
+```objectivec
+- (instancetype)initDarkMenu;
+```
+
+Init a `NSMenu` with the dark color of the Dock right-click menu.
+
+```objectivec
+- (void)setDark;
+```
+
+Changes the color of an existing `NSMenu` to the dark color of the Dock right-click menu.
+
+### NSMenuItem
+
+```objectivec
++(NSMenuItem*)menuItemWithTitle:(NSString*)title andAction:(SEL)action forTarget:(id)target;
+```
+
+Equivalent to `alloc` + `initWithTitle:action:keyEquivalent:` + `setTarget:`, with key equivalent equals to `@""`. Used to make the code cleaner.
+
+
 ## New Classes (misc)
 
 ### NSComputerInformation
@@ -488,4 +512,25 @@ Returns true if the user is member of the staff group in his computer.
 
 Replica of `FTPManager` by `nkreipke` with minor modifications. The original project can be found here:
 https://github.com/nkreipke/FTPManager
+
+### NSLogUtility
+
+```objectivec
+NSDebugLog(NSString *format, ...)
+```
+
+In Debug, prints a log like `NSLog`, but it doesn't have the `NSLog` prefix, and also prints the log to a `debug.log` file in your Desktop. In Release, does nothing.
+
+```objectivec
+NSStackTraceLog()
+```
+
+Prints the stacktrace log like in `[NSThread callStackSymbols]`, but using `NSDebugLog`.
+
+```objectivec
+measureTime(__message){}
+```
+
+Based in `LOOProfiling.h`'s `LOO_MEASURE_TIME` (https://gist.github.com/sfider/3072143). Measure the time that its block takes to run and print it using `NSDebugLog`.
+
 
