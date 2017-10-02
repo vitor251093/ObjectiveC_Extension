@@ -189,3 +189,44 @@ Creates an "Ok/Cancel input alert" with the specified title, message and default
 
 Creates an "Multiple buttons alert" with the specified title, message and options (which will become squared buttons with the icon specified in the block). The selected option will be returned by the function. That alert uses the thread safe modal.
 
+### NSArrray
+
+```objectivec
+-(NSArray*)sortedDictionariesArrayWithKey:(NSString *)key orderingByValuesOrder:(NSArray*)value;
+```
+
+Returns a sorted version of an array of dictionaries based in the value of a key. The values are ordered according to the provided array of ordered possible values.
+
+```objectivec
+-(NSArray*)arrayByRemovingRepetitions;
+```
+
+Returns a copy of the existing array removing duplicates of the same element. Note: Doesn't preserve the order of the elements in the original array.
+
+```objectivec
+-(NSArray*)arrayByRemovingObjectsFromArray:(NSArray*)otherArray;
+```
+
+Returns a copy of the existing array, but without the elements that are present in the other array.
+
+### NSAttributedString
+
+```objectivec
+-(instancetype)initWithHTMLData:(NSData*)data;
+```
+
+Init a `NSAttributedString` using a `NSData` with a HTML page inside.
+
+```objectivec
+-(instancetype)initWithHTMLString:(NSString*)string;
+```
+
+Init a `NSAttributedString` using a `NSString` with a HTML page.
+
+```objectivec
+-(NSString*)htmlString;
+```
+
+Returns an HTML page with the text and formatting of the `NSAttributedString` object.
+
+
