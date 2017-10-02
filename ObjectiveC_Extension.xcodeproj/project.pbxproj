@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E231F911F8191DD00148A30 /* IODeviceSimulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E231F941F8191DD00148A30 /* IODeviceSimulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E231F921F8191DD00148A30 /* IODeviceSimulator.m */; };
+		4E3EE4651F82BF42008A5CC3 /* CREDITS in Resources */ = {isa = PBXBuildFile; fileRef = 4E3EE4641F82BF42008A5CC3 /* CREDITS */; };
 		4E6C51111F7E8EB700A187E9 /* ObjectiveC_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */; };
 		4E6C51161F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51151F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m */; };
 		4E6C51181F7E8EB700A187E9 /* ObjectiveC_Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -98,6 +99,7 @@
 /* Begin PBXFileReference section */
 		4E231F911F8191DD00148A30 /* IODeviceSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODeviceSimulator.h; sourceTree = "<group>"; };
 		4E231F921F8191DD00148A30 /* IODeviceSimulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODeviceSimulator.m; sourceTree = "<group>"; };
+		4E3EE4641F82BF42008A5CC3 /* CREDITS */ = {isa = PBXFileReference; lastKnownFileType = text; path = CREDITS; sourceTree = "<group>"; };
 		4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectiveC_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveC_Extension.h; sourceTree = "<group>"; };
 		4E6C510B1F7E8EB700A187E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				4E6C52961F7EB50300A187E9 /* Localizable.strings */,
 				4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */,
 				4E6C510B1F7E8EB700A187E9 /* Info.plist */,
+				4E3EE4641F82BF42008A5CC3 /* CREDITS */,
 			);
 			path = ObjectiveC_Extension;
 			sourceTree = "<group>";
@@ -494,6 +497,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E6C52941F7EB50300A187E9 /* Localizable.strings in Resources */,
+				4E3EE4651F82BF42008A5CC3 /* CREDITS in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
