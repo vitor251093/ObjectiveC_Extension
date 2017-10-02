@@ -32,12 +32,6 @@ static NSString* _computerGraphicCardType;
 static NSString* _macOsVersion;
 static NSNumber* _userIsMemberOfStaff;
 
-+(NSString*)countryCode
-{
-    NSString *countryCode = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
-    return countryCode ? countryCode : @"--";
-}
-
 +(NSDictionary*)graphicCardDictionary
 {
     @synchronized(_computerGraphicCardDictionary)

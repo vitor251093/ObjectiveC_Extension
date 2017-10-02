@@ -15,14 +15,13 @@
 #define IS_SYSTEM_MAC_OS_10_10_OR_SUPERIOR  [NSComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.10"]  // Yosemite
 #define IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR  [NSComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.11"]  // El Capitan
 #define IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR  [NSComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.12"]  // Sierra
+#define IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR  [NSComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.13"]  // High Sierra
 
-#define IS_COMPATIBLE_WITH_YOUTUBE_HTML5    IS_SYSTEM_MAC_OS_10_10_OR_SUPERIOR
+#define IS_WEBVIEW_LEGACY_COMPATIBLE_WITH_YOUTUBE_HTML5    IS_SYSTEM_MAC_OS_10_10_OR_SUPERIOR
 
 #import <Foundation/Foundation.h>
 
 @interface NSComputerInformation : NSObject
-
-+(NSString*)countryCode;
 
 +(NSDictionary*)graphicCardDictionary;
 +(NSString*)graphicCardModel;
