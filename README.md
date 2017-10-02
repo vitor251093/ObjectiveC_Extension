@@ -189,7 +189,7 @@ Creates an "Ok/Cancel input alert" with the specified title, message and default
 
 Creates an "Multiple buttons alert" with the specified title, message and options (which will become squared buttons with the icon specified in the block). The selected option will be returned by the function. That alert uses the thread safe modal.
 
-### NSArrray
+### NSArray
 
 ```objectivec
 -(NSArray*)sortedDictionariesArrayWithKey:(NSString *)key orderingByValuesOrder:(NSArray*)value;
@@ -255,7 +255,125 @@ Init a `NSColor` object with the color specified by a RGB hex string. Example: "
 
 Returns a RGB hex string of the `NSColor` object. Example: The black color returns "000000".
 
+### NSData
 
+```objectivec
++(NSData*)dataWithContentsOfURL:(NSURL *)url timeoutInterval:(long long int)timeoutInterval;
+```
+
+Loads the content of an URL using `NSURLConnection` ignoring local cache data. It only provides you the data if no error happened during the download, and if the status code was between 200 and 299. A timeout can also be specified.
+
+```objectivec
++(NSData*)safeDataWithContentsOfFile:(NSString*)filePath;
+```
+
+Init a `NSData` with the contents of the file at the specified path. Equivalent to `alloc` + `initWithContentsOfFile:options:error:`, but automatically prompts an error in case any happens, making your code cleaner and not ignoring any possible error.
+
+```objectivec
++(NSString*)jsonStringWithJsonObject:(id)object;
+```
+
+Returns the contents of a JSON file based in an object (which may be a NSString, a NSArray, a NSDictionary or a NSNumber).
+
+```objectivec
++(NSData*)dataWithJsonObject:(id)object;
+```
+
+Returns a `NSData` with the contents of a JSON file based in an object (which may be a NSString, a NSArray, a NSDictionary or a NSNumber).
+
+```objectivec
+-(id)jsonObject;
+```
+
+Returns an object based in the `NSData` object, which is the contents of a JSON file.
+
+### NSDateFormatter
+
+```objectivec
++(NSDate*)dateFromString:(NSString *)string withFormat:(NSString*)format;
+```
+
+Returns a `NSDate` object with the date specified in the string, which has the specified date format.
+
+### NSFileManager
+
+```objectivec
+-(BOOL)createSymbolicLinkAtPath:(NSString *)path withDestinationPath:(NSString *)destPath;
+```
+
+Equivalent to `createSymbolicLinkAtPath:withDestinationPath:error:`, but automatically deals with any produced errors.
+
+```objectivec
+-(BOOL)createDirectoryAtPath:(NSString*)path withIntermediateDirectories:(BOOL)interDirs;
+```
+
+Equivalent to `createDirectoryAtPath:withIntermediateDirectories:attributes:error:`, but automatically deals with any produced errors and uses no attributes.
+
+```objectivec
+-(BOOL)createEmptyFileAtPath:(NSString*)path;
+```
+
+Equivalent to `createFileAtPath:contents:attributes:`, but with no contents and no attributes.
+
+```objectivec
+-(BOOL)moveItemAtPath:(NSString*)path toPath:(NSString*)destination;
+```
+
+Equivalent to `moveItemAtPath:toPath:error:`, but automatically deals with any produced errors.
+
+```objectivec
+-(BOOL)copyItemAtPath:(NSString*)path toPath:(NSString*)destination;
+```
+
+Equivalent to `copyItemAtPath:toPath:error:`, but automatically deals with any produced errors.
+
+```objectivec
+-(BOOL)removeItemAtPath:(NSString*)path;
+```
+
+Equivalent to `removeItemAtPath:error:`, but automatically deals with any produced errors.
+
+```objectivec
+-(BOOL)directoryExistsAtPath:(NSString*)path;
+```
+
+Equivalent to `fileExistsAtPath:isDirectory:`, but only returns true if the given path is a directory.
+
+```objectivec
+-(BOOL)regularFileExistsAtPath:(NSString*)path;
+```
+
+Equivalent to `fileExistsAtPath:isDirectory:`, but only returns true if the given path is not a directory.
+
+```objectivec
+-(NSArray*)contentsOfDirectoryAtPath:(NSString*)path;
+```
+
+Equivalent to `contentsOfDirectoryAtPath:error:`, but automatically deals with any produced errors.
+
+```objectivec
+-(NSString*)destinationOfSymbolicLinkAtPath:(NSString *)path;
+```
+
+Equivalent to `destinationOfSymbolicLinkAtPath:error:`, but automatically deals with any produced errors.
+
+```objectivec
+-(unsigned long long int)sizeOfRegularFileAtPath:(NSString*)path
+```
+
+Returns the size of the file at the given path according to the value of `NSFileSize` in the dictionary returned by `attributesOfItemAtPath:error:`.
+
+```objectivec
+-(unsigned long long int)sizeOfDirectoryAtPath:(NSString*)path
+```
+
+Returns the size of a directory by summing the size of regular files in subpaths inside the directory. Takes a longer time to run, but is much more precise.
+
+```objectivec
+-(NSString*)checksum:(NSString*)checksum ofFileAtPath:(NSString*)file
+```
+
+Returns the checksum of the specified file. The possible `checksum` values are "sha1" (40 digits) and "sha256" (64 digits).
 
 ## New Classes (misc)
 
@@ -327,3 +445,9 @@ Defines that use `isSystemMacOsEqualOrSuperiorTo:`. Requires non-sandboxed appli
 ```
 
 Returns true if the user is member of the staff group in his computer.
+
+### NSFTPManager
+
+Replica of `FTPManager` by `nkreipke` with minor modifications. The original project can be found here:
+https://github.com/nkreipke/FTPManager
+
