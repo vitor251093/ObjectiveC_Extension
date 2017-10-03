@@ -36,10 +36,7 @@
 {
     NSMutableArray* newArray = [self mutableCopy];
     
-    for (id object in otherArray)
-    {
-        [newArray removeObject:object];
-    }
+    [newArray removeObjectsInArray:otherArray];
     
     return newArray;
 }
