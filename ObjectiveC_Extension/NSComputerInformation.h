@@ -17,8 +17,6 @@
 #define IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR  [NSComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.12"]  // Sierra
 #define IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR  [NSComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.13"]  // High Sierra
 
-#define IS_WEBVIEW_LEGACY_COMPATIBLE_WITH_YOUTUBE_HTML5    IS_SYSTEM_MAC_OS_10_10_OR_SUPERIOR
-
 #import <Foundation/Foundation.h>
 
 @interface NSComputerInformation : NSObject
