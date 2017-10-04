@@ -16,7 +16,7 @@
 @end
 
 @interface NSTextView (VMMTextView)
--(void)setAttributedString:(NSAttributedString*)string withColor:(NSColor*)color;
+-(void)setJustifiedAttributedString:(NSAttributedString*)string withColor:(NSColor*)color;
 @end
 
 @interface NSTextField (VMMTextField)

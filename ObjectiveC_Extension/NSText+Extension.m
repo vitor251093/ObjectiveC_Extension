@@ -20,7 +20,7 @@
 @end
 
 @implementation NSTextView (VMMTextView)
--(void)setAttributedString:(NSAttributedString*)string withColor:(NSColor*)color
+-(void)setJustifiedAttributedString:(NSAttributedString*)string withColor:(NSColor*)color
 {
     NSMutableAttributedString* str = string ? [string mutableCopy] : [[NSMutableAttributedString alloc] init];
     
@@ -28,7 +28,11 @@
     [self setSelectedRange:NSMakeRange(0, 0)];
     
     [str setFontColor:color];
-    [str setTextAlignment:IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR ? NSTextAlignmentJustified : kCTJustifiedTextAlignment];
+    
+    // NSTextAlignment values changed in macOS 10.11
+    // https://developer.apple.com/library/content/releasenotes/AppKit/RN-AppKitOlderNotes/index.html#10_11DynamicTracking
+    
+    [str setTextAlignment:IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR ? NSTextAlignmentJustified : NSJustifiedTextAlignment];
     
     [[self textStorage] setAttributedString:str];
 }
