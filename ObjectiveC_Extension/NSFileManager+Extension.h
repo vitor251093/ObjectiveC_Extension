@@ -30,6 +30,8 @@
 
 -(NSString*)checksum:(NSString*)checksum ofFileAtPath:(NSString*)file;
 
+-(NSString*)base64OfFileAtPath:(NSString*)path;
+
 @end
 
 #endif

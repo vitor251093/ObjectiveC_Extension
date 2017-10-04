@@ -10,6 +10,9 @@
 
 #import "NSAlert+Extension.h"
 #import "NSTask+Extension.h"
+#import "NSString+Extension.h"
+
+#import "NSComputerInformation.h"
 
 @implementation NSFileManager (VMMFileManager)
 
@@ -180,6 +183,22 @@
     }
     
     return result;
+}
+
+-(NSString*)base64OfFileAtPath:(NSString*)path
+{
+    if (IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR)
+    {
+        NSData* data = [NSData dataWithContentsOfFile:path];
+        return [data base64EncodedStringWithOptions:0];
+    }
+    
+    NSString* tmpOutputPath = [NSString stringWithFormat:@"%@base64tmpouput%@",NSTemporaryDirectory(),
+                               [path stringByReplacingOccurrencesOfString:@"/" withString:@"x"]];
+    
+    [NSTask runProgram:@"openssl" atRunPath:nil withFlags:@[@"base64", @"-in", path, @"-out", tmpOutputPath] wait:YES];
+    
+    return [NSString stringWithContentsOfFile:tmpOutputPath encoding:NSASCIIStringEncoding];
 }
 
 @end
