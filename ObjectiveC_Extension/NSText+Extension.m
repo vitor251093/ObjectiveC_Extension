@@ -32,7 +32,7 @@
     // NSTextAlignment values changed in macOS 10.11
     // https://developer.apple.com/library/content/releasenotes/AppKit/RN-AppKitOlderNotes/index.html#10_11DynamicTracking
     
-    [str setTextAlignment:IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR ? NSTextAlignmentJustified : NSJustifiedTextAlignment];
+    [str setTextJustified];
     
     [[self textStorage] setAttributedString:str];
 }

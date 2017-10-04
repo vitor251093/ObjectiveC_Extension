@@ -19,6 +19,8 @@
 
 -(void)addAttribute:(NSString *)name value:(id)value;
 -(void)setRegularFont:(NSString*)regFont boldFont:(NSString*)boldFont italicFont:(NSString*)italicFont boldAndItalicFont:(NSString*)biFont size:(CGFloat)fontSize;
+
+-(void)setTextJustified;
 -(void)setTextAlignment:(NSTextAlignment)textAlignment;
 
 -(void)setFontColor:(NSColor*)color range:(NSRange)range;

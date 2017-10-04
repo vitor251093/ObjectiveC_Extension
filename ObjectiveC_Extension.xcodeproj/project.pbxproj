@@ -10,6 +10,8 @@
 		4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E231F911F8191DD00148A30 /* IODeviceSimulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E231F941F8191DD00148A30 /* IODeviceSimulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E231F921F8191DD00148A30 /* IODeviceSimulator.m */; };
 		4E3EE4651F82BF42008A5CC3 /* CREDITS in Resources */ = {isa = PBXBuildFile; fileRef = 4E3EE4641F82BF42008A5CC3 /* CREDITS */; };
+		4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E53A8A41F8587D90038BDFE /* NSScreen+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */; };
 		4E6C51111F7E8EB700A187E9 /* ObjectiveC_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */; };
 		4E6C51161F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51151F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m */; };
 		4E6C51181F7E8EB700A187E9 /* ObjectiveC_Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -100,6 +102,8 @@
 		4E231F911F8191DD00148A30 /* IODeviceSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODeviceSimulator.h; sourceTree = "<group>"; };
 		4E231F921F8191DD00148A30 /* IODeviceSimulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODeviceSimulator.m; sourceTree = "<group>"; };
 		4E3EE4641F82BF42008A5CC3 /* CREDITS */ = {isa = PBXFileReference; lastKnownFileType = text; path = CREDITS; sourceTree = "<group>"; };
+		4E53A8A41F8587D90038BDFE /* NSScreen+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Extension.h"; sourceTree = "<group>"; };
+		4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Extension.m"; sourceTree = "<group>"; };
 		4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectiveC_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveC_Extension.h; sourceTree = "<group>"; };
 		4E6C510B1F7E8EB700A187E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -301,6 +305,8 @@
 				4E6C520E1F7E911000A187E9 /* NSRunningApplication+Extension.m */,
 				4E6C520F1F7E911000A187E9 /* NSSavePanel+Extension.h */,
 				4E6C52101F7E911000A187E9 /* NSSavePanel+Extension.m */,
+				4E53A8A41F8587D90038BDFE /* NSScreen+Extension.h */,
+				4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */,
 				4E6C52111F7E911000A187E9 /* NSString+Extension.h */,
 				4E6C52121F7E911000A187E9 /* NSString+Extension.m */,
 				4E6C52131F7E911000A187E9 /* NSTask+Extension.h */,
@@ -402,6 +408,7 @@
 				4E6C52351F7E911000A187E9 /* NSMutableAttributedString+Extension.h in Headers */,
 				4E6C523B1F7E911000A187E9 /* NSRunningApplication+Extension.h in Headers */,
 				4E6C526B1F7E953A00A187E9 /* NSNotificationUtility.h in Headers */,
+				4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */,
 				4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* IOKeycodeUsage.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
@@ -538,6 +545,7 @@
 				4E6C51ED1F7E90A300A187E9 /* IODeviceObserver.m in Sources */,
 				4E6C52421F7E911000A187E9 /* NSTask+Extension.m in Sources */,
 				4E231F941F8191DD00148A30 /* IODeviceSimulator.m in Sources */,
+				4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */,
 				4E6C51EF1F7E90A300A187E9 /* IOKeycodeUsage.m in Sources */,
 				4E6C52401F7E911000A187E9 /* NSString+Extension.m in Sources */,
 				4E6C522A1F7E911000A187E9 /* NSDateFormatter+Extension.m in Sources */,

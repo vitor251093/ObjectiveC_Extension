@@ -8,6 +8,8 @@
 
 #import "NSMutableAttributedString+Extension.h"
 
+#import "NSComputerInformation.h"
+
 @implementation NSMutableAttributedString (VMMMutableAttributedString)
 
 -(instancetype)initWithString:(NSString*)str fontNamed:(NSString*)fontName size:(CGFloat)size
@@ -70,6 +72,11 @@
             [self addAttribute:NSFontAttributeName value:[NSFont fontWithName:fontName size:fontSize] range:NSMakeRange(i,1)];
         }
     }
+}
+
+-(void)setTextJustified
+{
+    [self setTextAlignment:IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR ? NSTextAlignmentJustified : NSJustifiedTextAlignment];
 }
 -(void)setTextAlignment:(NSTextAlignment)textAlignment
 {
