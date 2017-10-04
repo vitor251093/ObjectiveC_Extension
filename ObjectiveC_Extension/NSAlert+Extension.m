@@ -5,6 +5,8 @@
 //  Created by Vitor Marques de Miranda on 22/02/17.
 //  Copyright © 2017 Vitor Marques de Miranda. All rights reserved.
 //
+//  Reference for runModalWithWindow:
+//  https://github.com/adobe/brackets-app/blob/master/src/mac/cefclient/NSAlert%2BSynchronousSheet.m
 
 #import "NSAlert+Extension.h"
 
@@ -75,6 +77,12 @@
 @implementation NSAlert (VMMAlert)
 
 static NSString* bundleName;
+static NSWindow* _alertsWindow;
+
++(void)setAlertsWindow:(NSWindow*)alert
+{
+    _alertsWindow = alert;
+}
 
 +(NSString*)titleForAlertType:(NSAlertType)alertType
 {
@@ -131,34 +139,51 @@ static NSString* bundleName;
     }
 }
 
--(NSUInteger)runThreadSafeModal
+-(IBAction)BE_stopSynchronousSheet:(id)sender
 {
-    if ([NSThread isMainThread])
+    NSUInteger clickedButtonIndex = [[self buttons] indexOfObject:sender];
+    NSInteger modalCode = NSAlertFirstButtonReturn + clickedButtonIndex;
+    [NSApp stopModalWithCode:modalCode];
+}
+-(void)BE_beginSheetModalForWindow:(NSWindow *)aWindow
+{
+    [self beginSheetModalForWindow:aWindow modalDelegate:nil didEndSelector:nil contextInfo:nil];
+}
+-(NSUInteger)runModalWithWindow
+{
+    if (_alertsWindow)
     {
-        return [self runModal];
+        for (NSButton *button in self.buttons)
+        {
+            [button setTarget:self];
+            [button setAction:@selector(BE_stopSynchronousSheet:)];
+        }
+        
+        [self performSelectorOnMainThread:@selector(BE_beginSheetModalForWindow:) withObject:_alertsWindow waitUntilDone:YES];
+        
+        NSInteger modalCode = [NSApp runModalForWindow:[self window]];
+        
+        [NSApp performSelectorOnMainThread:@selector(endSheet:) withObject:[self window] waitUntilDone:YES];
+        [[self window] performSelectorOnMainThread:@selector(orderOut:) withObject:self waitUntilDone:YES];
+        
+        return modalCode;
     }
     
-    NSCondition* lock = [[NSCondition alloc] init];
-    __block NSUInteger value;
-    
-    [NSThread dispatchBlockInMainQueue:^
+    return [self runModal];
+}
+
+-(NSUInteger)runThreadSafeModal
+{
+    return [NSAlert runThreadSafeModalWithAlert:^NSAlert*
     {
-        value = [self runModal];
-        
-        [lock signal];
+        return self;
     }];
-    
-    [lock lock];
-    [lock wait];
-    [lock unlock];
-    
-    return value;
 }
 +(NSUInteger)runThreadSafeModalWithAlert:(NSAlert* (^)(void))alert
 {
     if ([NSThread isMainThread])
     {
-        return [alert() runModal];
+        return [alert() runModalWithWindow];
     }
     
     NSCondition* lock = [[NSCondition alloc] init];
@@ -166,7 +191,7 @@ static NSString* bundleName;
     
     [NSThread dispatchBlockInMainQueue:^
     {
-        value = [alert() runModal];
+        value = [alert() runModalWithWindow];
         
         [lock signal];
     }];
