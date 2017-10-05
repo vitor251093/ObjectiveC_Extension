@@ -27,7 +27,7 @@
 
 @implementation NSNotificationUtility
 
-+(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withInfo:(NSString*)info withIcon:(NSImage*)icon withActionButton:(NSString*)actionButton
++(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withUserInfo:(NSString*)info withIcon:(NSImage*)icon withActionButtonText:(NSString*)actionButton
 {
     if (!IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR)
     {

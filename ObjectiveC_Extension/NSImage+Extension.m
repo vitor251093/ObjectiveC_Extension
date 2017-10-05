@@ -12,6 +12,7 @@
 #import "NSImage+Extension.h"
 #import "NSString+Extension.h"
 #import "NSTask+Extension.h"
+#import "NSScreen+Extension.h"
 
 #import "NSComputerInformation.h"
 #import "NSLogUtility.h"
@@ -47,12 +48,6 @@
     }
     
     return image;
-}
-
-+(CGFloat)retinaScale
-{
-    return IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR ? [NSScreen mainScreen].backingScaleFactor :
-                                               [NSScreen mainScreen].userSpaceScaleFactor;
 }
 
 +(NSImage*)quickLookImageFromFileAtPath:(NSString*)arquivo
@@ -106,7 +101,7 @@
 
 -(NSImage*)imageByFramingImageResizing:(BOOL)willResize
 {
-    int MAX_ICON_SIZE = FULL_ICON_SIZE/[NSImage retinaScale];
+    int MAX_ICON_SIZE = FULL_ICON_SIZE/[[NSScreen mainScreen] retinaScale];
     
     CGFloat width  = self.size.width;
     if (width < 1) width = 1;
@@ -254,7 +249,7 @@
     {
         NSString *tiffPath = [NSString stringWithFormat:@"%@.tiff",icnsPath];
         
-        CGFloat correctIconSize = TIFF2ICNS_ICON_SIZE/[NSImage retinaScale];
+        CGFloat correctIconSize = TIFF2ICNS_ICON_SIZE/[[NSScreen mainScreen] retinaScale];
         NSImage *resizedImage = [[NSImage alloc] initWithSize:NSMakeSize(correctIconSize,correctIconSize)];
         [resizedImage lockFocus];
         [self drawInRect:NSMakeRect(0,0,correctIconSize, correctIconSize) fromRect:self.alignmentRect

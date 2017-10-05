@@ -119,14 +119,10 @@
         return [NSJSONSerialization dataWithJSONObject:object options:NSJSONWritingPrettyPrinted error:nil];
     }
 
-    NSData* jsonData;
-    
     @autoreleasepool
     {
-        jsonData = [[self jsonStringWithJsonObject:object] dataUsingEncoding:NSUTF8StringEncoding];
+        return [[self jsonStringWithJsonObject:object] dataUsingEncoding:NSUTF8StringEncoding];
     }
-    
-    return jsonData;
 }
 
 -(id)jsonObject
@@ -136,15 +132,11 @@
         return [NSJSONSerialization JSONObjectWithData:self options:0 error:nil];
     }
 
-    id jsonObject;
-    
     @autoreleasepool
     {
         NSString* returnedString = [[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding];
-        jsonObject = [returnedString jsonObject];
+        return [returnedString jsonObject];
     }
-    
-    return jsonObject;
 }
 
 @end
