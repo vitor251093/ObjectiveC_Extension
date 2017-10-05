@@ -193,12 +193,7 @@
         return [data base64EncodedStringWithOptions:0];
     }
     
-    NSString* tmpOutputPath = [NSString stringWithFormat:@"%@base64tmpouput%@",NSTemporaryDirectory(),
-                               [path stringByReplacingOccurrencesOfString:@"/" withString:@"x"]];
-    
-    [NSTask runProgram:@"openssl" atRunPath:nil withFlags:@[@"base64", @"-in", path, @"-out", tmpOutputPath] wait:YES];
-    
-    return [NSString stringWithContentsOfFile:tmpOutputPath encoding:NSASCIIStringEncoding];
+    return [NSTask runProgram:@"openssl" atRunPath:nil withFlags:@[@"base64", @"-in", path, @"-A"] wait:YES];
 }
 
 @end
