@@ -12,4 +12,6 @@
 
 +(void)simulateCursorClickAtScreenPoint:(CGPoint)clickPoint;
 
++(void)simulateVirtualKeycode:(CGKeyCode)keyCode withKeyDown:(BOOL)keyPressed;
+
 @end

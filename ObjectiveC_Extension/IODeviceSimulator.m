@@ -31,4 +31,11 @@
     CFRelease(theEvent);
 }
 
++(void)simulateVirtualKeycode:(CGKeyCode)keyCode withKeyDown:(BOOL)keyPressed
+{
+    CGEventRef cmdd = CGEventCreateKeyboardEvent(NULL, keyCode, keyPressed);
+    CGEventPost(kCGHIDEventTap, cmdd);
+    CFRelease(cmdd);
+}
+
 @end

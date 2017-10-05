@@ -37,10 +37,8 @@
 
 +(NSArray*)allKeyNames;
 
-+(NSDictionary*)virtualKeycodesNames;
++(NSDictionary*)virtualKeycodeNames;
 +(NSString*)nameOfVirtualKeycode:(CGKeyCode)key;
-
-+(void)performEventOfKeycode:(CGKeyCode)keyCode withKeyDown:(BOOL)keyPressed;
 
 @end
 

@@ -10,18 +10,18 @@
 
 @implementation CGVirtualKeycodes
 
-NSDictionary* _virtualKeycodesNames;
+NSDictionary* _virtualKeycodeNames;
 
 +(NSArray*)allKeyNames
 {
-    return self.virtualKeycodesNames.allValues;
+    return self.virtualKeycodeNames.allValues;
 }
 
-+(NSDictionary*)virtualKeycodesNames
++(NSDictionary*)virtualKeycodeNames
 {
-    if (!_virtualKeycodesNames)
+    if (!_virtualKeycodeNames)
     {
-        _virtualKeycodesNames = @{
+        _virtualKeycodeNames = @{
                                 @(kVK_ANSI_A)             : @"A",
                                 @(kVK_ANSI_S)             : @"S",
                                 @(kVK_ANSI_D)             : @"D",
@@ -165,18 +165,11 @@ NSDictionary* _virtualKeycodesNames;
                                 };
     }
     
-    return _virtualKeycodesNames;
+    return _virtualKeycodeNames;
 }
 +(NSString*)nameOfVirtualKeycode:(CGKeyCode)key
 {
-    return self.virtualKeycodesNames[@(key)];
-}
-
-+(void)performEventOfKeycode:(CGKeyCode)keyCode withKeyDown:(BOOL)keyPressed
-{
-    CGEventRef cmdd = CGEventCreateKeyboardEvent(NULL, keyCode, keyPressed);
-    CGEventPost(kCGHIDEventTap, cmdd);
-    CFRelease(cmdd);
+    return self.virtualKeycodeNames[@(key)];
 }
 
 @end
