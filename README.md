@@ -3,6 +3,9 @@ Once I started developing my skills in Objective-C, I've noticed that while many
 
 In order to improve that, I've decided to create a framework with those classes and extensions, in order to optimize my work. It should be useful for a large range of projects, so feel free to use it, and enjoy :)
 
+## Compatibility
+This is the best part of that framework. ObjectiveC_Extension is compatible with every version of macOS still compatible with Xcode 9, so it is compatible with macOS 10.6+. Obvisouly, that requires some workarounds and *hacks*. They will be listed in the end of that document.
+
 ## New Classes (related with keycodes and devices)
 Those classes were made to simplify the use of HID devices input, making your code cleaner when working with them, and more Objective-C-like, since most of the code related with that is C-like and C++-like. It also gives you enums to find the value of virtual keycodes (useful to simulate keyboard key pressing) and usage keycodes (useful to detect which keyboard key was pressed).
 
@@ -92,7 +95,7 @@ Notify an object that a HID device has performed an event.
 
 Simulates a mouse left button press at a screen point.
 
-### IOKeycodeUsage
+### IOUsageKeycode
 
 ```objectivec
 +(NSArray*)allUsageNames;
@@ -101,13 +104,13 @@ Simulates a mouse left button press at a screen point.
 Name of keyboard keys that have a usage keycode.
 
 ```objectivec
-+(NSDictionary*)keycodesUsageNames;
++(NSDictionary*)usageNamesByKeycode;
 ```
 
 Name of keyboard keys by usage keycode.
 
 ```objectivec
-+(NSString*)nameOfKeycodeUsage:(uint32_t)key;
++(NSString*)nameOfUsageKeycode:(uint32_t)key;
 ```
 
 Name of keyboard key with specific usage keycode.
@@ -533,4 +536,29 @@ measureTime(__message){}
 
 Based in `LOOProfiling.h`'s `LOO_MEASURE_TIME` (https://gist.github.com/sfider/3072143). Measure the time that its block takes to run and print it using `NSDebugLog`.
 
+## Workarounds and Hacks
+
+### [NSData jsonStringWithJsonObject:object] (macOS 10.6)
+The JSON string is created manually since `NSJSONSerialization` was not available before macOS 10.7.
+
+### [NSData dataWithJsonObject:object] (macOS 10.6)
+The JSON data is created based in the function above since `NSJSONSerialization` was not available before macOS 10.7.
+
+### [(NSData*)object jsonObject] (macOS 10.6)
+The JSON object is created using `SZJsonParser` since `NSJSONSerialization` was not available before macOS 10.7.
+
+### [(NSFileManager*)fm base64OfFileAtPath:path] (~ macOS 10.8)
+The base64 of the file is created with the `openssl` terminal command since `base64EncodedStringWithOptions:` isn't available before macOS 10.9.
+
+### [(NSImage*)img saveAsIcnsAtPath:path] (macOS 10.6)
+In macOS 10.7+ systems, icns files are created with `iconutil`, using `tiff2icns` only if the first one does not return a valid image. macOS 10.6 systems create using `tiff2icns` only, since `iconutil` was introduced in macOS 10.7.
+
+### [(NSOpenPanel*)panel setWindowTitle:title] (macOS 10.11 ~)
+From macOS 10.11 and on, the `setTitle:` function does nothing to `NSOpenPanel`'s. Considering that, this function uses `setMessage:` for macOS 10.11+ and `setTitle:` for macOS 10.10-.
+
+### [(NSString*)string componentsMatchingWithRegex:regex] (macOS 10.6)
+This is the dirtiest hack of them all. Since `NSRegularExpression` was introduced in macOS 10.7, the only method that I found to do that (since old macOS 10.6 frameworks do not compile anymore) is using Python. In macOS 10.6 only, that function will create a temporary file with `string` and a temporary python script which should parse string and return the components matching with `regex`. It's very slow, and should not be used multiple times in sequence (nor simultaneously!). At least it works using the same kind of regex that `NSRegularExpression` accepts... please, forgive me.
+
+### [NSNotificationUtility showNotificationMessage:message withTitle:title withUserInfo:info withIcon:icon withActionButtonText:actionButton] (~ macOS 10.7)
+Since `NSUserNotification` was only introduced in macOS 10.8, macOS 10.7 and below require a different approach. In those systems, `NSNotificationUtility` shows a simple `NSAlert` instead of the notification. A better approach for the future would be to add Growl integration instead.
 
