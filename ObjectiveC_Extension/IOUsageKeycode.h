@@ -1,5 +1,5 @@
 //
-//  IOKeycodeUsage.h
+//  IOUsageKeycode.h
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 09/08/17.
@@ -14,13 +14,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface IOKeycodeUsage : NSObject
+@interface IOUsageKeycode : NSObject
 
 +(NSArray*)allUsageNames;
 
-+(NSDictionary*)keycodesUsageNames;
++(NSDictionary*)usageNamesByKeycode;
 
-+(NSString*)nameOfKeycodeUsage:(uint32_t)key;
++(NSString*)nameOfUsageKeycode:(uint32_t)key;
 
 @end
 

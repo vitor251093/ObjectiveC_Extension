@@ -19,8 +19,8 @@
 		4E6C51EB1F7E90A300A187E9 /* CGVirtualKeycodes.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51E51F7E90A300A187E9 /* CGVirtualKeycodes.m */; };
 		4E6C51EC1F7E90A300A187E9 /* IODeviceObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C51E61F7E90A300A187E9 /* IODeviceObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C51ED1F7E90A300A187E9 /* IODeviceObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51E71F7E90A300A187E9 /* IODeviceObserver.m */; };
-		4E6C51EE1F7E90A300A187E9 /* IOKeycodeUsage.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C51E81F7E90A300A187E9 /* IOKeycodeUsage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4E6C51EF1F7E90A300A187E9 /* IOKeycodeUsage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51E91F7E90A300A187E9 /* IOKeycodeUsage.m */; };
+		4E6C51EE1F7E90A300A187E9 /* IOUsageKeycode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C51E81F7E90A300A187E9 /* IOUsageKeycode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E6C51EF1F7E90A300A187E9 /* IOUsageKeycode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51E91F7E90A300A187E9 /* IOUsageKeycode.m */; };
 		4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C51F11F7E911000A187E9 /* NSAlert+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C52201F7E911000A187E9 /* NSAlert+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51F21F7E911000A187E9 /* NSAlert+Extension.m */; };
 		4E6C52211F7E911000A187E9 /* NSArray+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C51F31F7E911000A187E9 /* NSArray+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -114,8 +114,8 @@
 		4E6C51E51F7E90A300A187E9 /* CGVirtualKeycodes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGVirtualKeycodes.m; sourceTree = "<group>"; };
 		4E6C51E61F7E90A300A187E9 /* IODeviceObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODeviceObserver.h; sourceTree = "<group>"; };
 		4E6C51E71F7E90A300A187E9 /* IODeviceObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODeviceObserver.m; sourceTree = "<group>"; };
-		4E6C51E81F7E90A300A187E9 /* IOKeycodeUsage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOKeycodeUsage.h; sourceTree = "<group>"; };
-		4E6C51E91F7E90A300A187E9 /* IOKeycodeUsage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOKeycodeUsage.m; sourceTree = "<group>"; };
+		4E6C51E81F7E90A300A187E9 /* IOUsageKeycode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOUsageKeycode.h; sourceTree = "<group>"; };
+		4E6C51E91F7E90A300A187E9 /* IOUsageKeycode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOUsageKeycode.m; sourceTree = "<group>"; };
 		4E6C51F11F7E911000A187E9 /* NSAlert+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Extension.h"; sourceTree = "<group>"; };
 		4E6C51F21F7E911000A187E9 /* NSAlert+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Extension.m"; sourceTree = "<group>"; };
 		4E6C51F31F7E911000A187E9 /* NSArray+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Extension.h"; sourceTree = "<group>"; };
@@ -262,8 +262,8 @@
 				4E6C51E51F7E90A300A187E9 /* CGVirtualKeycodes.m */,
 				4E6C51E61F7E90A300A187E9 /* IODeviceObserver.h */,
 				4E6C51E71F7E90A300A187E9 /* IODeviceObserver.m */,
-				4E6C51E81F7E90A300A187E9 /* IOKeycodeUsage.h */,
-				4E6C51E91F7E90A300A187E9 /* IOKeycodeUsage.m */,
+				4E6C51E81F7E90A300A187E9 /* IOUsageKeycode.h */,
+				4E6C51E91F7E90A300A187E9 /* IOUsageKeycode.m */,
 				4E231F911F8191DD00148A30 /* IODeviceSimulator.h */,
 				4E231F921F8191DD00148A30 /* IODeviceSimulator.m */,
 			);
@@ -410,7 +410,7 @@
 				4E6C526B1F7E953A00A187E9 /* NSNotificationUtility.h in Headers */,
 				4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */,
 				4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */,
-				4E6C51EE1F7E90A300A187E9 /* IOKeycodeUsage.h in Headers */,
+				4E6C51EE1F7E90A300A187E9 /* IOUsageKeycode.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
 				4E6C525D1F7E944F00A187E9 /* SZJsonParser.h in Headers */,
 			);
@@ -546,7 +546,7 @@
 				4E6C52421F7E911000A187E9 /* NSTask+Extension.m in Sources */,
 				4E231F941F8191DD00148A30 /* IODeviceSimulator.m in Sources */,
 				4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */,
-				4E6C51EF1F7E90A300A187E9 /* IOKeycodeUsage.m in Sources */,
+				4E6C51EF1F7E90A300A187E9 /* IOUsageKeycode.m in Sources */,
 				4E6C52401F7E911000A187E9 /* NSString+Extension.m in Sources */,
 				4E6C522A1F7E911000A187E9 /* NSDateFormatter+Extension.m in Sources */,
 				4E6C52201F7E911000A187E9 /* NSAlert+Extension.m in Sources */,

@@ -20,7 +20,7 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 #import <ObjectiveC_Extension/CGVirtualKeycodes.h>
 #import <ObjectiveC_Extension/IODeviceObserver.h>
 #import <ObjectiveC_Extension/IODeviceSimulator.h>
-#import <ObjectiveC_Extension/IOKeycodeUsage.h>
+#import <ObjectiveC_Extension/IOUsageKeycode.h>
 
 // Extensions
 #import <ObjectiveC_Extension/NSAlert+Extension.h>
