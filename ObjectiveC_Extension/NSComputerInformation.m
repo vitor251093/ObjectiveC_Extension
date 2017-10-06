@@ -237,7 +237,7 @@ static NSNumber* _userIsMemberOfStaff;
 {
     @synchronized([self class])
     {
-        if (!_userIsMemberOfStaff)
+        if (_userIsMemberOfStaff == nil)
         {
             @autoreleasepool
             {

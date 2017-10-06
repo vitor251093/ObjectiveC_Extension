@@ -51,14 +51,14 @@
             NSString *fontName = [[self attribute:NSFontAttributeName atIndex:i effectiveRange:nil] fontName];
             
             NSNumber* hasItalic = fontItalicDictionary[fontName];
-            if (!hasItalic)
+            if (hasItalic == nil)
             {
                 fontItalicDictionary[fontName] = @([[[NSFontManager alloc] init] fontNamed:fontName hasTraits:NSItalicFontMask]);
                 hasItalic = fontItalicDictionary[fontName];
             }
             
             NSNumber* hasBold = fontBoldDictionary[fontName];
-            if (!hasBold)
+            if (hasBold == nil)
             {
                 fontBoldDictionary[fontName] = @([[[NSFontManager alloc] init] fontNamed:fontName hasTraits:NSBoldFontMask]);
                 hasBold = fontBoldDictionary[fontName];
