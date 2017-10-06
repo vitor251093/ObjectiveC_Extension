@@ -11,6 +11,7 @@
 #import "NSAlert+Extension.h"
 #import "NSTask+Extension.h"
 #import "NSString+Extension.h"
+#import "NSThread+Extension.h"
 
 #import "NSComputerInformation.h"
 
@@ -193,7 +194,15 @@
         return [data base64EncodedStringWithOptions:0];
     }
     
-    return [NSTask runProgram:@"openssl" atRunPath:nil withFlags:@[@"base64", @"-in", path, @"-A"] wait:YES];
+    NSString* tempFileOutputPath = [NSTemporaryDirectory() stringByAppendingString:@"tempFileOutput"];
+    [self removeItemAtPath:tempFileOutputPath];
+    
+    [NSThread runThreadSafeBlock:^
+    {
+        [NSTask runProgram:@"openssl" atRunPath:nil withFlags:@[@"base64", @"-in", path, @"-out", tempFileOutputPath, @"-A"] wait:YES];
+    }];
+    
+    return [NSString stringWithContentsOfFile:tempFileOutputPath encoding:NSASCIIStringEncoding];
 }
 
 @end
