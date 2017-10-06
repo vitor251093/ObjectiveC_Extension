@@ -116,7 +116,7 @@ static NSNumber* _userIsMemberOfStaff;
         videoCardName = chipsetModel;
     }
     
-    return chipsetModel;
+    return videoCardName;
 }
 +(NSString*)graphicCardType
 {
