@@ -194,15 +194,20 @@
         return [data base64EncodedStringWithOptions:0];
     }
     
-    NSString* tempFileOutputPath = [NSTemporaryDirectory() stringByAppendingString:@"tempFileOutput"];
-    [self removeItemAtPath:tempFileOutputPath];
+    __block NSString* output;
     
     [NSThread runThreadSafeBlock:^
     {
+        NSString* tempFileOutputPath = [NSTemporaryDirectory() stringByAppendingString:@"tempFileOutput"];
+        
+        [self removeItemAtPath:tempFileOutputPath];
         [NSTask runProgram:@"openssl" atRunPath:nil withFlags:@[@"base64", @"-in", path, @"-out", tempFileOutputPath, @"-A"] wait:YES];
+        
+        output = [NSString stringWithContentsOfFile:tempFileOutputPath encoding:NSASCIIStringEncoding];
+        [self removeItemAtPath:tempFileOutputPath];
     }];
     
-    return [NSString stringWithContentsOfFile:tempFileOutputPath encoding:NSASCIIStringEncoding];
+    return output;
 }
 
 @end
