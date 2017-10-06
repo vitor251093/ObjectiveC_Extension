@@ -354,6 +354,7 @@ static NSWindow* _alertsWindow;
             NSTextField *input = [[NSTextField alloc] initWithFrame:INPUT_DIALOG_MESSAGE_FIELD_FRAME];
             if (defaultValue) [input setStringValue:defaultValue];
             [alert setAccessoryView:input];
+            [[alert window] setInitialFirstResponder:input];
             
             if ([alert runModal] == NSAlertDefaultReturn)
             {
@@ -376,6 +377,7 @@ static NSWindow* _alertsWindow;
                  NSTextField *input = [[NSTextField alloc] initWithFrame:INPUT_DIALOG_MESSAGE_FIELD_FRAME];
                  if (defaultValue) [input setStringValue:defaultValue];
                  [alert setAccessoryView:input];
+                 [[alert window] setInitialFirstResponder:input];
                  
                  if ([alert runModal] == NSAlertDefaultReturn)
                  {
