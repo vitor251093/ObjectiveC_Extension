@@ -279,7 +279,13 @@
     if ([extension isEqualToString:@"jp2"])  data = [imageRep representationUsingType:NSJPEG2000FileType properties:@{}];
     if ([extension isEqualToString:@"png"])  data = [imageRep representationUsingType:NSPNGFileType      properties:@{}];
     if ([extension isEqualToString:@"tiff"]) data = [imageRep representationUsingType:NSTIFFFileType     properties:@{}];
-    if (!data) return FALSE;
+    if (!data)
+    {
+        [[NSException exceptionWithName:NSInvalidArgumentException
+                                 reason:[NSString stringWithFormat:@"Invalid extension for saving image file: %@",extension]
+                               userInfo:nil] raise];
+        return false;
+    }
     
     return [data writeToFile:file atomically:useAuxiliaryFile];
 }
