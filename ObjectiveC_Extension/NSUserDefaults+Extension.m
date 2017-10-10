@@ -10,14 +10,17 @@
 
 @implementation NSUserDefaults (VMMUserDefaults)
 
--(id)objectForKey:(NSString *)defaultName withDefaultValue:(id)value
+-(id)objectForKey:(NSString *)key withDefaultValue:(id)value
 {
-    if (![self objectForKey:defaultName])
+    id actualValue = [self objectForKey:key];
+    
+    if (actualValue == nil)
     {
-        [self setObject:value forKey:defaultName];
+        [self setObject:value forKey:key];
+        return value;
     }
     
-    return [self objectForKey:defaultName];
+    return actualValue;
 }
 
 @end
