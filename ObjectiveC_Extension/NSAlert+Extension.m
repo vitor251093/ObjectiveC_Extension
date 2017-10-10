@@ -79,9 +79,11 @@
 static NSString* bundleName;
 static NSWindow* _alertsWindow;
 
-+(void)setAlertsWindow:(NSWindow*)alert
++(void)alertsShouldRunOnWindow:(NSWindow*)window whenCalledDuringBlock:(void (^) (void))block
 {
-    _alertsWindow = alert;
+    _alertsWindow = window;
+    block();
+    _alertsWindow = nil;
 }
 
 +(NSString*)titleForAlertType:(NSAlertType)alertType
