@@ -12,12 +12,26 @@
 
 static NSWindow* _alertsWindow;
 
+static NSWindow* _temporaryAlertsWindow;
+static int _temporaryCounter;
+
 +(NSWindow*)modalsWindow
 {
+    if (_temporaryCounter > 0)
+    {
+        _temporaryCounter--;
+        return _temporaryAlertsWindow;
+    }
+    
     return _alertsWindow;
 }
 
-+(void)alertsShouldRunOnWindow:(NSWindow*)window whenCalledDuringBlock:(void (^) (void))block
++(void)nextModalShouldRunOnWindow:(NSWindow*)window
+{
+    _temporaryCounter = 1;
+    _temporaryAlertsWindow = window;
+}
++(void)modalsShouldRunOnWindow:(NSWindow*)window whenCalledDuringBlock:(void (^) (void))block
 {
     _alertsWindow = window;
     block();

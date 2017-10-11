@@ -13,13 +13,19 @@
 
 @interface NSOpenPanel (VMMOpenPanel)
 
-+(NSArray<NSURL*>*)runThreadSafeModalWithOpenPanel:(void (^)(NSOpenPanel* openPanel))optionsForPanel;
++(void)runThreadSafeModalWithOpenPanel:(void (^)(NSOpenPanel* openPanel))optionsForPanel completionHandler:(void (^) (NSArray<NSURL*>* selectedUrls))completionHandler;
++(void)runMainThreadModalWithOpenPanel:(void (^)(NSOpenPanel* openPanel))optionsForPanel completionHandler:(void (^) (NSArray<NSURL*>* selectedUrls))completionHandler;
++(NSArray<NSURL*>*)runBackgroundThreadModalWithOpenPanel:(void (^)(NSOpenPanel* openPanel))optionsForPanel;
 
 @end
 
 @interface NSSavePanel (VMMSavePanel)
 
-+(NSURL*)runThreadSafeModalWithSavePanel:(void (^)(NSSavePanel* savePanel))optionsForPanel;
+-(NSUInteger)runBackgroundThreadModalWithWindow;
+
++(void)runThreadSafeModalWithSavePanel:(void (^)(NSSavePanel* savePanel))optionsForPanel completionHandler:(void (^) (NSURL* selectedUrl))completionHandler;
++(void)runMainThreadModalWithSavePanel:(void (^)(NSSavePanel* savePanel))optionsForPanel completionHandler:(void (^) (NSURL* selectedUrl))completionHandler;
++(NSURL*)runBackgroundThreadModalWithSavePanel:(void (^)(NSSavePanel* savePanel))optionsForPanel;
 
 -(void)setInitialDirectory:(NSString*)path;
 

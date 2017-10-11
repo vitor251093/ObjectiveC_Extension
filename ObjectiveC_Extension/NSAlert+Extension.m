@@ -353,7 +353,7 @@ static NSString* bundleName;
             [alert setAccessoryView:input];
             [[alert window] setInitialFirstResponder:input];
             
-            if ([alert runModal] == NSAlertDefaultReturn)
+            if ([alert runModalWithWindow] == NSAlertDefaultReturn)
             {
                 [input validateEditing];
                 result = [input stringValue];
@@ -376,7 +376,7 @@ static NSString* bundleName;
                  [alert setAccessoryView:input];
                  [[alert window] setInitialFirstResponder:input];
                  
-                 if ([alert runModal] == NSAlertDefaultReturn)
+                 if ([alert runModalWithWindow] == NSAlertDefaultReturn)
                  {
                      [input validateEditing];
                      value = [input stringValue];

@@ -12,34 +12,61 @@
 
 #import "NSComputerInformation.h"
 
+#import "NSModals.h"
+
 @implementation NSOpenPanel (VMMOpenPanel)
 
-+(NSArray<NSURL*>*)runThreadSafeModalWithOpenPanel:(void (^)(NSOpenPanel* openPanel))optionsForPanel
++(void)runThreadSafeModalWithOpenPanel:(void (^)(NSOpenPanel* openPanel))optionsForPanel completionHandler:(void (^) (NSArray<NSURL*>* selectedUrls))completionHandler
+{
+    if ([NSThread isMainThread])
+    {
+        [self runMainThreadModalWithOpenPanel:optionsForPanel completionHandler:completionHandler];
+    }
+    else
+    {
+        NSArray* selectedUrls = [self runBackgroundThreadModalWithOpenPanel:optionsForPanel];
+        completionHandler(selectedUrls);
+    }
+}
++(void)runMainThreadModalWithOpenPanel:(void (^)(NSOpenPanel* openPanel))optionsForPanel completionHandler:(void (^) (NSArray<NSURL*>* selectedUrls))completionHandler
+{
+    NSOpenPanel* openPanel = [NSOpenPanel openPanel];
+    optionsForPanel(openPanel);
+    
+    NSWindow* window = [NSModals modalsWindow];
+    if (window)
+    {
+        [openPanel beginSheetModalForWindow:window completionHandler:^(NSModalResponse result)
+        {
+            [openPanel orderOut:nil];
+             
+            if (result == NSOKButton)
+            {
+                completionHandler([openPanel URLs]);
+            }
+        }];
+    }
+    else
+    {
+        [openPanel runModal];
+        completionHandler([openPanel URLs]);
+    }
+}
++(NSArray<NSURL*>*)runBackgroundThreadModalWithOpenPanel:(void (^)(NSOpenPanel* openPanel))optionsForPanel
 {
     __block NSArray<NSURL*>* urlsList;
     
-    if ([NSThread isMainThread])
+    NSCondition* lock = [[NSCondition alloc] init];
+    __block NSUInteger value;
+    
+    [NSThread dispatchBlockInMainQueue:^
     {
         NSOpenPanel* openPanel = [NSOpenPanel openPanel];
         optionsForPanel(openPanel);
         
-        NSUInteger result = [openPanel runModal];
-        if (result == NSOKButton)
+        [NSThread dispatchQueueWithName:"open-panel-background-thread" priority:DISPATCH_QUEUE_PRIORITY_DEFAULT concurrent:NO withBlock:^
         {
-            urlsList = [openPanel URLs];
-        }
-    }
-    else
-    {
-        NSCondition* lock = [[NSCondition alloc] init];
-        __block NSUInteger value;
-        
-        [NSThread dispatchBlockInMainQueue:^
-        {
-            NSOpenPanel* openPanel = [NSOpenPanel openPanel];
-            optionsForPanel(openPanel);
-            
-            value = [openPanel runModal];
+            value = [openPanel runBackgroundThreadModalWithWindow];
             if (value == NSOKButton)
             {
                 urlsList = [openPanel URLs];
@@ -47,11 +74,11 @@
              
             [lock signal];
         }];
-        
-        [lock lock];
-        [lock wait];
-        [lock unlock];
-    }
+    }];
+    
+    [lock lock];
+    [lock wait];
+    [lock unlock];
     
     return urlsList;
 }
@@ -60,44 +87,101 @@
 
 @implementation NSSavePanel (VMMSavePanel)
 
-+(NSURL*)runThreadSafeModalWithSavePanel:(void (^)(NSSavePanel* savePanel))optionsForPanel
+-(NSUInteger)runBackgroundThreadModalWithWindow
+{
+    NSWindow* window = [NSModals modalsWindow];
+    
+    __block NSUInteger value;
+    NSCondition* lock = [[NSCondition alloc] init];
+    
+    [NSThread dispatchBlockInMainQueue:^
+    {
+        if (window)
+        {
+            [self beginSheetModalForWindow:window completionHandler:^(NSModalResponse result)
+            {
+                [self orderOut:nil];
+                value = result;
+                [lock signal];
+            }];
+        }
+        else
+        {
+            value = [self runModal];
+            [lock signal];
+        }
+    }];
+    
+    [lock lock];
+    [lock wait];
+    [lock unlock];
+    
+    return value;
+}
+
++(void)runThreadSafeModalWithSavePanel:(void (^)(NSSavePanel* savePanel))optionsForPanel completionHandler:(void (^) (NSURL* selectedUrl))completionHandler
+{
+    if ([NSThread isMainThread])
+    {
+        [self runMainThreadModalWithSavePanel:optionsForPanel completionHandler:completionHandler];
+    }
+    else
+    {
+        NSURL* selectedUrl = [self runBackgroundThreadModalWithSavePanel:optionsForPanel];
+        completionHandler(selectedUrl);
+    }
+}
++(void)runMainThreadModalWithSavePanel:(void (^)(NSSavePanel* savePanel))optionsForPanel completionHandler:(void (^) (NSURL* selectedUrl))completionHandler
+{
+    NSSavePanel* savePanel = [NSSavePanel savePanel];
+    optionsForPanel(savePanel);
+    
+    NSWindow* window = [NSModals modalsWindow];
+    if (window)
+    {
+        [savePanel beginSheetModalForWindow:window completionHandler:^(NSModalResponse result)
+        {
+            [savePanel orderOut:nil];
+            
+            if (result == NSOKButton)
+            {
+                completionHandler([savePanel URL]);
+            }
+        }];
+    }
+    else
+    {
+        [savePanel runModal];
+        completionHandler([savePanel URL]);
+    }
+}
++(NSURL*)runBackgroundThreadModalWithSavePanel:(void (^)(NSSavePanel* savePanel))optionsForPanel
 {
     __block NSURL* url;
     
-    if ([NSThread isMainThread])
+    NSCondition* lock = [[NSCondition alloc] init];
+    __block NSUInteger value;
+    
+    [NSThread dispatchBlockInMainQueue:^
     {
         NSSavePanel* savePanel = [NSSavePanel savePanel];
         optionsForPanel(savePanel);
         
-        NSUInteger result = [savePanel runModal];
-        if (result == NSOKButton)
+        [NSThread dispatchQueueWithName:"save-panel-background-thread" priority:DISPATCH_QUEUE_PRIORITY_DEFAULT concurrent:NO withBlock:^
         {
-            url = [savePanel URL];
-        }
-    }
-    else
-    {
-        NSCondition* lock = [[NSCondition alloc] init];
-        __block NSUInteger value;
-        
-        [NSThread dispatchBlockInMainQueue:^
-        {
-            NSSavePanel* savePanel = [NSSavePanel savePanel];
-            optionsForPanel(savePanel);
-            
-            value = [savePanel runModal];
+            value = [savePanel runBackgroundThreadModalWithWindow];
             if (value == NSOKButton)
             {
                 url = [savePanel URL];
             }
-             
+            
             [lock signal];
         }];
-        
-        [lock lock];
-        [lock wait];
-        [lock unlock];
-    }
+    }];
+    
+    [lock lock];
+    [lock wait];
+    [lock unlock];
     
     return url;
 }

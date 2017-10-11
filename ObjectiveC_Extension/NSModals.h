@@ -11,6 +11,8 @@
 @interface NSModals : NSObject
 
 +(NSWindow*)modalsWindow;
-+(void)alertsShouldRunOnWindow:(NSWindow*)window whenCalledDuringBlock:(void (^) (void))block;
+
++(void)nextModalShouldRunOnWindow:(NSWindow*)window;
++(void)modalsShouldRunOnWindow:(NSWindow*)window whenCalledDuringBlock:(void (^) (void))block;
 
 @end
