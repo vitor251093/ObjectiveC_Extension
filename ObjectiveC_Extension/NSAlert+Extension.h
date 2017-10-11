@@ -22,8 +22,6 @@ typedef enum NSAlertType
 
 @interface NSAlert (VMMAlert)
 
-+(void)alertsShouldRunOnWindow:(NSWindow*)window whenCalledDuringBlock:(void (^) (void))block;
-
 -(void)setIconWithAlertType:(NSAlertType)alertType;
 
 -(NSUInteger)runThreadSafeModal;

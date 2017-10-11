@@ -86,6 +86,8 @@
 		4E6C52881F7EA42700A187E9 /* NSArrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52851F7EA42700A187E9 /* NSArrayTests.m */; };
 		4E6C52891F7EA42700A187E9 /* NSStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52861F7EA42700A187E9 /* NSStringTests.m */; };
 		4E6C52941F7EB50300A187E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4E6C52961F7EB50300A187E9 /* Localizable.strings */; };
+		4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EF16B1D1F8E36A600A78DC0 /* NSModals.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4EF16B201F8E36A600A78DC0 /* NSModals.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF16B1E1F8E36A600A78DC0 /* NSModals.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -185,6 +187,8 @@
 		4E6C52981F7EB52100A187E9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4E6C52991F7EB52500A187E9 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		4E6C529A1F7EB52A00A187E9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4EF16B1D1F8E36A600A78DC0 /* NSModals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSModals.h; sourceTree = "<group>"; };
+		4EF16B1E1F8E36A600A78DC0 /* NSModals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSModals.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -346,6 +350,8 @@
 				4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */,
 				4E6C52661F7E953A00A187E9 /* NSVersion.h */,
 				4E6C52671F7E953A00A187E9 /* NSVersion.m */,
+				4EF16B1D1F8E36A600A78DC0 /* NSModals.h */,
+				4EF16B1E1F8E36A600A78DC0 /* NSModals.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -409,6 +415,7 @@
 				4E6C523B1F7E911000A187E9 /* NSRunningApplication+Extension.h in Headers */,
 				4E6C526B1F7E953A00A187E9 /* NSNotificationUtility.h in Headers */,
 				4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */,
+				4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */,
 				4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* IOUsageKeycode.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
@@ -526,6 +533,7 @@
 				4E6C52441F7E911000A187E9 /* NSText+Extension.m in Sources */,
 				4E6C526C1F7E953A00A187E9 /* NSNotificationUtility.m in Sources */,
 				4E6C52261F7E911000A187E9 /* NSColor+Extension.m in Sources */,
+				4EF16B201F8E36A600A78DC0 /* NSModals.m in Sources */,
 				4E6C523C1F7E911000A187E9 /* NSRunningApplication+Extension.m in Sources */,
 				4E6C522C1F7E911000A187E9 /* NSFileManager+Extension.m in Sources */,
 				4E6C52381F7E911000A187E9 /* NSMutableDictionary+Extension.m in Sources */,

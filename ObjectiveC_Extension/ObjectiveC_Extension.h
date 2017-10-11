@@ -48,9 +48,10 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 #import <ObjectiveC_Extension/NSUserDefaults+Extension.h>
 #import <ObjectiveC_Extension/NSView+Extension.h>
 
-// Legacy
+// Utilities
 #import <ObjectiveC_Extension/NSComputerInformation.h>
 #import <ObjectiveC_Extension/NSFTPManager.h>
 #import <ObjectiveC_Extension/NSLogUtility.h>
 #import <ObjectiveC_Extension/NSNotificationUtility.h>
 #import <ObjectiveC_Extension/NSVersion.h>
+#import <ObjectiveC_Extension/NSModals.h>

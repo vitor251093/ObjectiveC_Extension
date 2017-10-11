@@ -14,6 +14,7 @@
 #import "NSMutableAttributedString+Extension.h"
 
 #import "NSLogUtility.h"
+#import "NSModals.h"
 
 #define ALERT_WITH_ATTRIBUTED_MESSAGE_PARAGRAPH_SPACING  2.0f
 #define ALERT_WITH_ATTRIBUTED_MESSAGE_WIDTH_MARGIN       50
@@ -77,14 +78,6 @@
 @implementation NSAlert (VMMAlert)
 
 static NSString* bundleName;
-static NSWindow* _alertsWindow;
-
-+(void)alertsShouldRunOnWindow:(NSWindow*)window whenCalledDuringBlock:(void (^) (void))block
-{
-    _alertsWindow = window;
-    block();
-    _alertsWindow = nil;
-}
 
 +(NSString*)titleForAlertType:(NSAlertType)alertType
 {
@@ -153,7 +146,9 @@ static NSWindow* _alertsWindow;
 }
 -(NSUInteger)runModalWithWindow
 {
-    if (_alertsWindow)
+    NSWindow* window = [NSModals modalsWindow];
+    
+    if (window)
     {
         for (NSButton *button in self.buttons)
         {
@@ -161,7 +156,7 @@ static NSWindow* _alertsWindow;
             [button setAction:@selector(BE_stopSynchronousSheet:)];
         }
         
-        [self performSelectorOnMainThread:@selector(BE_beginSheetModalForWindow:) withObject:_alertsWindow waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(BE_beginSheetModalForWindow:) withObject:window waitUntilDone:YES];
         
         NSInteger modalCode = [NSApp runModalForWindow:[self window]];
         
