@@ -20,9 +20,6 @@
 
 +(NSImage*)transparentImageWithSize:(NSSize)size;
 
--(NSImage*)imageByFramingImageResizing:(BOOL)willResize;
--(NSImage*)circularImageWithSize:(CGSize)size andBackgroundColor:(NSColor*)bgColor cuttingImage:(BOOL)cutting;
-
 -(BOOL)saveAsIcnsAtPath:(NSString*)icnsPath;
 
 -(BOOL)writeToFile:(NSString*)file atomically:(BOOL)useAuxiliaryFile;

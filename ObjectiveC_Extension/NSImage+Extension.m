@@ -17,19 +17,11 @@
 #import "NSComputerInformation.h"
 #import "NSLogUtility.h"
 
-#define INNER_GOG_ICON_SIDE     440
-#define INNER_GOG_ICON_X_MARGIN 36
-#define INNER_GOG_ICON_Y_MARGIN 35
-
-#define FULL_ICON_SIZE          512
-
-
 #define SMALLER_ICONSET_NEEDED_SIZE 16
 #define BIGGEST_ICONSET_NEEDED_SIZE 1024
 
 #define TIFF2ICNS_ICON_SIZE 512
-#define QLMANAGE_ICON_SIZE 512
-
+#define QLMANAGE_ICON_SIZE  512
 
 @implementation NSImage (VMMImage)
 
@@ -97,83 +89,6 @@
     [clearImage unlockFocus];
     
     return clearImage;
-}
-
--(NSImage*)imageByFramingImageResizing:(BOOL)willResize
-{
-    int MAX_ICON_SIZE = FULL_ICON_SIZE/[[NSScreen mainScreen] retinaScale];
-    
-    CGFloat width  = self.size.width;
-    if (width < 1) width = 1;
-    
-    CGFloat height = self.size.height;
-    if (height < 1) height = 1;
-    
-    if (width > height)
-    {
-        CGFloat newHeight = (MAX_ICON_SIZE / width) * height;
-        [self setSize:NSMakeSize(MAX_ICON_SIZE,newHeight)];
-        
-        NSRect dim = [self alignmentRect];
-        dim.size.height = MAX_ICON_SIZE;
-        dim.origin.y = height/2 - MAX_ICON_SIZE/2;
-        [self setAlignmentRect:dim];
-    }
-    
-    else if (width < height)
-    {
-        CGFloat newWidth = (MAX_ICON_SIZE / height) * width;
-        [self setSize: NSMakeSize(newWidth,MAX_ICON_SIZE)];
-        
-        NSRect dim = [self alignmentRect];
-        dim.size.width = MAX_ICON_SIZE;
-        dim.origin.x = width/2 - MAX_ICON_SIZE/2;
-        [self setAlignmentRect:dim];
-    }
-    
-    else [self setSize:NSMakeSize(MAX_ICON_SIZE,MAX_ICON_SIZE)];
-    
-    if (willResize)
-    {
-        NSImage *resizedImage = [[NSImage alloc] initWithSize:NSMakeSize(MAX_ICON_SIZE,MAX_ICON_SIZE)];
-        [resizedImage lockFocus];
-        
-        [self drawInRect:NSMakeRect(0,0,MAX_ICON_SIZE,MAX_ICON_SIZE) fromRect:self.alignmentRect
-               operation:NSCompositeSourceOver fraction:1.0];
-        
-        [resizedImage unlockFocus];
-        
-        return resizedImage;
-    }
-    
-    return self;
-}
--(NSImage*)circularImageWithSize:(CGSize)size andBackgroundColor:(NSColor*)bgColor cuttingImage:(BOOL)cutting
-{
-    NSImage *resizedImage;
-    
-    @autoreleasepool
-    {
-        NSRect imageFrame = NSMakeRect(INNER_GOG_ICON_X_MARGIN, INNER_GOG_ICON_Y_MARGIN, INNER_GOG_ICON_SIDE, INNER_GOG_ICON_SIDE);
-        resizedImage = [[NSImage alloc] initWithSize:size];
-        
-        [resizedImage lockFocus];
-        [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
-        
-        NSBezierPath *path = [NSBezierPath bezierPathWithOvalInRect:imageFrame];
-        [path setWindingRule:NSEvenOddWindingRule];
-        [path addClip];
-        
-        [bgColor set];
-        [path fill];
-        
-        if (!cutting) [self setSize:NSMakeSize(FULL_ICON_SIZE, FULL_ICON_SIZE)];
-        [self drawInRect:imageFrame fromRect:cutting ? NSZeroRect : imageFrame operation:NSCompositeSourceOver fraction:1.0];
-        
-        [resizedImage unlockFocus];
-    }
-    
-    return resizedImage;
 }
 
 -(BOOL)saveAsPngImageWithSize:(int)size atPath:(NSString*)pngPath
