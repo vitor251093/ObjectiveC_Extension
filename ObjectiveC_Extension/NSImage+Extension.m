@@ -151,7 +151,7 @@
                 [self saveIconsetWithSize:validSize atFolder:iconsetPath];
             
             [[NSFileManager defaultManager] removeItemAtPath:icnsPath];
-            [NSTask runProgram:@"iconutil" atRunPath:nil withFlags:@[@"-c", @"icns", iconsetPath] wait:YES];
+            [NSTask runProgram:@"iconutil" withFlags:@[@"-c", @"icns", iconsetPath]];
             [[NSFileManager defaultManager] removeItemAtPath:iconsetPath];
             
             result = ([[NSFileManager defaultManager] sizeOfRegularFileAtPath:icnsPath] > 10);
@@ -173,7 +173,7 @@
         
         [[resizedImage TIFFRepresentation] writeToFile:tiffPath atomically:YES];
         [[NSFileManager defaultManager] removeItemAtPath:icnsPath];
-        [NSTask runProgram:@"tiff2icns" atRunPath:nil withFlags:@[@"-noLarge", tiffPath, icnsPath] wait:YES];
+        [NSTask runProgram:@"tiff2icns" withFlags:@[@"-noLarge", tiffPath, icnsPath]];
         [[NSFileManager defaultManager] removeItemAtPath:tiffPath];
         
         result = [[NSFileManager defaultManager] regularFileExistsAtPath:icnsPath];

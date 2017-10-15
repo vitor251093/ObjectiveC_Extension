@@ -170,7 +170,7 @@
     {
         NSArray* flags = [checksum isEqualToString:@"sha256"] ? @[@"dgst", @"-sha256", file] : @[checksum,file];
         
-        NSString* output = [NSTask runProgram:@"openssl" atRunPath:@"/" withFlags:flags wait:YES];
+        NSString* output = [NSTask runProgram:@"openssl" withFlags:flags];
         NSRange lastSpaceRange = [output rangeOfString:@" " options:NSBackwardsSearch];
         if (lastSpaceRange.location == NSNotFound) return nil;
         
@@ -201,7 +201,7 @@
         NSString* tempFileOutputPath = [NSTemporaryDirectory() stringByAppendingString:@"tempFileOutput"];
         
         [self removeItemAtPath:tempFileOutputPath];
-        [NSTask runProgram:@"openssl" atRunPath:nil withFlags:@[@"base64", @"-in", path, @"-out", tempFileOutputPath, @"-A"] wait:YES];
+        [NSTask runProgram:@"openssl" withFlags:@[@"base64", @"-in", path, @"-out", tempFileOutputPath, @"-A"]];
         
         output = [NSString stringWithContentsOfFile:tempFileOutputPath encoding:NSASCIIStringEncoding];
         [self removeItemAtPath:tempFileOutputPath];

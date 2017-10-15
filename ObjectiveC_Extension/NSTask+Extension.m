@@ -18,6 +18,10 @@
 
 static NSMutableDictionary* binaryPaths;
 
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags
+{
+    return [self runProgram:program atRunPath:nil withEnvironment:nil withFlags:flags wait:YES timeout:0];
+}
 +(NSString*)runProgram:(NSString*)program atRunPath:(NSString*)path withFlags:(NSArray*)flags wait:(BOOL)wait
 {
     return [self runProgram:program atRunPath:path withEnvironment:nil withFlags:flags wait:wait timeout:0];

@@ -48,7 +48,7 @@ static NSNumber* _userIsMemberOfStaff;
             int spacesCounter = 0;
             BOOL firstInput = YES;
             
-            NSString* displayData = [NSTask runProgram:@"system_profiler" atRunPath:nil withFlags:@[@"SPDisplaysDataType"] wait:YES];
+            NSString* displayData = [NSTask runProgram:@"system_profiler" withFlags:@[@"SPDisplaysDataType"]];
             if (!displayData) return nil;
             
             NSMutableDictionary* lastGraphicCardDict = [[NSMutableDictionary alloc] init];
@@ -213,7 +213,7 @@ static NSNumber* _userIsMemberOfStaff;
             
             if (!version)
             {
-                _macOsVersion = [NSTask runProgram:@"sw_vers" atRunPath:nil withFlags:@[@"-productVersion"] wait:YES];
+                _macOsVersion = [NSTask runProgram:@"sw_vers" withFlags:@[@"-productVersion"]];
             }
             
             if (!version)
@@ -242,7 +242,7 @@ static NSNumber* _userIsMemberOfStaff;
             @autoreleasepool
             {
                 // Obtaining a string with the actual user groups
-                NSString* usergroupsString = [NSTask runProgram:@"id" atRunPath:nil withFlags:@[@"-G"] wait:YES];
+                NSString* usergroupsString = [NSTask runProgram:@"id" withFlags:@[@"-G"]];
                 
                 // Turning the string into an array
                 NSArray*  usergroupsArray  = [usergroupsString componentsSeparatedByString:@" "];

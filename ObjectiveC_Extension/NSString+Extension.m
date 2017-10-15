@@ -225,7 +225,7 @@
     [self                 writeToFile:stringFilePath   atomically:YES encoding:NSASCIIStringEncoding];
     [pythonScriptContents writeToFile:pythonScriptPath atomically:YES encoding:NSASCIIStringEncoding];
     
-    NSString* output = [NSTask runProgram:@"python" atRunPath:nil withFlags:@[pythonScriptPath] wait:YES];
+    NSString* output = [NSTask runProgram:@"python" withFlags:@[pythonScriptPath]];
     NSMutableArray* outputList = [[output componentsSeparatedByString:@"\n"] mutableCopy];
     [outputList removeObject:@""];
     
