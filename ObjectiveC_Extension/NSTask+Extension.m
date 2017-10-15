@@ -9,6 +9,7 @@
 #import "NSTask+Extension.h"
 
 #import "NSAlert+Extension.h"
+#import "NSThread+Extension.h"
 #import "NSFileManager+Extension.h"
 
 #import "NSLogUtility.h"
@@ -19,13 +20,17 @@ static NSMutableDictionary* binaryPaths;
 
 +(NSString*)runProgram:(NSString*)program atRunPath:(NSString*)path withFlags:(NSArray*)flags wait:(BOOL)wait
 {
-    return [self runProgram:program atRunPath:path withEnvironment:nil withFlags:flags wait:wait];
+    return [self runProgram:program atRunPath:path withEnvironment:nil withFlags:flags wait:wait timeout:0];
 }
 +(NSString*)runProgram:(NSString*)program withEnvironment:(NSDictionary*)env withFlags:(NSArray*)flags
 {
-    return [self runProgram:program atRunPath:@"/" withEnvironment:env withFlags:flags wait:YES];
+    return [self runProgram:program atRunPath:@"/" withEnvironment:env withFlags:flags wait:YES timeout:0];
 }
-+(NSString*)runProgram:(NSString*)program atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env withFlags:(NSArray*)flags wait:(BOOL)wait
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags timeout:(unsigned int)timeout
+{
+    return [self runProgram:program atRunPath:@"/" withEnvironment:nil withFlags:flags wait:YES timeout:timeout];
+}
++(NSString*)runProgram:(NSString*)program atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env withFlags:(NSArray*)flags wait:(BOOL)wait timeout:(unsigned int)timeout
 {
     if (program && ![program hasPrefix:@"/"])
     {
@@ -97,7 +102,44 @@ static NSMutableDictionary* binaryPaths;
             [server setStandardInput:[NSPipe pipe]];
             [server setStandardOutput:outputPipe];
             [server launch];
-            [server waitUntilExit];
+            
+            if (timeout == 0)
+            {
+                [server waitUntilExit];
+            }
+            else
+            {
+                __block NSCondition* lock = [[NSCondition alloc] init];
+                
+                [NSThread dispatchQueueWithName:"wait-until-task-exit" priority:DISPATCH_QUEUE_PRIORITY_DEFAULT concurrent:NO withBlock:^
+                {
+                    [server waitUntilExit];
+                    
+                    @synchronized (lock)
+                    {
+                        if (lock) [lock signal];
+                    }
+                }];
+                
+                [NSThread dispatchQueueWithName:"wait-five-seconds-to-kill-task" priority:DISPATCH_QUEUE_PRIORITY_DEFAULT concurrent:NO withBlock:^
+                {
+                    [NSThread sleepForTimeInterval:timeout];
+                    
+                    @synchronized (lock)
+                    {
+                        if (lock)
+                        {
+                            [lock signal];
+                            [server terminate];
+                        }
+                    }
+                }];
+                
+                [lock lock];
+                [lock wait];
+                [lock unlock];
+                lock = nil;
+            }
             
             NSFileHandle *file = [outputPipe fileHandleForReading];
             NSData *outputData = [file readDataToEndOfFile];
