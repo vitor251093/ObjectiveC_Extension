@@ -13,6 +13,7 @@
 
 @interface NSTask (VMMTask)
 
++(NSString*)runCommand:(NSArray*)programAndFlags;
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags;
 +(NSString*)runProgram:(NSString*)program atRunPath:(NSString*)path withFlags:(NSArray*)flags wait:(BOOL)wait;
 +(NSString*)runProgram:(NSString*)program withEnvironment:(NSDictionary*)env withFlags:(NSArray*)flags;

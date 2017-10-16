@@ -201,7 +201,7 @@
         NSString* tempFileOutputPath = [NSTemporaryDirectory() stringByAppendingString:@"tempFileOutput"];
         
         [self removeItemAtPath:tempFileOutputPath];
-        [NSTask runProgram:@"openssl" withFlags:@[@"base64", @"-in", path, @"-out", tempFileOutputPath, @"-A"]];
+        [NSTask runCommand:@[@"openssl", @"base64", @"-in", path, @"-out", tempFileOutputPath, @"-A"]];
         
         output = [NSString stringWithContentsOfFile:tempFileOutputPath encoding:NSASCIIStringEncoding];
         [self removeItemAtPath:tempFileOutputPath];

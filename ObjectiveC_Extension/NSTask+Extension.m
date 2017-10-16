@@ -18,6 +18,11 @@
 
 static NSMutableDictionary* binaryPaths;
 
++(NSString*)runCommand:(NSArray*)programAndFlags
+{
+    NSArray* flags = [programAndFlags objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, programAndFlags.count - 1)]];
+    return [self runProgram:programAndFlags.firstObject atRunPath:nil withEnvironment:nil withFlags:flags wait:YES timeout:0];
+}
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags
 {
     return [self runProgram:program atRunPath:nil withEnvironment:nil withFlags:flags wait:YES timeout:0];
@@ -34,6 +39,7 @@ static NSMutableDictionary* binaryPaths;
 {
     return [self runProgram:program atRunPath:@"/" withEnvironment:nil withFlags:flags wait:YES timeout:timeout];
 }
+
 +(NSString*)runProgram:(NSString*)program atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env withFlags:(NSArray*)flags wait:(BOOL)wait timeout:(unsigned int)timeout
 {
     if (program && ![program hasPrefix:@"/"])
