@@ -168,9 +168,20 @@
     
     @autoreleasepool
     {
-        NSArray* flags = [checksum isEqualToString:@"sha256"] ? @[@"dgst", @"-sha256", file] : @[checksum,file];
+        NSString* output;
         
-        NSString* output = [NSTask runProgram:@"openssl" withFlags:flags];
+        if ([checksum isEqualToString:@"sha256"])
+        {
+            output = [NSTask runCommand:@[@"openssl", @"dgst", @"-sha256", file]];
+        }
+        
+        if ([checksum isEqualToString:@"sha1"])
+        {
+            output = [NSTask runCommand:@[@"openssl", checksum, file]];
+        }
+        
+        if (!output) return nil;
+        
         NSRange lastSpaceRange = [output rangeOfString:@" " options:NSBackwardsSearch];
         if (lastSpaceRange.location == NSNotFound) return nil;
         
