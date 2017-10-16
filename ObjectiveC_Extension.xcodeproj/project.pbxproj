@@ -86,6 +86,8 @@
 		4E6C52881F7EA42700A187E9 /* NSArrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52851F7EA42700A187E9 /* NSArrayTests.m */; };
 		4E6C52891F7EA42700A187E9 /* NSStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52861F7EA42700A187E9 /* NSStringTests.m */; };
 		4E6C52941F7EB50300A187E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4E6C52961F7EB50300A187E9 /* Localizable.strings */; };
+		4EA035A81F9532E10059C2C5 /* NSKeyCaptureField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA035A61F9532E10059C2C5 /* NSKeyCaptureField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4EA035A91F9532E10059C2C5 /* NSKeyCaptureField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA035A71F9532E10059C2C5 /* NSKeyCaptureField.m */; };
 		4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EF16B1D1F8E36A600A78DC0 /* NSModals.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EF16B201F8E36A600A78DC0 /* NSModals.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF16B1E1F8E36A600A78DC0 /* NSModals.m */; };
 /* End PBXBuildFile section */
@@ -187,6 +189,8 @@
 		4E6C52981F7EB52100A187E9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4E6C52991F7EB52500A187E9 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		4E6C529A1F7EB52A00A187E9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4EA035A61F9532E10059C2C5 /* NSKeyCaptureField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKeyCaptureField.h; sourceTree = "<group>"; };
+		4EA035A71F9532E10059C2C5 /* NSKeyCaptureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSKeyCaptureField.m; sourceTree = "<group>"; };
 		4EF16B1D1F8E36A600A78DC0 /* NSModals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSModals.h; sourceTree = "<group>"; };
 		4EF16B1E1F8E36A600A78DC0 /* NSModals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSModals.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -241,6 +245,7 @@
 				4E6C51F01F7E90B800A187E9 /* Extensions */,
 				4E6C525A1F7E943900A187E9 /* Legacy */,
 				4E6C52601F7E950900A187E9 /* Utilities */,
+				4EA035A51F9532C80059C2C5 /* Views */,
 				4E6C52961F7EB50300A187E9 /* Localizable.strings */,
 				4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */,
 				4E6C510B1F7E8EB700A187E9 /* Info.plist */,
@@ -377,6 +382,15 @@
 			name = Functions;
 			sourceTree = "<group>";
 		};
+		4EA035A51F9532C80059C2C5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4EA035A61F9532E10059C2C5 /* NSKeyCaptureField.h */,
+				4EA035A71F9532E10059C2C5 /* NSKeyCaptureField.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -417,6 +431,7 @@
 				4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */,
 				4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */,
 				4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */,
+				4EA035A81F9532E10059C2C5 /* NSKeyCaptureField.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* IOUsageKeycode.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
 				4E6C525D1F7E944F00A187E9 /* SZJsonParser.h in Headers */,
@@ -556,6 +571,7 @@
 				4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */,
 				4E6C51EF1F7E90A300A187E9 /* IOUsageKeycode.m in Sources */,
 				4E6C52401F7E911000A187E9 /* NSString+Extension.m in Sources */,
+				4EA035A91F9532E10059C2C5 /* NSKeyCaptureField.m in Sources */,
 				4E6C522A1F7E911000A187E9 /* NSDateFormatter+Extension.m in Sources */,
 				4E6C52201F7E911000A187E9 /* NSAlert+Extension.m in Sources */,
 				4E6C524C1F7E911000A187E9 /* NSView+Extension.m in Sources */,

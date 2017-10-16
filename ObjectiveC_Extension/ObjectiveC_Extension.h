@@ -55,3 +55,7 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 #import <ObjectiveC_Extension/NSNotificationUtility.h>
 #import <ObjectiveC_Extension/NSVersion.h>
 #import <ObjectiveC_Extension/NSModals.h>
+
+// Views
+#import <ObjectiveC_Extension/NSKeyCaptureField.h>
+
