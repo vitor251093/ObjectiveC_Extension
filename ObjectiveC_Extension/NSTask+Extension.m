@@ -32,11 +32,11 @@ static NSMutableDictionary* binaryPaths;
 {
     return [self runProgram:program atRunPath:nil withEnvironment:nil withFlags:flags wait:YES timeout:0];
 }
-+(NSString*)runProgram:(NSString*)program atRunPath:(NSString*)path withFlags:(NSArray*)flags wait:(BOOL)wait
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path wait:(BOOL)wait
 {
     return [self runProgram:program atRunPath:path withEnvironment:nil withFlags:flags wait:wait timeout:0];
 }
-+(NSString*)runProgram:(NSString*)program withEnvironment:(NSDictionary*)env withFlags:(NSArray*)flags
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags withEnvironment:(NSDictionary*)env
 {
     return [self runProgram:program atRunPath:@"/" withEnvironment:env withFlags:flags wait:YES timeout:0];
 }
