@@ -20,9 +20,14 @@ static NSMutableDictionary* binaryPaths;
 
 +(NSString*)runCommand:(NSArray*)programAndFlags
 {
-    NSArray* flags = [programAndFlags objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, programAndFlags.count - 1)]];
-    return [self runProgram:programAndFlags.firstObject atRunPath:nil withEnvironment:nil withFlags:flags wait:YES timeout:0];
+    return [self runCommand:programAndFlags atRunPath:nil];
 }
++(NSString*)runCommand:(NSArray*)programAndFlags atRunPath:(NSString*)path
+{
+    NSArray* flags = [programAndFlags objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, programAndFlags.count - 1)]];
+    return [self runProgram:programAndFlags.firstObject atRunPath:path withEnvironment:nil withFlags:flags wait:YES timeout:0];
+}
+
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags
 {
     return [self runProgram:program atRunPath:nil withEnvironment:nil withFlags:flags wait:YES timeout:0];
@@ -180,7 +185,7 @@ static NSMutableDictionary* binaryPaths;
     {
         if (!binaryPaths) binaryPaths = [[NSMutableDictionary alloc] init];
         
-        programPath = [self runProgram:@"/usr/bin/type" atRunPath:nil withFlags:@[@"-a",programName] wait:YES];
+        programPath = [self runCommand:@[@"/usr/bin/type", @"-a", programName]];
         if (!programPath) return nil;
         
         programPath = [[programPath componentsSeparatedByString:@" "] lastObject];

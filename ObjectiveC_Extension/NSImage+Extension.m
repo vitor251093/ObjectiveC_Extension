@@ -46,8 +46,8 @@
 {
     NSImage* img = [[NSWorkspace sharedWorkspace] iconForFile:arquivo];
     
-    [NSTask runProgram:@"qlmanage" atRunPath:[arquivo stringByDeletingLastPathComponent]
-             withFlags:@[@"-t", @"-s",[NSString stringWithFormat:@"%d",QLMANAGE_ICON_SIZE], @"-o.", arquivo] wait:YES];
+    [NSTask runCommand:@[@"qlmanage", @"-t", @"-s",[NSString stringWithFormat:@"%d",QLMANAGE_ICON_SIZE], @"-o.", arquivo]
+             atRunPath:[arquivo stringByDeletingLastPathComponent]];
     
     NSString* newFile = [NSString stringWithFormat:@"%@.png",arquivo, nil];
     if ([[NSFileManager defaultManager] regularFileExistsAtPath:newFile])
