@@ -8,8 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum NSVersionCompare
+{
+    NSVersionCompareFirstIsNewest,
+    NSVersionCompareSecondIsNewest,
+    NSVersionCompareSame
+} NSVersionCompare;
+
 @interface NSVersion : NSObject
 
-+(NSComparisonResult)compareVersionString:(NSString*)PK1 withVersionString:(NSString*)PK2;
++(NSVersionCompare)compareVersionString:(NSString*)PK1 withVersionString:(NSString*)PK2;
 
 @end

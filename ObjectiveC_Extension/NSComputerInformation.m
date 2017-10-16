@@ -230,7 +230,7 @@ static NSNumber* _userIsMemberOfStaff;
 }
 +(BOOL)isSystemMacOsEqualOrSuperiorTo:(NSString*)version
 {
-    return [NSVersion compareVersionString:version withVersionString:self.macOsVersion] != NSOrderedAscending;
+    return [NSVersion compareVersionString:version withVersionString:self.macOsVersion] != NSVersionCompareFirstIsNewest;
 }
 
 +(BOOL)isUserStaffGroupMember
