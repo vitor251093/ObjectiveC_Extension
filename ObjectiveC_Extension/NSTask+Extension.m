@@ -24,28 +24,37 @@ static NSMutableDictionary* binaryPaths;
 }
 +(NSString*)runCommand:(NSArray*)programAndFlags atRunPath:(NSString*)path
 {
+    return [self runCommand:programAndFlags atRunPath:path andWait:YES];
+}
++(NSString*)runCommand:(NSArray*)programAndFlags atRunPath:(NSString*)path andWait:(BOOL)shouldWait
+{
     NSArray* flags = [programAndFlags objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, programAndFlags.count - 1)]];
-    return [self runProgram:programAndFlags.firstObject atRunPath:path withEnvironment:nil withFlags:flags wait:YES timeout:0];
+    return [self runProgram:programAndFlags.firstObject withFlags:flags atRunPath:path andWaiting:shouldWait];
+}
+
++(void)runAsynchronousCommand:(NSArray*)programAndFlags
+{
+    [self runCommand:programAndFlags atRunPath:nil andWait:NO];
 }
 
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags
 {
-    return [self runProgram:program atRunPath:nil withEnvironment:nil withFlags:flags wait:YES timeout:0];
+    return [self runProgram:program withFlags:flags atRunPath:nil andWaiting:YES];
 }
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path wait:(BOOL)wait
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path andWaiting:(BOOL)wait
 {
-    return [self runProgram:program atRunPath:path withEnvironment:nil withFlags:flags wait:wait timeout:0];
+    return [self runProgram:program withFlags:flags atRunPath:path withEnvironment:nil andWaiting:wait forTimeInterval:0];
 }
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags withEnvironment:(NSDictionary*)env
 {
-    return [self runProgram:program atRunPath:@"/" withEnvironment:env withFlags:flags wait:YES timeout:0];
+    return [self runProgram:program withFlags:flags atRunPath:@"/" withEnvironment:env andWaiting:YES forTimeInterval:0];
 }
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags timeout:(unsigned int)timeout
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags waitingForTimeInterval:(unsigned int)timeout
 {
-    return [self runProgram:program atRunPath:@"/" withEnvironment:nil withFlags:flags wait:YES timeout:timeout];
+    return [self runProgram:program withFlags:flags atRunPath:@"/" withEnvironment:nil andWaiting:YES forTimeInterval:timeout];
 }
 
-+(NSString*)runProgram:(NSString*)program atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env withFlags:(NSArray*)flags wait:(BOOL)wait timeout:(unsigned int)timeout
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env andWaiting:(BOOL)wait forTimeInterval:(unsigned int)timeout
 {
     if (program && ![program hasPrefix:@"/"])
     {
@@ -166,9 +175,7 @@ static NSMutableDictionary* binaryPaths;
         @catch (NSException* exception)
         {
             // Sometimes (very rarely) the app might fail to retrieve the output of a command; with that, your app won't stop
-            
             NSDebugLog(@"Failed to retrieve instruction output");
-            
             return @"";
         }
     }

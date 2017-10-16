@@ -16,10 +16,14 @@
 +(NSString*)runCommand:(NSArray*)programAndFlags;
 +(NSString*)runCommand:(NSArray*)programAndFlags atRunPath:(NSString*)path;
 
++(void)runAsynchronousCommand:(NSArray*)programAndFlags;
+
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags;
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path wait:(BOOL)wait;
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path andWaiting:(BOOL)wait;
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags withEnvironment:(NSDictionary*)env;
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags timeout:(unsigned int)timeout;
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags waitingForTimeInterval:(unsigned int)timeout;
+
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env andWaiting:(BOOL)wait forTimeInterval:(unsigned int)timeout;
 
 @end
 
