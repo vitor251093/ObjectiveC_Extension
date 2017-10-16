@@ -16,7 +16,7 @@ static NSKeyCaptureField* _activeKeyCaptureField;
 
 -(void)awakeFromNib
 {
-    _keyUsage = -1;
+    _keyUsageKeycode = -1;
     _activeKeyCaptureField = nil;
 }
 
@@ -73,36 +73,36 @@ static NSKeyCaptureField* _activeKeyCaptureField;
     if (_activeKeyCaptureField != self) return;
     if (value != 1) return;
     
-    [self setKeyUsage:usage];
+    [self setKeyUsageKeycode:usage];
     
     if (_keyCaptureDelegate)
     {
-        [_keyCaptureDelegate keyCaptureField:self didChangedKeyUsage:usage];
+        [_keyCaptureDelegate keyCaptureField:self didChangedKeyUsageKeycode:usage];
     }
 }
 
--(void)setKeyUsage:(uint32_t)keyUsage
+-(void)setKeyUsageKeycode:(uint32_t)keyUsageKeycode
 {
-    if (keyUsage == -1)
+    if (keyUsageKeycode == -1)
     {
-        _keyUsage = -1;
+        _keyUsageKeycode = -1;
         [self setStringValue:@""];
         return;
     }
     
-    _keyUsage = keyUsage;
-    NSString* keyName = [IOUsageKeycode nameOfUsageKeycode:keyUsage];
-    [self setStringValue:keyName ? keyName : [NSString stringWithFormat:@"Unknown Key (%d)",keyUsage]];
+    _keyUsageKeycode = keyUsageKeycode;
+    NSString* keyName = [IOUsageKeycode nameOfUsageKeycode:keyUsageKeycode];
+    [self setStringValue:keyName ? keyName : [NSString stringWithFormat:@"Unknown Key (%d)",keyUsageKeycode]];
 }
 
 -(IBAction)clearField:(id)sender
 {
-    _keyUsage = -1;
+    _keyUsageKeycode = -1;
     [self setStringValue:@""];
     
     if (_keyCaptureDelegate)
     {
-        [_keyCaptureDelegate keyCaptureField:self didChangedKeyUsage:_keyUsage];
+        [_keyCaptureDelegate keyCaptureField:self didChangedKeyUsageKeycode:_keyUsageKeycode];
     }
 }
 

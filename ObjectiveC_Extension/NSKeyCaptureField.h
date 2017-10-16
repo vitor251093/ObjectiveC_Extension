@@ -12,14 +12,14 @@
 #import "IOUsageKeycode.h"
 
 @protocol NSKeyCaptureFieldDelegate <NSObject>
--(void)keyCaptureField:(NSTextField*)field didChangedKeyUsage:(uint32_t)keyUsage;
+-(void)keyCaptureField:(NSTextField*)field didChangedKeyUsageKeycode:(uint32_t)keyUsage;
 @end
 
 @interface NSKeyCaptureField : NSTextField<IODeviceObserverManagementDelegate,IODeviceObserverActionDelegate>
 
 @property (nonatomic, strong) IBOutlet NSObject<NSKeyCaptureFieldDelegate>* keyCaptureDelegate;
 @property (nonatomic) IOHIDManagerRef hidManager;
-@property (nonatomic,setter=setKeyUsage:) uint32_t keyUsage;
+@property (nonatomic) uint32_t keyUsageKeycode;
 
 @end
 
