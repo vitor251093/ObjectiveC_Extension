@@ -22,7 +22,7 @@
 @interface NSComputerInformation : NSObject
 
 +(NSDictionary*)graphicCardDictionary;
-+(NSString*)graphicCardModel;
++(NSString*)graphicCardName;
 +(NSString*)graphicCardType;
 
 +(NSString*)graphicCardDeviceID;

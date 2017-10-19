@@ -99,7 +99,7 @@ static NSNumber* _userIsMemberOfStaff;
     // to avoid compiler warning
     return nil;
 }
-+(NSString*)graphicCardModel
++(NSString*)graphicCardName
 {
     NSDictionary* graphicCardDictionary = self.graphicCardDictionary;
     
@@ -129,7 +129,7 @@ static NSNumber* _userIsMemberOfStaff;
         
         @autoreleasepool
         {
-            NSString* graphicCardModel = [self.graphicCardModel uppercaseString];
+            NSString* graphicCardModel = [self.graphicCardName uppercaseString];
             
             if (!graphicCardModel) return nil;
             
