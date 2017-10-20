@@ -196,9 +196,18 @@
     if ([extension isEqualToString:@"tiff"]) data = [imageRep representationUsingType:NSTIFFFileType     properties:@{}];
     if (!data)
     {
-        [[NSException exceptionWithName:NSInvalidArgumentException
-                                 reason:[NSString stringWithFormat:@"Invalid extension for saving image file: %@",extension]
-                               userInfo:nil] raise];
+        if ([@[@"bmp",@"gif",@"jpg",@"jp2",@"png",@"tiff"] containsObject:extension])
+        {
+            [[NSException exceptionWithName:NSInvalidArgumentException
+                                     reason:[NSString stringWithFormat:@"%@ file is corrupted or with the wrong extension.",extension]
+                                   userInfo:nil] raise];
+        }
+        else
+        {
+            [[NSException exceptionWithName:NSInvalidArgumentException
+                                     reason:[NSString stringWithFormat:@"Invalid extension for saving image file: %@",extension]
+                                   userInfo:nil] raise];
+        }
         return false;
     }
     
