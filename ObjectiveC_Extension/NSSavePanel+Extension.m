@@ -153,8 +153,10 @@
     }
     else
     {
-        [savePanel runModal];
-        completionHandler([savePanel URL]);
+        if ([savePanel runModal] == NSOKButton)
+        {
+            completionHandler([savePanel URL]);
+        }
     }
 }
 +(NSURL*)runBackgroundThreadModalWithSavePanel:(void (^)(NSSavePanel* savePanel))optionsForPanel
