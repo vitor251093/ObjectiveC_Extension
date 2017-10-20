@@ -48,8 +48,10 @@
     }
     else
     {
-        [openPanel runModal];
-        completionHandler([openPanel URLs]);
+        if ([openPanel runModal] == NSOKButton)
+        {
+            completionHandler([openPanel URLs]);
+        }
     }
 }
 +(NSArray<NSURL*>*)runBackgroundThreadModalWithOpenPanel:(void (^)(NSOpenPanel* openPanel))optionsForPanel
