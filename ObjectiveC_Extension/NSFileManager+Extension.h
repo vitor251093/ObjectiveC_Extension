@@ -25,6 +25,8 @@
 -(NSArray*)contentsOfDirectoryAtPath:(NSString*)path;
 -(NSString*)destinationOfSymbolicLinkAtPath:(NSString *)path;
 
+-(NSString*)userReadablePathForItemAtPath:(NSString*)path joinedByString:(NSString*)join;
+
 -(unsigned long long int)sizeOfRegularFileAtPath:(NSString*)path;
 -(unsigned long long int)sizeOfDirectoryAtPath:(NSString*)path;
 
