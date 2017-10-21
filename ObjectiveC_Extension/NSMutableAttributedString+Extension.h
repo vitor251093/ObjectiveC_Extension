@@ -28,6 +28,8 @@
 
 -(void)appendString:(NSString*)aString;
 
+-(BOOL)fitExpansionWithWidth:(CGFloat)width;
+
 @end
 
 #endif

@@ -99,5 +99,22 @@
     [self appendAttributedString:[[NSAttributedString alloc] initWithString:aString]];
 }
 
+-(BOOL)fitExpansionWithWidth:(CGFloat)width
+{
+    CGFloat originalWidth = self.size.width;
+    
+    BOOL sizeChanged = false;
+    CGFloat resizeRate = 0.0;
+    
+    if (originalWidth > width)
+    {
+        sizeChanged = true;
+        resizeRate = 1 - originalWidth/width;
+    }
+    
+    [self addAttribute:NSExpansionAttributeName value:@(resizeRate)];
+    return sizeChanged;
+}
+
 @end
 
