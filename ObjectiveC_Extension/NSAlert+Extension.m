@@ -402,7 +402,7 @@ static NSAlert* _alertWithButtonOptions;
     [[_alertWithButtonOptions window] setIsVisible:NO]; // will make it invisible instantly
     [NSApp endSheet:[_alertWithButtonOptions window]];  // will close it after the next dialog
 }
-+(NSString*)showAlertWithButtonOptions:(NSArray*)options withTitle:(NSString*)title withText:(NSString*)text withIconForEachOption:(NSImage* (^)(NSString* option))iconForOption
++(NSString*)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonOptions:(NSArray<NSString*>*)options andIconForEachOption:(NSImage* (^)(NSString* option))iconForOption
 {
     NSString* result = nil;
     
@@ -493,7 +493,7 @@ static NSAlert* _alertWithButtonOptions;
                                                       defaultButton:NSLocalizedString(@"Cancel",nil)
                                                     alternateButton:nil
                                                         otherButton:nil
-                                          informativeTextWithFormat:@"%@",text];
+                                          informativeTextWithFormat:@"%@",message];
             
             [_alertWithButtonOptions setAccessoryView:sourcesView];
             return _alertWithButtonOptions;

@@ -148,13 +148,13 @@ typedef enum NSAlertType
 /*!
  * @discussion  Shows a NSAlert with a title, an informative text, big squared buttons and a Cancel button.
  * @discussion  This method is thread safe, so it can be used from any thread or queue.
- * @param options       The list of the buttons that should appear in the dialog.
  * @param title         The title that will be shown in the alert.
- * @param text          The message (aka. informative text) that will be shown in the alert.
+ * @param message       The message (aka. informative text) that will be shown in the alert.
+ * @param options       The list of the buttons that should appear in the dialog.
  * @param iconForOption A block that needs as return the image that will be the icon for each button title.
  * @return              The title of the pressed big button if any was pressed, nil if Cancel was pressed.
  */
-+(NSString*)showAlertWithButtonOptions:(NSArray*)options withTitle:(NSString*)title withText:(NSString*)text withIconForEachOption:(NSImage* (^)(NSString* option))iconForOption;
++(NSString*)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonOptions:(NSArray<NSString*>*)options andIconForEachOption:(NSImage* (^)(NSString* option))iconForOption;
 
 @end
 
