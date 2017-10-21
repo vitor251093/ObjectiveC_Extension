@@ -32,6 +32,8 @@ static NSString* _computerGraphicCardType;
 static NSString* _macOsVersion;
 static NSNumber* _userIsMemberOfStaff;
 
+static NSMutableDictionary* _macOsCompatibility;
+
 +(NSDictionary*)graphicCardDictionary
 {
     @synchronized(_computerGraphicCardDictionary)
@@ -226,11 +228,29 @@ static NSNumber* _userIsMemberOfStaff;
         
         return _macOsVersion;
     }
+    
     return nil;
 }
 +(BOOL)isSystemMacOsEqualOrSuperiorTo:(NSString*)version
 {
-    return [NSVersion compareVersionString:version withVersionString:self.macOsVersion] != NSVersionCompareFirstIsNewest;
+    @synchronized (_macOsCompatibility)
+    {
+        if (_macOsCompatibility == nil)
+        {
+            _macOsCompatibility = [[NSMutableDictionary alloc] init];
+        }
+        
+        if (_macOsCompatibility[version] != nil)
+        {
+            return [_macOsCompatibility[version] boolValue];
+        }
+        
+        BOOL compatible = [NSVersion compareVersionString:version withVersionString:self.macOsVersion] != NSVersionCompareFirstIsNewest;
+        _macOsCompatibility[version] = @(compatible);
+        return compatible;
+    }
+    
+    return false;
 }
 
 +(BOOL)isUserStaffGroupMember
