@@ -259,7 +259,7 @@ static NSString* bundleName;
     
     @autoreleasepool
     {
-        result = [self showBooleanAlertMessage:message withTitle:title withDefault:highlight withSettings:^(NSAlert* alert) {}];
+        result = [self showBooleanAlertWithTitle:title message:message highlighting:highlight withSettings:^(NSAlert* alert) {}];
     }
     
     return result;
@@ -272,7 +272,7 @@ static NSString* bundleName;
     {
         NSString* alertTitle = [self titleForAlertType:alertType];
         
-        result = [self showBooleanAlertMessage:message withTitle:alertTitle withDefault:highlight withSettings:^(NSAlert* alert)
+        result = [self showBooleanAlertWithTitle:alertTitle message:message highlighting:highlight withSettings:^(NSAlert* alert)
         {
             [alert setIconWithAlertType:alertType];
         }];
@@ -280,13 +280,13 @@ static NSString* bundleName;
     
     return result;
 }
-+(BOOL)showBooleanAlertMessage:(NSString*)message withTitle:(NSString*)title withDefault:(BOOL)yesDefault withSettings:(void (^)(NSAlert* alert))setAlertSettings
++(BOOL)showBooleanAlertWithTitle:(NSString*)title message:(NSString*)message highlighting:(BOOL)highlight withSettings:(void (^)(NSAlert* alert))optionsForAlert
 {
-    BOOL value = !yesDefault;
+    BOOL value = !highlight;
     NSString* defaultButton;
     NSString* alternateButton;
     
-    if (yesDefault)
+    if (highlight)
     {
         defaultButton = NSLocalizedString(@"Yes",nil);
         alternateButton = NSLocalizedString(@"No",nil);
@@ -305,11 +305,11 @@ static NSString* bundleName;
                                            otherButton:nil
                              informativeTextWithFormat:@"%@",message];
         
-        setAlertSettings(alert);
+        optionsForAlert(alert);
         return alert;
     }];
     
-    if (alertResult == NSAlertDefaultReturn) value = yesDefault;
+    if (alertResult == NSAlertDefaultReturn) value = highlight;
     return value;
 }
 
