@@ -444,23 +444,29 @@ static NSAlert* _alertWithButtonOptions;
                             ((1-(totalXLine-2*x))/2.0)*ALERT_WITH_BUTTON_OPTIONS_BUTTONS_SPACE;
             CGFloat axisY = (iconHeight + ALERT_WITH_BUTTON_OPTIONS_BUTTONS_SPACE)*(totalY - y - 1);
             
-            NSButton* button = [[NSButton alloc] initWithFrame:NSMakeRect(axisX,axisY,iconWidth, iconHeight)];
+            NSButton* button = [[NSButton alloc] initWithFrame:NSMakeRect(axisX,axisY,iconWidth,iconHeight)];
             
             NSString* sourceName = options[i];
             NSImage* icon = iconForOption(sourceName);
             BOOL doesNotHaveValidIcon = !icon;
             
             button.tag = false;
+            
             [button setTitle:sourceName];
+            NSMutableAttributedString* title = [[button attributedTitle] mutableCopy];
+            [title adjustExpansionToFitWidth:iconWidth - 10];
+            [button setAttributedTitle:title];
             
             CGFloat iconBorder;
             if (doesNotHaveValidIcon)
             {
+                [button setBordered:YES];
                 [button setImagePosition:NSNoImage];
                 iconBorder = ALERT_WITH_BUTTON_OPTIONS_ICON_BORDER_WITH_TEXT;
             }
             else
             {
+                [button setBordered:NO];
                 [button setImagePosition:NSImageOnly];
                 iconBorder = ALERT_WITH_BUTTON_OPTIONS_ICON_BORDER;
             }
