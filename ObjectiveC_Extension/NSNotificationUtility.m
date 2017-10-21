@@ -31,7 +31,7 @@
 {
     if (!IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR)
     {
-        [NSAlert showAlertMessage:message withTitle:title withSettings:^(NSAlert *alert)
+        [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
         {
             [alert setIcon:icon];
         }];

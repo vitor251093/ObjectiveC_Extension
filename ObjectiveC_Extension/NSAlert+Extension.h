@@ -66,7 +66,7 @@ typedef enum NSAlertType
  * @discussion  This method is thread safe, so it can be used from any thread or queue.
  * @param exception The exception that will be used to create the alert.
  */
-+(void)showAlertMessageWithException:(NSException*)exception;
++(void)showErrorAlertWithException:(NSException*)exception;
 
 /*!
  * @discussion  Shows a NSAlert with a predefined NSAlertType, an informative text and an Ok button.
@@ -79,11 +79,11 @@ typedef enum NSAlertType
 /*!
  * @discussion  Shows a NSAlert with a title, an informative text, any other configurations specified in the block and an Ok button.
  * @discussion  This method is thread safe, so it can be used from any thread or queue.
- * @param message         The message (aka. informative text) that will be shown in the alert.
  * @param title           The title that will be shown in the alert.
+ * @param message         The message (aka. informative text) that will be shown in the alert.
  * @param optionsForAlert The block to make any extra adjustments in the alert before showing it.
  */
-+(void)showAlertMessage:(NSString*)message withTitle:(NSString*)title withSettings:(void (^)(NSAlert* alert))optionsForAlert;
++(void)showAlertWithTitle:(NSString*)title message:(NSString*)message andSettings:(void (^)(NSAlert* alert))optionsForAlert;
 
 /*!
  * @discussion  Shows a NSAlert with a title, a subtitle, an attributed informative text and an Ok button.

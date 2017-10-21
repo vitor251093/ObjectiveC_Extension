@@ -200,7 +200,7 @@ static NSString* bundleName;
     return value;
 }
 
-+(void)showAlertMessageWithException:(NSException*)exception
++(void)showErrorAlertWithException:(NSException*)exception
 {
     [self showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:@"%@: %@", exception.name, exception.reason]];
 }
@@ -210,13 +210,13 @@ static NSString* bundleName;
     {
         NSString* alertTitle = [self titleForAlertType:alertType];
         
-        [self showAlertMessage:message withTitle:alertTitle withSettings:^(NSAlert* alert)
+        [self showAlertWithTitle:alertTitle message:message andSettings:^(NSAlert* alert)
         {
             [alert setIconWithAlertType:alertType];
         }];
     }
 }
-+(void)showAlertMessage:(NSString*)message withTitle:(NSString*)title withSettings:(void (^)(NSAlert* alert))optionsForAlert
++(void)showAlertWithTitle:(NSString*)title message:(NSString*)message andSettings:(void (^)(NSAlert* alert))optionsForAlert
 {
     [self runThreadSafeModalWithAlert:^NSAlert *
     {
@@ -247,7 +247,7 @@ static NSString* bundleName;
     if (width > screenLimit) width = screenLimit;
     [informativeText setFrame:NSMakeRect(0, 0, width, informativeText.textStorage.size.height)];
     
-    [self showAlertMessage:subtitle withTitle:title withSettings:^(NSAlert *alert)
+    [self showAlertWithTitle:title message:subtitle andSettings:^(NSAlert *alert)
     {
         [alert setAccessoryView:informativeText];
     }];
