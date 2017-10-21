@@ -185,12 +185,12 @@
 -(BOOL)writeToFile:(NSString*)file atomically:(BOOL)useAuxiliaryFile
 {
     NSString* extension = file.pathExtension.lowercaseString;
-    NSDictionary* typeForExtension = @{@"bmp" : @(NSBMPFileType),
-                                       @"gif" : @(NSGIFFileType),
-                                       @"jpg" : @(NSJPEGFileType),
-                                       @"jp2" : @(NSJPEG2000FileType),
-                                       @"png" : @(NSPNGFileType),
-                                       @"tiff": @(NSTIFFFileType)};
+    NSDictionary* typeForExtension = @{@"bmp" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeBMP      : NSBMPFileType     ),
+                                       @"gif" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeGIF      : NSGIFFileType     ),
+                                       @"jpg" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeJPEG     : NSJPEGFileType    ),
+                                       @"jp2" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeJPEG2000 : NSJPEG2000FileType),
+                                       @"png" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypePNG      : NSPNGFileType     ),
+                                       @"tiff": @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeTIFF     : NSTIFFFileType    )};
     
     if ([typeForExtension.allKeys containsObject:extension] == false)
     {
