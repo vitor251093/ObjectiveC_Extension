@@ -446,9 +446,6 @@ static NSAlert* _alertWithButtonOptions;
             
             NSButton* button = [[NSButton alloc] initWithFrame:NSMakeRect(axisX,axisY,iconWidth, iconHeight)];
             
-            NSImage* resultImage = [[NSImage alloc] initWithSize:NSMakeSize(iconWidth, iconHeight)];
-            [resultImage lockFocus];
-            
             NSString* sourceName = options[i];
             NSImage* icon = iconForOption(sourceName);
             BOOL doesNotHaveValidIcon = !icon;
@@ -459,8 +456,7 @@ static NSAlert* _alertWithButtonOptions;
             CGFloat iconBorder;
             if (doesNotHaveValidIcon)
             {
-                icon = [NSImage imageNamed:@"other.png"];
-                [button setImagePosition:NSImageAbove];
+                [button setImagePosition:NSNoImage];
                 iconBorder = ALERT_WITH_BUTTON_OPTIONS_ICON_BORDER_WITH_TEXT;
             }
             else
@@ -469,18 +465,23 @@ static NSAlert* _alertWithButtonOptions;
                 iconBorder = ALERT_WITH_BUTTON_OPTIONS_ICON_BORDER;
             }
             
+            NSImage* resultImage;
+            
             if (icon)
             {
+                resultImage = [[NSImage alloc] initWithSize:NSMakeSize(iconWidth, iconHeight)];
+                [resultImage lockFocus];
+                
                 NSRect newRect = NSMakeRect(ALERT_WITH_BUTTON_OPTIONS_ICON_IMAGE_BORDER/2, ALERT_WITH_BUTTON_OPTIONS_ICON_IMAGE_BORDER/2,
                                             iconWidth - ALERT_WITH_BUTTON_OPTIONS_ICON_IMAGE_BORDER,
                                             iconHeight - ALERT_WITH_BUTTON_OPTIONS_ICON_IMAGE_BORDER);
                 [icon drawInRect:newRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+                
+                [resultImage unlockFocus];
+                [resultImage setSize:NSMakeSize(iconWidth - iconBorder, iconHeight - iconBorder)];
+                [button setImage:resultImage];
             }
             
-            [resultImage unlockFocus];
-            [resultImage setSize:NSMakeSize(iconWidth - iconBorder, iconHeight - iconBorder)];
-            
-            [button setImage:resultImage];
             [button setTarget:self];
             [button setAction:@selector(selectAlertButton:)];
             
