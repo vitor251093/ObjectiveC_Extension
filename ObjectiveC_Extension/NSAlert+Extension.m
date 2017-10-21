@@ -264,7 +264,7 @@ static NSString* bundleName;
     
     return result;
 }
-+(BOOL)showBooleanAlertOfType:(NSAlertType)alertType withMessage:(NSString*)message withDefault:(BOOL)yesDefault
++(BOOL)showBooleanAlertOfType:(NSAlertType)alertType withMessage:(NSString*)message highlighting:(BOOL)highlight
 {
     BOOL result;
     
@@ -272,7 +272,7 @@ static NSString* bundleName;
     {
         NSString* alertTitle = [self titleForAlertType:alertType];
         
-        result = [self showBooleanAlertMessage:message withTitle:alertTitle withDefault:yesDefault withSettings:^(NSAlert* alert)
+        result = [self showBooleanAlertMessage:message withTitle:alertTitle withDefault:highlight withSettings:^(NSAlert* alert)
         {
             [alert setIconWithAlertType:alertType];
         }];
