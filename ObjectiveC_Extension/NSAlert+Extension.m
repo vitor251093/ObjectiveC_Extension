@@ -253,13 +253,13 @@ static NSString* bundleName;
     }];
 }
 
-+(BOOL)showBooleanAlertMessage:(NSString*)message withTitle:(NSString*)title withDefault:(BOOL)yesDefault
++(BOOL)showBooleanAlertWithTitle:(NSString*)title message:(NSString*)message highlighting:(BOOL)highlight
 {
     BOOL result;
     
     @autoreleasepool
     {
-        result = [self showBooleanAlertMessage:message withTitle:title withDefault:yesDefault withSettings:^(NSAlert* alert) {}];
+        result = [self showBooleanAlertMessage:message withTitle:title withDefault:highlight withSettings:^(NSAlert* alert) {}];
     }
     
     return result;

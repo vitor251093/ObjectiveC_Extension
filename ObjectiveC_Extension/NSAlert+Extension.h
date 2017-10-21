@@ -97,12 +97,12 @@ typedef enum NSAlertType
 /*!
  * @discussion  Shows a NSAlert with a title, an informative text and Yes/No buttons.
  * @discussion  This method is thread safe, so it can be used from any thread or queue.
- * @param message         The message (aka. informative text) that will be shown in the alert.
- * @param title           The title that will be shown in the alert.
- * @param yesDefault      The button that will be highlighted by default in the alert (Yes/No).
- * @return                true if Yes was pressed, false if No was pressed.
+ * @param title     The title that will be shown in the alert.
+ * @param message   The message (aka. informative text) that will be shown in the alert.
+ * @param highlight The button that will be highlighted by default in the alert (Yes/No).
+ * @return          true if Yes was pressed, false if No was pressed.
  */
-+(BOOL)showBooleanAlertMessage:(NSString*)message withTitle:(NSString*)title withDefault:(BOOL)yesDefault;
++(BOOL)showBooleanAlertWithTitle:(NSString*)title message:(NSString*)message highlighting:(BOOL)highlight;
 
 /*!
  * @discussion  Shows a NSAlert with a predefined NSAlertType, an informative text and Yes/No buttons.
