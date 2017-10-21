@@ -28,7 +28,7 @@
 
 -(void)appendString:(NSString*)aString;
 
--(BOOL)fitExpansionWithWidth:(CGFloat)width;
+-(BOOL)adjustExpansionToFitWidth:(CGFloat)width;
 
 @end
 

@@ -99,7 +99,7 @@
     [self appendAttributedString:[[NSAttributedString alloc] initWithString:aString]];
 }
 
--(BOOL)fitExpansionWithWidth:(CGFloat)width
+-(BOOL)adjustExpansionToFitWidth:(CGFloat)width
 {
     CGFloat originalWidth = self.size.width;
     
