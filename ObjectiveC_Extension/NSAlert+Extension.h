@@ -128,12 +128,12 @@ typedef enum NSAlertType
 /*!
  * @discussion  Shows a NSAlert with a title, an informative text, any other configurations specified in the block and Ok/Cancel buttons.
  * @discussion  This method is thread safe, so it can be used from any thread or queue.
- * @param message          The message (aka. informative text) that will be shown in the alert.
- * @param prompt           The title that will be shown in the alert.
- * @param setAlertSettings The block to make any extra adjustments in the alert before showing it.
- * @return                 true if Ok was pressed, false if Cancel was pressed.
+ * @param message         The message (aka. informative text) that will be shown in the alert.
+ * @param prompt          The title that will be shown in the alert.
+ * @param optionsForAlert The block to make any extra adjustments in the alert before showing it.
+ * @return                true if Ok was pressed, false if Cancel was pressed.
  */
-+(BOOL)confirmationDialogWithTitle:(NSString*)prompt message:(NSString*)message withSettings:(void (^)(NSAlert* alert))setAlertSettings;
++(BOOL)confirmationDialogWithTitle:(NSString*)prompt message:(NSString*)message andSettings:(void (^)(NSAlert* alert))optionsForAlert;
 
 /*!
  * @discussion  Shows a NSAlert with a title, an informative text, a text field and Ok/Cancel buttons.

@@ -313,7 +313,7 @@ static NSString* bundleName;
     return value;
 }
 
-+(BOOL)confirmationDialogWithTitle:(NSString*)prompt message:(NSString*)message withSettings:(void (^)(NSAlert* alert))setAlertSettings
++(BOOL)confirmationDialogWithTitle:(NSString*)prompt message:(NSString*)message andSettings:(void (^)(NSAlert* alert))optionsForAlert
 {
     NSUInteger alertResult;
     
@@ -326,7 +326,7 @@ static NSString* bundleName;
                                            alternateButton:NSLocalizedString(@"Cancel",nil)
                                                otherButton:nil
                                  informativeTextWithFormat:@"%@",message];
-            setAlertSettings(alert);
+            optionsForAlert(alert);
             return alert;
         }];
     }
