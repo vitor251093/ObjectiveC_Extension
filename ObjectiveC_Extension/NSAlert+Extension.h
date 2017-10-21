@@ -88,11 +88,11 @@ typedef enum NSAlertType
 /*!
  * @discussion  Shows a NSAlert with a title, a subtitle, an attributed informative text and an Ok button.
  * @discussion  This method is thread safe, so it can be used from any thread or queue.
- * @param message         The message (aka. attributed informative text) that will be shown in the alert.
  * @param title           The title that will be shown in the alert.
  * @param subtitle        The subtitle (aka. informative text) that will be shown in the alert.
+ * @param message         The message (aka. attributed informative text) that will be shown in the alert.
  */
-+(void)showAlertAttributedMessage:(NSAttributedString*)message withTitle:(NSString*)title withSubtitle:(NSString*)subtitle;
++(void)showAlertWithTitle:(NSString*)title subtitle:(NSString*)subtitle andAttributedMessage:(NSAttributedString*)message;
 
 /*!
  * @discussion  Shows a NSAlert with a title, an informative text and Yes/No buttons.

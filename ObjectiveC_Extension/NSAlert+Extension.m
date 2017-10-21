@@ -231,7 +231,7 @@ static NSString* bundleName;
     }];
 }
 
-+(void)showAlertAttributedMessage:(NSAttributedString*)message withTitle:(NSString*)title withSubtitle:(NSString*)subtitle
++(void)showAlertWithTitle:(NSString*)title subtitle:(NSString*)subtitle andAttributedMessage:(NSAttributedString*)message
 {
     __block NSTextView* informativeText = [[NSTextView alloc] init];
     [informativeText setBackgroundColor:[NSColor clearColor]];
