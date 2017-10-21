@@ -184,32 +184,25 @@
 
 -(BOOL)writeToFile:(NSString*)file atomically:(BOOL)useAuxiliaryFile
 {
-    NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:[self TIFFRepresentation]];
     NSString* extension = file.pathExtension.lowercaseString;
+    NSDictionary* typeForExtension = @{@"bmp" : @(NSBMPFileType),
+                                       @"gif" : @(NSGIFFileType),
+                                       @"jpg" : @(NSJPEGFileType),
+                                       @"jp2" : @(NSJPEG2000FileType),
+                                       @"png" : @(NSPNGFileType),
+                                       @"tiff": @(NSTIFFFileType)};
     
-    NSData* data;
-    if ([extension isEqualToString:@"bmp"])  data = [imageRep representationUsingType:NSBMPFileType      properties:@{}];
-    if ([extension isEqualToString:@"gif"])  data = [imageRep representationUsingType:NSGIFFileType      properties:@{}];
-    if ([extension isEqualToString:@"jpg"])  data = [imageRep representationUsingType:NSJPEGFileType     properties:@{}];
-    if ([extension isEqualToString:@"jp2"])  data = [imageRep representationUsingType:NSJPEG2000FileType properties:@{}];
-    if ([extension isEqualToString:@"png"])  data = [imageRep representationUsingType:NSPNGFileType      properties:@{}];
-    if ([extension isEqualToString:@"tiff"]) data = [imageRep representationUsingType:NSTIFFFileType     properties:@{}];
-    if (!data)
+    if ([typeForExtension.allKeys containsObject:extension] == false)
     {
-        if ([@[@"bmp",@"gif",@"jpg",@"jp2",@"png",@"tiff"] containsObject:extension])
-        {
-            [[NSException exceptionWithName:NSInvalidArgumentException
-                                     reason:[NSString stringWithFormat:@"%@ file is corrupted or with the wrong extension.",extension]
-                                   userInfo:nil] raise];
-        }
-        else
-        {
-            [[NSException exceptionWithName:NSInvalidArgumentException
-                                     reason:[NSString stringWithFormat:@"Invalid extension for saving image file: %@",extension]
-                                   userInfo:nil] raise];
-        }
+        [[NSException exceptionWithName:NSInvalidArgumentException
+                                 reason:[NSString stringWithFormat:@"Invalid extension for saving image file: %@",extension]
+                               userInfo:nil] raise];
         return false;
     }
+    
+    NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:[self TIFFRepresentation]];
+    NSData* data = [imageRep representationUsingType:(NSBitmapImageFileType)[typeForExtension[extension] unsignedLongValue] properties:@{}];
+    if (!data) return false;
     
     return [data writeToFile:file atomically:useAuxiliaryFile];
 }
