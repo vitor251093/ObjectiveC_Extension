@@ -102,18 +102,10 @@
     }
 }
 
--(void)requestToLoadUrl:(NSURL*)urlToOpenUrl
+// Private functions that may be overrided
+-(BOOL)shouldLoadUrl:(NSURL*)urlToOpenUrl withHttpBody:(NSData*)httpBody
 {
-    [self reloadWebViewIfNeeded];
-    
-    if (_usingWkWebView)
-    {
-        [(WKWebView*)self.webView loadRequest:[NSURLRequest requestWithURL:urlToOpenUrl]];
-    }
-    else
-    {
-        [((WebView*)self.webView).mainFrame loadRequest:[NSURLRequest requestWithURL:urlToOpenUrl]];
-    }
+    return YES;
 }
 -(NSString*)errorHTMLWithMessage:(NSString*)message
 {
@@ -139,29 +131,15 @@
     return result;
 }
 
-// Private functions that may be overrided
--(BOOL)shouldLoadUrl:(NSURL*)urlToOpenUrl withHttpBody:(NSData*)httpBody
-{
-    return YES;
-}
-
 // Public functions
 -(void)showErrorMessage:(NSString*)errorMessage
 {
     [self reloadWebViewIfNeeded];
-    [self loadHTMLPage:[self errorHTMLWithMessage:[errorMessage uppercaseString]]];
+    [self loadHTMLString:[self errorHTMLWithMessage:[errorMessage uppercaseString]]];
 }
--(BOOL)loadWebsite:(NSString*)website
+-(BOOL)loadURL:(NSURL*)url
 {
-    if (![website isAValidURL])
-    {
-        [self showErrorMessage:NSLocalizedString(@"Invalid URL provided",nil)];
-        return NO;
-    }
-    
-    NSURL* url = [NSURL URLWithString:website];
-    
-    if (!_usingWkWebView && [website contains:@"://www.youtube.com/v/"])
+    if (!_usingWkWebView && [url.absoluteString contains:@"://www.youtube.com/v/"])
     {
         NSString* mainFolderPluginPath = @"/Library/Internet Plug-Ins/Flash Player.plugin";
         NSString* userFolderPluginPath = [NSString stringWithFormat:@"%@%@",NSHomeDirectory(),mainFolderPluginPath];
@@ -174,10 +152,30 @@
         }
     }
     
-    [self requestToLoadUrl:url];
+    [self reloadWebViewIfNeeded];
+    
+    if (_usingWkWebView)
+    {
+        [(WKWebView*)self.webView loadRequest:[NSURLRequest requestWithURL:url]];
+    }
+    else
+    {
+        [((WebView*)self.webView).mainFrame loadRequest:[NSURLRequest requestWithURL:url]];
+    }
+    
     return YES;
 }
--(void)loadHTMLPage:(NSString*)htmlPage
+-(BOOL)loadURLWithString:(NSString*)website
+{
+    if (![website isAValidURL])
+    {
+        [self showErrorMessage:NSLocalizedString(@"Invalid URL provided",nil)];
+        return NO;
+    }
+    
+    return [self loadURL:[NSURL URLWithString:website]];
+}
+-(void)loadHTMLString:(NSString*)htmlPage
 {
     [self reloadWebViewIfNeeded];
     
@@ -192,7 +190,7 @@
 }
 -(void)loadEmptyPage
 {
-    [self loadHTMLPage:@""];
+    [self loadHTMLString:@""];
 }
 
 @end
