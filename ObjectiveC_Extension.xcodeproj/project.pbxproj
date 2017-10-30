@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E231F911F8191DD00148A30 /* IODeviceSimulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E231F941F8191DD00148A30 /* IODeviceSimulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E231F921F8191DD00148A30 /* IODeviceSimulator.m */; };
+		4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E3771041FA7A57C00E2F511 /* VMMWebView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E3771071FA7A57C00E2F511 /* VMMWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3771051FA7A57C00E2F511 /* VMMWebView.m */; };
 		4E3EE4651F82BF42008A5CC3 /* CREDITS in Resources */ = {isa = PBXBuildFile; fileRef = 4E3EE4641F82BF42008A5CC3 /* CREDITS */; };
 		4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E53A8A41F8587D90038BDFE /* NSScreen+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */; };
@@ -105,6 +107,8 @@
 /* Begin PBXFileReference section */
 		4E231F911F8191DD00148A30 /* IODeviceSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODeviceSimulator.h; sourceTree = "<group>"; };
 		4E231F921F8191DD00148A30 /* IODeviceSimulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODeviceSimulator.m; sourceTree = "<group>"; };
+		4E3771041FA7A57C00E2F511 /* VMMWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMWebView.h; sourceTree = "<group>"; };
+		4E3771051FA7A57C00E2F511 /* VMMWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMWebView.m; sourceTree = "<group>"; };
 		4E3EE4641F82BF42008A5CC3 /* CREDITS */ = {isa = PBXFileReference; lastKnownFileType = text; path = CREDITS; sourceTree = "<group>"; };
 		4E53A8A41F8587D90038BDFE /* NSScreen+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Extension.h"; sourceTree = "<group>"; };
 		4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Extension.m"; sourceTree = "<group>"; };
@@ -387,6 +391,8 @@
 			children = (
 				4EA035A61F9532E10059C2C5 /* NSKeyCaptureField.h */,
 				4EA035A71F9532E10059C2C5 /* NSKeyCaptureField.m */,
+				4E3771041FA7A57C00E2F511 /* VMMWebView.h */,
+				4E3771051FA7A57C00E2F511 /* VMMWebView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -432,6 +438,7 @@
 				4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */,
 				4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */,
 				4EA035A81F9532E10059C2C5 /* NSKeyCaptureField.h in Headers */,
+				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* IOUsageKeycode.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
 				4E6C525D1F7E944F00A187E9 /* SZJsonParser.h in Headers */,
@@ -560,6 +567,7 @@
 				4E6C523A1F7E911000A187E9 /* NSMutableURLRequest+Extension.m in Sources */,
 				4E6C52481F7E911000A187E9 /* NSUnarchiver+Extension.m in Sources */,
 				4E6C52341F7E911000A187E9 /* NSMutableArray+Extension.m in Sources */,
+				4E3771071FA7A57C00E2F511 /* VMMWebView.m in Sources */,
 				4E6C52321F7E911000A187E9 /* NSMenuItem+Extension.m in Sources */,
 				4E6C52691F7E953A00A187E9 /* NSFTPManager.m in Sources */,
 				4E6C52721F7E954D00A187E9 /* NSComputerInformation.m in Sources */,

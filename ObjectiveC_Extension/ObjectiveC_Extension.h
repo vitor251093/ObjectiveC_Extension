@@ -58,4 +58,5 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 
 // Views
 #import <ObjectiveC_Extension/NSKeyCaptureField.h>
+#import <ObjectiveC_Extension/VMMWebView.h>
 
