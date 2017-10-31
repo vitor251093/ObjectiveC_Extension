@@ -16,6 +16,7 @@
 
 -(void)showErrorMessage:(NSString*)errorMessage;
 
+-(BOOL)loadURL:(NSURL*)url;
 -(BOOL)loadURLWithString:(NSString*)website;
 -(void)loadHTMLString:(NSString*)htmlPage;
 -(void)loadEmptyPage;
