@@ -9,10 +9,20 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
+@interface VMMWebViewNavigationBar : NSView
+@property (nonatomic, strong) NSColor* backgroundColor;
+@property (nonatomic, strong) NSTextField* addressBarField;
+@property (nonatomic, strong) NSButton* refreshButton;
+@end
+
 @interface VMMWebView : NSView
 
+@property (nonatomic) BOOL urlLoaded;
 @property (nonatomic) BOOL usingWkWebView;
 @property (nonatomic, strong) NSView* webView;
+@property (nonatomic, strong) VMMWebViewNavigationBar* navigationBar;
+
+@property (nonatomic, strong) NSURL* lastAccessedUrl;
 
 -(void)showErrorMessage:(NSString*)errorMessage;
 

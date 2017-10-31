@@ -8,20 +8,52 @@
 
 #import "VMMWebView.h"
 
+#import "NSColor+Extension.h"
 #import "NSString+Extension.h"
 
 #import "NSComputerInformation.h"
 
+@implementation VMMWebViewNavigationBar
+-(void)setBackgroundColor:(NSColor*)color
+{
+    _backgroundColor = color;
+    [self needsDisplay];
+}
+-(void)drawRect:(NSRect)dirtyRect
+{
+    if (_backgroundColor)
+    {
+        [_backgroundColor setFill];
+        NSRectFillUsingOperation(dirtyRect, NSCompositeSourceOver);
+    }
+    
+    [super drawRect:dirtyRect];
+}
+@end
+
 @implementation VMMWebView
+
+-(void)setLastAccessedUrl:(NSURL*)lastAccessedUrl
+{
+    _lastAccessedUrl = lastAccessedUrl;
+    
+    if (self.hasNavigationBar)
+    {
+        [_navigationBar.addressBarField setStringValue:_lastAccessedUrl.absoluteString];
+    }
+}
 
 // WebView needed delegates
 -(WebView *)webView:(WebView *)sender createWebViewWithRequest:(NSURLRequest *)request
 {
+    self.lastAccessedUrl = request.URL;
     return sender;
 }
 -(void)webView:(WebView *)webView decidePolicyForNavigationAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request
          frame:(WebFrame *)frame decisionListener:(id<WebPolicyDecisionListener>)listener
 {
+    self.lastAccessedUrl = [(WebView*)self.webView mainFrame].dataSource.request.URL;
+    
     NSURL *urlToOpenUrl = actionInformation[WebActionOriginalURLKey];
     if (![self shouldLoadUrl:urlToOpenUrl withHttpBody:request.HTTPBody]) return;
     
@@ -31,6 +63,7 @@
 // WKWebView needed delegates
 - (id)webView:(id)webView createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)navigationAction windowFeatures:(id)windowFeatures
 {
+    self.lastAccessedUrl = ((WKNavigationAction *)navigationAction).request.URL;
     return webView;
 }
 - (void)webView:(id)webView decidePolicyForNavigationAction:(id)navigationAction decisionHandler:(void (^)(NSInteger))decisionHandler
@@ -45,64 +78,186 @@
         decisionHandler(WKNavigationActionPolicyAllow);
     }
 }
+- (void)webView:(id)webView didCommitNavigation:(id)navigation
+{
+    self.lastAccessedUrl = [(WKWebView*)self.webView URL];
+}
 
-// Private methods
+// Initialization private methods
+-(void)initializeWebView
+{
+    _usingWkWebView = IS_SYSTEM_MAC_OS_10_10_OR_SUPERIOR;
+    
+    if (_usingWkWebView)
+    {
+        _webView = [[WKWebView alloc] init];
+        WKWebView* webView = (WKWebView*)_webView;
+        
+        webView.UIDelegate = (id<WKUIDelegate>)self;
+        webView.navigationDelegate = (id<WKNavigationDelegate>)self;
+        
+        [webView setValue:@FALSE forKey:@"opaque"];
+        
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wundeclared-selector"
+        BOOL setDrawsBackgroundExists = [webView respondsToSelector:@selector(_setDrawsBackground:)];
+#pragma GCC diagnostic pop
+        
+        if (setDrawsBackgroundExists)
+        {
+            [webView setValue:@FALSE forKey:@"drawsBackground"];
+        }
+        else
+        {
+            [webView setValue:@TRUE  forKey:@"drawsTransparentBackground"];
+        }
+    }
+    else
+    {
+        _webView = [[WebView alloc] init];
+        WebView* webView = (WebView*)_webView;
+        
+        webView.UIDelegate = (id<WebUIDelegate>)self;
+        webView.policyDelegate = (id<WebPolicyDelegate>)self;
+        webView.frameLoadDelegate = (id<WebFrameLoadDelegate>)self;
+        
+        webView.shouldUpdateWhileOffscreen = false;
+        
+        [webView setValue:@FALSE forKey:@"opaque"];
+        [webView setValue:@FALSE forKey:@"drawsBackground"];
+    }
+    
+    [self addSubview:_webView];
+    [_webView setAutoresizingMask:NSViewMinYMargin|NSViewMaxXMargin|NSViewMinXMargin|NSViewWidthSizable|NSViewHeightSizable];
+}
+-(void)initializeNavigationBarWithHeight:(CGFloat)navigationBarHeight
+{
+    _navigationBar = [[VMMWebViewNavigationBar alloc] init];
+    
+    [self addSubview:_navigationBar];
+    [_navigationBar setAutoresizingMask:NSViewMinYMargin|NSViewMaxXMargin|NSViewMinXMargin|NSViewWidthSizable];
+    [_navigationBar setBackgroundColor:self.navigationBarColor];
+    
+    NSFont* buttonTextFont = self.navigationBarButtonsTextFont;
+    if (buttonTextFont)
+    {
+        buttonTextFont = [NSFont fontWithDescriptor:buttonTextFont.fontDescriptor size:self.navigationBarButtonsTextSize];
+    }
+    else
+    {
+        buttonTextFont = [NSFont systemFontOfSize:self.navigationBarButtonsTextSize];
+    }
+    
+    NSFont* addressTextFont = self.navigationBarAddressFieldTextFont;
+    if (addressTextFont)
+    {
+        addressTextFont = [NSFont fontWithDescriptor:addressTextFont.fontDescriptor size:self.navigationBarAddressFieldTextSize];
+    }
+    else
+    {
+        addressTextFont = [NSFont systemFontOfSize:self.navigationBarAddressFieldTextSize];
+    }
+    
+    CGFloat fullWidth = _navigationBar.frame.size.width;
+    CGFloat leftMargin = self.navigationBarLeftMargin;
+    
+    _navigationBar.addressBarField = [[NSTextField alloc] init];
+    _navigationBar.refreshButton = [[NSButton alloc] init];
+    [_navigationBar addSubview:_navigationBar.addressBarField];
+    [_navigationBar addSubview:_navigationBar.refreshButton];
+    
+    
+    [_navigationBar.addressBarField setAutoresizingMask:NSViewWidthSizable];
+    [_navigationBar.addressBarField setBordered:NO];
+    [_navigationBar.addressBarField setEditable:NO];
+    [_navigationBar.addressBarField setBackgroundColor:[NSColor clearColor]];
+    [_navigationBar.addressBarField setFont:addressTextFont];
+    [_navigationBar.addressBarField setStringValue:@"Tj"];
+    CGFloat addressMaxHeight = _navigationBar.addressBarField.attributedStringValue.size.height;
+    [_navigationBar.addressBarField setFrame:NSMakeRect(leftMargin, (navigationBarHeight - addressMaxHeight)/2,
+                                                        fullWidth - navigationBarHeight - leftMargin, addressMaxHeight)];
+    [_navigationBar.addressBarField setStringValue:@""];
+    
+    
+    [_navigationBar.refreshButton.cell setHighlightsBy:NSNoCellMask];
+    [_navigationBar.refreshButton setBordered:NO];
+    [_navigationBar.refreshButton setTitle:@"⟳"];
+    [_navigationBar.refreshButton setFont:buttonTextFont];
+    [_navigationBar.refreshButton setTarget:self];
+    [_navigationBar.refreshButton setAction:@selector(refreshButtonPressed:)];
+    [_navigationBar.refreshButton setAutoresizingMask:NSViewMaxYMargin|NSViewMinYMargin|NSViewMinXMargin];
+    [_navigationBar.refreshButton setFrame:NSMakeRect(fullWidth - navigationBarHeight, 0, navigationBarHeight, navigationBarHeight)];
+}
 -(void)reloadWebViewIfNeeded
 {
     @synchronized(_webView)
     {
+        BOOL hasNavigationBar = self.hasNavigationBar;
+        
+        CGFloat width = self.frame.size.width;
+        CGFloat navigationBarHeight = 0;
+        
+        if (hasNavigationBar)
+        {
+            navigationBarHeight = self.navigationBarHeight;
+            if (!_navigationBar) [self initializeNavigationBarWithHeight:navigationBarHeight];
+        }
+        
         if (!_webView)
         {
-            _usingWkWebView = IS_SYSTEM_MAC_OS_10_10_OR_SUPERIOR;
-            
-            if (_usingWkWebView)
-            {
-                _webView = [[WKWebView alloc] init];
-                WKWebView* webView = (WKWebView*)_webView;
-                
-                webView.UIDelegate = (id<WKUIDelegate>)self;
-                webView.navigationDelegate = (id<WKNavigationDelegate>)self;
-                
-                [webView setValue:@FALSE forKey:@"opaque"];
-                
-                #pragma GCC diagnostic push
-                #pragma GCC diagnostic ignored "-Wundeclared-selector"
-                BOOL setDrawsBackgroundExists = [webView respondsToSelector:@selector(_setDrawsBackground:)];
-                #pragma GCC diagnostic pop
-                
-                if (setDrawsBackgroundExists)
-                {
-                    [webView setValue:@FALSE forKey:@"drawsBackground"];
-                }
-                else
-                {
-                    [webView setValue:@TRUE  forKey:@"drawsTransparentBackground"];
-                }
-            }
-            else
-            {
-                _webView = [[WebView alloc] init];
-                WebView* webView = (WebView*)_webView;
-                
-                webView.UIDelegate = (id<WebUIDelegate>)self;
-                webView.policyDelegate = (id<WebPolicyDelegate>)self;
-                webView.frameLoadDelegate = (id<WebFrameLoadDelegate>)self;
-                
-                webView.shouldUpdateWhileOffscreen = false;
-                
-                [webView setValue:@FALSE forKey:@"opaque"];
-                [webView setValue:@FALSE forKey:@"drawsBackground"];
-            }
-            
-            [self addSubview:_webView];
-            [_webView setFrame:NSMakeRect(0, 0, self.frame.size.width, self.frame.size.height)];
-            [_webView setAutoresizingMask:NSViewMaxYMargin|NSViewMinYMargin|NSViewMaxXMargin|NSViewMinXMargin|
-             NSViewWidthSizable|NSViewHeightSizable];
+            [self initializeWebView];
         }
+        
+        CGFloat webViewHeight = self.frame.size.height - navigationBarHeight;
+        
+        if (hasNavigationBar)
+        {
+            [_navigationBar setFrame:NSMakeRect(0, webViewHeight, width, navigationBarHeight)];
+        }
+        
+        [_webView setFrame:NSMakeRect(0, 0, width, webViewHeight)];
     }
 }
 
+// Private functions
+-(IBAction)refreshButtonPressed:(id)sender
+{
+    [self loadURL:_lastAccessedUrl];
+}
+
 // Private functions that may be overrided
+-(BOOL)hasNavigationBar
+{
+    return _urlLoaded;
+}
+-(CGFloat)navigationBarLeftMargin
+{
+    return 20.0;
+}
+-(CGFloat)navigationBarHeight
+{
+    return 45.0;
+}
+-(NSColor*)navigationBarColor
+{
+    return RGB(209, 207, 209);
+}
+-(NSFont*)navigationBarAddressFieldTextFont
+{
+    return nil;
+}
+-(CGFloat)navigationBarAddressFieldTextSize
+{
+    return 15.0;
+}
+-(NSFont*)navigationBarButtonsTextFont
+{
+    return nil;
+}
+-(CGFloat)navigationBarButtonsTextSize
+{
+    return 30.0;
+}
 -(BOOL)shouldLoadUrl:(NSURL*)urlToOpenUrl withHttpBody:(NSData*)httpBody
 {
     return YES;
@@ -152,7 +307,9 @@
         }
     }
     
+    _urlLoaded = true;
     [self reloadWebViewIfNeeded];
+    self.lastAccessedUrl = url;
     
     if (_usingWkWebView)
     {
@@ -177,6 +334,7 @@
 }
 -(void)loadHTMLString:(NSString*)htmlPage
 {
+    _urlLoaded = false;
     [self reloadWebViewIfNeeded];
     
     if (_usingWkWebView)
