@@ -64,7 +64,10 @@
 - (id)webView:(id)webView createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)navigationAction windowFeatures:(id)windowFeatures
 {
     self.lastAccessedUrl = ((WKNavigationAction *)navigationAction).request.URL;
-    return webView;
+    if (![self shouldLoadUrl:_lastAccessedUrl withHttpBody:((WKNavigationAction *)navigationAction).request.HTTPBody]) return nil;
+    
+    [self loadURL:_lastAccessedUrl];
+    return nil;
 }
 - (void)webView:(id)webView decidePolicyForNavigationAction:(id)navigationAction decisionHandler:(void (^)(NSInteger))decisionHandler
 {
