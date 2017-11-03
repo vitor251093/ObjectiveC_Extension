@@ -418,14 +418,12 @@
 
 -(NSData*)dataWithBase64Encoding
 {
-    if (IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR)
-    {
-        return [[NSData alloc] initWithBase64EncodedString:self options:0];
-    }
-    else
+    if (!IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR)
     {
         return [[NSData alloc] initWithBase64Encoding:self];
     }
+    
+    return [[NSData alloc] initWithBase64EncodedString:self options:0];
 }
 
 -(BOOL)isAValidURL

@@ -212,26 +212,14 @@
 
 -(NSString*)base64OfFileAtPath:(NSString*)path
 {
-    if (IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR)
+    NSData* data = [NSData dataWithContentsOfFile:path];
+    
+    if (!IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR)
     {
-        NSData* data = [NSData dataWithContentsOfFile:path];
-        return [data base64EncodedStringWithOptions:0];
+        return [data base64Encoding];
     }
     
-    __block NSString* output;
-    
-    [NSThread runThreadSafeBlock:^
-    {
-        NSString* tempFileOutputPath = [NSTemporaryDirectory() stringByAppendingString:@"tempFileOutput"];
-        
-        [self removeItemAtPath:tempFileOutputPath];
-        [NSTask runCommand:@[@"openssl", @"base64", @"-in", path, @"-out", tempFileOutputPath, @"-A"]];
-        
-        output = [NSString stringWithContentsOfFile:tempFileOutputPath encoding:NSASCIIStringEncoding];
-        [self removeItemAtPath:tempFileOutputPath];
-    }];
-    
-    return output;
+    return [data base64EncodedStringWithOptions:0];
 }
 
 @end
