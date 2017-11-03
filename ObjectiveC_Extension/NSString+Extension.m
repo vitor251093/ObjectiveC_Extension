@@ -189,47 +189,50 @@
 }
 -(NSArray*)componentsMatchingWithRegex:(NSString*)regexString
 {
-    if (IsClassAvailable(@"NSRegularExpression"))
+    NSMutableArray* matches;
+    
+    if (IsClassAvailable(@"NSRegularExpression") == false)
     {
-        NSMutableArray* matches;
-        
         @autoreleasepool
         {
-            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
-            NSArray* rangeArray = [regex matchesInString:self options:0 range:NSMakeRange(0, self.length)];
+            NSString* pythonScriptPath = [NSString stringWithFormat:@"%@pythonRegex.py",NSTemporaryDirectory()];
+            NSString* stringFilePath   = [NSString stringWithFormat:@"%@pythonFile.dat",NSTemporaryDirectory()];
             
-            matches = [[NSMutableArray alloc] init];
-            for (NSTextCheckingResult *match in rangeArray)
-            {
-                [matches addObject:[self substringWithRange:match.range]];
-            }
+            NSArray* pythonScriptContentsArray = @[@"import re",
+                                                   @"import os",
+                                                   @"dir_path = os.path.dirname(os.path.abspath(__file__))",
+                                                   @"text_file = open(dir_path + \"/pythonFile.dat\", \"r\")",
+                                                   @"text = text_file.read()",
+                                                   [NSString stringWithFormat:@"regex = re.compile(r\"(%@)\")",regexString],
+                                                   @"matches = regex.finditer(text)",
+                                                   @"for match in matches:",
+                                                   @"    print match.group()"];
+            NSString* pythonScriptContents = [pythonScriptContentsArray componentsJoinedByString:@"\n"];
+            
+            [self                 writeToFile:stringFilePath   atomically:YES encoding:NSASCIIStringEncoding];
+            [pythonScriptContents writeToFile:pythonScriptPath atomically:YES encoding:NSASCIIStringEncoding];
+            
+            NSString* output = [NSTask runCommand:@[@"python", pythonScriptPath]];
+            matches = [[output componentsSeparatedByString:@"\n"] mutableCopy];
+            [matches removeObject:@""];
         }
         
         return matches;
     }
     
-    NSString* pythonScriptPath = [NSString stringWithFormat:@"%@pythonRegex.py",NSTemporaryDirectory()];
-    NSString* stringFilePath   = [NSString stringWithFormat:@"%@pythonFile.dat",NSTemporaryDirectory()];
-    
-    NSArray* pythonScriptContentsArray = @[@"import re",
-                                           @"import os",
-                                           @"dir_path = os.path.dirname(os.path.abspath(__file__))",
-                                           @"text_file = open(dir_path + \"/pythonFile.dat\", \"r\")",
-                                           @"text = text_file.read()",
-                                           [NSString stringWithFormat:@"regex = re.compile(r\"(%@)\")",regexString],
-                                           @"matches = regex.finditer(text)",
-                                           @"for match in matches:",
-                                           @"    print match.group()"];
-    NSString* pythonScriptContents = [pythonScriptContentsArray componentsJoinedByString:@"\n"];
-    
-    [self                 writeToFile:stringFilePath   atomically:YES encoding:NSASCIIStringEncoding];
-    [pythonScriptContents writeToFile:pythonScriptPath atomically:YES encoding:NSASCIIStringEncoding];
-    
-    NSString* output = [NSTask runCommand:@[@"python", pythonScriptPath]];
-    NSMutableArray* outputList = [[output componentsSeparatedByString:@"\n"] mutableCopy];
-    [outputList removeObject:@""];
-    
-    return outputList;
+    @autoreleasepool
+    {
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
+        NSArray* rangeArray = [regex matchesInString:self options:0 range:NSMakeRange(0, self.length)];
+        
+        matches = [[NSMutableArray alloc] init];
+        for (NSTextCheckingResult *match in rangeArray)
+        {
+            [matches addObject:[self substringWithRange:match.range]];
+        }
+    }
+        
+    return matches;
 }
 
 +(NSString*)humanReadableSizeForBytes:(long long int)bytes withDecimalMeasureSystem:(BOOL)measure
