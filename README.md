@@ -547,9 +547,6 @@ The JSON data is created based in the function above since `NSJSONSerialization`
 ### [(NSData*)object jsonObject] (macOS 10.6)
 The JSON object is created using `SZJsonParser` since `NSJSONSerialization` was not available before macOS 10.7.
 
-### [(NSFileManager*)fm base64OfFileAtPath:path] (~ macOS 10.8)
-The base64 of the file is created with the `openssl` terminal command since `base64EncodedStringWithOptions:` isn't available before macOS 10.9.
-
 ### [(NSImage*)img saveAsIcnsAtPath:path] (macOS 10.6)
 In macOS 10.7+ systems, icns files are created with `iconutil`, using `tiff2icns` only if the first one does not return a valid image. macOS 10.6 systems create using `tiff2icns` only, since `iconutil` was introduced in macOS 10.7.
 
