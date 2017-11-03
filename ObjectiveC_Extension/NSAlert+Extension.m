@@ -159,11 +159,26 @@ static NSString* bundleName;
         [self performSelectorOnMainThread:@selector(BE_beginSheetModalForWindow:) withObject:window waitUntilDone:YES];
         
         NSInteger modalCode = [NSApp runModalForWindow:[self window]];
+        NSInteger realModalCode = modalCode;
+        
+        switch (modalCode)
+        {
+            case NSAlertFirstButtonReturn:
+                realModalCode = NSAlertDefaultReturn;
+                break;
+                
+            case NSAlertSecondButtonReturn:
+                realModalCode = NSAlertOtherReturn;
+                break;
+                
+            default:
+                break;
+        }
         
         [NSApp performSelectorOnMainThread:@selector(endSheet:) withObject:[self window] waitUntilDone:YES];
         [[self window] performSelectorOnMainThread:@selector(orderOut:) withObject:self waitUntilDone:YES];
         
-        return modalCode;
+        return realModalCode;
     }
     
     return [self runModal];
