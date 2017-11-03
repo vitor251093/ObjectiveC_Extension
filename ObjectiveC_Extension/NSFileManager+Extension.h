@@ -13,8 +13,20 @@
 
 typedef enum NSChecksumType
 {
-    NSChecksumTypeSHA1 = 40,
-    NSChecksumTypeSHA256 = 64
+    NSChecksumTypeGOSTMac,
+    NSChecksumTypeStreebog512,
+    NSChecksumTypeStreebog256,
+    NSChecksumTypeGOST94,
+    NSChecksumTypeMD4,
+    NSChecksumTypeMD5,
+    NSChecksumTypeRIPEMD160,
+    NSChecksumTypeSHA,
+    NSChecksumTypeSHA1,
+    NSChecksumTypeSHA224,
+    NSChecksumTypeSHA256,
+    NSChecksumTypeSHA384,
+    NSChecksumTypeSHA512,
+    NSChecksumTypeWrirlpool
 } NSChecksumType;
 
 @interface NSFileManager (VMMFileManager)

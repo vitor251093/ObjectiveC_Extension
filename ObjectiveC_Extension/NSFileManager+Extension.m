@@ -182,17 +182,28 @@
     @autoreleasepool
     {
         NSString* output;
+        NSString* algorithm;
         
-        if (checksum == NSChecksumTypeSHA256)
+        switch (checksum)
         {
-            output = [NSTask runCommand:@[@"openssl", @"dgst", @"-sha256", file]];
+            case NSChecksumTypeGOSTMac:     algorithm = @"-gost-mac";    break;
+            case NSChecksumTypeStreebog512: algorithm = @"-streebog512"; break;
+            case NSChecksumTypeStreebog256: algorithm = @"-streebog256"; break;
+            case NSChecksumTypeGOST94:      algorithm = @"-md_gost94";   break;
+            case NSChecksumTypeMD4:         algorithm = @"-md4";         break;
+            case NSChecksumTypeMD5:         algorithm = @"-md5";         break;
+            case NSChecksumTypeRIPEMD160:   algorithm = @"-ripemd160";   break;
+            case NSChecksumTypeSHA:         algorithm = @"-sha";         break;
+            case NSChecksumTypeSHA1:        algorithm = @"-sha1";        break;
+            case NSChecksumTypeSHA224:      algorithm = @"-sha224";      break;
+            case NSChecksumTypeSHA256:      algorithm = @"-sha256";      break;
+            case NSChecksumTypeSHA384:      algorithm = @"-sha384";      break;
+            case NSChecksumTypeSHA512:      algorithm = @"-sha512";      break;
+            case NSChecksumTypeWrirlpool:   algorithm = @"-whirlpool";   break;
+            default: return nil;
         }
         
-        if (checksum == NSChecksumTypeSHA1)
-        {
-            output = [NSTask runCommand:@[@"openssl", @"sha1", file]];
-        }
-        
+        output = [NSTask runCommand:@[@"openssl", @"dgst", algorithm, file]];
         if (!output) return nil;
         
         NSRange lastSpaceRange = [output rangeOfString:@" " options:NSBackwardsSearch];
