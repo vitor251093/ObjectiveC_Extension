@@ -373,10 +373,10 @@ Returns the size of the file at the given path according to the value of `NSFile
 Returns the size of a directory by summing the size of regular files in subpaths inside the directory. Takes a longer time to run, but is much more precise.
 
 ```objectivec
--(NSString*)checksum:(NSString*)checksum ofFileAtPath:(NSString*)file
+-(NSString*)checksum:(NSChecksumType)checksum ofFileAtPath:(NSString*)file
 ```
 
-Returns the checksum of the specified file. The possible `checksum` values are "sha1" (40 digits) and "sha256" (64 digits).
+Returns the checksum of the specified file. There are 14 possible cryptographies for `checksum`, including sha1, sha256, md5, etc.
 
 ### NSImage
 
