@@ -173,7 +173,7 @@
     return fileSize;
 }
 
--(NSString*)checksum:(NSString*)checksum ofFileAtPath:(NSString*)file
+-(NSString*)checksum:(NSChecksumType)checksum ofFileAtPath:(NSString*)file
 {
     if (!file) return nil;
     
@@ -183,14 +183,14 @@
     {
         NSString* output;
         
-        if ([checksum isEqualToString:@"sha256"])
+        if (checksum == NSChecksumTypeSHA256)
         {
             output = [NSTask runCommand:@[@"openssl", @"dgst", @"-sha256", file]];
         }
         
-        if ([checksum isEqualToString:@"sha1"])
+        if (checksum == NSChecksumTypeSHA1)
         {
-            output = [NSTask runCommand:@[@"openssl", checksum, file]];
+            output = [NSTask runCommand:@[@"openssl", @"sha1", file]];
         }
         
         if (!output) return nil;

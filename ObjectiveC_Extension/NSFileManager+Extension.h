@@ -11,6 +11,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum NSChecksumType
+{
+    NSChecksumTypeSHA1 = 40,
+    NSChecksumTypeSHA256 = 64
+} NSChecksumType;
+
 @interface NSFileManager (VMMFileManager)
 
 -(BOOL)createSymbolicLinkAtPath:(NSString *)path withDestinationPath:(NSString *)destPath;
@@ -30,7 +36,7 @@
 -(unsigned long long int)sizeOfRegularFileAtPath:(NSString*)path;
 -(unsigned long long int)sizeOfDirectoryAtPath:(NSString*)path;
 
--(NSString*)checksum:(NSString*)checksum ofFileAtPath:(NSString*)file;
+-(NSString*)checksum:(NSChecksumType)checksum ofFileAtPath:(NSString*)file;
 
 -(NSString*)base64OfFileAtPath:(NSString*)path;
 
