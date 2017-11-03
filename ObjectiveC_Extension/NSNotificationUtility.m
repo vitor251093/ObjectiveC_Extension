@@ -29,7 +29,7 @@
 
 +(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withUserInfo:(NSString*)info withIcon:(NSImage*)icon withActionButtonText:(NSString*)actionButton
 {
-    if (!IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR)
+    if (!IsNSUserNotificationCenterAvailable)
     {
         [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
         {

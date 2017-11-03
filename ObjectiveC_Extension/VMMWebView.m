@@ -11,6 +11,8 @@
 #import "NSColor+Extension.h"
 #import "NSString+Extension.h"
 
+#import "NSComputerInformation.h"
+
 @implementation VMMWebViewNavigationBar
 -(void)setBackgroundColor:(NSColor*)color
 {
@@ -87,7 +89,7 @@
 // Initialization private methods
 -(void)initializeWebView
 {
-    _usingWkWebView = IS_SYSTEM_MAC_OS_COMPATIBLE_WITH_WKWEBVIEW;
+    _usingWkWebView = IsWKWebViewAvailable;
     
     if (_usingWkWebView)
     {

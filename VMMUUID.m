@@ -14,7 +14,7 @@
 
 +(NSString*)newUUIDString
 {
-    if (IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR)
+    if (IsNSUUIDAvailable)
     {
         return [[NSUUID UUID] UUIDString];
     }

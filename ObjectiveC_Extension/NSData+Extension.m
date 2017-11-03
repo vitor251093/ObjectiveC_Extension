@@ -57,7 +57,7 @@
 
 +(NSString*)jsonStringWithJsonObject:(id)object
 {
-    if (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR)
+    if (IsNSJSONSerializationAvailable)
     {
         NSString* jsonString;
         
@@ -114,7 +114,7 @@
 
 +(NSData*)dataWithJsonObject:(id)object
 {
-    if (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR)
+    if (IsNSJSONSerializationAvailable)
     {
         return [NSJSONSerialization dataWithJSONObject:object options:NSJSONWritingPrettyPrinted error:nil];
     }
@@ -127,7 +127,7 @@
 
 -(id)jsonObject
 {
-    if (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR)
+    if (IsNSJSONSerializationAvailable)
     {
         return [NSJSONSerialization JSONObjectWithData:self options:0 error:nil];
     }

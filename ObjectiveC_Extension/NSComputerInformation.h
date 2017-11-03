@@ -17,6 +17,12 @@
 #define IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR  [NSComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.12"]  // Sierra
 #define IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR  [NSComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.13"]  // High Sierra
 
+#define IsNSRegularExpressionAvailable        IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR
+#define IsNSJSONSerializationAvailable        IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR
+#define IsNSUserNotificationCenterAvailable   IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR
+#define IsNSUUIDAvailable                     IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR
+#define IsWKWebViewAvailable                  IS_SYSTEM_MAC_OS_10_10_OR_SUPERIOR
+
 #import <Foundation/Foundation.h>
 
 @interface NSComputerInformation : NSObject

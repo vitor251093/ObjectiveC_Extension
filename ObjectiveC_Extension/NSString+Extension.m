@@ -189,7 +189,7 @@
 }
 -(NSArray*)componentsMatchingWithRegex:(NSString*)regexString
 {
-    if (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR)
+    if (IsNSRegularExpressionAvailable)
     {
         NSMutableArray* matches;
         
