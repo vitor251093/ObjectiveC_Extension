@@ -224,7 +224,7 @@
 {
     NSData* data = [NSData dataWithContentsOfFile:path];
     
-    if (!IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR)
+    if (![data respondsToSelector:@selector(base64EncodedStringWithOptions:)])
     {
         return [data base64Encoding];
     }

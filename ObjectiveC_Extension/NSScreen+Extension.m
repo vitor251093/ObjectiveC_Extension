@@ -14,7 +14,7 @@
 
 -(CGFloat)retinaScale
 {
-    return IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR ? self.backingScaleFactor : self.userSpaceScaleFactor;
+    return [self respondsToSelector:@selector(backingScaleFactor)] ? self.backingScaleFactor : self.userSpaceScaleFactor;
 }
 
 @end

@@ -14,7 +14,7 @@
 
 +(NSString*)newUUIDString
 {
-    if (IsNSUUIDAvailable)
+    if (IsClassAvailable(@"NSUUID"))
     {
         return [[NSUUID UUID] UUIDString];
     }

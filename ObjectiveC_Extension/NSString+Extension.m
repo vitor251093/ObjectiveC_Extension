@@ -189,7 +189,7 @@
 }
 -(NSArray*)componentsMatchingWithRegex:(NSString*)regexString
 {
-    if (IsNSRegularExpressionAvailable)
+    if (IsClassAvailable(@"NSRegularExpression"))
     {
         NSMutableArray* matches;
         

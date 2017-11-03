@@ -29,7 +29,7 @@
 
 +(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withUserInfo:(NSString*)info withIcon:(NSImage*)icon withActionButtonText:(NSString*)actionButton
 {
-    if (!IsNSUserNotificationCenterAvailable)
+    if (IsClassAvailable(@"NSUserNotificationCenter") == false)
     {
         [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
         {
@@ -56,7 +56,7 @@
             // Avoiding API exception in case something changes (knows to work)
             
             // That feature is only available from macOS 10.9 and beyond
-            if (IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR)
+            if ([notification respondsToSelector:@selector(setContentImage:)])
             {
                 notification.contentImage = icon;
             }
