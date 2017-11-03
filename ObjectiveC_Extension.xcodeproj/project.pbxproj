@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E231F911F8191DD00148A30 /* IODeviceSimulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E231F941F8191DD00148A30 /* IODeviceSimulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E231F921F8191DD00148A30 /* IODeviceSimulator.m */; };
+		4E25D8B91FACE22B00CA42C2 /* VMMUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E25D8B71FACE22B00CA42C2 /* VMMUUID.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E25D8BA1FACE22B00CA42C2 /* VMMUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E25D8B81FACE22B00CA42C2 /* VMMUUID.m */; };
 		4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E3771041FA7A57C00E2F511 /* VMMWebView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E3771071FA7A57C00E2F511 /* VMMWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3771051FA7A57C00E2F511 /* VMMWebView.m */; };
 		4E3EE4651F82BF42008A5CC3 /* CREDITS in Resources */ = {isa = PBXBuildFile; fileRef = 4E3EE4641F82BF42008A5CC3 /* CREDITS */; };
@@ -107,6 +109,8 @@
 /* Begin PBXFileReference section */
 		4E231F911F8191DD00148A30 /* IODeviceSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IODeviceSimulator.h; sourceTree = "<group>"; };
 		4E231F921F8191DD00148A30 /* IODeviceSimulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IODeviceSimulator.m; sourceTree = "<group>"; };
+		4E25D8B71FACE22B00CA42C2 /* VMMUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMUUID.h; sourceTree = SOURCE_ROOT; };
+		4E25D8B81FACE22B00CA42C2 /* VMMUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMUUID.m; sourceTree = SOURCE_ROOT; };
 		4E3771041FA7A57C00E2F511 /* VMMWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMWebView.h; sourceTree = "<group>"; };
 		4E3771051FA7A57C00E2F511 /* VMMWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMWebView.m; sourceTree = "<group>"; };
 		4E3EE4641F82BF42008A5CC3 /* CREDITS */ = {isa = PBXFileReference; lastKnownFileType = text; path = CREDITS; sourceTree = "<group>"; };
@@ -361,6 +365,8 @@
 				4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */,
 				4E6C52661F7E953A00A187E9 /* NSVersion.h */,
 				4E6C52671F7E953A00A187E9 /* NSVersion.m */,
+				4E25D8B71FACE22B00CA42C2 /* VMMUUID.h */,
+				4E25D8B81FACE22B00CA42C2 /* VMMUUID.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -438,6 +444,7 @@
 				4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */,
 				4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */,
 				4EA035A81F9532E10059C2C5 /* NSKeyCaptureField.h in Headers */,
+				4E25D8B91FACE22B00CA42C2 /* VMMUUID.h in Headers */,
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* IOUsageKeycode.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
@@ -586,6 +593,7 @@
 				4E6C52241F7E911000A187E9 /* NSAttributedString+Extension.m in Sources */,
 				4E6C526E1F7E953A00A187E9 /* NSVersion.m in Sources */,
 				4E6C525E1F7E944F00A187E9 /* SZJsonParser.m in Sources */,
+				4E25D8BA1FACE22B00CA42C2 /* VMMUUID.m in Sources */,
 				4E6C52301F7E911000A187E9 /* NSMenu+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
