@@ -4,7 +4,7 @@ Once I started developing my skills in Objective-C, I've noticed that while many
 In order to improve that, I've decided to create a framework with those classes and extensions, in order to optimize my work. It should be useful for a large range of projects, so feel free to use it, and enjoy :)
 
 ## Compatibility
-This is the best part of that framework. ObjectiveC_Extension is compatible with every version of macOS still compatible with Xcode 9, so it is compatible with macOS 10.6+. Obvisouly, that requires some workarounds and *hacks*. They will be listed in the end of that document.
+This is the best part of that framework. ObjectiveC_Extension is compatible with every version of macOS still compatible with Xcode 9, so it is compatible with macOS 10.6+. Obviously, that requires some workarounds and *hacks*. They will be listed in the end of that document.
 
 ## New Classes (related with keycodes and devices)
 Those classes were made to simplify the use of HID devices input, making your code cleaner when working with them, and more Objective-C-like, since most of the code related with that is C-like and C++-like. It also gives you enums to find the value of virtual keycodes (useful to simulate keyboard key pressing) and usage keycodes (useful to detect which keyboard key was pressed).
@@ -238,7 +238,7 @@ Returns an HTML page with the text and formatting of the `NSAttributedString` ob
 RGBA(r,g,b,a)
 ```
 
-Init a `NSColor` object with the specific levels of red, green, blue and alpha, from 0.0 to 255.0. Equivalent to `colorWithCalibratedRed:green:blue:alpha:`, but with a much smaller size.
+Init a `NSColor` object with the specific levels of red, green, blue and alpha, from 0.0 to 255.0. Equivalent to `colorWithDeviceRed:green:blue:alpha:`, but with a much smaller size.
 
 ```objectivec
 RGB(r,g,b)
@@ -452,7 +452,7 @@ Used to retrieve informations about the computer hardware and software.
 Dictionary with the informations available with the command `system_profiler SPDisplaysDataType` about the computer main graphic card. 
 
 ```objectivec
-+(NSString*)graphicCardModel;
++(NSString*)graphicCardName;
 ```
 
 Model name of the computer main graphic card.
