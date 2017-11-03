@@ -8,6 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
+#import "NSComputerInformation.h"
+
+#define IS_SYSTEM_MAC_OS_COMPATIBLE_WITH_WKWEBVIEW    IS_SYSTEM_MAC_OS_10_10_OR_SUPERIOR
 
 @interface VMMWebViewNavigationBar : NSView
 @property (nonatomic, strong) NSColor* backgroundColor;
