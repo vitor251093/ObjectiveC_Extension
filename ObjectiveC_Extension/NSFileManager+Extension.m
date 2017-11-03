@@ -181,7 +181,6 @@
     
     @autoreleasepool
     {
-        NSString* output;
         NSString* algorithm;
         
         switch (checksum)
@@ -203,7 +202,7 @@
             default: return nil;
         }
         
-        output = [NSTask runCommand:@[@"openssl", @"dgst", algorithm, file]];
+        NSString* output = [NSTask runCommand:@[@"openssl", @"dgst", algorithm, file]];
         if (!output) return nil;
         
         NSRange lastSpaceRange = [output rangeOfString:@" " options:NSBackwardsSearch];
