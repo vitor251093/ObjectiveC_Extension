@@ -147,6 +147,7 @@ static NSString* bundleName;
 -(NSUInteger)runModalWithWindow
 {
     NSWindow* window = [NSModals modalsWindow];
+    NSInteger modalCode;
     
     if (window)
     {
@@ -158,30 +159,37 @@ static NSString* bundleName;
         
         [self performSelectorOnMainThread:@selector(BE_beginSheetModalForWindow:) withObject:window waitUntilDone:YES];
         
-        NSInteger modalCode = [NSApp runModalForWindow:[self window]];
-        NSInteger realModalCode = modalCode;
-        
-        switch (modalCode)
-        {
-            case NSAlertFirstButtonReturn:
-                realModalCode = NSAlertDefaultReturn;
-                break;
-                
-            case NSAlertSecondButtonReturn:
-                realModalCode = NSAlertOtherReturn;
-                break;
-                
-            default:
-                break;
-        }
+        modalCode = [NSApp runModalForWindow:[self window]];
         
         [NSApp performSelectorOnMainThread:@selector(endSheet:) withObject:[self window] waitUntilDone:YES];
         [[self window] performSelectorOnMainThread:@selector(orderOut:) withObject:self waitUntilDone:YES];
         
-        return realModalCode;
+        return modalCode;
+    }
+    else
+    {
+        modalCode = [self runModal];
     }
     
-    return [self runModal];
+    switch (modalCode)
+    {
+        case -1000: // NSModalResponseStop
+        case -1001: // NSModalResponseAbort
+        case 0:     // NSModalResponseCancel
+            
+            // Selecting last button, which is supposed to be the Cancel button, or a Ok button in a single button dialog
+            modalCode = NSAlertFirstButtonReturn + ((self.buttons.count > 0) ? (self.buttons.count - 1) : 0);
+            
+        case 1:     // NSModalResponseOK
+            
+            // Selecting first button, which is supposed to be the confirmation button, or a Ok button in a single button dialog
+            modalCode = NSAlertFirstButtonReturn;
+            
+        default:
+            break;
+    }
+    
+    return modalCode;
 }
 
 -(NSUInteger)runThreadSafeModal
@@ -314,17 +322,16 @@ static NSString* bundleName;
     
     NSUInteger alertResult = [self runThreadSafeModalWithAlert:^NSAlert *
     {
-        NSAlert *alert = [NSAlert alertWithMessageText:title != nil ? title : @""
-                                         defaultButton:defaultButton
-                                       alternateButton:alternateButton
-                                           otherButton:nil
-                             informativeTextWithFormat:@"%@",message];
-        
+        NSAlert* alert = [[NSAlert alloc] init];
+        [alert setMessageText:title != nil ? title : @""];
+        [alert addButtonWithTitle:defaultButton];
+        [alert addButtonWithTitle:alternateButton];
+        [alert setInformativeText:message];
         optionsForAlert(alert);
         return alert;
     }];
     
-    if (alertResult == NSAlertDefaultReturn) value = highlight;
+    if (alertResult == NSAlertFirstButtonReturn) value = highlight;
     return value;
 }
 
@@ -336,17 +343,17 @@ static NSString* bundleName;
     {
         alertResult = [self runThreadSafeModalWithAlert:^NSAlert *
         {
-            NSAlert *alert = [NSAlert alertWithMessageText:prompt
-                                             defaultButton:NSLocalizedString(@"OK",nil)
-                                           alternateButton:NSLocalizedString(@"Cancel",nil)
-                                               otherButton:nil
-                                 informativeTextWithFormat:@"%@",message];
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert setMessageText:prompt];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK",nil)];
+            [alert addButtonWithTitle:NSLocalizedString(@"Cancel",nil)];
+            [alert setInformativeText:message];
             optionsForAlert(alert);
             return alert;
         }];
     }
     
-    return alertResult == NSAlertDefaultReturn;
+    return alertResult == NSAlertFirstButtonReturn;
 }
 
 +(NSString*)inputDialogWithTitle:(NSString*)prompt message:(NSString*)message defaultValue:(NSString*)defaultValue
@@ -357,18 +364,18 @@ static NSString* bundleName;
     {
         if ([NSThread isMainThread])
         {
-            NSAlert *alert = [NSAlert alertWithMessageText:prompt
-                                             defaultButton:NSLocalizedString(@"OK",nil)
-                                           alternateButton:NSLocalizedString(@"Cancel",nil)
-                                               otherButton:nil
-                                 informativeTextWithFormat:@"%@",message];
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert setMessageText:prompt];
+            [alert addButtonWithTitle:NSLocalizedString(@"OK",nil)];
+            [alert addButtonWithTitle:NSLocalizedString(@"Cancel",nil)];
+            [alert setInformativeText:message];
             
             NSTextField *input = [[NSTextField alloc] initWithFrame:INPUT_DIALOG_MESSAGE_FIELD_FRAME];
             if (defaultValue) [input setStringValue:defaultValue];
             [alert setAccessoryView:input];
             [[alert window] setInitialFirstResponder:input];
             
-            if ([alert runModalWithWindow] == NSAlertDefaultReturn)
+            if ([alert runModalWithWindow] == NSAlertFirstButtonReturn)
             {
                 [input validateEditing];
                 result = [input stringValue];
@@ -380,18 +387,18 @@ static NSString* bundleName;
             __block NSString* value = nil;
             [NSThread dispatchBlockInMainQueue:^
              {
-                 NSAlert *alert = [NSAlert alertWithMessageText:prompt
-                                                  defaultButton:NSLocalizedString(@"OK",nil)
-                                                alternateButton:NSLocalizedString(@"Cancel",nil)
-                                                    otherButton:nil
-                                      informativeTextWithFormat:@"%@",message];
+                 NSAlert *alert = [[NSAlert alloc] init];
+                 [alert setMessageText:prompt];
+                 [alert addButtonWithTitle:NSLocalizedString(@"OK",nil)];
+                 [alert addButtonWithTitle:NSLocalizedString(@"Cancel",nil)];
+                 [alert setInformativeText:message];
                  
                  NSTextField *input = [[NSTextField alloc] initWithFrame:INPUT_DIALOG_MESSAGE_FIELD_FRAME];
                  if (defaultValue) [input setStringValue:defaultValue];
                  [alert setAccessoryView:input];
                  [[alert window] setInitialFirstResponder:input];
                  
-                 if ([alert runModalWithWindow] == NSAlertDefaultReturn)
+                 if ([alert runModalWithWindow] == NSAlertFirstButtonReturn)
                  {
                      [input validateEditing];
                      value = [input stringValue];
@@ -511,12 +518,10 @@ static NSAlert* _alertWithButtonOptions;
         
         [self runThreadSafeModalWithAlert:^NSAlert *
         {
-            _alertWithButtonOptions = [NSAlert alertWithMessageText:title
-                                                      defaultButton:NSLocalizedString(@"Cancel",nil)
-                                                    alternateButton:nil
-                                                        otherButton:nil
-                                          informativeTextWithFormat:@"%@",message];
-            
+            _alertWithButtonOptions = [[NSAlert alloc] init];
+            [_alertWithButtonOptions setMessageText:title];
+            [_alertWithButtonOptions addButtonWithTitle:NSLocalizedString(@"Cancel",nil)];
+            [_alertWithButtonOptions setInformativeText:message];
             [_alertWithButtonOptions setAccessoryView:sourcesView];
             return _alertWithButtonOptions;
         }];
