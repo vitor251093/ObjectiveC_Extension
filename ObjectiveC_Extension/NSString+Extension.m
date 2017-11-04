@@ -347,8 +347,8 @@
 -(NSString*)getFragmentAfter:(NSString*)before andBefore:(NSString*)after
 {
     NSRange range = [self rangeAfterString:before andBeforeString:after];
-    if (range.location != NSNotFound) return [self substringWithRange:range];
-    return nil;
+    if (range.location == NSNotFound) return nil;
+    return [self substringWithRange:range];
 }
 
 -(NSNumber*)initialIntegerValue
