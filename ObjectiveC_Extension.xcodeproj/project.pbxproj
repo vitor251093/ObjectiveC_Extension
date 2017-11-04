@@ -92,6 +92,8 @@
 		4E6C52941F7EB50300A187E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4E6C52961F7EB50300A187E9 /* Localizable.strings */; };
 		4EA035A81F9532E10059C2C5 /* NSKeyCaptureField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA035A61F9532E10059C2C5 /* NSKeyCaptureField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EA035A91F9532E10059C2C5 /* NSKeyCaptureField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA035A71F9532E10059C2C5 /* NSKeyCaptureField.m */; };
+		4EEBF4701FAE238F00CE31A0 /* NSMutableString+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EEBF46E1FAE238F00CE31A0 /* NSMutableString+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4EEBF4711FAE238F00CE31A0 /* NSMutableString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */; };
 		4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EF16B1D1F8E36A600A78DC0 /* NSModals.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EF16B201F8E36A600A78DC0 /* NSModals.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF16B1E1F8E36A600A78DC0 /* NSModals.m */; };
 /* End PBXBuildFile section */
@@ -199,6 +201,8 @@
 		4E6C529A1F7EB52A00A187E9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4EA035A61F9532E10059C2C5 /* NSKeyCaptureField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKeyCaptureField.h; sourceTree = "<group>"; };
 		4EA035A71F9532E10059C2C5 /* NSKeyCaptureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSKeyCaptureField.m; sourceTree = "<group>"; };
+		4EEBF46E1FAE238F00CE31A0 /* NSMutableString+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+Extension.h"; sourceTree = "<group>"; };
+		4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+Extension.m"; sourceTree = "<group>"; };
 		4EF16B1D1F8E36A600A78DC0 /* NSModals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSModals.h; sourceTree = "<group>"; };
 		4EF16B1E1F8E36A600A78DC0 /* NSModals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSModals.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -316,6 +320,8 @@
 				4E6C52081F7E911000A187E9 /* NSMutableAttributedString+Extension.m */,
 				4E6C52091F7E911000A187E9 /* NSMutableDictionary+Extension.h */,
 				4E6C520A1F7E911000A187E9 /* NSMutableDictionary+Extension.m */,
+				4EEBF46E1FAE238F00CE31A0 /* NSMutableString+Extension.h */,
+				4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */,
 				4E6C520B1F7E911000A187E9 /* NSMutableURLRequest+Extension.h */,
 				4E6C520C1F7E911000A187E9 /* NSMutableURLRequest+Extension.m */,
 				4E6C520D1F7E911000A187E9 /* NSRunningApplication+Extension.h */,
@@ -445,6 +451,7 @@
 				4E231F931F8191DD00148A30 /* IODeviceSimulator.h in Headers */,
 				4E3BD7031FAD2FCF00AF8418 /* VMMUUID.h in Headers */,
 				4EA035A81F9532E10059C2C5 /* NSKeyCaptureField.h in Headers */,
+				4EEBF4701FAE238F00CE31A0 /* NSMutableString+Extension.h in Headers */,
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* IOUsageKeycode.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
@@ -584,6 +591,7 @@
 				4E6C51ED1F7E90A300A187E9 /* IODeviceObserver.m in Sources */,
 				4E6C52421F7E911000A187E9 /* NSTask+Extension.m in Sources */,
 				4E231F941F8191DD00148A30 /* IODeviceSimulator.m in Sources */,
+				4EEBF4711FAE238F00CE31A0 /* NSMutableString+Extension.m in Sources */,
 				4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */,
 				4E6C51EF1F7E90A300A187E9 /* IOUsageKeycode.m in Sources */,
 				4E6C52401F7E911000A187E9 /* NSString+Extension.m in Sources */,
