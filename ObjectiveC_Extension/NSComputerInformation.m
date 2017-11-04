@@ -185,7 +185,7 @@ static NSMutableDictionary* _macOsCompatibility;
             {
                 localVendorID = [localVendor getFragmentAfter:@"(" andBefore:@")"];
             }
-            else if ([localVendor isEqualToString:@"Intel"])
+            else if ([localVendor.uppercaseString isEqualToString:@"INTEL"])
             {
                 localVendorID = @"0x8086";
             }
