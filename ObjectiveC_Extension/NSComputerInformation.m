@@ -178,10 +178,17 @@ static NSMutableDictionary* _macOsCompatibility;
     
     if (!localVendorID)
     {
-        localVendorID = localVideoCard[VENDOR_KEY]; // eg. NVIDIA (0x10de)
-        if (localVendorID && [localVendorID contains:@"("])
+        NSString* localVendor = localVideoCard[VENDOR_KEY]; // eg. NVIDIA (0x10de)
+        if (localVendor)
         {
-            localVendorID = [localVendorID getFragmentAfter:@"(" andBefore:@")"];
+            if ([localVendor contains:@"("])
+            {
+                localVendorID = [localVendor getFragmentAfter:@"(" andBefore:@")"];
+            }
+            else if ([localVendor isEqualToString:@"Intel"])
+            {
+                localVendorID = @"0x8086";
+            }
         }
     }
     
