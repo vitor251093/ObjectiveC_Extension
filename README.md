@@ -556,6 +556,8 @@ From macOS 10.11 and on, the `setTitle:` function does nothing to `NSOpenPanel`'
 ### [(NSString*)string componentsMatchingWithRegex:regex] (macOS 10.6)
 This is the dirtiest hack of them all. Since `NSRegularExpression` was introduced in macOS 10.7, the only method that I found to do that (since old macOS 10.6 frameworks do not compile anymore) is using Python. In macOS 10.6 only, that function will create a temporary file with `string` and a temporary python script which should parse string and return the components matching with `regex`. It's very slow, and should not be used multiple times in sequence (nor simultaneously!). At least it works using the same kind of regex that `NSRegularExpression` accepts... please, forgive me.
 
+I tried using RegexKitLite to give macOS 10.6 support (https://github.com/inquisitiveSoft/RegexKitLite), however it has some weird bugs when you use it multiple times, even cleaning its cache.
+
 ### [NSNotificationUtility showNotificationMessage:message withTitle:title withUserInfo:info withIcon:icon withActionButtonText:actionButton] (~ macOS 10.7)
 Since `NSUserNotification` was only introduced in macOS 10.8, macOS 10.7 and below require a different approach. In those systems, `NSNotificationUtility` shows a simple `NSAlert` instead of the notification. A better approach for the future would be to add Growl integration instead.
 
