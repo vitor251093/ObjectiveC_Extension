@@ -1,5 +1,5 @@
 //
-//  FTPManager.m
+//  NKFTPManager.h
 //  FTPManager
 //
 //  Created by Nico Kreipke on 11.08.11.
@@ -196,7 +196,7 @@ typedef enum {
 /* I do not recommend to use this delegate, because the methods will slow down
  * the process. On top of this they may have some threading issues that could
  * be pretty confusing. Use an NSTimer and [manager progress] instead. */
-@protocol NSFTPManagerDelegate <NSObject>
+@protocol NKFTPManagerDelegate <NSObject>
 @optional
 - (void)ftpManagerUploadProgressDidChange:(NSDictionary *)processInfo;
 // Returns information about the current upload.
@@ -217,7 +217,7 @@ typedef enum {
 
 #pragma mark -
 
-@interface NSFTPManager : NSObject <NSStreamDelegate> {
+@interface NKFTPManager : NSObject <NSStreamDelegate> {
     CFRunLoopRef currentRunLoop;
     
     _FMCurrentAction action;
@@ -256,7 +256,7 @@ typedef enum {
 @property (strong) NSMutableData *directoryListingData;
 
 
-@property (assign) id<NSFTPManagerDelegate>delegate;
+@property (assign) id<NKFTPManagerDelegate>delegate;
 
 #pragma mark - Public Methods
 

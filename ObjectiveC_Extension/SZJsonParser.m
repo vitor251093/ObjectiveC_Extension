@@ -8,7 +8,7 @@
 
 #import "SZJsonParser.h"
 
-#import "NSLogUtility.h"
+#import "VMMLogUtility.h"
 
 @interface SZJsonParser ()
 

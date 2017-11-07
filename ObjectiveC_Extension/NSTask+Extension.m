@@ -12,7 +12,7 @@
 #import "NSThread+Extension.h"
 #import "NSFileManager+Extension.h"
 
-#import "NSLogUtility.h"
+#import "VMMLogUtility.h"
 
 @implementation NSTask (VMMTask)
 

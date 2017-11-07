@@ -1,7 +1,7 @@
 //http://nkreipke.wordpress.com/2011/08/11/ftpmanager-eine-objective-c-klasse-zum-verwenden-von-ftp/
 
 //
-//  FTPManager.m
+//  NKFTPManager.m
 //  FTPManager
 //
 //  Created by Nico Kreipke on 11.08.11.
@@ -91,9 +91,9 @@
 //     - kCFFTPResourceName entry is now converted into UTF8 encoding to cope with Non-ASCII characters
 //
 
-#import "NSFTPManager.h"
+#import "NKFTPManager.h"
 
-#import "NSLogUtility.h"
+#import "VMMLogUtility.h"
 
 #define And(val1, val2) { val1 = val1 && val2; }
 #define AndV(val1, val2, message) { And(val1, val2); if (!val2) NSDebugLog(message); }
@@ -138,7 +138,7 @@ result;})
 
 @end
 
-@interface NSFTPManager ()
+@interface NKFTPManager ()
 
 @property (nonatomic, readonly) uint8_t *         buffer;
 @property (nonatomic, assign)   size_t            bufferOffset;
@@ -148,7 +148,7 @@ result;})
 - (BOOL) _ftpActionForServer:(FMServer*)server command:(NSString*)fullCommand;
 @end
 
-@implementation NSFTPManager
+@implementation NKFTPManager
 
 @synthesize bufferOffset    = _bufferOffset;
 @synthesize bufferLimit     = _bufferLimit;

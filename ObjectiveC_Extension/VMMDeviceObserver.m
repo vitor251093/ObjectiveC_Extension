@@ -10,7 +10,7 @@
 
 #import "NSMutableArray+Extension.h"
 
-#import "NSLogUtility.h"
+#import "VMMLogUtility.h"
 
 @implementation VMMDeviceObserver
 

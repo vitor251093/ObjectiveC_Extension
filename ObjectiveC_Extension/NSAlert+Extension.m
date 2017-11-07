@@ -13,7 +13,7 @@
 #import "NSThread+Extension.h"
 #import "NSMutableAttributedString+Extension.h"
 
-#import "NSLogUtility.h"
+#import "VMMLogUtility.h"
 #import "VMMModals.h"
 
 #define ALERT_WITH_ATTRIBUTED_MESSAGE_PARAGRAPH_SPACING  2.0f

@@ -1,5 +1,5 @@
 //
-//  NSLogUtility.h
+//  VMMLogUtility.h
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 31/07/2017.

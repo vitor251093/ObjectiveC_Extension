@@ -75,9 +75,9 @@
 		4E6C524C1F7E911000A187E9 /* NSView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C521E1F7E911000A187E9 /* NSView+Extension.m */; };
 		4E6C525D1F7E944F00A187E9 /* SZJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C525B1F7E944F00A187E9 /* SZJsonParser.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		4E6C525E1F7E944F00A187E9 /* SZJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C525C1F7E944F00A187E9 /* SZJsonParser.m */; };
-		4E6C52681F7E953A00A187E9 /* NSFTPManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52611F7E953A00A187E9 /* NSFTPManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4E6C52691F7E953A00A187E9 /* NSFTPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52621F7E953A00A187E9 /* NSFTPManager.m */; };
-		4E6C526A1F7E953A00A187E9 /* NSLogUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52631F7E953A00A187E9 /* NSLogUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E6C52681F7E953A00A187E9 /* NKFTPManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52611F7E953A00A187E9 /* NKFTPManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E6C52691F7E953A00A187E9 /* NKFTPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52621F7E953A00A187E9 /* NKFTPManager.m */; };
+		4E6C526A1F7E953A00A187E9 /* VMMLogUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C526B1F7E953A00A187E9 /* NSNotificationUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52641F7E953A00A187E9 /* NSNotificationUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C526C1F7E953A00A187E9 /* NSNotificationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */; };
 		4E6C526D1F7E953A00A187E9 /* VMMVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52661F7E953A00A187E9 /* VMMVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -182,9 +182,9 @@
 		4E6C521E1F7E911000A187E9 /* NSView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+Extension.m"; sourceTree = "<group>"; };
 		4E6C525B1F7E944F00A187E9 /* SZJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZJsonParser.h; sourceTree = "<group>"; };
 		4E6C525C1F7E944F00A187E9 /* SZJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZJsonParser.m; sourceTree = "<group>"; };
-		4E6C52611F7E953A00A187E9 /* NSFTPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSFTPManager.h; sourceTree = "<group>"; };
-		4E6C52621F7E953A00A187E9 /* NSFTPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSFTPManager.m; sourceTree = "<group>"; };
-		4E6C52631F7E953A00A187E9 /* NSLogUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSLogUtility.h; sourceTree = "<group>"; };
+		4E6C52611F7E953A00A187E9 /* NKFTPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKFTPManager.h; sourceTree = "<group>"; };
+		4E6C52621F7E953A00A187E9 /* NKFTPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKFTPManager.m; sourceTree = "<group>"; };
+		4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMLogUtility.h; sourceTree = "<group>"; };
 		4E6C52641F7E953A00A187E9 /* NSNotificationUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNotificationUtility.h; sourceTree = "<group>"; };
 		4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNotificationUtility.m; sourceTree = "<group>"; };
 		4E6C52661F7E953A00A187E9 /* VMMVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMVersion.h; sourceTree = "<group>"; };
@@ -366,9 +366,9 @@
 			children = (
 				4E6C526F1F7E954D00A187E9 /* NSComputerInformation.h */,
 				4E6C52701F7E954D00A187E9 /* NSComputerInformation.m */,
-				4E6C52611F7E953A00A187E9 /* NSFTPManager.h */,
-				4E6C52621F7E953A00A187E9 /* NSFTPManager.m */,
-				4E6C52631F7E953A00A187E9 /* NSLogUtility.h */,
+				4E6C52611F7E953A00A187E9 /* NKFTPManager.h */,
+				4E6C52621F7E953A00A187E9 /* NKFTPManager.m */,
+				4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */,
 				4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */,
 				4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */,
 				4E6C52641F7E953A00A187E9 /* NSNotificationUtility.h */,
@@ -440,11 +440,11 @@
 				4E6C52411F7E911000A187E9 /* NSTask+Extension.h in Headers */,
 				4E6C51EC1F7E90A300A187E9 /* VMMDeviceObserver.h in Headers */,
 				4E6C523F1F7E911000A187E9 /* NSString+Extension.h in Headers */,
-				4E6C52681F7E953A00A187E9 /* NSFTPManager.h in Headers */,
+				4E6C52681F7E953A00A187E9 /* NKFTPManager.h in Headers */,
 				4E6C52211F7E911000A187E9 /* NSArray+Extension.h in Headers */,
 				4E6C52271F7E911000A187E9 /* NSData+Extension.h in Headers */,
 				4E6C52331F7E911000A187E9 /* NSMutableArray+Extension.h in Headers */,
-				4E6C526A1F7E953A00A187E9 /* NSLogUtility.h in Headers */,
+				4E6C526A1F7E953A00A187E9 /* VMMLogUtility.h in Headers */,
 				4E6C52311F7E911000A187E9 /* NSMenuItem+Extension.h in Headers */,
 				4E6C522B1F7E911000A187E9 /* NSFileManager+Extension.h in Headers */,
 				4E6C52371F7E911000A187E9 /* NSMutableDictionary+Extension.h in Headers */,
@@ -592,7 +592,7 @@
 				4E6C52341F7E911000A187E9 /* NSMutableArray+Extension.m in Sources */,
 				4E3771071FA7A57C00E2F511 /* VMMWebView.m in Sources */,
 				4E6C52321F7E911000A187E9 /* NSMenuItem+Extension.m in Sources */,
-				4E6C52691F7E953A00A187E9 /* NSFTPManager.m in Sources */,
+				4E6C52691F7E953A00A187E9 /* NKFTPManager.m in Sources */,
 				4E6C52721F7E954D00A187E9 /* NSComputerInformation.m in Sources */,
 				4E6C52361F7E911000A187E9 /* NSMutableAttributedString+Extension.m in Sources */,
 				4E6C52221F7E911000A187E9 /* NSArray+Extension.m in Sources */,

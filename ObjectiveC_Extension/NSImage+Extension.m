@@ -15,7 +15,7 @@
 #import "NSScreen+Extension.h"
 
 #import "NSComputerInformation.h"
-#import "NSLogUtility.h"
+#import "VMMLogUtility.h"
 
 #define SMALLER_ICONSET_NEEDED_SIZE 16
 #define BIGGEST_ICONSET_NEEDED_SIZE 1024
