@@ -8,7 +8,7 @@
 
 #import "NSKeyCaptureField.h"
 
-#import "IOUsageKeycode.h"
+#import "VMMUsageKeycode.h"
 
 static NSKeyCaptureField* _activeKeyCaptureField;
 
@@ -91,7 +91,7 @@ static NSKeyCaptureField* _activeKeyCaptureField;
     }
     
     _keyUsageKeycode = keyUsageKeycode;
-    NSString* keyName = [IOUsageKeycode nameOfUsageKeycode:keyUsageKeycode];
+    NSString* keyName = [VMMUsageKeycode nameOfUsageKeycode:keyUsageKeycode];
     [self setStringValue:keyName ? keyName : [NSString stringWithFormat:@"Unknown Key (%d)",keyUsageKeycode]];
 }
 

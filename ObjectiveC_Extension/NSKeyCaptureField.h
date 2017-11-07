@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "IODeviceObserver.h"
-#import "IOUsageKeycode.h"
+#import "VMMUsageKeycode.h"
 
 @protocol NSKeyCaptureFieldDelegate <NSObject>
 -(void)keyCaptureField:(NSTextField*)field didChangedKeyUsageKeycode:(uint32_t)keyUsage;

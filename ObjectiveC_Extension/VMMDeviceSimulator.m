@@ -1,5 +1,5 @@
 //
-//  IODeviceSimulator.m
+//  VMMDeviceSimulator.m
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 01/10/2017.
@@ -9,9 +9,9 @@
 //  https://stackoverflow.com/questions/28485257/objective-c-mac-os-x-simulate-a-mouse-click-event-onto-a-specific-applicatio
 //
 
-#import "IODeviceSimulator.h"
+#import "VMMDeviceSimulator.h"
 
-@implementation IODeviceSimulator
+@implementation VMMDeviceSimulator
 
 +(void)simulateCursorClickAtScreenPoint:(CGPoint)clickPoint
 {

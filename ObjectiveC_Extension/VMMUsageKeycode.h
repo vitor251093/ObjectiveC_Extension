@@ -1,5 +1,5 @@
 //
-//  IOUsageKeycode.h
+//  VMMUsageKeycode.h
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 09/08/17.
@@ -14,7 +14,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface IOUsageKeycode : NSObject
+@interface VMMUsageKeycode : NSObject
 
 +(NSArray*)allUsageNames;
 

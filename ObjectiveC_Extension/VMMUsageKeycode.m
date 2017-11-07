@@ -1,14 +1,14 @@
 //
-//  IOUsageKeycode.m
+//  VMMUsageKeycode.m
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 09/08/17.
 //  Copyright © 2017 Vitor Marques de Miranda. All rights reserved.
 //
 
-#import "IOUsageKeycode.h"
+#import "VMMUsageKeycode.h"
 
-@implementation IOUsageKeycode
+@implementation VMMUsageKeycode
 
 NSDictionary* _usageNamesByKeycode;
 
