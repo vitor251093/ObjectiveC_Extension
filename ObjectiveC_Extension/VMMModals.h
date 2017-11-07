@@ -1,5 +1,5 @@
 //
-//  NSModals.h
+//  VMMModals.h
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 11/10/2017.
@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSModals : NSObject
+@interface VMMModals : NSObject
 
 +(NSWindow*)modalsWindow;
 

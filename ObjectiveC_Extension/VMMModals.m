@@ -1,14 +1,14 @@
 //
-//  NSModals.m
+//  VMMModals.m
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 11/10/2017.
 //  Copyright © 2017 VitorMM. All rights reserved.
 //
 
-#import "NSModals.h"
+#import "VMMModals.h"
 
-@implementation NSModals
+@implementation VMMModals
 
 static NSWindow* _alertsWindow;
 

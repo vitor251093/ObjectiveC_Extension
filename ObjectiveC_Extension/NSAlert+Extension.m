@@ -14,7 +14,7 @@
 #import "NSMutableAttributedString+Extension.h"
 
 #import "NSLogUtility.h"
-#import "NSModals.h"
+#import "VMMModals.h"
 
 #define ALERT_WITH_ATTRIBUTED_MESSAGE_PARAGRAPH_SPACING  2.0f
 #define ALERT_WITH_ATTRIBUTED_MESSAGE_WIDTH_MARGIN       50
@@ -146,7 +146,7 @@ static NSString* bundleName;
 }
 -(NSUInteger)runModalWithWindow
 {
-    NSWindow* window = [NSModals modalsWindow];
+    NSWindow* window = [VMMModals modalsWindow];
     NSInteger modalCode;
     
     if (window)

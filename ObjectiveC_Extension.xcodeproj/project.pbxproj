@@ -96,8 +96,8 @@
 		4EA035A91F9532E10059C2C5 /* VMMKeyCaptureField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */; };
 		4EEBF4701FAE238F00CE31A0 /* NSMutableString+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EEBF46E1FAE238F00CE31A0 /* NSMutableString+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EEBF4711FAE238F00CE31A0 /* NSMutableString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */; };
-		4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EF16B1D1F8E36A600A78DC0 /* NSModals.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4EF16B201F8E36A600A78DC0 /* NSModals.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF16B1E1F8E36A600A78DC0 /* NSModals.m */; };
+		4EF16B1F1F8E36A600A78DC0 /* VMMModals.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4EF16B201F8E36A600A78DC0 /* VMMModals.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -207,8 +207,8 @@
 		4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMKeyCaptureField.m; sourceTree = "<group>"; };
 		4EEBF46E1FAE238F00CE31A0 /* NSMutableString+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+Extension.h"; sourceTree = "<group>"; };
 		4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+Extension.m"; sourceTree = "<group>"; };
-		4EF16B1D1F8E36A600A78DC0 /* NSModals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSModals.h; sourceTree = "<group>"; };
-		4EF16B1E1F8E36A600A78DC0 /* NSModals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSModals.m; sourceTree = "<group>"; };
+		4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMModals.h; sourceTree = "<group>"; };
+		4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMModals.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -369,8 +369,8 @@
 				4E6C52611F7E953A00A187E9 /* NSFTPManager.h */,
 				4E6C52621F7E953A00A187E9 /* NSFTPManager.m */,
 				4E6C52631F7E953A00A187E9 /* NSLogUtility.h */,
-				4EF16B1D1F8E36A600A78DC0 /* NSModals.h */,
-				4EF16B1E1F8E36A600A78DC0 /* NSModals.m */,
+				4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */,
+				4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */,
 				4E6C52641F7E953A00A187E9 /* NSNotificationUtility.h */,
 				4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */,
 				4E6C52661F7E953A00A187E9 /* VMMVersion.h */,
@@ -453,7 +453,7 @@
 				4E6C523B1F7E911000A187E9 /* NSRunningApplication+Extension.h in Headers */,
 				4E6C526B1F7E953A00A187E9 /* NSNotificationUtility.h in Headers */,
 				4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */,
-				4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */,
+				4EF16B1F1F8E36A600A78DC0 /* VMMModals.h in Headers */,
 				4E231F931F8191DD00148A30 /* VMMDeviceSimulator.h in Headers */,
 				4E3BD7031FAD2FCF00AF8418 /* VMMUUID.h in Headers */,
 				4EA035A81F9532E10059C2C5 /* VMMKeyCaptureField.h in Headers */,
@@ -577,7 +577,7 @@
 				4E6C526C1F7E953A00A187E9 /* NSNotificationUtility.m in Sources */,
 				4E3BD7041FAD2FCF00AF8418 /* VMMUUID.m in Sources */,
 				4E6C52261F7E911000A187E9 /* NSColor+Extension.m in Sources */,
-				4EF16B201F8E36A600A78DC0 /* NSModals.m in Sources */,
+				4EF16B201F8E36A600A78DC0 /* VMMModals.m in Sources */,
 				4E6C523C1F7E911000A187E9 /* NSRunningApplication+Extension.m in Sources */,
 				4E6C522C1F7E911000A187E9 /* NSFileManager+Extension.m in Sources */,
 				4E6C52381F7E911000A187E9 /* NSMutableDictionary+Extension.m in Sources */,
