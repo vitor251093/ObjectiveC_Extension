@@ -14,21 +14,6 @@
 #import "NSComputerInformation.h"
 
 @implementation VMMWebViewNavigationBar
--(void)setBackgroundColor:(NSColor*)color
-{
-    _backgroundColor = color;
-    [self needsDisplay];
-}
--(void)drawRect:(NSRect)dirtyRect
-{
-    if (_backgroundColor)
-    {
-        [_backgroundColor setFill];
-        NSRectFillUsingOperation(dirtyRect, NSCompositeSourceOver);
-    }
-    
-    [super drawRect:dirtyRect];
-}
 @end
 
 @implementation VMMWebView
@@ -204,10 +189,41 @@
     [_navigationBar.refreshButton setAutoresizingMask:NSViewMaxYMargin|NSViewMinYMargin|NSViewMinXMargin];
     [_navigationBar.refreshButton setFrame:NSMakeRect(fullWidth - navigationBarHeight, 0, navigationBarHeight, navigationBarHeight)];
 }
+-(void)initializeErrorLabel
+{
+    _webViewErrorLabel = [[NSTextField alloc] init];
+    
+    [self addSubview:_webViewErrorLabel];
+    [_webViewErrorLabel setAutoresizingMask:NSViewMaxYMargin|NSViewMinYMargin|NSViewWidthSizable];
+    
+    NSFont* webViewTextFont = self.webViewErrorLabelTextFont;
+    if (webViewTextFont)
+    {
+        webViewTextFont = [NSFont fontWithDescriptor:webViewTextFont.fontDescriptor size:self.webViewErrorLabelTextSize];
+    }
+    else
+    {
+        webViewTextFont = [NSFont systemFontOfSize:self.webViewErrorLabelTextSize];
+    }
+    [_webViewErrorLabel setFont:webViewTextFont];
+    [_webViewErrorLabel setEditable:NO];
+    [_webViewErrorLabel setBordered:NO];
+    [_webViewErrorLabel setSelectable:NO];
+    [_webViewErrorLabel setAlignment:IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR ? NSTextAlignmentCenter : NSCenterTextAlignment];
+    [_webViewErrorLabel setBackgroundColor:[NSColor clearColor]];
+    [_webViewErrorLabel setTextColor:[NSColor whiteColor]];
+    [self setErrorLabelHidden:YES];
+}
 -(void)reloadWebViewIfNeeded
 {
     @synchronized(_webView)
     {
+        if (_webViewErrorLabel)
+        {
+            [_webViewErrorLabel setStringValue:@""];
+            [self setErrorLabelHidden:YES];
+        }
+        
         BOOL hasNavigationBar = self.hasNavigationBar;
         
         CGFloat width = self.frame.size.width;
@@ -222,6 +238,11 @@
         if (!_webView)
         {
             [self initializeWebView];
+        }
+        
+        if (!_webViewErrorLabel)
+        {
+            [self initializeErrorLabel];
         }
         
         CGFloat webViewHeight = self.frame.size.height - navigationBarHeight;
@@ -239,6 +260,20 @@
 -(IBAction)refreshButtonPressed:(id)sender
 {
     [self loadURL:_lastAccessedUrl];
+}
+-(void)setErrorLabelHidden:(BOOL)isHidden
+{
+    _webViewErrorLabel.hidden = isHidden;
+    _webView.hidden = !isHidden;
+    
+    if (isHidden)
+    {
+        [self setBackgroundColor:[NSColor clearColor]];
+    }
+    else
+    {
+        [self setBackgroundColor:[NSColor blackColor]];
+    }
 }
 
 // Private functions that may be overrided
@@ -274,40 +309,20 @@
 {
     return 30.0;
 }
+-(NSFont*)webViewErrorLabelTextFont
+{
+    return [NSFont boldSystemFontOfSize:self.webViewErrorLabelTextSize];
+}
+-(CGFloat)webViewErrorLabelTextSize
+{
+    return 25.0;
+}
 -(BOOL)shouldLoadUrl:(NSURL*)urlToOpenUrl withHttpBody:(NSData*)httpBody
 {
     return YES;
 }
--(NSString*)errorHTMLWithMessage:(NSString*)message
-{
-    // TODO: The text is not centered since a Sierra update
-    NSString* result;
-    
-    @autoreleasepool
-    {
-        // BODY related values
-        NSString* bodyStyle = @"margin: 0; padding: 0; height: 100%%; width: 100%%;";
-        NSString* avoidRightClickVar = @"oncontextmenu=\"return false;\"";
-        NSString* openBody = [NSString stringWithFormat:@"<BODY bgcolor=\"black\" style=\"%@\" %@>",bodyStyle,avoidRightClickVar];
-        
-        // DIV related values
-        NSString* fontStyleVars = @"color:#FFFFFF; font-family: 'Helvetica Neue', Helvetica;";
-        NSString* centeredStyleVars = @"position: absolute; top: 50%%; left: 50%%; transform: translateX(-50%%) translateY(-50%%); -webkit-transform: translate(-50%%, -50%%); -ms-transform: translateX(-50%%) translateY(-50%%); -webkit-transform: translateX(-50%%) translateY(-50%%); -moz-transform: translateX(-50%%) translateY(-50%%); -o-transform: translateX(-50%%) translateY(-50%%);";
-        NSString* unselectableStyleVars = @"-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;";
-        NSString* div = [NSString stringWithFormat:@"<div style=\"%@ %@ %@\">%@</div>",unselectableStyleVars,centeredStyleVars,fontStyleVars,message];
-        
-        result = [NSString stringWithFormat:@"<HTML><HEAD></HEAD>%@<center>%@</center></BODY></HTML>",openBody,div];
-    }
-    
-    return result;
-}
 
 // Public functions
--(void)showErrorMessage:(NSString*)errorMessage
-{
-    [self reloadWebViewIfNeeded];
-    [self loadHTMLString:[self errorHTMLWithMessage:[errorMessage uppercaseString]]];
-}
 -(BOOL)loadURL:(NSURL*)url
 {
     if (!_usingWkWebView && [url.absoluteString contains:@"://www.youtube.com/v/"])
@@ -361,6 +376,16 @@
     {
         [((WebView*)self.webView).mainFrame loadHTMLString:htmlPage baseURL:[NSURL URLWithString:@"about:blank"]];
     }
+}
+-(void)showErrorMessage:(NSString*)errorMessage
+{
+    [self loadHTMLString:@"<HTML><BODY bgcolor=\"black\" style=\"margin: 0; padding: 0; height: 100%%; width: 100%%;\" oncontextmenu=\"return false;\"></BODY></HTML>"];
+    
+    [_webViewErrorLabel setStringValue:[errorMessage uppercaseString]];
+    CGFloat textHeight = _webViewErrorLabel.attributedStringValue.size.height;
+    
+    [_webViewErrorLabel setFrame:NSMakeRect(0, (self.frame.size.height - textHeight)/2, self.frame.size.width, textHeight)];
+    [self setErrorLabelHidden:NO];
 }
 -(void)loadEmptyPage
 {

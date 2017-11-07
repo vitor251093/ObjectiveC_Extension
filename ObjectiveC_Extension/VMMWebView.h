@@ -8,19 +8,20 @@
 
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
+#import "VMMView.h"
 
-@interface VMMWebViewNavigationBar : NSView
-@property (nonatomic, strong) NSColor* backgroundColor;
+@interface VMMWebViewNavigationBar : VMMView
 @property (nonatomic, strong) NSTextField* addressBarField;
 @property (nonatomic, strong) NSButton* refreshButton;
 @end
 
-@interface VMMWebView : NSView
+@interface VMMWebView : VMMView
 
 @property (nonatomic) BOOL urlLoaded;
 @property (nonatomic) BOOL usingWkWebView;
 @property (nonatomic, strong) NSView* webView;
 @property (nonatomic, strong) VMMWebViewNavigationBar* navigationBar;
+@property (nonatomic, strong) NSTextField* webViewErrorLabel;
 
 @property (nonatomic, strong) NSURL* lastAccessedUrl;
 
