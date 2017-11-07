@@ -1,18 +1,18 @@
 //
-//  NSKeyCaptureField.m
+//  VMMKeyCaptureField.m
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 18/08/17.
 //  Copyright © 2017 Vitor Marques de Miranda. All rights reserved.
 //
 
-#import "NSKeyCaptureField.h"
+#import "VMMKeyCaptureField.h"
 
 #import "VMMUsageKeycode.h"
 
-static NSKeyCaptureField* _activeKeyCaptureField;
+static VMMKeyCaptureField* _activeKeyCaptureField;
 
-@implementation NSKeyCaptureField
+@implementation VMMKeyCaptureField
 
 -(void)awakeFromNib
 {

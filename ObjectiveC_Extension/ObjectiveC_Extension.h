@@ -54,12 +54,12 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 #import <ObjectiveC_Extension/NSFTPManager.h>
 #import <ObjectiveC_Extension/NSLogUtility.h>
 #import <ObjectiveC_Extension/NSNotificationUtility.h>
-#import <ObjectiveC_Extension/NSVersion.h>
+#import <ObjectiveC_Extension/VMMVersion.h>
 #import <ObjectiveC_Extension/NSModals.h>
 #import <ObjectiveC_Extension/VMMUUID.h>
 
 // Views
-#import <ObjectiveC_Extension/NSKeyCaptureField.h>
+#import <ObjectiveC_Extension/VMMKeyCaptureField.h>
 #import <ObjectiveC_Extension/VMMView.h>
 #import <ObjectiveC_Extension/VMMWebView.h>
 

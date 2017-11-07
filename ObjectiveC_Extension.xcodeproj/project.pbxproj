@@ -80,8 +80,8 @@
 		4E6C526A1F7E953A00A187E9 /* NSLogUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52631F7E953A00A187E9 /* NSLogUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C526B1F7E953A00A187E9 /* NSNotificationUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52641F7E953A00A187E9 /* NSNotificationUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C526C1F7E953A00A187E9 /* NSNotificationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */; };
-		4E6C526D1F7E953A00A187E9 /* NSVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52661F7E953A00A187E9 /* NSVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4E6C526E1F7E953A00A187E9 /* NSVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52671F7E953A00A187E9 /* NSVersion.m */; };
+		4E6C526D1F7E953A00A187E9 /* VMMVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52661F7E953A00A187E9 /* VMMVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E6C526E1F7E953A00A187E9 /* VMMVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52671F7E953A00A187E9 /* VMMVersion.m */; };
 		4E6C52711F7E954D00A187E9 /* NSComputerInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C526F1F7E954D00A187E9 /* NSComputerInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C52721F7E954D00A187E9 /* NSComputerInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52701F7E954D00A187E9 /* NSComputerInformation.m */; };
 		4E6C52751F7E9D6400A187E9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C52741F7E9D6400A187E9 /* Cocoa.framework */; };
@@ -92,8 +92,8 @@
 		4E6C52881F7EA42700A187E9 /* NSArrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52851F7EA42700A187E9 /* NSArrayTests.m */; };
 		4E6C52891F7EA42700A187E9 /* NSStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52861F7EA42700A187E9 /* NSStringTests.m */; };
 		4E6C52941F7EB50300A187E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4E6C52961F7EB50300A187E9 /* Localizable.strings */; };
-		4EA035A81F9532E10059C2C5 /* NSKeyCaptureField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA035A61F9532E10059C2C5 /* NSKeyCaptureField.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4EA035A91F9532E10059C2C5 /* NSKeyCaptureField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA035A71F9532E10059C2C5 /* NSKeyCaptureField.m */; };
+		4EA035A81F9532E10059C2C5 /* VMMKeyCaptureField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4EA035A91F9532E10059C2C5 /* VMMKeyCaptureField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */; };
 		4EEBF4701FAE238F00CE31A0 /* NSMutableString+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EEBF46E1FAE238F00CE31A0 /* NSMutableString+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EEBF4711FAE238F00CE31A0 /* NSMutableString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */; };
 		4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EF16B1D1F8E36A600A78DC0 /* NSModals.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -187,8 +187,8 @@
 		4E6C52631F7E953A00A187E9 /* NSLogUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSLogUtility.h; sourceTree = "<group>"; };
 		4E6C52641F7E953A00A187E9 /* NSNotificationUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNotificationUtility.h; sourceTree = "<group>"; };
 		4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNotificationUtility.m; sourceTree = "<group>"; };
-		4E6C52661F7E953A00A187E9 /* NSVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVersion.h; sourceTree = "<group>"; };
-		4E6C52671F7E953A00A187E9 /* NSVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVersion.m; sourceTree = "<group>"; };
+		4E6C52661F7E953A00A187E9 /* VMMVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMVersion.h; sourceTree = "<group>"; };
+		4E6C52671F7E953A00A187E9 /* VMMVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMVersion.m; sourceTree = "<group>"; };
 		4E6C526F1F7E954D00A187E9 /* NSComputerInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSComputerInformation.h; sourceTree = "<group>"; };
 		4E6C52701F7E954D00A187E9 /* NSComputerInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSComputerInformation.m; sourceTree = "<group>"; };
 		4E6C52741F7E9D6400A187E9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -203,8 +203,8 @@
 		4E6C52981F7EB52100A187E9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4E6C52991F7EB52500A187E9 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		4E6C529A1F7EB52A00A187E9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		4EA035A61F9532E10059C2C5 /* NSKeyCaptureField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKeyCaptureField.h; sourceTree = "<group>"; };
-		4EA035A71F9532E10059C2C5 /* NSKeyCaptureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSKeyCaptureField.m; sourceTree = "<group>"; };
+		4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMKeyCaptureField.h; sourceTree = "<group>"; };
+		4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMKeyCaptureField.m; sourceTree = "<group>"; };
 		4EEBF46E1FAE238F00CE31A0 /* NSMutableString+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+Extension.h"; sourceTree = "<group>"; };
 		4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+Extension.m"; sourceTree = "<group>"; };
 		4EF16B1D1F8E36A600A78DC0 /* NSModals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSModals.h; sourceTree = "<group>"; };
@@ -373,8 +373,8 @@
 				4EF16B1E1F8E36A600A78DC0 /* NSModals.m */,
 				4E6C52641F7E953A00A187E9 /* NSNotificationUtility.h */,
 				4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */,
-				4E6C52661F7E953A00A187E9 /* NSVersion.h */,
-				4E6C52671F7E953A00A187E9 /* NSVersion.m */,
+				4E6C52661F7E953A00A187E9 /* VMMVersion.h */,
+				4E6C52671F7E953A00A187E9 /* VMMVersion.m */,
 				4E3BD7011FAD2FCF00AF8418 /* VMMUUID.h */,
 				4E3BD7021FAD2FCF00AF8418 /* VMMUUID.m */,
 			);
@@ -405,12 +405,12 @@
 		4EA035A51F9532C80059C2C5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4EA035A61F9532E10059C2C5 /* NSKeyCaptureField.h */,
-				4EA035A71F9532E10059C2C5 /* NSKeyCaptureField.m */,
 				4E1181571FB200E800D8029F /* VMMView.h */,
 				4E1181581FB200E800D8029F /* VMMView.m */,
 				4E3771041FA7A57C00E2F511 /* VMMWebView.h */,
 				4E3771051FA7A57C00E2F511 /* VMMWebView.m */,
+				4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */,
+				4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -430,7 +430,7 @@
 				4E6C52391F7E911000A187E9 /* NSMutableURLRequest+Extension.h in Headers */,
 				4E6C52291F7E911000A187E9 /* NSDateFormatter+Extension.h in Headers */,
 				4E6C51181F7E8EB700A187E9 /* ObjectiveC_Extension.h in Headers */,
-				4E6C526D1F7E953A00A187E9 /* NSVersion.h in Headers */,
+				4E6C526D1F7E953A00A187E9 /* VMMVersion.h in Headers */,
 				4E6C52491F7E911000A187E9 /* NSUserDefaults+Extension.h in Headers */,
 				4E6C522F1F7E911000A187E9 /* NSMenu+Extension.h in Headers */,
 				4E6C51EA1F7E90A300A187E9 /* VMMVirtualKeycode.h in Headers */,
@@ -456,7 +456,7 @@
 				4EF16B1F1F8E36A600A78DC0 /* NSModals.h in Headers */,
 				4E231F931F8191DD00148A30 /* VMMDeviceSimulator.h in Headers */,
 				4E3BD7031FAD2FCF00AF8418 /* VMMUUID.h in Headers */,
-				4EA035A81F9532E10059C2C5 /* NSKeyCaptureField.h in Headers */,
+				4EA035A81F9532E10059C2C5 /* VMMKeyCaptureField.h in Headers */,
 				4EEBF4701FAE238F00CE31A0 /* NSMutableString+Extension.h in Headers */,
 				4E1181591FB200E800D8029F /* VMMView.h in Headers */,
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
@@ -603,12 +603,12 @@
 				4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */,
 				4E6C51EF1F7E90A300A187E9 /* VMMUsageKeycode.m in Sources */,
 				4E6C52401F7E911000A187E9 /* NSString+Extension.m in Sources */,
-				4EA035A91F9532E10059C2C5 /* NSKeyCaptureField.m in Sources */,
+				4EA035A91F9532E10059C2C5 /* VMMKeyCaptureField.m in Sources */,
 				4E6C522A1F7E911000A187E9 /* NSDateFormatter+Extension.m in Sources */,
 				4E6C52201F7E911000A187E9 /* NSAlert+Extension.m in Sources */,
 				4E6C524C1F7E911000A187E9 /* NSView+Extension.m in Sources */,
 				4E6C52241F7E911000A187E9 /* NSAttributedString+Extension.m in Sources */,
-				4E6C526E1F7E953A00A187E9 /* NSVersion.m in Sources */,
+				4E6C526E1F7E953A00A187E9 /* VMMVersion.m in Sources */,
 				4E6C525E1F7E944F00A187E9 /* SZJsonParser.m in Sources */,
 				4E6C52301F7E911000A187E9 /* NSMenu+Extension.m in Sources */,
 			);

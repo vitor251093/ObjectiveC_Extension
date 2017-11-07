@@ -1,5 +1,5 @@
 //
-//  NSKeyCaptureField.h
+//  VMMKeyCaptureField.h
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 18/08/17.
@@ -11,13 +11,13 @@
 #import "VMMDeviceObserver.h"
 #import "VMMUsageKeycode.h"
 
-@protocol NSKeyCaptureFieldDelegate <NSObject>
+@protocol VMMKeyCaptureFieldDelegate <NSObject>
 -(void)keyCaptureField:(NSTextField*)field didChangedKeyUsageKeycode:(uint32_t)keyUsage;
 @end
 
-@interface NSKeyCaptureField : NSTextField<VMMDeviceObserverManagementDelegate,VMMDeviceObserverActionDelegate>
+@interface VMMKeyCaptureField : NSTextField<VMMDeviceObserverManagementDelegate,VMMDeviceObserverActionDelegate>
 
-@property (nonatomic, strong) IBOutlet NSObject<NSKeyCaptureFieldDelegate>* keyCaptureDelegate;
+@property (nonatomic, strong) IBOutlet NSObject<VMMKeyCaptureFieldDelegate>* keyCaptureDelegate;
 @property (nonatomic) IOHIDManagerRef hidManager;
 @property (nonatomic) uint32_t keyUsageKeycode;
 

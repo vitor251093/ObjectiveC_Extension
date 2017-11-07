@@ -8,7 +8,7 @@
 
 #import "NSComputerInformation.h"
 
-#import "NSVersion.h"
+#import "VMMVersion.h"
 
 #import "NSTask+Extension.h"
 #import "NSArray+Extension.h"
@@ -252,7 +252,7 @@ static NSMutableDictionary* _macOsCompatibility;
             return [_macOsCompatibility[version] boolValue];
         }
         
-        BOOL compatible = [NSVersion compareVersionString:version withVersionString:self.macOsVersion] != NSVersionCompareFirstIsNewest;
+        BOOL compatible = [VMMVersion compareVersionString:version withVersionString:self.macOsVersion] != VMMVersionCompareFirstIsNewest;
         _macOsCompatibility[version] = @(compatible);
         return compatible;
     }
