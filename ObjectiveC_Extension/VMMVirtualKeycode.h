@@ -33,7 +33,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CGVirtualKeycodes : NSObject
+@interface VMMVirtualKeycode : NSObject
 
 +(NSArray*)allKeyNames;
 

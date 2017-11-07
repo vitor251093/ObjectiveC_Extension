@@ -26,11 +26,11 @@ static NSKeyCaptureField* _activeKeyCaptureField;
     {
         if (_activeKeyCaptureField == self) return;
         
-        [IODeviceObserver.sharedObserver stopObservingForDelegate:_activeKeyCaptureField];
+        [VMMDeviceObserver.sharedObserver stopObservingForDelegate:_activeKeyCaptureField];
     }
     
     _activeKeyCaptureField = self;
-    [IODeviceObserver.sharedObserver observeDevicesOfTypes:IODeviceObserverTypesKeyboard forDelegate:self];
+    [VMMDeviceObserver.sharedObserver observeDevicesOfTypes:VMMDeviceObserverTypesKeyboard forDelegate:self];
 }
 -(void)stopEditing
 {
@@ -39,7 +39,7 @@ static NSKeyCaptureField* _activeKeyCaptureField;
         _activeKeyCaptureField = nil;
     }
     
-    [IODeviceObserver.sharedObserver stopObservingForDelegate:self];
+    [VMMDeviceObserver.sharedObserver stopObservingForDelegate:self];
 }
 
 -(BOOL)textShouldBeginEditing:(NSText *)textObject

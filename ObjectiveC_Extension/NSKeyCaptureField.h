@@ -8,14 +8,14 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "IODeviceObserver.h"
+#import "VMMDeviceObserver.h"
 #import "VMMUsageKeycode.h"
 
 @protocol NSKeyCaptureFieldDelegate <NSObject>
 -(void)keyCaptureField:(NSTextField*)field didChangedKeyUsageKeycode:(uint32_t)keyUsage;
 @end
 
-@interface NSKeyCaptureField : NSTextField<IODeviceObserverManagementDelegate,IODeviceObserverActionDelegate>
+@interface NSKeyCaptureField : NSTextField<VMMDeviceObserverManagementDelegate,VMMDeviceObserverActionDelegate>
 
 @property (nonatomic, strong) IBOutlet NSObject<NSKeyCaptureFieldDelegate>* keyCaptureDelegate;
 @property (nonatomic) IOHIDManagerRef hidManager;

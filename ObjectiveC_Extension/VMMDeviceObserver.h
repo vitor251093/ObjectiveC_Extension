@@ -1,5 +1,5 @@
 //
-//  IODeviceObserver.h
+//  VMMDeviceObserver.h
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 09/08/17.
@@ -12,26 +12,26 @@
 #import <IOKit/hid/IOHIDKeys.h>
 #include <IOKit/usb/IOUSBLib.h>
 
-#define IODeviceObserverTypesKeyboard  @[@(kHIDUsage_GD_Keyboard), @(kHIDUsage_GD_Keypad)]
+#define VMMDeviceObserverTypesKeyboard  @[@(kHIDUsage_GD_Keyboard), @(kHIDUsage_GD_Keypad)]
 
-@protocol IODeviceObserverManagementDelegate
+@protocol VMMDeviceObserverManagementDelegate
 @property (nonatomic) IOHIDManagerRef hidManager;
 @end
 
-@protocol IODeviceObserverConnectionDelegate
+@protocol VMMDeviceObserverConnectionDelegate
 -(void)observedConnectionOfDevice:(IOHIDDeviceRef)device;
 -(void)observedRemovalOfDevice:(IOHIDDeviceRef)device;
 @end
 
-@protocol IODeviceObserverActionDelegate
+@protocol VMMDeviceObserverActionDelegate
 -(void)observedEventWithCookie:(IOHIDElementCookie)event andUsage:(uint32_t)usage withValue:(CFIndex)value fromDevice:(IOHIDDeviceRef)device;
 @end
 
 
-@interface IODeviceObserver : NSObject
+@interface VMMDeviceObserver : NSObject
 
 +(instancetype)sharedObserver;
--(void)observeDevicesOfTypes:(NSArray*)types forDelegate:(id<IODeviceObserverManagementDelegate>)actionDelegate;
--(void)stopObservingForDelegate:(id<IODeviceObserverManagementDelegate>)actionDelegate;
+-(void)observeDevicesOfTypes:(NSArray*)types forDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate;
+-(void)stopObservingForDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate;
 
 @end

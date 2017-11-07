@@ -1,14 +1,14 @@
 //
-//  IOVirtualKeycodes.m
+//  VMMVirtualKeycode.m
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 09/08/17.
 //  Copyright © 2017 Vitor Marques de Miranda. All rights reserved.
 //
 
-#import "CGVirtualKeycodes.h"
+#import "VMMVirtualKeycode.h"
 
-@implementation CGVirtualKeycodes
+@implementation VMMVirtualKeycode
 
 NSDictionary* _virtualKeycodeNames;
 
