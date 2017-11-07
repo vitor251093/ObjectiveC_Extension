@@ -82,8 +82,8 @@
 		4E6C526C1F7E953A00A187E9 /* NSNotificationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */; };
 		4E6C526D1F7E953A00A187E9 /* VMMVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52661F7E953A00A187E9 /* VMMVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C526E1F7E953A00A187E9 /* VMMVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52671F7E953A00A187E9 /* VMMVersion.m */; };
-		4E6C52711F7E954D00A187E9 /* NSComputerInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C526F1F7E954D00A187E9 /* NSComputerInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4E6C52721F7E954D00A187E9 /* NSComputerInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52701F7E954D00A187E9 /* NSComputerInformation.m */; };
+		4E6C52711F7E954D00A187E9 /* VMMComputerInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E6C52721F7E954D00A187E9 /* VMMComputerInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52701F7E954D00A187E9 /* VMMComputerInformation.m */; };
 		4E6C52751F7E9D6400A187E9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C52741F7E9D6400A187E9 /* Cocoa.framework */; };
 		4E6C52771F7E9D6D00A187E9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C52761F7E9D6D00A187E9 /* Foundation.framework */; };
 		4E6C52791F7E9E1400A187E9 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C52781F7E9E1400A187E9 /* IOKit.framework */; };
@@ -189,8 +189,8 @@
 		4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNotificationUtility.m; sourceTree = "<group>"; };
 		4E6C52661F7E953A00A187E9 /* VMMVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMVersion.h; sourceTree = "<group>"; };
 		4E6C52671F7E953A00A187E9 /* VMMVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMVersion.m; sourceTree = "<group>"; };
-		4E6C526F1F7E954D00A187E9 /* NSComputerInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSComputerInformation.h; sourceTree = "<group>"; };
-		4E6C52701F7E954D00A187E9 /* NSComputerInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSComputerInformation.m; sourceTree = "<group>"; };
+		4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMComputerInformation.h; sourceTree = "<group>"; };
+		4E6C52701F7E954D00A187E9 /* VMMComputerInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMComputerInformation.m; sourceTree = "<group>"; };
 		4E6C52741F7E9D6400A187E9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4E6C52761F7E9D6D00A187E9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4E6C52781F7E9E1400A187E9 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
@@ -364,8 +364,8 @@
 		4E6C52601F7E950900A187E9 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				4E6C526F1F7E954D00A187E9 /* NSComputerInformation.h */,
-				4E6C52701F7E954D00A187E9 /* NSComputerInformation.m */,
+				4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */,
+				4E6C52701F7E954D00A187E9 /* VMMComputerInformation.m */,
 				4E6C52611F7E953A00A187E9 /* NKFTPManager.h */,
 				4E6C52621F7E953A00A187E9 /* NKFTPManager.m */,
 				4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */,
@@ -435,7 +435,7 @@
 				4E6C522F1F7E911000A187E9 /* NSMenu+Extension.h in Headers */,
 				4E6C51EA1F7E90A300A187E9 /* VMMVirtualKeycode.h in Headers */,
 				4E6C52431F7E911000A187E9 /* NSText+Extension.h in Headers */,
-				4E6C52711F7E954D00A187E9 /* NSComputerInformation.h in Headers */,
+				4E6C52711F7E954D00A187E9 /* VMMComputerInformation.h in Headers */,
 				4E6C524B1F7E911000A187E9 /* NSView+Extension.h in Headers */,
 				4E6C52411F7E911000A187E9 /* NSTask+Extension.h in Headers */,
 				4E6C51EC1F7E90A300A187E9 /* VMMDeviceObserver.h in Headers */,
@@ -593,7 +593,7 @@
 				4E3771071FA7A57C00E2F511 /* VMMWebView.m in Sources */,
 				4E6C52321F7E911000A187E9 /* NSMenuItem+Extension.m in Sources */,
 				4E6C52691F7E953A00A187E9 /* NKFTPManager.m in Sources */,
-				4E6C52721F7E954D00A187E9 /* NSComputerInformation.m in Sources */,
+				4E6C52721F7E954D00A187E9 /* VMMComputerInformation.m in Sources */,
 				4E6C52361F7E911000A187E9 /* NSMutableAttributedString+Extension.m in Sources */,
 				4E6C52221F7E911000A187E9 /* NSArray+Extension.m in Sources */,
 				4E6C51ED1F7E90A300A187E9 /* VMMDeviceObserver.m in Sources */,

@@ -11,7 +11,7 @@
 
 #import "NSNotificationUtility.h"
 
-#import "NSComputerInformation.h"
+#import "VMMComputerInformation.h"
 
 #import "NSAlert+Extension.h"
 

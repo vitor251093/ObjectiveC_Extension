@@ -10,7 +10,7 @@
 
 #import "NSMutableAttributedString+Extension.h"
 
-#import "NSComputerInformation.h"
+#import "VMMComputerInformation.h"
 
 @implementation NSText (VMMText)
 -(void)setSelectedRangeHasTheEndOfTheField

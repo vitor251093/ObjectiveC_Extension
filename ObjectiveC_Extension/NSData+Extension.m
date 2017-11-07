@@ -12,7 +12,7 @@
 
 #import "NSAlert+Extension.h"
 
-#import "NSComputerInformation.h"
+#import "VMMComputerInformation.h"
 
 @implementation NSData (VMMData)
 +(NSData*)dataWithContentsOfURL:(NSURL *)url timeoutInterval:(long long int)timeoutInterval

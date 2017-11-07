@@ -11,7 +11,7 @@
 #import "NSColor+Extension.h"
 #import "NSString+Extension.h"
 
-#import "NSComputerInformation.h"
+#import "VMMComputerInformation.h"
 
 @implementation VMMWebViewNavigationBar
 @end

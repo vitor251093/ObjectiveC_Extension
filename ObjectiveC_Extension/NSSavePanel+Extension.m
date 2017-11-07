@@ -10,7 +10,7 @@
 
 #import "NSThread+Extension.h"
 
-#import "NSComputerInformation.h"
+#import "VMMComputerInformation.h"
 
 #import "VMMModals.h"
 

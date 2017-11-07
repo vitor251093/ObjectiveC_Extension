@@ -1,12 +1,12 @@
 //
-//  NSComputerInformation.m
+//  VMMComputerInformation.m
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 22/02/17.
 //  Copyright © 2017 Vitor Marques de Miranda. All rights reserved.
 //
 
-#import "NSComputerInformation.h"
+#import "VMMComputerInformation.h"
 
 #import "VMMVersion.h"
 
@@ -25,7 +25,7 @@
 
 #define STAFF_GROUP_MEMBER_CODE @"20"
 
-@implementation NSComputerInformation
+@implementation VMMComputerInformation
 
 static NSMutableDictionary* _computerGraphicCardDictionary;
 static NSString* _computerGraphicCardType;

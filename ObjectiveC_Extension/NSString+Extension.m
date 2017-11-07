@@ -13,7 +13,7 @@
 #import "NSAlert+Extension.h"
 #import "NSFileManager+Extension.h"
 
-#import "NSComputerInformation.h"
+#import "VMMComputerInformation.h"
 
 @implementation NSString (VMMString)
 

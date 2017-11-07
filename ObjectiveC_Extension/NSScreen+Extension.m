@@ -8,8 +8,6 @@
 
 #import "NSScreen+Extension.h"
 
-#import "NSComputerInformation.h"
-
 @implementation NSScreen (VMMScreen)
 
 -(CGFloat)retinaScale

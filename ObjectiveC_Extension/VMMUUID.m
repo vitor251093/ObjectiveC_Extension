@@ -8,8 +8,6 @@
 
 #import "VMMUUID.h"
 
-#import "NSComputerInformation.h"
-
 @implementation VMMUUID
 
 +(NSString*)newUUIDString

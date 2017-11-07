@@ -13,7 +13,7 @@
 #import "NSString+Extension.h"
 #import "NSThread+Extension.h"
 
-#import "NSComputerInformation.h"
+#import "VMMComputerInformation.h"
 
 @implementation NSFileManager (VMMFileManager)
 
