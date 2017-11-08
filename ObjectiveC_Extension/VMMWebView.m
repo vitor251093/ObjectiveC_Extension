@@ -84,6 +84,8 @@
         webView.UIDelegate = (id<WKUIDelegate>)self;
         webView.navigationDelegate = (id<WKNavigationDelegate>)self;
         
+        webView.allowsMagnification = true;
+        
         [webView setValue:@FALSE forKey:@"opaque"];
         
 #pragma GCC diagnostic push
