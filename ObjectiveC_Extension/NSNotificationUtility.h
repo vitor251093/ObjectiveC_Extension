@@ -8,8 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol NSNotificationUtilityDelegate
+-(void)actionButtonPressedForNotificationWithUserInfo:(NSObject*)userInfo;
+@end
+
 @interface NSNotificationUtility : NSObject
 
-+(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withUserInfo:(NSString*)info withIcon:(NSImage*)icon withActionButtonText:(NSString*)actionButton;
+@property (nonatomic) id<NSNotificationUtilityDelegate> delegate;
+
++(instancetype)sharedInstance;
+
+-(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withUserInfo:(NSObject*)info withIcon:(NSImage*)icon withActionButtonText:(NSString*)actionButton;
 
 @end

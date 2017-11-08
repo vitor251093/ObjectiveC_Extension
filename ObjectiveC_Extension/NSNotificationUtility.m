@@ -15,6 +15,8 @@
 
 #import "NSAlert+Extension.h"
 
+#define NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY @"info"
+
 @interface NSUserNotification (NSUserNotificationPrivate)
 
 @property(readonly, nonatomic) NSData *_identityImageData;
@@ -27,7 +29,22 @@
 
 @implementation NSNotificationUtility
 
-+(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withUserInfo:(NSString*)info withIcon:(NSImage*)icon withActionButtonText:(NSString*)actionButton
+static NSNotificationUtility *_sharedInstance;
+
++(instancetype)sharedInstance
+{
+    @synchronized([self class])
+    {
+        if (!_sharedInstance)
+        {
+            _sharedInstance = [[NSNotificationUtility alloc] init];
+        }
+        return _sharedInstance;
+    }
+    return nil;
+}
+
+-(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withUserInfo:(NSObject*)info withIcon:(NSImage*)icon withActionButtonText:(NSString*)actionButton
 {
     if (IsClassAvailable(@"NSUserNotificationCenter") == false)
     {
@@ -35,14 +52,17 @@
         {
             [alert setIcon:icon];
         }];
+        
         return;
     }
+    
+    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:(id<NSUserNotificationCenterDelegate>)self];
     
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     notification.title = title;
     notification.informativeText = message;
     notification.soundName = NSUserNotificationDefaultSoundName;
-    notification.userInfo = @{@"info":info};
+    notification.userInfo = info ? @{NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY:info} : @{};
     
     if (icon)
     {
@@ -53,7 +73,7 @@
         }
         @catch (NSException* exception)
         {
-            // Avoiding API exception in case something changes (knows to work)
+            // Avoiding API exception in case something changes in the future
             
             // That feature is only available from macOS 10.9 and beyond
             if ([notification respondsToSelector:@selector(setContentImage:)])
@@ -67,6 +87,20 @@
     [notification setActionButtonTitle:actionButton];
     
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+}
+
+-(BOOL)userNotificationCenter:(id)center shouldPresentNotification:(id)notification
+{
+    return YES;
+}
+-(void)userNotificationCenter:(id)center didActivateNotification:(id)notification
+{
+    if (self.delegate != nil)
+    {
+        NSDictionary* userInfoDict = ((NSUserNotification *)notification).userInfo;
+        NSObject* userInfo = userInfoDict[NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY];
+        [self.delegate actionButtonPressedForNotificationWithUserInfo:userInfo];
+    }
 }
 
 @end
