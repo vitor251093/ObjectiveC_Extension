@@ -297,7 +297,7 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(BOOL)isUserStaffGroupMember
 {
-    @synchronized([self class])
+    @synchronized(_userIsMemberOfStaff)
     {
         if (_userIsMemberOfStaff == nil)
         {
@@ -316,6 +316,7 @@ static NSMutableDictionary* _macOsCompatibility;
         
         return [_userIsMemberOfStaff boolValue];
     }
+    
     return NO;
 }
 
