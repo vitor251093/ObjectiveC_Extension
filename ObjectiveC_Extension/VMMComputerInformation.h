@@ -35,6 +35,8 @@
 +(NSString*)macOsVersion;
 +(BOOL)isSystemMacOsEqualOrSuperiorTo:(NSString*)version;
 
++(NSString*)macOsBuildVersion;
+
 +(BOOL)isUserStaffGroupMember;
 
 @end

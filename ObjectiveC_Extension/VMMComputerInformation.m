@@ -30,6 +30,7 @@
 static NSMutableDictionary* _computerGraphicCardDictionary;
 static NSString* _computerGraphicCardType;
 static NSString* _macOsVersion;
+static NSString* _macOsBuildVersion;
 static NSNumber* _userIsMemberOfStaff;
 
 static NSMutableDictionary* _macOsCompatibility;
@@ -222,7 +223,7 @@ static NSMutableDictionary* _macOsCompatibility;
             
             if (!version)
             {
-                _macOsVersion = [NSTask runCommand:@[@"sw_vers", @"-productVersion"]];
+                version = [NSTask runCommand:@[@"sw_vers", @"-productVersion"]];
             }
             
             if (!version)
@@ -258,6 +259,40 @@ static NSMutableDictionary* _macOsCompatibility;
     }
     
     return false;
+}
+
++(NSString*)macOsBuildVersion
+{
+    @synchronized(_macOsBuildVersion)
+    {
+        if (_macOsBuildVersion)
+        {
+            return _macOsBuildVersion;
+        }
+        
+        @autoreleasepool
+        {
+            NSString* plistFile = @"/System/Library/CoreServices/SystemVersion.plist";
+            NSDictionary *systemVersionDictionary = [NSDictionary dictionaryWithContentsOfFile:plistFile];
+            NSString* version = systemVersionDictionary[@"ProductBuildVersion"];
+            
+            if (!version)
+            {
+                version = [NSTask runCommand:@[@"sw_vers", @"-buildVersion"]];
+            }
+            
+            if (!version)
+            {
+                version = @"";
+            }
+            
+            _macOsBuildVersion = version;
+        }
+        
+        return _macOsBuildVersion;
+    }
+    
+    return nil;
 }
 
 +(BOOL)isUserStaffGroupMember
