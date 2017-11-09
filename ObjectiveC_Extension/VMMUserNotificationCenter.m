@@ -1,5 +1,5 @@
 //
-//  NSNotificationUtility.m
+//  VMMUserNotificationCenter.m
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 22/02/17.
@@ -9,7 +9,7 @@
 //  https://github.com/indragiek/NSUserNotificationPrivate
 //
 
-#import "NSNotificationUtility.h"
+#import "VMMUserNotificationCenter.h"
 
 #import "VMMComputerInformation.h"
 
@@ -27,24 +27,24 @@
 
 @end
 
-@implementation NSNotificationUtility
+@implementation VMMUserNotificationCenter
 
-static NSNotificationUtility *_sharedInstance;
+static VMMUserNotificationCenter *_sharedInstance;
 
-+(instancetype)sharedInstance
++(instancetype)defaultUserNotificationCenter
 {
     @synchronized([self class])
     {
         if (!_sharedInstance)
         {
-            _sharedInstance = [[NSNotificationUtility alloc] init];
+            _sharedInstance = [[VMMUserNotificationCenter alloc] init];
         }
         return _sharedInstance;
     }
     return nil;
 }
 
--(void)showNotificationMessage:(NSString*)message withTitle:(NSString*)title withUserInfo:(NSObject*)info withIcon:(NSImage*)icon withActionButtonText:(NSString*)actionButton
+-(void)deliverNotificationWithTitle:(NSString*)title message:(NSString*)message userInfo:(NSObject*)info icon:(NSImage*)icon actionButtonText:(NSString*)actionButton
 {
     if (IsClassAvailable(@"NSUserNotificationCenter") == false)
     {

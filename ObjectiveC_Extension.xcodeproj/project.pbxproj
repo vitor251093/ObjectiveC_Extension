@@ -78,8 +78,8 @@
 		4E6C52681F7E953A00A187E9 /* NKFTPManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52611F7E953A00A187E9 /* NKFTPManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C52691F7E953A00A187E9 /* NKFTPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52621F7E953A00A187E9 /* NKFTPManager.m */; };
 		4E6C526A1F7E953A00A187E9 /* VMMLogUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4E6C526B1F7E953A00A187E9 /* NSNotificationUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52641F7E953A00A187E9 /* NSNotificationUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4E6C526C1F7E953A00A187E9 /* NSNotificationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */; };
+		4E6C526B1F7E953A00A187E9 /* VMMUserNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52641F7E953A00A187E9 /* VMMUserNotificationCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E6C526C1F7E953A00A187E9 /* VMMUserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52651F7E953A00A187E9 /* VMMUserNotificationCenter.m */; };
 		4E6C526D1F7E953A00A187E9 /* VMMVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C52661F7E953A00A187E9 /* VMMVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C526E1F7E953A00A187E9 /* VMMVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52671F7E953A00A187E9 /* VMMVersion.m */; };
 		4E6C52711F7E954D00A187E9 /* VMMComputerInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -185,8 +185,8 @@
 		4E6C52611F7E953A00A187E9 /* NKFTPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKFTPManager.h; sourceTree = "<group>"; };
 		4E6C52621F7E953A00A187E9 /* NKFTPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKFTPManager.m; sourceTree = "<group>"; };
 		4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMLogUtility.h; sourceTree = "<group>"; };
-		4E6C52641F7E953A00A187E9 /* NSNotificationUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNotificationUtility.h; sourceTree = "<group>"; };
-		4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNotificationUtility.m; sourceTree = "<group>"; };
+		4E6C52641F7E953A00A187E9 /* VMMUserNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMUserNotificationCenter.h; sourceTree = "<group>"; };
+		4E6C52651F7E953A00A187E9 /* VMMUserNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMUserNotificationCenter.m; sourceTree = "<group>"; };
 		4E6C52661F7E953A00A187E9 /* VMMVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMVersion.h; sourceTree = "<group>"; };
 		4E6C52671F7E953A00A187E9 /* VMMVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMVersion.m; sourceTree = "<group>"; };
 		4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMComputerInformation.h; sourceTree = "<group>"; };
@@ -371,8 +371,8 @@
 				4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */,
 				4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */,
 				4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */,
-				4E6C52641F7E953A00A187E9 /* NSNotificationUtility.h */,
-				4E6C52651F7E953A00A187E9 /* NSNotificationUtility.m */,
+				4E6C52641F7E953A00A187E9 /* VMMUserNotificationCenter.h */,
+				4E6C52651F7E953A00A187E9 /* VMMUserNotificationCenter.m */,
 				4E6C52661F7E953A00A187E9 /* VMMVersion.h */,
 				4E6C52671F7E953A00A187E9 /* VMMVersion.m */,
 				4E3BD7011FAD2FCF00AF8418 /* VMMUUID.h */,
@@ -451,7 +451,7 @@
 				4E6C522D1F7E911000A187E9 /* NSImage+Extension.h in Headers */,
 				4E6C52351F7E911000A187E9 /* NSMutableAttributedString+Extension.h in Headers */,
 				4E6C523B1F7E911000A187E9 /* NSRunningApplication+Extension.h in Headers */,
-				4E6C526B1F7E953A00A187E9 /* NSNotificationUtility.h in Headers */,
+				4E6C526B1F7E953A00A187E9 /* VMMUserNotificationCenter.h in Headers */,
 				4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */,
 				4EF16B1F1F8E36A600A78DC0 /* VMMModals.h in Headers */,
 				4E231F931F8191DD00148A30 /* VMMDeviceSimulator.h in Headers */,
@@ -574,7 +574,7 @@
 			files = (
 				4E6C52281F7E911000A187E9 /* NSData+Extension.m in Sources */,
 				4E6C52441F7E911000A187E9 /* NSText+Extension.m in Sources */,
-				4E6C526C1F7E953A00A187E9 /* NSNotificationUtility.m in Sources */,
+				4E6C526C1F7E953A00A187E9 /* VMMUserNotificationCenter.m in Sources */,
 				4E3BD7041FAD2FCF00AF8418 /* VMMUUID.m in Sources */,
 				4E6C52261F7E911000A187E9 /* NSColor+Extension.m in Sources */,
 				4EF16B201F8E36A600A78DC0 /* VMMModals.m in Sources */,
