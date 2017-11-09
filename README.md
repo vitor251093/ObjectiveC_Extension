@@ -9,7 +9,7 @@ This is the best part of that framework. ObjectiveC_Extension is compatible with
 ## New Classes (related with keycodes and devices)
 Those classes were made to simplify the use of HID devices input, making your code cleaner when working with them, and more Objective-C-like, since most of the code related with that is C-like and C++-like. It also gives you enums to find the value of virtual keycodes (useful to simulate keyboard key pressing) and usage keycodes (useful to detect which keyboard key was pressed).
 
-### CGVirtualKeycodes
+### VMMVirtualKeycodes
 A class which makes working with Mac Virtual Keycodes easier.
 
 ```objectivec
@@ -19,7 +19,7 @@ A class which makes working with Mac Virtual Keycodes easier.
 List of all the Mac Virtual Keycodes names.
 
 ```objectivec
-+(NSDictionary*)virtualKeycodesNames;
++(NSDictionary*)virtualKeycodeNames;
 ```
 
 Dictionary of the Mac Virtual Keycodes names by keycode.
@@ -30,13 +30,22 @@ Dictionary of the Mac Virtual Keycodes names by keycode.
 
 Name of Mac Virtual Keycode by keycode.
 
+### VMMDeviceSimulator
+A class which simulate keyboard and cursor actions.
+
 ```objectivec
-+(void)performEventOfKeycode:(CGKeyCode)keyCode withKeyDown:(BOOL)keyPressed;
++(void)simulateCursorClickAtScreenPoint:(CGPoint)clickPoint
+```
+
+Simulates the mouse left-click on a specific screen point moving the cursor.
+
+```objectivec
++(void)simulateVirtualKeycode:(CGKeyCode)keyCode withKeyDown:(BOOL)keyPressed;
 ```
 
 Simulates the button press/release of a Mac Virtual Keycode.
 
-### IODeviceObserver
+### VMMDeviceObserver
 A class which makes working with HID devices easier.
 
 ```objectivec
@@ -46,18 +55,18 @@ A class which makes working with HID devices easier.
 HID device observer shared instance.
 
 ```objectivec
--(void)observeDevicesOfTypes:(NSArray*)types forDelegate:(id<IODeviceObserverManagementDelegate>)actionDelegate;
+-(void)observeDevicesOfTypes:(NSArray*)types forDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate;
 ```
 
 Adds object that should receive notifications of observer.
 
 ```objectivec
--(void)stopObservingForDelegate:(id<IODeviceObserverManagementDelegate>)actionDelegate;
+-(void)stopObservingForDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate;
 ```
 
 Makes an object stop receiving the observer notifications.
 
-#### IODeviceObserverManagementDelegate (Protocol)
+#### VMMDeviceObserverManagementDelegate (Protocol)
 
 ```objectivec
 @property (nonatomic) IOHIDManagerRef hidManager;
@@ -65,7 +74,7 @@ Makes an object stop receiving the observer notifications.
 
 Manager that makes any object capable of observing HID devices.
 
-#### IODeviceObserverConnectionDelegate (Protocol)
+#### VMMDeviceObserverConnectionDelegate (Protocol)
 
 ```objectivec
 -(void)observedConnectionOfDevice:(IOHIDDeviceRef)device;
@@ -79,7 +88,7 @@ Notify an object that a HID device has been connected.
 
 Notify an object that a HID device has been disconnected.
 
-#### IODeviceObserverActionDelegate (Protocol)
+#### VMMDeviceObserverActionDelegate (Protocol)
 
 ```objectivec
 -(void)observedEventWithCookie:(IOHIDElementCookie)event andUsage:(uint32_t)usage withValue:(CFIndex)value fromDevice:(IOHIDDeviceRef)device;
@@ -87,15 +96,7 @@ Notify an object that a HID device has been disconnected.
 
 Notify an object that a HID device has performed an event.
 
-### IODeviceSimulator
-
-```objectivec
-+(void)simulateCursorClickAtScreenPoint:(CGPoint)clickPoint;
-```
-
-Simulates a mouse left button press at a screen point.
-
-### IOUsageKeycode
+### VMMUsageKeycode
 
 ```objectivec
 +(NSArray*)allUsageNames;
@@ -442,7 +443,7 @@ Equivalent to `alloc` + `initWithTitle:action:keyEquivalent:` + `setTarget:`, wi
 
 ## New Classes (misc)
 
-### NSComputerInformation
+### VMMComputerInformation
 Used to retrieve informations about the computer hardware and software.
 
 ```objectivec
@@ -485,7 +486,13 @@ Memory size of the computer main graphic card.
 +(NSString*)macOsVersion;
 ```
 
-macOS version (not build version). Example: "10.13.1". Requires non-sandboxed application.
+macOS version. Example: "10.13.1". Requires non-sandboxed application.
+
+```objectivec
++(NSString*)macOsBuildVersion;
+```
+
+macOS build version. Example: "17C60c". Requires non-sandboxed application.
 
 ```objectivec
 +(BOOL)isSystemMacOsEqualOrSuperiorTo:(NSString*)version;
@@ -511,12 +518,12 @@ Defines that use `isSystemMacOsEqualOrSuperiorTo:`. Requires non-sandboxed appli
 
 Returns true if the user is member of the staff group in his computer.
 
-### NSFTPManager
+### NKFTPManager
 
 Replica of `FTPManager` by `nkreipke` with minor modifications. The original project can be found here:
 https://github.com/nkreipke/FTPManager
 
-### NSLogUtility
+### VMMLogUtility
 
 ```objectivec
 NSDebugLog(NSString *format, ...)
@@ -558,6 +565,6 @@ This is the dirtiest hack of them all. Since `NSRegularExpression` was introduce
 
 I tried using RegexKitLite to give macOS 10.6 support (https://github.com/inquisitiveSoft/RegexKitLite), however it has some weird bugs when you use it multiple times, even cleaning its cache.
 
-### [NSNotificationUtility showNotificationMessage:message withTitle:title withUserInfo:info withIcon:icon withActionButtonText:actionButton] (~ macOS 10.7)
+### [(VMMUserNotificationCenter*)notificationCenter deliverNotificationWithTitle:title message:message userInfo:info icon:icon actionButtonText:actionButton] (~ macOS 10.7)
 Since `NSUserNotification` was only introduced in macOS 10.8, macOS 10.7 and below require a different approach. In those systems, `NSNotificationUtility` shows a simple `NSAlert` instead of the notification. A better approach for the future would be to add Growl integration instead.
 
