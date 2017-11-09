@@ -10,6 +10,7 @@
 
 #import "NSColor+Extension.h"
 #import "NSString+Extension.h"
+#import "NSMutableAttributedString+Extension.h"
 
 #import "VMMComputerInformation.h"
 
@@ -184,8 +185,12 @@
     
     [_navigationBar.refreshButton.cell setHighlightsBy:NSNoCellMask];
     [_navigationBar.refreshButton setBordered:NO];
-    [_navigationBar.refreshButton setTitle:@"⟳"];
-    [_navigationBar.refreshButton setFont:buttonTextFont];
+    
+    NSMutableAttributedString* title = [[NSMutableAttributedString alloc] initWithString:@"⟳"];
+    [title setFont:buttonTextFont];
+    [title setFontColor:self.navigationBarButtonsTextColor];
+    [_navigationBar.refreshButton setAttributedTitle:title];
+    
     [_navigationBar.refreshButton setTarget:self];
     [_navigationBar.refreshButton setAction:@selector(refreshButtonPressed:)];
     [_navigationBar.refreshButton setAutoresizingMask:NSViewMaxYMargin|NSViewMinYMargin|NSViewMinXMargin];
@@ -310,6 +315,10 @@
 -(CGFloat)navigationBarButtonsTextSize
 {
     return 30.0;
+}
+-(NSColor*)navigationBarButtonsTextColor
+{
+    return [NSColor blackColor];
 }
 -(NSFont*)webViewErrorLabelTextFont
 {

@@ -25,6 +25,8 @@
 
 -(void)setFontColor:(NSColor*)color range:(NSRange)range;
 -(void)setFontColor:(NSColor*)color;
+-(void)setFont:(NSFont*)font range:(NSRange)range;
+-(void)setFont:(NSFont*)font;
 
 -(void)appendString:(NSString*)aString;
 

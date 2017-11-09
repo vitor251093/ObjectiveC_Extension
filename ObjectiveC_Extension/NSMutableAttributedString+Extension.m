@@ -69,7 +69,7 @@
             if (italicFont && hasItalic.boolValue)                      fontName = italicFont;
             if (biFont     && hasBold.boolValue && hasItalic.boolValue) fontName = biFont;
             
-            [self addAttribute:NSFontAttributeName value:[NSFont fontWithName:fontName size:fontSize] range:NSMakeRange(i,1)];
+            [self setFont:[NSFont fontWithName:fontName size:fontSize] range:NSMakeRange(i,1)];
         }
     }
 }
@@ -92,6 +92,14 @@
 -(void)setFontColor:(NSColor*)color
 {
     [self addAttribute:NSForegroundColorAttributeName value:color];
+}
+-(void)setFont:(NSFont*)font range:(NSRange)range
+{
+    [self addAttribute:NSFontAttributeName value:font range:range];
+}
+-(void)setFont:(NSFont*)font
+{
+    [self addAttribute:NSFontAttributeName value:font];
 }
 
 -(void)appendString:(NSString*)aString
