@@ -174,7 +174,7 @@
     [_navigationBar.addressBarField setAutoresizingMask:NSViewWidthSizable];
     [_navigationBar.addressBarField setBordered:NO];
     [_navigationBar.addressBarField setEditable:NO];
-    [_navigationBar.addressBarField setBackgroundColor:[NSColor clearColor]];
+    [_navigationBar.addressBarField setBackgroundColor:self.navigationBarColor];
     [_navigationBar.addressBarField setFont:addressTextFont];
     [_navigationBar.addressBarField setStringValue:@"Tj"];
     CGFloat addressMaxHeight = _navigationBar.addressBarField.attributedStringValue.size.height;
@@ -221,10 +221,16 @@
     [_webViewErrorLabel setTextColor:[NSColor whiteColor]];
     [self setErrorLabelHidden:YES];
 }
+-(void)initializeOtherComponents
+{
+    
+}
 -(void)reloadWebViewIfNeeded
 {
     @synchronized(_webView)
     {
+        BOOL loadingForTheFirstTime = (_webView == nil);
+        
         if (_webViewErrorLabel)
         {
             [_webViewErrorLabel setStringValue:@""];
@@ -242,13 +248,9 @@
             if (!_navigationBar) [self initializeNavigationBarWithHeight:navigationBarHeight];
         }
         
-        if (!_webView)
+        if (loadingForTheFirstTime)
         {
             [self initializeWebView];
-        }
-        
-        if (!_webViewErrorLabel)
-        {
             [self initializeErrorLabel];
         }
         
@@ -260,6 +262,11 @@
         }
         
         [_webView setFrame:NSMakeRect(0, 0, width, webViewHeight)];
+        
+        if (loadingForTheFirstTime)
+        {
+            [self initializeOtherComponents];
+        }
     }
 }
 
