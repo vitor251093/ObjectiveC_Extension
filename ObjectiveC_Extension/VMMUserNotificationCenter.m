@@ -83,8 +83,11 @@ static VMMUserNotificationCenter *_sharedInstance;
         }
     }
     
-    [notification setHasActionButton:YES];
-    [notification setActionButtonTitle:actionButton];
+    if (actionButton)
+    {
+        [notification setHasActionButton:YES];
+        [notification setActionButtonTitle:actionButton];
+    }
     
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
