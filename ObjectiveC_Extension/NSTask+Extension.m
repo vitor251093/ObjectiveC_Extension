@@ -41,20 +41,28 @@ static NSMutableDictionary* binaryPaths;
 {
     return [self runProgram:program withFlags:flags atRunPath:nil andWaiting:YES];
 }
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags outputEncoding:(NSStringEncoding)encoding
+{
+    return [self runProgram:program withFlags:flags atRunPath:nil withEnvironment:nil
+                 andWaiting:YES forTimeInterval:0 outputEncoding:encoding];
+}
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path andWaiting:(BOOL)wait
 {
-    return [self runProgram:program withFlags:flags atRunPath:path withEnvironment:nil andWaiting:wait forTimeInterval:0];
+    return [self runProgram:program withFlags:flags atRunPath:path withEnvironment:nil
+                 andWaiting:wait forTimeInterval:0 outputEncoding:NSUTF8StringEncoding];
 }
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags withEnvironment:(NSDictionary*)env
 {
-    return [self runProgram:program withFlags:flags atRunPath:@"/" withEnvironment:env andWaiting:YES forTimeInterval:0];
+    return [self runProgram:program withFlags:flags atRunPath:@"/" withEnvironment:env
+                 andWaiting:YES forTimeInterval:0 outputEncoding:NSUTF8StringEncoding];
 }
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags waitingForTimeInterval:(unsigned int)timeout
 {
-    return [self runProgram:program withFlags:flags atRunPath:@"/" withEnvironment:nil andWaiting:YES forTimeInterval:timeout];
+    return [self runProgram:program withFlags:flags atRunPath:@"/" withEnvironment:nil
+                 andWaiting:YES forTimeInterval:timeout outputEncoding:NSUTF8StringEncoding];
 }
 
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env andWaiting:(BOOL)wait forTimeInterval:(unsigned int)timeout
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env andWaiting:(BOOL)wait forTimeInterval:(unsigned int)timeout outputEncoding:(NSStringEncoding)encoding
 {
     if (program && ![program hasPrefix:@"/"])
     {
@@ -170,7 +178,7 @@ static NSMutableDictionary* binaryPaths;
             [file closeFile];
             
             NSDebugLog(@"Instruction finished");
-            return [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
+            return [[NSString alloc] initWithData:outputData encoding:encoding];
         }
         @catch (NSException* exception)
         {
