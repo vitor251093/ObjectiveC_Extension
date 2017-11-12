@@ -141,11 +141,6 @@ static NSMutableDictionary* _macOsCompatibility;
                 if ([graphicCardModel contains:model]) _computerGraphicCardType = @"ATi/AMD";
             }
             
-            for (NSString* model in @[@"NVIDIA",@"GEFORCE"])
-            {
-                if ([graphicCardModel contains:model]) _computerGraphicCardType = @"NVIDIA";
-            }
-            
             for (NSString* model in @[@"INTEL HD"])
             {
                 if ([graphicCardModel contains:model]) _computerGraphicCardType = @"Intel HD";
@@ -154,6 +149,11 @@ static NSMutableDictionary* _macOsCompatibility;
             for (NSString* model in @[@"INTEL IRIS"])
             {
                 if ([graphicCardModel contains:model]) _computerGraphicCardType = @"Intel Iris";
+            }
+            
+            for (NSString* model in @[@"NVIDIA",@"GEFORCE",@"NVS"])
+            {
+                if ([graphicCardModel contains:model]) _computerGraphicCardType = @"NVIDIA";
             }
             
             for (NSString* model in @[@"GMA"])
