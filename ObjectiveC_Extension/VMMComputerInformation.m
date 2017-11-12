@@ -296,32 +296,26 @@ static NSMutableDictionary* _macOsCompatibility;
         @autoreleasepool
         {
             NSString* graphicCardModel = [self.graphicCardName uppercaseString];
-            
             if (!graphicCardModel) return nil;
+            
+            NSArray* graphicCardModelComponents = [graphicCardModel componentsSeparatedByString:@" "];
+            
+            if ([graphicCardModelComponents containsObject:@"INTEL"])
+            {
+                if ([graphicCardModelComponents containsObject:@"HD"])   _computerGraphicCardType = VMMGraphicCardTypeIntelHD;
+                if ([graphicCardModelComponents containsObject:@"IRIS"]) _computerGraphicCardType = VMMGraphicCardTypeIntelIris;
+            }
+            
+            if ([graphicCardModelComponents containsObject:@"GMA"]) _computerGraphicCardType = VMMGraphicCardTypeIntelGMA;
             
             for (NSString* model in @[@"AMD",@"ATI",@"RADEON"])
             {
-                if ([graphicCardModel contains:model]) _computerGraphicCardType = @"ATi/AMD";
-            }
-            
-            for (NSString* model in @[@"INTEL HD"])
-            {
-                if ([graphicCardModel contains:model]) _computerGraphicCardType = @"Intel HD";
-            }
-            
-            for (NSString* model in @[@"INTEL IRIS"])
-            {
-                if ([graphicCardModel contains:model]) _computerGraphicCardType = @"Intel Iris";
+                if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMGraphicCardTypeATiAMD;
             }
             
             for (NSString* model in @[@"NVIDIA",@"GEFORCE",@"NVS"])
             {
-                if ([graphicCardModel contains:model]) _computerGraphicCardType = @"NVIDIA";
-            }
-            
-            for (NSString* model in @[@"GMA"])
-            {
-                if ([graphicCardModel contains:model]) _computerGraphicCardType = @"Intel GMA";
+                if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMGraphicCardTypeNVIDIA;
             }
         }
         
@@ -338,20 +332,36 @@ static NSMutableDictionary* _macOsCompatibility;
 +(NSString*)graphicCardVendorID
 {
     NSDictionary* localVideoCard = self.graphicCardDictionary;
+    
     NSString* localVendorID = localVideoCard[VENDOR_ID_KEY]; // eg. 0x10de
     
     if (!localVendorID)
     {
         NSString* localVendor = localVideoCard[VENDOR_KEY]; // eg. NVIDIA (0x10de)
-        if (localVendor)
+        if (localVendor && [localVendor contains:@"("])
         {
-            if ([localVendor contains:@"("])
+            localVendorID = [localVendor getFragmentAfter:@"(" andBefore:@")"];
+        }
+    }
+    
+    if (!localVendorID)
+    {
+        NSString* graphicCardType = [self graphicCardType];
+        if (graphicCardType)
+        {
+            if ([@[VMMGraphicCardTypeIntelHD, VMMGraphicCardTypeIntelIris, VMMGraphicCardTypeIntelGMA] containsObject:graphicCardType])
             {
-                localVendorID = [localVendor getFragmentAfter:@"(" andBefore:@")"];
+                localVendorID = @"0x8086"; // Intel Vendor ID
             }
-            else if ([localVendor.uppercaseString isEqualToString:@"INTEL"])
+            
+            if ([@[VMMGraphicCardTypeATiAMD] containsObject:graphicCardType])
             {
-                localVendorID = @"0x8086";
+                localVendorID = @"0x1002"; // ATi/AMD Vendor ID
+            }
+            
+            if ([@[VMMGraphicCardTypeNVIDIA] containsObject:graphicCardType])
+            {
+                localVendorID = @"0x10DE"; // NVIDIA Vendor ID
             }
         }
     }

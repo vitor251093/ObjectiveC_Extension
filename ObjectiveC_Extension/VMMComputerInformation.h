@@ -20,6 +20,12 @@
 #define IsClassAvailable(X)   (NSClassFromString(X) != nil)
 #define IsWKWebViewAvailable  IsClassAvailable(@"WKWebView")
 
+#define VMMGraphicCardTypeIntelHD   @"Intel HD"
+#define VMMGraphicCardTypeIntelIris @"Intel Iris"
+#define VMMGraphicCardTypeIntelGMA  @"Intel GMA"
+#define VMMGraphicCardTypeATiAMD    @"ATi/AMD"
+#define VMMGraphicCardTypeNVIDIA    @"NVIDIA"
+
 #import <Foundation/Foundation.h>
 
 @interface VMMComputerInformation : NSObject
