@@ -171,6 +171,45 @@ static NSMutableDictionary* _macOsCompatibility;
         IOObjectRelease(iterator);
     }
     
+    matchDict = IOServiceMatching(kIOAcceleratorClassName);
+    if (IOServiceGetMatchingServices(kIOMasterPortDefault, matchDict, &iterator) == kIOReturnSuccess)
+    {
+        io_registry_entry_t regEntry;
+        
+        while ((regEntry = IOIteratorNext(iterator)))
+        {
+            CFMutableDictionaryRef serviceDictionary;
+            if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess)
+            {
+                IOObjectRelease(regEntry);
+                continue;
+            }
+            
+            CFMutableDictionaryRef perf_properties = (CFMutableDictionaryRef) CFDictionaryGetValue(serviceDictionary,
+                                                                                                   CFSTR("PerformanceStatistics"));
+            if (perf_properties)
+            {
+                static ssize_t freeVramCount=0;
+                static ssize_t usedVramCount=0;
+                
+                const void* freeVram = CFDictionaryGetValue(perf_properties, CFSTR("vramFreeBytes"));
+                const void* usedVram = CFDictionaryGetValue(perf_properties, CFSTR("vramUsedBytes"));
+                if (freeVram && usedVram)
+                {
+                    CFNumberGetValue((CFNumberRef)freeVram, kCFNumberSInt64Type, &freeVramCount);
+                    CFNumberGetValue((CFNumberRef)usedVram, kCFNumberSInt64Type, &usedVramCount);
+                    
+                    NSString* vram = [NSString stringWithFormat:@"%ld MB",(freeVramCount+usedVramCount)/(1024*1024)];
+                    graphicCardDict[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY] = vram;
+                }
+            }
+            
+            CFRelease(serviceDictionary);
+            IOObjectRelease(regEntry);
+        }
+        IOObjectRelease(iterator);
+    }
+    
     return graphicCardDict;
 }
 +(NSDictionary*)graphicCardDictionary
@@ -184,6 +223,10 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
+            _computerGraphicCardDictionary = [self graphicCardDictionaryFromIOServiceMatch];
+            return _computerGraphicCardDictionary;
+            
+            
             NSString* displayData;
             
             displayData = [NSTask runCommand:@[@"system_profiler", @"SPDisplaysDataType"]];
@@ -319,15 +362,26 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return localVendorID;
 }
-+(NSString*)graphicCardMemorySize
++(NSUInteger)graphicCardMemorySizeInMegabytes
 {
     NSDictionary* gcDict = [self graphicCardDictionary];
-    if (!gcDict) return nil;
+    if (!gcDict || gcDict.count == 0) return 0;
     
     NSString* memSize = gcDict[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY];
     if (!memSize) memSize = gcDict[BUILTIN_VIDEO_CARD_VRAM_KEY];
     
-    return memSize;
+    int memSizeInt = 0;
+    
+    if ([memSize contains:@" MB"])
+    {
+        memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" MB"] intValue];
+    }
+    else if ([memSize contains:@" GB"])
+    {
+        memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
+    }
+    
+    return memSizeInt;
 }
 
 +(NSString*)macOsVersion

@@ -30,7 +30,7 @@
 
 +(NSString*)graphicCardDeviceID;
 +(NSString*)graphicCardVendorID;
-+(NSString*)graphicCardMemorySize;
++(NSUInteger)graphicCardMemorySizeInMegabytes;
 
 +(NSString*)macOsVersion;
 +(BOOL)isSystemMacOsEqualOrSuperiorTo:(NSString*)version;
