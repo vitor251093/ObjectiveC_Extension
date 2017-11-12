@@ -358,7 +358,7 @@ static NSMutableDictionary* _macOsCompatibility;
             
             if ([@[VMMGraphicCardTypeNVIDIA] containsObject:graphicCardType])
             {
-                localVendorID = @"0x10DE"; // NVIDIA Vendor ID
+                localVendorID = @"0x10de"; // NVIDIA Vendor ID
             }
         }
     }
