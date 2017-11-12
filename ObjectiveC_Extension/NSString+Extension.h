@@ -21,7 +21,10 @@
 -(NSArray*)componentsMatchingWithRegex:(NSString*)regexString;
 
 +(NSString*)humanReadableSizeForBytes:(long long int)bytes withDecimalMeasureSystem:(BOOL)measure;
-+(NSString*)stringWithHexString:(NSString*)string;
+
+-(NSString*)hexadecimalString;
++(NSString*)stringWithHexadecimalUTF8String:(NSString*)string;
+
 +(NSString*)stringByRemovingEvenCharsFromString:(NSString*)text;
 -(NSString*)stringToWebStructure;
 

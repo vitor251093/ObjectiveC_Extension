@@ -273,7 +273,15 @@
     
     return result;
 }
-+(NSString*)stringWithHexString:(NSString*)string
+
+-(NSString*)hexadecimalString
+{
+    const char* cString = [self cStringUsingEncoding:NSUTF8StringEncoding];
+    NSString* hexStr = [NSString stringWithFormat:@"%@", [NSData dataWithBytes:cString length:strlen(cString)]];
+    hexStr = [hexStr stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<> "]];
+    return hexStr;
+}
++(NSString*)stringWithHexadecimalUTF8String:(NSString*)string
 {
     NSMutableString* newString;
     
@@ -291,6 +299,7 @@
     
     return newString;
 }
+
 +(NSString*)stringByRemovingEvenCharsFromString:(NSString*)text
 {
     NSMutableString* text2;
