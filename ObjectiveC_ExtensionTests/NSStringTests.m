@@ -24,7 +24,7 @@
 
 - (void)testStringWithHexString
 {
-    XCTAssert([[NSString stringWithHexString:@"42"] isEqualToString:@"B"]);
+    XCTAssert([[NSString stringWithHexadecimalUTF8String:@"42"] isEqualToString:@"B"]);
 }
 
 - (void)testStringByRemovingEvenCharsFromString
