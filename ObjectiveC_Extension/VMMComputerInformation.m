@@ -52,6 +52,7 @@ static NSMutableDictionary* _macOsCompatibility;
             BOOL firstInput = YES;
             
             NSString* displayData = [NSTask runCommand:@[@"system_profiler", @"SPDisplaysDataType"]];
+            if (!displayData) displayData = [NSTask runCommand:@[@"/usr/sbin/system_profiler", @"SPDisplaysDataType"]];
             if (!displayData) return nil;
             
             NSMutableDictionary* lastGraphicCardDict = [[NSMutableDictionary alloc] init];
