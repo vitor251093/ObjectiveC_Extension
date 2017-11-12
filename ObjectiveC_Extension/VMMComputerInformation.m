@@ -129,7 +129,7 @@ static NSMutableDictionary* _macOsCompatibility;
                     if (deviceIDString.length == 4)
                     {
                         deviceIDString = [NSString stringWithFormat:@"0x%@%@",[deviceIDString substringFromIndex:2],
-                                          [deviceIDString substringToIndex:2]];
+                                                                              [deviceIDString substringToIndex:2]];
                         graphicCardDict[DEVICE_ID_KEY] = deviceIDString;
                     }
                 }
