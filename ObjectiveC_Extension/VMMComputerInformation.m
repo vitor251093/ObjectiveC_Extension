@@ -484,14 +484,11 @@ static NSMutableDictionary* _macOsCompatibility;
         {
             @autoreleasepool
             {
-                // Obtaining a string with the actual user groups
+                // Obtaining a string with the usergroups of the current user
                 NSString* usergroupsString = [NSTask runCommand:@[@"id", @"-G"]];
                 
-                // Turning the string into an array
-                NSArray*  usergroupsArray  = [usergroupsString componentsSeparatedByString:@" "];
-                
-                // 20 is the ID of the Staff Group, so if it has 20, it's a staff member
-                _userIsMemberOfStaff = @([usergroupsArray containsObject:STAFF_GROUP_MEMBER_CODE]);
+                NSArray* usergroups = [usergroupsString componentsSeparatedByString:@" "];
+                _userIsMemberOfStaff = @([usergroups containsObject:STAFF_GROUP_MEMBER_CODE]);
             }
         }
         
