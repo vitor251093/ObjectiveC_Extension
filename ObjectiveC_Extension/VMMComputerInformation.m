@@ -223,10 +223,6 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            _computerGraphicCardDictionary = [self graphicCardDictionaryFromIOServiceMatch];
-            return _computerGraphicCardDictionary;
-            
-            
             NSString* displayData;
             
             displayData = [NSTask runCommand:@[@"system_profiler", @"SPDisplaysDataType"]];
