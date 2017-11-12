@@ -23,6 +23,10 @@
 #define VENDOR_ID_KEY                   @"Vendor ID"
 #define DEVICE_ID_KEY                   @"Device ID"
 
+#define BUS_VALUE_PCIE     @"PCIe"
+#define BUS_VALUE_PCI      @"PCI"
+#define BUS_VALUE_BUILT_IN @"Built-In"
+
 #define STAFF_GROUP_MEMBER_CODE @"20"
 
 @implementation VMMComputerInformation
@@ -35,6 +39,126 @@ static NSNumber* _userIsMemberOfStaff;
 
 static NSMutableDictionary* _macOsCompatibility;
 
++(NSMutableDictionary*)graphicCardDictionaryFromSystemProfilerOutput:(NSString*)displayData
+{
+    NSMutableArray* graphicCards = [[NSMutableArray alloc] init];
+    NSString* graphicCardName;
+    int spacesCounter = 0;
+    BOOL firstInput = YES;
+    
+    NSMutableDictionary* lastGraphicCardDict = [[NSMutableDictionary alloc] init];
+    
+    for (NSString* displayLine in [displayData componentsSeparatedByString:@"\n"])
+    {
+        spacesCounter = 0;
+        NSString* displayLineNoSpaces = [displayLine copy];
+        while ([displayLineNoSpaces hasPrefix:@" "])
+        {
+            spacesCounter++;
+            displayLineNoSpaces = [displayLineNoSpaces substringFromIndex:1];
+        }
+        
+        if (displayLineNoSpaces.length > 0 && spacesCounter < 8)
+        {
+            if (spacesCounter == 6)
+            {
+                // Getting a graphic card attribute
+                NSArray* attr = [displayLineNoSpaces componentsSeparatedByString:@": "];
+                if (attr.count > 1) [lastGraphicCardDict setObject:attr[1] forKey:attr[0]];
+            }
+            
+            if (spacesCounter == 4)
+            {
+                // Adding a graphic card to the list
+                if (!firstInput) [graphicCards addObject:lastGraphicCardDict];
+                firstInput = NO;
+                
+                graphicCardName = [displayLineNoSpaces getFragmentAfter:nil andBefore:@":"];
+                lastGraphicCardDict = [[NSMutableDictionary alloc] init];
+                lastGraphicCardDict[GRAPHIC_CARD_NAME_KEY] = graphicCardName;
+            }
+        }
+    }
+    
+    // Adding last graphic card to the list
+    [graphicCards addObject:lastGraphicCardDict];
+    
+    NSArray* cards = [graphicCards sortedDictionariesArrayWithKey:BUS_KEY
+                                            orderingByValuesOrder:@[BUS_VALUE_PCIE, BUS_VALUE_PCI, BUS_VALUE_BUILT_IN]];
+    return [cards firstObject];
+}
++(NSMutableDictionary*)graphicCardDictionaryFromIOServiceMatch
+{
+    NSMutableDictionary* graphicCardDict = [[NSMutableDictionary alloc] init];
+    
+    CFMutableDictionaryRef matchDict = IOServiceMatching("IOPCIDevice");
+    
+    io_iterator_t iterator;
+    if (IOServiceGetMatchingServices(kIOMasterPortDefault,matchDict,&iterator) == kIOReturnSuccess)
+    {
+        io_registry_entry_t regEntry;
+        while ((regEntry = IOIteratorNext(iterator)))
+        {
+            CFMutableDictionaryRef serviceDictionary;
+            if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess)
+            {
+                IOObjectRelease(regEntry);
+                continue;
+            }
+            
+            NSMutableDictionary* service = (__bridge NSMutableDictionary*)serviceDictionary;
+            
+            if (service[@"model"] != nil && service[@"device-id"] != nil && service[@"vendor-id"] != nil && service[@"hda-gfx"] != nil)
+            {
+                NSData* gpuModel = service[@"model"];
+                if (gpuModel != nil && [gpuModel isKindOfClass:[NSData class]])
+                {
+                    NSString *gpuModelString = [[NSString alloc] initWithData:gpuModel encoding:NSASCIIStringEncoding];
+                    graphicCardDict[GRAPHIC_CARD_NAME_KEY] = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                }
+                
+                NSData* deviceID = service[@"device-id"];
+                if (deviceID != nil && [deviceID isKindOfClass:[NSData class]])
+                {
+                    NSString *deviceIDString = [[NSString alloc] initWithData:deviceID encoding:NSASCIIStringEncoding];
+                    deviceIDString = [deviceIDString hexadecimalString];
+                    deviceIDString = [NSString stringWithFormat:@"0x%@%@",[deviceIDString substringFromIndex:2],
+                                      [deviceIDString substringToIndex:2]];
+                    graphicCardDict[DEVICE_ID_KEY] = deviceIDString;
+                }
+                
+                NSData* vendorID = service[@"vendor-id"];
+                if (vendorID != nil && [vendorID isKindOfClass:[NSData class]])
+                {
+                    NSString *vendorIDString = [NSString stringWithFormat:@"%@",vendorID];
+                    vendorIDString = [vendorIDString substringWithRange:NSMakeRange(1, 4)];
+                    vendorIDString = [NSString stringWithFormat:@"0x%@%@",[vendorIDString substringFromIndex:2],
+                                      [vendorIDString substringToIndex:2]];
+                    graphicCardDict[VENDOR_ID_KEY] = vendorIDString;
+                }
+                
+                NSData* hdaGfx = service[@"hda-gfx"];
+                if (hdaGfx != nil && [hdaGfx isKindOfClass:[NSData class]])
+                {
+                    NSString* hdaGfxString = [[NSString alloc] initWithData:hdaGfx encoding:NSASCIIStringEncoding];
+                    graphicCardDict[BUS_KEY] = hdaGfxString;
+                    
+                    if ([hdaGfxString hasPrefix:@"onboard"])
+                    {
+                        graphicCardDict[BUS_KEY] = BUS_VALUE_BUILT_IN;
+                    }
+                }
+            }
+            
+            CFRelease(serviceDictionary);
+            IOObjectRelease(regEntry);
+        }
+        
+        IOObjectRelease(iterator);
+    }
+    
+    return graphicCardDict;
+}
 +(NSDictionary*)graphicCardDictionary
 {
     @synchronized(_computerGraphicCardDictionary)
@@ -46,55 +170,17 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            NSMutableArray* graphicCards = [[NSMutableArray alloc] init];
-            NSString* graphicCardName;
-            int spacesCounter = 0;
-            BOOL firstInput = YES;
+            NSString* displayData;
             
-            NSString* displayData = [NSTask runCommand:@[@"system_profiler", @"SPDisplaysDataType"]];
-            if (!displayData) displayData = [NSTask runCommand:@[@"/usr/sbin/system_profiler", @"SPDisplaysDataType"]];
-            if (!displayData) return nil;
+            displayData = [NSTask runCommand:@[@"system_profiler", @"SPDisplaysDataType"]];
+            _computerGraphicCardDictionary = [self graphicCardDictionaryFromSystemProfilerOutput:displayData];
+            if (_computerGraphicCardDictionary != nil) return _computerGraphicCardDictionary;
             
-            NSMutableDictionary* lastGraphicCardDict = [[NSMutableDictionary alloc] init];
+            displayData = [NSTask runCommand:@[@"/usr/sbin/system_profiler", @"SPDisplaysDataType"]];
+            _computerGraphicCardDictionary = [self graphicCardDictionaryFromSystemProfilerOutput:displayData];
+            if (_computerGraphicCardDictionary != nil) return _computerGraphicCardDictionary;
             
-            for (NSString* displayLine in [displayData componentsSeparatedByString:@"\n"])
-            {
-                spacesCounter = 0;
-                NSString* displayLineNoSpaces = [displayLine copy];
-                while ([displayLineNoSpaces hasPrefix:@" "])
-                {
-                    spacesCounter++;
-                    displayLineNoSpaces = [displayLineNoSpaces substringFromIndex:1];
-                }
-                
-                if (displayLineNoSpaces.length > 0 && spacesCounter < 8)
-                {
-                    if (spacesCounter == 6)
-                    {
-                        // Getting a graphic card attribute
-                        NSArray* attr = [displayLineNoSpaces componentsSeparatedByString:@": "];
-                        if (attr.count > 1) [lastGraphicCardDict setObject:attr[1] forKey:attr[0]];
-                    }
-                    
-                    if (spacesCounter == 4)
-                    {
-                        // Adding a graphic card to the list
-                        if (!firstInput) [graphicCards addObject:lastGraphicCardDict];
-                        firstInput = NO;
-                        
-                        graphicCardName = [displayLineNoSpaces getFragmentAfter:nil andBefore:@":"];
-                        lastGraphicCardDict = [[NSMutableDictionary alloc] init];
-                        lastGraphicCardDict[GRAPHIC_CARD_NAME_KEY] = graphicCardName;
-                    }
-                }
-            }
-            
-            // Adding last graphic card to the list
-            [graphicCards addObject:lastGraphicCardDict];
-            
-            NSArray* cards = [graphicCards sortedDictionariesArrayWithKey:BUS_KEY
-                                                    orderingByValuesOrder:@[@"PCIe",@"PCI",@"Built-In"]];
-            _computerGraphicCardDictionary = [cards firstObject];
+            _computerGraphicCardDictionary = [self graphicCardDictionaryFromIOServiceMatch];
         }
         
         return _computerGraphicCardDictionary;
