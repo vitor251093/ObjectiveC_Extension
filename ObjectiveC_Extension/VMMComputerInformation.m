@@ -174,13 +174,17 @@ static NSMutableDictionary* _macOsCompatibility;
             
             displayData = [NSTask runCommand:@[@"system_profiler", @"SPDisplaysDataType"]];
             _computerGraphicCardDictionary = [self graphicCardDictionaryFromSystemProfilerOutput:displayData];
-            if (_computerGraphicCardDictionary != nil) return _computerGraphicCardDictionary;
+            if (_computerGraphicCardDictionary.count == 0)
+            {
+                displayData = [NSTask runCommand:@[@"/usr/sbin/system_profiler", @"SPDisplaysDataType"]];
+                _computerGraphicCardDictionary = [self graphicCardDictionaryFromSystemProfilerOutput:displayData];
+            }
             
-            displayData = [NSTask runCommand:@[@"/usr/sbin/system_profiler", @"SPDisplaysDataType"]];
-            _computerGraphicCardDictionary = [self graphicCardDictionaryFromSystemProfilerOutput:displayData];
-            if (_computerGraphicCardDictionary != nil) return _computerGraphicCardDictionary;
-            
-            _computerGraphicCardDictionary = [self graphicCardDictionaryFromIOServiceMatch];
+            if (_computerGraphicCardDictionary.count == 0 || [self isGraphicCardDictionaryCompleteWithMemorySize:false] == false)
+            {
+                NSDictionary* computerGraphicCardDictionary = [self graphicCardDictionaryFromIOServiceMatch];
+                [_computerGraphicCardDictionary addEntriesFromDictionary:computerGraphicCardDictionary];
+            }
         }
         
         return _computerGraphicCardDictionary;
@@ -189,6 +193,25 @@ static NSMutableDictionary* _macOsCompatibility;
     // to avoid compiler warning
     return nil;
 }
+
++(BOOL)isGraphicCardDictionaryCompleteWithMemorySize:(BOOL)haveMemorySize
+{
+    if (_computerGraphicCardDictionary[GRAPHIC_CARD_NAME_KEY] == nil &&
+        _computerGraphicCardDictionary[CHIPSET_MODEL_KEY]     == nil) return false;
+    
+    if (_computerGraphicCardDictionary[DEVICE_ID_KEY] == nil) return false;
+    
+    if (_computerGraphicCardDictionary[VENDOR_ID_KEY] == nil &&
+        _computerGraphicCardDictionary[VENDOR_KEY]    == nil) return false;
+    
+    if (haveMemorySize == false) return true;
+    
+    if (_computerGraphicCardDictionary[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY] == nil &&
+        _computerGraphicCardDictionary[BUILTIN_VIDEO_CARD_VRAM_KEY]     == nil) return false;
+    
+    return true;
+}
+
 +(NSString*)graphicCardName
 {
     NSDictionary* graphicCardDictionary = self.graphicCardDictionary;
