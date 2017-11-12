@@ -114,7 +114,10 @@ static NSMutableDictionary* _macOsCompatibility;
                 if (gpuModel != nil && [gpuModel isKindOfClass:[NSData class]])
                 {
                     NSString *gpuModelString = [[NSString alloc] initWithData:gpuModel encoding:NSASCIIStringEncoding];
-                    graphicCardDict[GRAPHIC_CARD_NAME_KEY] = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                    if (gpuModelString)
+                    {
+                        graphicCardDict[GRAPHIC_CARD_NAME_KEY] = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                    }
                 }
                 
                 NSData* deviceID = service[@"device-id"];
@@ -122,30 +125,41 @@ static NSMutableDictionary* _macOsCompatibility;
                 {
                     NSString *deviceIDString = [[NSString alloc] initWithData:deviceID encoding:NSASCIIStringEncoding];
                     deviceIDString = [deviceIDString hexadecimalString];
-                    deviceIDString = [NSString stringWithFormat:@"0x%@%@",[deviceIDString substringFromIndex:2],
-                                      [deviceIDString substringToIndex:2]];
-                    graphicCardDict[DEVICE_ID_KEY] = deviceIDString;
+                    
+                    if (deviceIDString.length == 4)
+                    {
+                        deviceIDString = [NSString stringWithFormat:@"0x%@%@",[deviceIDString substringFromIndex:2],
+                                          [deviceIDString substringToIndex:2]];
+                        graphicCardDict[DEVICE_ID_KEY] = deviceIDString;
+                    }
                 }
                 
                 NSData* vendorID = service[@"vendor-id"];
                 if (vendorID != nil && [vendorID isKindOfClass:[NSData class]])
                 {
                     NSString *vendorIDString = [NSString stringWithFormat:@"%@",vendorID];
-                    vendorIDString = [vendorIDString substringWithRange:NSMakeRange(1, 4)];
-                    vendorIDString = [NSString stringWithFormat:@"0x%@%@",[vendorIDString substringFromIndex:2],
-                                      [vendorIDString substringToIndex:2]];
-                    graphicCardDict[VENDOR_ID_KEY] = vendorIDString;
+                    if (vendorIDString.length > 5)
+                    {
+                        vendorIDString = [vendorIDString substringWithRange:NSMakeRange(1, 4)];
+                        vendorIDString = [NSString stringWithFormat:@"0x%@%@",[vendorIDString substringFromIndex:2],
+                                                                              [vendorIDString substringToIndex:2]];
+                        graphicCardDict[VENDOR_ID_KEY] = vendorIDString;
+                    }
                 }
                 
                 NSData* hdaGfx = service[@"hda-gfx"];
                 if (hdaGfx != nil && [hdaGfx isKindOfClass:[NSData class]])
                 {
                     NSString* hdaGfxString = [[NSString alloc] initWithData:hdaGfx encoding:NSASCIIStringEncoding];
-                    graphicCardDict[BUS_KEY] = hdaGfxString;
                     
-                    if ([hdaGfxString hasPrefix:@"onboard"])
+                    if (hdaGfxString)
                     {
-                        graphicCardDict[BUS_KEY] = BUS_VALUE_BUILT_IN;
+                        graphicCardDict[BUS_KEY] = hdaGfxString;
+                        
+                        if ([hdaGfxString hasPrefix:@"onboard"])
+                        {
+                            graphicCardDict[BUS_KEY] = BUS_VALUE_BUILT_IN;
+                        }
                     }
                 }
             }
