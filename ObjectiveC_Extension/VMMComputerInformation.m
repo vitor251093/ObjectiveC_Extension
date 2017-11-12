@@ -114,7 +114,7 @@ static NSMutableDictionary* _macOsCompatibility;
                 if (gpuModel != nil && [gpuModel isKindOfClass:[NSData class]])
                 {
                     NSString *gpuModelString = [[NSString alloc] initWithData:gpuModel encoding:NSASCIIStringEncoding];
-                    if (gpuModelString)
+                    if (gpuModelString != nil)
                     {
                         graphicCardDict[GRAPHIC_CARD_NAME_KEY] = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@""];
                     }
@@ -152,7 +152,7 @@ static NSMutableDictionary* _macOsCompatibility;
                 {
                     NSString* hdaGfxString = [[NSString alloc] initWithData:hdaGfx encoding:NSASCIIStringEncoding];
                     
-                    if (hdaGfxString)
+                    if (hdaGfxString != nil)
                     {
                         graphicCardDict[BUS_KEY] = hdaGfxString;
                         
