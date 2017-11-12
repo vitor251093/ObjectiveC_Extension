@@ -254,9 +254,6 @@ static NSMutableDictionary* _macOsCompatibility;
     
     if (_computerGraphicCardDictionary[DEVICE_ID_KEY] == nil) return false;
     
-    if (_computerGraphicCardDictionary[VENDOR_ID_KEY] == nil &&
-        _computerGraphicCardDictionary[VENDOR_KEY]    == nil) return false;
-    
     if (haveMemorySize == false) return true;
     
     if (_computerGraphicCardDictionary[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY] == nil &&
