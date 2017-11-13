@@ -87,11 +87,11 @@ static NSMutableDictionary* _macOsCompatibility;
                                             orderingByValuesOrder:@[BUS_VALUE_PCIE, BUS_VALUE_PCI, BUS_VALUE_BUILT_IN]];
     return [cards firstObject];
 }
-+(NSMutableDictionary*)graphicCardDictionaryFromIOServiceMatch
++(NSMutableDictionary*)graphicCardDictionaryFromIOServiceMatching:(const char*)type
 {
     NSMutableDictionary* graphicCardDict = [[NSMutableDictionary alloc] init];
     
-    CFMutableDictionaryRef matchDict = IOServiceMatching("IOPCIDevice");
+    CFMutableDictionaryRef matchDict = IOServiceMatching(type);
     
     io_iterator_t iterator;
     if (IOServiceGetMatchingServices(kIOMasterPortDefault,matchDict,&iterator) == kIOReturnSuccess)
@@ -108,7 +108,7 @@ static NSMutableDictionary* _macOsCompatibility;
             
             NSMutableDictionary* service = (__bridge NSMutableDictionary*)serviceDictionary;
             
-            if (service[@"model"] != nil && service[@"device-id"] != nil && service[@"vendor-id"] != nil && service[@"hda-gfx"] != nil)
+            if (service[@"model"] != nil && service[@"device-id"] != nil && service[@"vendor-id"] != nil)
             {
                 NSData* gpuModel = service[@"model"];
                 if (gpuModel != nil && [gpuModel isKindOfClass:[NSData class]])
@@ -129,7 +129,7 @@ static NSMutableDictionary* _macOsCompatibility;
                     if (deviceIDString.length == 4)
                     {
                         deviceIDString = [NSString stringWithFormat:@"0x%@%@",[deviceIDString substringFromIndex:2],
-                                                                              [deviceIDString substringToIndex:2]];
+                                          [deviceIDString substringToIndex:2]];
                         graphicCardDict[DEVICE_ID_KEY] = deviceIDString;
                     }
                 }
@@ -142,11 +142,12 @@ static NSMutableDictionary* _macOsCompatibility;
                     {
                         vendorIDString = [vendorIDString substringWithRange:NSMakeRange(1, 4)];
                         vendorIDString = [NSString stringWithFormat:@"0x%@%@",[vendorIDString substringFromIndex:2],
-                                                                              [vendorIDString substringToIndex:2]];
+                                          [vendorIDString substringToIndex:2]];
                         graphicCardDict[VENDOR_ID_KEY] = vendorIDString;
                     }
                 }
                 
+                graphicCardDict[BUS_KEY] = BUS_VALUE_PCIE;
                 NSData* hdaGfx = service[@"hda-gfx"];
                 if (hdaGfx != nil && [hdaGfx isKindOfClass:[NSData class]])
                 {
@@ -171,7 +172,15 @@ static NSMutableDictionary* _macOsCompatibility;
         IOObjectRelease(iterator);
     }
     
-    matchDict = IOServiceMatching(kIOAcceleratorClassName);
+    return graphicCardDict;
+}
++(NSMutableDictionary*)graphicCardDictionaryFromIOServiceMatch
+{
+    NSMutableDictionary* graphicCardDict = [self graphicCardDictionaryFromIOServiceMatching:"IOPCIDevice"];
+    
+    CFMutableDictionaryRef matchDict = IOServiceMatching(kIOAcceleratorClassName);
+    io_iterator_t iterator;
+    
     if (IOServiceGetMatchingServices(kIOMasterPortDefault, matchDict, &iterator) == kIOReturnSuccess)
     {
         io_registry_entry_t regEntry;
@@ -199,7 +208,8 @@ static NSMutableDictionary* _macOsCompatibility;
                     CFNumberGetValue((CFNumberRef)freeVram, kCFNumberSInt64Type, &freeVramCount);
                     CFNumberGetValue((CFNumberRef)usedVram, kCFNumberSInt64Type, &usedVramCount);
                     
-                    NSString* vram = [NSString stringWithFormat:@"%ld MB",(freeVramCount+usedVramCount)/(1024*1024)];
+                    long vramValue = (freeVramCount+usedVramCount)/(1024*1024);
+                    NSString* vram = [NSString stringWithFormat:@"%ld MB",vramValue];
                     graphicCardDict[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY] = vram;
                 }
             }
