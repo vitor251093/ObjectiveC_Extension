@@ -94,6 +94,7 @@
 		4E6C52941F7EB50300A187E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4E6C52961F7EB50300A187E9 /* Localizable.strings */; };
 		4EA035A81F9532E10059C2C5 /* VMMKeyCaptureField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EA035A91F9532E10059C2C5 /* VMMKeyCaptureField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */; };
+		4EAD49251FBBB5AE008B562F /* NSColorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD49241FBBB5AE008B562F /* NSColorTests.m */; };
 		4EEBF4701FAE238F00CE31A0 /* NSMutableString+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EEBF46E1FAE238F00CE31A0 /* NSMutableString+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EEBF4711FAE238F00CE31A0 /* NSMutableString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */; };
 		4EF16B1F1F8E36A600A78DC0 /* VMMModals.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -205,6 +206,7 @@
 		4E6C529A1F7EB52A00A187E9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMKeyCaptureField.h; sourceTree = "<group>"; };
 		4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMKeyCaptureField.m; sourceTree = "<group>"; };
+		4EAD49241FBBB5AE008B562F /* NSColorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColorTests.m; sourceTree = "<group>"; };
 		4EEBF46E1FAE238F00CE31A0 /* NSMutableString+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+Extension.h"; sourceTree = "<group>"; };
 		4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+Extension.m"; sourceTree = "<group>"; };
 		4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMModals.h; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 			isa = PBXGroup;
 			children = (
 				4E6C52851F7EA42700A187E9 /* NSArrayTests.m */,
+				4EAD49241FBBB5AE008B562F /* NSColorTests.m */,
 				4E6C52861F7EA42700A187E9 /* NSStringTests.m */,
 			);
 			name = Functions;
@@ -618,6 +621,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4EAD49251FBBB5AE008B562F /* NSColorTests.m in Sources */,
 				4E6C52881F7EA42700A187E9 /* NSArrayTests.m in Sources */,
 				4E6C52891F7EA42700A187E9 /* NSStringTests.m in Sources */,
 				4E6C51161F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m in Sources */,
