@@ -514,14 +514,14 @@ static NSAlert* _alertWithButtonOptions;
             [_alertWithButtonOptions addButtonWithTitle:NSLocalizedString(@"Cancel",nil)];
             [_alertWithButtonOptions setInformativeText:message];
             
+            CGFloat properWidth = _alertWithButtonOptions.window.frame.size.width - ALERT_WITH_BUTTON_OPTIONS_WINDOW_MIN_X_MARGIN - ALERT_WITH_BUTTON_OPTIONS_WINDOW_MAX_X_MARGIN - ALERT_WITH_BUTTON_OPTIONS_WINDOW_X_EXTRA_MARGIN;
+            
             NSView* accessoryView = [[NSView alloc] init];
             [accessoryView setAutoresizingMask:NSViewWidthSizable];
             [accessoryView setFrameSize:NSMakeSize(viewWidth,viewHeight)];
             [accessoryView addSubview:sourcesView];
-            [_alertWithButtonOptions setAccessoryView:accessoryView];
-            
-            CGFloat properWidth = _alertWithButtonOptions.window.frame.size.width - ALERT_WITH_BUTTON_OPTIONS_WINDOW_MIN_X_MARGIN - ALERT_WITH_BUTTON_OPTIONS_WINDOW_MAX_X_MARGIN - ALERT_WITH_BUTTON_OPTIONS_WINDOW_X_EXTRA_MARGIN;
             [accessoryView setFrameSize:NSMakeSize(properWidth,viewHeight)];
+            [_alertWithButtonOptions setAccessoryView:accessoryView];
             
             return _alertWithButtonOptions;
         }];
