@@ -55,7 +55,7 @@
     return data;
 }
 
-+(NSString*)jsonStringWithJsonObject:(id)object
++(NSString*)jsonStringWithObject:(id)object
 {
     if (IsClassAvailable(@"NSJSONSerialization"))
     {
@@ -63,7 +63,7 @@
         
         @autoreleasepool
         {
-            jsonString = [[NSString alloc] initWithData:[self dataWithJsonObject:object] encoding:NSUTF8StringEncoding];
+            jsonString = [[NSString alloc] initWithData:[self jsonDataWithObject:object] encoding:NSUTF8StringEncoding];
         }
         
         return jsonString;
@@ -82,7 +82,7 @@
         NSMutableArray* array = [[NSMutableArray alloc] init];
         for (id innerObject in (NSArray*)object)
         {
-            [array addObject:[self jsonStringWithJsonObject:innerObject]];
+            [array addObject:[self jsonStringWithObject:innerObject]];
         }
         return [NSString stringWithFormat:@"[%@]",[array componentsJoinedByString:@","]];
     }
@@ -92,8 +92,8 @@
         NSMutableArray* dict = [[NSMutableArray alloc] init];
         for (NSString* key in [(NSDictionary*)object allKeys])
         {
-            [dict addObject:[NSString stringWithFormat:@"%@:%@",[self jsonStringWithJsonObject:key],
-                                        [self jsonStringWithJsonObject:[(NSDictionary*)object objectForKey:key]]]];
+            [dict addObject:[NSString stringWithFormat:@"%@:%@",[self jsonStringWithObject:key],
+                                        [self jsonStringWithObject:[(NSDictionary*)object objectForKey:key]]]];
         }
         return [NSString stringWithFormat:@"{%@}",[dict componentsJoinedByString:@","]];
     }
@@ -112,7 +112,7 @@
     return @"";
 }
 
-+(NSData*)dataWithJsonObject:(id)object
++(NSData*)jsonDataWithObject:(id)object
 {
     if (IsClassAvailable(@"NSJSONSerialization"))
     {
@@ -121,11 +121,11 @@
 
     @autoreleasepool
     {
-        return [[self jsonStringWithJsonObject:object] dataUsingEncoding:NSUTF8StringEncoding];
+        return [[self jsonStringWithObject:object] dataUsingEncoding:NSUTF8StringEncoding];
     }
 }
 
--(id)jsonObject
+-(id)objectWithJsonData
 {
     if (IsClassAvailable(@"NSJSONSerialization"))
     {

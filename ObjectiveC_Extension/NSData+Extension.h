@@ -16,9 +16,9 @@
 +(NSData*)dataWithContentsOfURL:(NSURL *)url timeoutInterval:(long long int)timeoutInterval;
 +(NSData*)safeDataWithContentsOfFile:(NSString*)filePath;
 
-+(NSString*)jsonStringWithJsonObject:(id)object;
-+(NSData*)dataWithJsonObject:(id)object;
--(id)jsonObject;
++(NSString*)jsonStringWithObject:(id)object;
++(NSData*)jsonDataWithObject:(id)object;
+-(id)objectWithJsonData;
 
 @end
 
