@@ -12,7 +12,7 @@
 
 NSDictionary* _virtualKeycodeNames;
 
-+(NSArray*)allKeyNames
++(NSArray<NSString*>*)allKeyNames
 {
     return self.virtualKeycodeNames.allValues;
 }

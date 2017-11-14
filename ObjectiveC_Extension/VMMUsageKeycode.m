@@ -12,7 +12,7 @@
 
 NSDictionary* _usageNamesByKeycode;
 
-+(NSArray*)allUsageNames
++(NSArray<NSString*>*)allUsageNames
 {
     return self.usageNamesByKeycode.allValues;
 }

@@ -85,7 +85,7 @@
     BOOL isDir = NO;
     return [self fileExistsAtPath:path isDirectory:&isDir] && !isDir;
 }
--(NSArray*)contentsOfDirectoryAtPath:(NSString*)path
+-(NSArray<NSString*>*)contentsOfDirectoryAtPath:(NSString*)path
 {
     if (![self fileExistsAtPath:path])
     {

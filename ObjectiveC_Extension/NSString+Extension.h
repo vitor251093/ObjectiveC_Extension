@@ -15,10 +15,10 @@
 
 -(BOOL)contains:(NSString*)string;
 -(BOOL)matchesWithSearchTerms:(NSArray*)searchTerms;
--(NSArray*)searchTermsWithString;
+-(NSArray<NSString*>*)searchTermsWithString;
 
 -(BOOL)matchesWithRegex:(NSString*)regexString;
--(NSArray*)componentsMatchingWithRegex:(NSString*)regexString;
+-(NSArray<NSString*>*)componentsMatchingWithRegex:(NSString*)regexString;
 
 +(NSString*)humanReadableSizeForBytes:(long long int)bytes withDecimalMeasureSystem:(BOOL)measure;
 

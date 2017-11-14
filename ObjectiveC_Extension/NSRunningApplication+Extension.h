@@ -16,7 +16,7 @@
 
 -(BOOL)isVisible;
 
--(NSArray*)windowsSizes;
+-(NSArray<NSDictionary*>*)visibleWindowsSizes;
 -(NSDictionary*)windowWithSize:(NSSize)size;
 -(BOOL)hasWindowWithSize:(NSSize)size;
 

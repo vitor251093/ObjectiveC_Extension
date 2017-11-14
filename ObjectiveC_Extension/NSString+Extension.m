@@ -144,7 +144,7 @@
     
     return YES;
 }
--(NSArray*)searchTermsWithString
+-(NSArray<NSString*>*)searchTermsWithString
 {
     NSArray* searchTerms;
     
@@ -187,7 +187,7 @@
     
     return result;
 }
--(NSArray*)componentsMatchingWithRegex:(NSString*)regexString
+-(NSArray<NSString*>*)componentsMatchingWithRegex:(NSString*)regexString
 {
     NSMutableArray* matches;
     

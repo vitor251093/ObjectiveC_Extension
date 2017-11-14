@@ -13,18 +13,19 @@
 
 @interface NSTask (VMMTask)
 
-+(NSString*)runCommand:(NSArray*)programAndFlags;
-+(NSString*)runCommand:(NSArray*)programAndFlags atRunPath:(NSString*)path;
++(NSString*)runCommand:(NSArray<NSString*>*)programAndFlags;
++(NSString*)runCommand:(NSArray<NSString*>*)programAndFlags atRunPath:(NSString*)path;
++(NSString*)runCommand:(NSArray<NSString*>*)programAndFlags atRunPath:(NSString*)path andWait:(BOOL)shouldWait;
 
-+(void)runAsynchronousCommand:(NSArray*)programAndFlags;
++(void)runAsynchronousCommand:(NSArray<NSString*>*)programAndFlags;
 
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags;
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags outputEncoding:(NSStringEncoding)encoding;
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path andWaiting:(BOOL)wait;
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags withEnvironment:(NSDictionary*)env;
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags waitingForTimeInterval:(unsigned int)timeout;
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags;
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags outputEncoding:(NSStringEncoding)encoding;
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags atRunPath:(NSString*)path andWaiting:(BOOL)wait;
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags withEnvironment:(NSDictionary*)env;
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags waitingForTimeInterval:(unsigned int)timeout;
 
-+(NSString*)runProgram:(NSString*)program withFlags:(NSArray*)flags atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env andWaiting:(BOOL)wait forTimeInterval:(unsigned int)timeout outputEncoding:(NSStringEncoding)encoding;
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env andWaiting:(BOOL)wait forTimeInterval:(unsigned int)timeout outputEncoding:(NSStringEncoding)encoding;
 
 @end
 

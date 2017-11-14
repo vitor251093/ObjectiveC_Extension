@@ -16,7 +16,7 @@
 
 @interface VMMUsageKeycode : NSObject
 
-+(NSArray*)allUsageNames;
++(NSArray<NSString*>*)allUsageNames;
 
 +(NSDictionary*)usageNamesByKeycode;
 

@@ -40,7 +40,7 @@ typedef enum NSChecksumType
 -(BOOL)removeItemAtPath:(NSString*)path;
 -(BOOL)directoryExistsAtPath:(NSString*)path;
 -(BOOL)regularFileExistsAtPath:(NSString*)path;
--(NSArray*)contentsOfDirectoryAtPath:(NSString*)path;
+-(NSArray<NSString*>*)contentsOfDirectoryAtPath:(NSString*)path;
 -(NSString*)destinationOfSymbolicLinkAtPath:(NSString *)path;
 
 -(NSString*)userReadablePathForItemAtPath:(NSString*)path joinedByString:(NSString*)join;

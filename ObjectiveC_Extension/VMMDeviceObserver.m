@@ -29,7 +29,7 @@ static VMMDeviceObserver *_sharedObserver;
     return nil;
 }
 
--(void)observeDevicesOfTypes:(NSArray*)types forDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate
+-(void)observeDevicesOfTypes:(NSArray<NSNumber*>*)types forDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate
 {
     if (!actionDelegate) return;
     
