@@ -29,6 +29,10 @@
 #define ALERT_WITH_BUTTON_OPTIONS_ICON_IMAGE_BORDER     10
 #define ALERT_WITH_BUTTON_OPTIONS_ICONS_AT_X            3
 
+#define ALERT_WITH_BUTTON_OPTIONS_WINDOW_MIN_X_MARGIN   105
+#define ALERT_WITH_BUTTON_OPTIONS_WINDOW_MAX_X_MARGIN   18
+#define ALERT_WITH_BUTTON_OPTIONS_WINDOW_X_EXTRA_MARGIN 40
+
 #define INPUT_DIALOG_MESSAGE_FIELD_FRAME NSMakeRect(0, 0, 260, 24)
 
 #define ALERT_ICON_SIZE 512
@@ -438,7 +442,8 @@ static NSAlert* _alertWithButtonOptions;
                             (ALERT_WITH_BUTTON_OPTIONS_ICONS_AT_X-1)*ALERT_WITH_BUTTON_OPTIONS_BUTTONS_SPACE;
         
         __block NSView* sourcesView = [[NSView alloc] init];
-        [sourcesView setFrameSize:NSMakeSize(viewWidth,viewHeight)];
+        [sourcesView setFrame:NSMakeRect(0, 0, viewWidth,viewHeight)];
+        [sourcesView setAutoresizingMask:NSViewMaxXMargin|NSViewMinXMargin];
         
         for (int i = 0; i < options.count; i++)
         {
@@ -508,7 +513,16 @@ static NSAlert* _alertWithButtonOptions;
             [_alertWithButtonOptions setMessageText:title];
             [_alertWithButtonOptions addButtonWithTitle:NSLocalizedString(@"Cancel",nil)];
             [_alertWithButtonOptions setInformativeText:message];
-            [_alertWithButtonOptions setAccessoryView:sourcesView];
+            
+            NSView* accessoryView = [[NSView alloc] init];
+            [accessoryView setAutoresizingMask:NSViewWidthSizable];
+            [accessoryView setFrameSize:NSMakeSize(viewWidth,viewHeight)];
+            [accessoryView addSubview:sourcesView];
+            [_alertWithButtonOptions setAccessoryView:accessoryView];
+            
+            CGFloat properWidth = _alertWithButtonOptions.window.frame.size.width - ALERT_WITH_BUTTON_OPTIONS_WINDOW_MIN_X_MARGIN - ALERT_WITH_BUTTON_OPTIONS_WINDOW_MAX_X_MARGIN - ALERT_WITH_BUTTON_OPTIONS_WINDOW_X_EXTRA_MARGIN;
+            [accessoryView setFrameSize:NSMakeSize(properWidth,viewHeight)];
+            
             return _alertWithButtonOptions;
         }];
         
