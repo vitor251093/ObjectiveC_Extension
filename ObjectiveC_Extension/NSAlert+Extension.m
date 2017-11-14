@@ -20,10 +20,6 @@
 #define ALERT_WITH_ATTRIBUTED_MESSAGE_WIDTH_MARGIN       50
 #define ALERT_WITH_ATTRIBUTED_MESSAGE_WIDTH_LIMIT_MARGIN 200
 
-#define ALERT_WITH_BUTTON_OPTIONS_VIEW_WIDTH_MODIFIER_LIMIT 3
-#define ALERT_WITH_BUTTON_OPTIONS_VIEW_WIDTH_MODIFIER_LESS  -20
-#define ALERT_WITH_BUTTON_OPTIONS_VIEW_WIDTH_MODIFIER_MORE  30
-
 #define ALERT_WITH_BUTTON_OPTIONS_BUTTONS_LATERAL       0
 #define ALERT_WITH_BUTTON_OPTIONS_BUTTONS_SPACE         10
 #define ALERT_WITH_BUTTON_OPTIONS_ICON_WIDTH            80
@@ -431,25 +427,15 @@ static NSAlert* _alertWithButtonOptions;
     @autoreleasepool
     {
         int totalY = (int) ((options.count-1) / ALERT_WITH_BUTTON_OPTIONS_ICONS_AT_X) + 1;
-        int totalX = (int) ALERT_WITH_BUTTON_OPTIONS_ICONS_AT_X;
+        int totalX = (int) ((ALERT_WITH_BUTTON_OPTIONS_ICONS_AT_X > options.count) ? options.count : ALERT_WITH_BUTTON_OPTIONS_ICONS_AT_X);
         BOOL hasSingleLine = totalX == options.count;
         
         CGFloat iconHeight = ALERT_WITH_BUTTON_OPTIONS_ICON_HEIGHT;
         CGFloat iconWidth  = ALERT_WITH_BUTTON_OPTIONS_ICON_WIDTH;
         
         CGFloat viewHeight = iconHeight*totalY + (totalY-1)*ALERT_WITH_BUTTON_OPTIONS_BUTTONS_SPACE;
-        CGFloat viewWidth = ALERT_WITH_BUTTON_OPTIONS_BUTTONS_LATERAL*2 +
-                            iconWidth*totalX + (totalX-1)*ALERT_WITH_BUTTON_OPTIONS_BUTTONS_SPACE;
-        
-        // Applying Width modifier
-        if (options.count < ALERT_WITH_BUTTON_OPTIONS_VIEW_WIDTH_MODIFIER_LIMIT)
-        {
-            viewWidth += ALERT_WITH_BUTTON_OPTIONS_VIEW_WIDTH_MODIFIER_LESS;
-        }
-        else
-        {
-            viewWidth += ALERT_WITH_BUTTON_OPTIONS_VIEW_WIDTH_MODIFIER_MORE;
-        }
+        CGFloat viewWidth = ALERT_WITH_BUTTON_OPTIONS_BUTTONS_LATERAL*2 + iconWidth*ALERT_WITH_BUTTON_OPTIONS_ICONS_AT_X +
+                            (ALERT_WITH_BUTTON_OPTIONS_ICONS_AT_X-1)*ALERT_WITH_BUTTON_OPTIONS_BUTTONS_SPACE;
         
         __block NSView* sourcesView = [[NSView alloc] init];
         [sourcesView setFrameSize:NSMakeSize(viewWidth,viewHeight)];
