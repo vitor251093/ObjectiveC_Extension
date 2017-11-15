@@ -133,8 +133,7 @@
 
     @autoreleasepool
     {
-        NSString* returnedString = [[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding];
-        return [returnedString jsonObject];
+        return [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] jsonObject];
     }
 }
 
