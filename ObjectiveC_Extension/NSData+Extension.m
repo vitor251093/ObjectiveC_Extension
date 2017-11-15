@@ -71,10 +71,9 @@
 
     if ([object isKindOfClass:[NSString class]])
     {
-        return [NSString stringWithFormat:@"\"%@\"",
-                [[[(NSString*)object stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
-                                     stringByReplacingOccurrencesOfString:@"\n" withString:@"\\\n"]
-                                     stringByReplacingOccurrencesOfString:@"/" withString:@"\\/"]];
+        return [NSString stringWithFormat:@"\"%@\"",[[[(NSString*)object stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
+                                                                         stringByReplacingOccurrencesOfString:@"\n" withString:@"\\\n"]
+                                                                         stringByReplacingOccurrencesOfString:@"/" withString:@"\\/"]];
     }
     
     if ([object isKindOfClass:[NSArray class]])
