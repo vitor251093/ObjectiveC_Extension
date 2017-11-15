@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSView (VMMView)
+@interface NSView (VMMView_Extensions)
 
 -(void)removeAllSubviews;
 

@@ -8,7 +8,7 @@
 
 #import "NSView+Extension.h"
 
-@implementation NSView (VMMView)
+@implementation NSView (VMMView_Extensions)
 
 -(void)removeAllSubviews
 {
