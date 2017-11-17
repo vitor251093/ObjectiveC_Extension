@@ -179,11 +179,13 @@ static NSString* bundleName;
             
             // Selecting last button, which is supposed to be the Cancel button, or a Ok button in a single button dialog
             modalCode = NSAlertFirstButtonReturn + ((self.buttons.count > 0) ? (self.buttons.count - 1) : 0);
+            break;
             
         case 1:     // NSModalResponseOK
             
             // Selecting first button, which is supposed to be the confirmation button, or a Ok button in a single button dialog
             modalCode = NSAlertFirstButtonReturn;
+            break;
             
         default:
             break;
