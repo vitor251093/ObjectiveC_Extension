@@ -289,6 +289,7 @@ static NSMutableDictionary* _macOsCompatibility;
         videoCardName = chipsetModel;
     }
     
+    if ([videoCardName isEqualToString:@"Display"]) return nil;
     return videoCardName;
 }
 +(NSString*)graphicCardType
@@ -380,8 +381,8 @@ static NSMutableDictionary* _macOsCompatibility;
     NSDictionary* gcDict = [self graphicCardDictionary];
     if (!gcDict || gcDict.count == 0) return 0;
     
-    NSString* memSize = gcDict[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY];
-    if (!memSize) memSize = gcDict[BUILTIN_VIDEO_CARD_VRAM_KEY];
+    NSString* memSize = [gcDict[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY] uppercaseString];
+    if (!memSize) memSize = [gcDict[BUILTIN_VIDEO_CARD_VRAM_KEY] uppercaseString];
     
     int memSizeInt = 0;
     
