@@ -31,7 +31,7 @@
     NSRunLoop* theRunLoop = [NSRunLoop currentRunLoop];
     [theRunLoop addTimer:monitorTimer forMode:_runLoopMode];
 }
--(void)showTextFileAtPath:(NSString*)filePath withEncoding:(NSStringEncoding)encoding updatingWithTimeInterval:(NSTimeInterval)interval
+-(void)showTextFileAtPath:(NSString*)filePath withEncoding:(NSStringEncoding)encoding refreshingWithTimeInterval:(NSTimeInterval)interval
 {
     _textFilePath = filePath;
     _textFileEncoding = encoding;

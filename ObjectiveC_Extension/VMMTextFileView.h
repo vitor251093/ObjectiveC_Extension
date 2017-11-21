@@ -17,7 +17,7 @@
 @property (nonatomic) NSStringEncoding textFileEncoding;
 @property (nonatomic) NSRunLoopMode runLoopMode;
 
--(void)showTextFileAtPath:(NSString*)filePath withEncoding:(NSStringEncoding)encoding updatingWithTimeInterval:(NSTimeInterval)interval;
+-(void)showTextFileAtPath:(NSString*)filePath withEncoding:(NSStringEncoding)encoding refreshingWithTimeInterval:(NSTimeInterval)interval;
 -(void)stopRefreshing;
 
 @end
