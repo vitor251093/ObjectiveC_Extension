@@ -320,7 +320,7 @@ static NSMutableDictionary* _macOsCompatibility;
                 if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMGraphicCardTypeATiAMD;
             }
             
-            for (NSString* model in @[@"NVIDIA",@"GEFORCE",@"NVS"])
+            for (NSString* model in @[@"NVIDIA",@"GEFORCE",@"NVS",@"QUADRO"])
             {
                 if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMGraphicCardTypeNVIDIA;
             }
