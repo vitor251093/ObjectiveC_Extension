@@ -259,8 +259,7 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(BOOL)isGraphicCardDictionaryCompleteWithMemorySize:(BOOL)haveMemorySize
 {
-    if (_computerGraphicCardDictionary[GRAPHIC_CARD_NAME_KEY] == nil &&
-        _computerGraphicCardDictionary[CHIPSET_MODEL_KEY]     == nil) return false;
+    if (self.graphicCardName == nil) return false;
     
     if (_computerGraphicCardDictionary[DEVICE_ID_KEY] == nil) return false;
     
