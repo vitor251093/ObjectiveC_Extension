@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E0DE40E1FC703A2004AA363 /* NSTimer+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E0DE40C1FC703A2004AA363 /* NSTimer+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E0DE40F1FC703A2004AA363 /* NSTimer+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E0DE40D1FC703A2004AA363 /* NSTimer+Extension.m */; };
 		4E1181591FB200E800D8029F /* VMMView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E1181571FB200E800D8029F /* VMMView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E11815A1FB200E800D8029F /* VMMView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1181581FB200E800D8029F /* VMMView.m */; };
 		4E231F931F8191DD00148A30 /* VMMDeviceSimulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E231F911F8191DD00148A30 /* VMMDeviceSimulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -114,6 +116,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4E0DE40C1FC703A2004AA363 /* NSTimer+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Extension.h"; sourceTree = "<group>"; };
+		4E0DE40D1FC703A2004AA363 /* NSTimer+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Extension.m"; sourceTree = "<group>"; };
 		4E1181571FB200E800D8029F /* VMMView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMView.h; sourceTree = "<group>"; };
 		4E1181581FB200E800D8029F /* VMMView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMView.m; sourceTree = "<group>"; };
 		4E231F911F8191DD00148A30 /* VMMDeviceSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMDeviceSimulator.h; sourceTree = "<group>"; };
@@ -348,6 +352,8 @@
 				4E6C52161F7E911000A187E9 /* NSText+Extension.m */,
 				4E6C52171F7E911000A187E9 /* NSThread+Extension.h */,
 				4E6C52181F7E911000A187E9 /* NSThread+Extension.m */,
+				4E0DE40C1FC703A2004AA363 /* NSTimer+Extension.h */,
+				4E0DE40D1FC703A2004AA363 /* NSTimer+Extension.m */,
 				4E6C52191F7E911000A187E9 /* NSUnarchiver+Extension.h */,
 				4E6C521A1F7E911000A187E9 /* NSUnarchiver+Extension.m */,
 				4E6C521B1F7E911000A187E9 /* NSUserDefaults+Extension.h */,
@@ -464,6 +470,7 @@
 				4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */,
 				4EF16B1F1F8E36A600A78DC0 /* VMMModals.h in Headers */,
 				4E231F931F8191DD00148A30 /* VMMDeviceSimulator.h in Headers */,
+				4E0DE40E1FC703A2004AA363 /* NSTimer+Extension.h in Headers */,
 				4E3BD7031FAD2FCF00AF8418 /* VMMUUID.h in Headers */,
 				4EA035A81F9532E10059C2C5 /* VMMKeyCaptureField.h in Headers */,
 				4EEBF4701FAE238F00CE31A0 /* NSMutableString+Extension.h in Headers */,
@@ -591,6 +598,7 @@
 				4E6C523C1F7E911000A187E9 /* NSRunningApplication+Extension.m in Sources */,
 				4E6C522C1F7E911000A187E9 /* NSFileManager+Extension.m in Sources */,
 				4E6C52381F7E911000A187E9 /* NSMutableDictionary+Extension.m in Sources */,
+				4E0DE40F1FC703A2004AA363 /* NSTimer+Extension.m in Sources */,
 				4E11815A1FB200E800D8029F /* VMMView.m in Sources */,
 				4E6C522E1F7E911000A187E9 /* NSImage+Extension.m in Sources */,
 				4E6C52461F7E911000A187E9 /* NSThread+Extension.m in Sources */,

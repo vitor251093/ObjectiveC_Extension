@@ -45,6 +45,7 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 #import <ObjectiveC_Extension/NSTask+Extension.h>
 #import <ObjectiveC_Extension/NSText+Extension.h>
 #import <ObjectiveC_Extension/NSThread+Extension.h>
+#import <ObjectiveC_Extension/NSTimer+Extension.h>
 #import <ObjectiveC_Extension/NSUnarchiver+Extension.h>
 #import <ObjectiveC_Extension/NSUserDefaults+Extension.h>
 #import <ObjectiveC_Extension/NSView+Extension.h>

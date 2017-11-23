@@ -9,6 +9,7 @@
 #import "VMMTextFileView.h"
 
 #import "NSString+Extension.h"
+#import "NSTimer+Extension.h"
 
 @implementation VMMTextFileView
 
@@ -26,10 +27,8 @@
 {
     [self setString:@""];
     
-    monitorTimer = [NSTimer scheduledTimerWithTimeInterval:interval target:self
-                                                  selector:@selector(reloadTextFileForTimer:) userInfo:nil repeats:YES];
-    NSRunLoop* theRunLoop = [NSRunLoop currentRunLoop];
-    [theRunLoop addTimer:monitorTimer forMode:_runLoopMode];
+    monitorTimer = [NSTimer scheduledTimerWithRunLoopMode:_runLoopMode timeInterval:interval target:self
+                                                 selector:@selector(reloadTextFileForTimer:) userInfo:nil];
 }
 -(void)showTextFileAtPath:(NSString*)filePath withEncoding:(NSStringEncoding)encoding refreshingWithTimeInterval:(NSTimeInterval)interval
 {
