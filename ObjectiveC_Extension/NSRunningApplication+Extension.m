@@ -14,28 +14,6 @@
 
 @implementation NSRunningApplication (VMMRunningApplication)
 
-+(NSArray<NSRunningApplication*>*)applicationsRunningFromInsideBundle:(NSString*)bundlePath
-{
-    NSMutableArray* list = [[NSMutableArray alloc] init];
-    
-    for (NSRunningApplication* runningApp in [[NSWorkspace sharedWorkspace] runningApplications])
-    {
-        NSString* binLocalPath = [[runningApp executableURL] path];
-        
-        if (![binLocalPath hasPrefix:bundlePath] && [bundlePath hasPrefix:@"/private"])
-        {
-            binLocalPath = [@"/private" stringByAppendingString:binLocalPath];
-        }
-        
-        if ([binLocalPath hasPrefix:bundlePath])
-        {
-            [list addObject:runningApp];
-        }
-    }
-    
-    return list;
-}
-
 -(NSArray<NSDictionary*>*)visibleWindows
 {
     NSMutableArray* appWindows = [[NSMutableArray alloc] init];

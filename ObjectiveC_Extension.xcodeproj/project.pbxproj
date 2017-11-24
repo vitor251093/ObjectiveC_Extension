@@ -96,6 +96,8 @@
 		4E6C52941F7EB50300A187E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4E6C52961F7EB50300A187E9 /* Localizable.strings */; };
 		4EA035A81F9532E10059C2C5 /* VMMKeyCaptureField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EA035A91F9532E10059C2C5 /* VMMKeyCaptureField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */; };
+		4EA69BD41FC8DDEA00C70100 /* NSWorkspace+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA69BD21FC8DDEA00C70100 /* NSWorkspace+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4EA69BD51FC8DDEA00C70100 /* NSWorkspace+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA69BD31FC8DDEA00C70100 /* NSWorkspace+Extension.m */; };
 		4EAD49251FBBB5AE008B562F /* NSColorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD49241FBBB5AE008B562F /* NSColorTests.m */; };
 		4EB392E11FC479060098F987 /* VMMTextFileView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EB392DF1FC479060098F987 /* VMMTextFileView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EB392E21FC479060098F987 /* VMMTextFileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EB392E01FC479060098F987 /* VMMTextFileView.m */; };
@@ -212,6 +214,8 @@
 		4E6C529A1F7EB52A00A187E9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMKeyCaptureField.h; sourceTree = "<group>"; };
 		4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMKeyCaptureField.m; sourceTree = "<group>"; };
+		4EA69BD21FC8DDEA00C70100 /* NSWorkspace+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWorkspace+Extension.h"; sourceTree = "<group>"; };
+		4EA69BD31FC8DDEA00C70100 /* NSWorkspace+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWorkspace+Extension.m"; sourceTree = "<group>"; };
 		4EAD49241FBBB5AE008B562F /* NSColorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColorTests.m; sourceTree = "<group>"; };
 		4EB392DF1FC479060098F987 /* VMMTextFileView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMTextFileView.h; sourceTree = "<group>"; };
 		4EB392E01FC479060098F987 /* VMMTextFileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMTextFileView.m; sourceTree = "<group>"; };
@@ -360,6 +364,8 @@
 				4E6C521C1F7E911000A187E9 /* NSUserDefaults+Extension.m */,
 				4E6C521D1F7E911000A187E9 /* NSView+Extension.h */,
 				4E6C521E1F7E911000A187E9 /* NSView+Extension.m */,
+				4EA69BD21FC8DDEA00C70100 /* NSWorkspace+Extension.h */,
+				4EA69BD31FC8DDEA00C70100 /* NSWorkspace+Extension.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -475,6 +481,7 @@
 				4EA035A81F9532E10059C2C5 /* VMMKeyCaptureField.h in Headers */,
 				4EEBF4701FAE238F00CE31A0 /* NSMutableString+Extension.h in Headers */,
 				4E1181591FB200E800D8029F /* VMMView.h in Headers */,
+				4EA69BD41FC8DDEA00C70100 /* NSWorkspace+Extension.h in Headers */,
 				4EB392E11FC479060098F987 /* VMMTextFileView.h in Headers */,
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* VMMUsageKeycode.h in Headers */,
@@ -595,6 +602,7 @@
 				4E3BD7041FAD2FCF00AF8418 /* VMMUUID.m in Sources */,
 				4E6C52261F7E911000A187E9 /* NSColor+Extension.m in Sources */,
 				4EF16B201F8E36A600A78DC0 /* VMMModals.m in Sources */,
+				4EA69BD51FC8DDEA00C70100 /* NSWorkspace+Extension.m in Sources */,
 				4E6C523C1F7E911000A187E9 /* NSRunningApplication+Extension.m in Sources */,
 				4E6C522C1F7E911000A187E9 /* NSFileManager+Extension.m in Sources */,
 				4E6C52381F7E911000A187E9 /* NSMutableDictionary+Extension.m in Sources */,

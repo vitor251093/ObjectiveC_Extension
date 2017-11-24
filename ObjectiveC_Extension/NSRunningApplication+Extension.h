@@ -10,8 +10,6 @@
 
 @interface NSRunningApplication (VMMRunningApplication)
 
-+(NSArray<NSRunningApplication*>*)applicationsRunningFromInsideBundle:(NSString*)bundlePath;
-
 -(NSArray<NSDictionary*>*)visibleWindows;
 
 -(BOOL)isVisible;
