@@ -67,12 +67,12 @@
         img = [[NSImage alloc] initWithContentsOfFile:arquivo];
     }
     
-    if (!img)
+    if (img == nil)
     {
         img = [self quickLookImageFromFileAtPath:arquivo];
     }
     
-    if (!img)
+    if (img == nil)
     {
         img = [[NSWorkspace sharedWorkspace] iconForFile:arquivo];
     }
@@ -106,7 +106,7 @@
         [scaleFilter setValue:ciimage  forKey:@"inputImage"];
         
         ciimage = [scaleFilter valueForKey:@"outputImage"];
-        if (!ciimage) return false;
+        if (ciimage == nil) return false;
         
         NSBitmapImageRep* rep;
         
@@ -135,7 +135,7 @@
 }
 -(BOOL)saveAsIcnsAtPath:(NSString*)icnsPath
 {
-    if (!icnsPath) return false;
+    if (icnsPath == nil) return false;
     
     BOOL result;
 
@@ -202,7 +202,7 @@
     
     NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:[self TIFFRepresentation]];
     NSData* data = [imageRep representationUsingType:(NSBitmapImageFileType)[typeForExtension[extension] unsignedLongValue] properties:@{}];
-    if (!data) return false;
+    if (data == nil) return false;
     
     return [data writeToFile:file atomically:useAuxiliaryFile];
 }

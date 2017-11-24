@@ -276,7 +276,7 @@ static NSMutableDictionary* _macOsCompatibility;
 {
     NSDictionary* graphicCardDictionary = self.graphicCardDictionary;
     
-    if (!graphicCardDictionary)
+    if (graphicCardDictionary == nil)
     {
         return nil;
     }
@@ -304,7 +304,7 @@ static NSMutableDictionary* _macOsCompatibility;
         @autoreleasepool
         {
             NSString* graphicCardModel = [self.graphicCardName uppercaseString];
-            if (!graphicCardModel) return nil;
+            if (graphicCardModel == nil) return nil;
             
             NSArray* graphicCardModelComponents = [graphicCardModel componentsSeparatedByString:@" "];
             
@@ -343,7 +343,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     NSString* localVendorID = localVideoCard[VENDOR_ID_KEY]; // eg. 0x10de
     
-    if (!localVendorID)
+    if (localVendorID == nil)
     {
         NSString* localVendor = localVideoCard[VENDOR_KEY]; // eg. NVIDIA (0x10de)
         if (localVendor && [localVendor contains:@"("])
@@ -352,7 +352,7 @@ static NSMutableDictionary* _macOsCompatibility;
         }
     }
     
-    if (!localVendorID)
+    if (localVendorID == nil)
     {
         NSString* graphicCardType = [self graphicCardType];
         if (graphicCardType != nil)
@@ -382,7 +382,7 @@ static NSMutableDictionary* _macOsCompatibility;
     if (!gcDict || gcDict.count == 0) return 0;
     
     NSString* memSize = [gcDict[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY] uppercaseString];
-    if (!memSize) memSize = [gcDict[BUILTIN_VIDEO_CARD_VRAM_KEY] uppercaseString];
+    if (memSize == nil) memSize = [gcDict[BUILTIN_VIDEO_CARD_VRAM_KEY] uppercaseString];
     
     int memSizeInt = 0;
     
@@ -413,12 +413,12 @@ static NSMutableDictionary* _macOsCompatibility;
             NSDictionary *systemVersionDictionary = [NSDictionary dictionaryWithContentsOfFile:plistFile];
             NSString* version = systemVersionDictionary[@"ProductVersion"];
             
-            if (!version)
+            if (version == nil)
             {
                 version = [NSTask runCommand:@[@"sw_vers", @"-productVersion"]];
             }
             
-            if (!version)
+            if (version == nil)
             {
                 version = @"";
             }
@@ -468,12 +468,12 @@ static NSMutableDictionary* _macOsCompatibility;
             NSDictionary *systemVersionDictionary = [NSDictionary dictionaryWithContentsOfFile:plistFile];
             NSString* version = systemVersionDictionary[@"ProductBuildVersion"];
             
-            if (!version)
+            if (version == nil)
             {
                 version = [NSTask runCommand:@[@"sw_vers", @"-buildVersion"]];
             }
             
-            if (!version)
+            if (version == nil)
             {
                 version = @"";
             }

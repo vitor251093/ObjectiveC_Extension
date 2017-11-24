@@ -105,7 +105,7 @@ static NSString* bundleName;
     NSString* bundleNameKey = @"CFBundleName";
     
     NSString* bundlePath = [[NSBundle mainBundle] bundlePath];
-    if (!bundlePath) return placeholder;
+    if (bundlePath == nil) return placeholder;
     
     NSString* infoPlistPath = [[bundlePath stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Info.plist"];
     NSDictionary* infoPlist = [[NSDictionary alloc] initWithContentsOfFile:infoPlistPath];

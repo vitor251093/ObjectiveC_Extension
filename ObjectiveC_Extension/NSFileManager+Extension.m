@@ -185,7 +185,7 @@
 
 -(NSString*)checksum:(NSChecksumType)checksum ofFileAtPath:(NSString*)file
 {
-    if (!file) return nil;
+    if (file == nil) return nil;
     
     NSString* result;
     
@@ -213,7 +213,7 @@
         }
         
         NSString* output = [NSTask runCommand:@[@"openssl", @"dgst", algorithm, file]];
-        if (!output) return nil;
+        if (output == nil) return nil;
         
         NSRange lastSpaceRange = [output rangeOfString:@" " options:NSBackwardsSearch];
         if (lastSpaceRange.location == NSNotFound) return nil;

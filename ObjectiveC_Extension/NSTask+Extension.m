@@ -68,7 +68,7 @@ static NSMutableDictionary* binaryPaths;
     {
         NSString* newProgramPath = [self getPathOfProgram:program];
         
-        if (!newProgramPath)
+        if (newProgramPath == nil)
         {
             [NSAlert showAlertOfType:NSAlertTypeError
                          withMessage:[NSString stringWithFormat:NSLocalizedString(@"Path for %@ not found.",nil), program]];
@@ -191,17 +191,17 @@ static NSMutableDictionary* binaryPaths;
 
 +(NSString*)getPathOfProgram:(NSString*)programName
 {
-    if (!programName) return nil;
-    if (binaryPaths && binaryPaths[programName]) return binaryPaths[programName];
+    if (programName == nil) return nil;
+    if (binaryPaths != nil && binaryPaths[programName]) return binaryPaths[programName];
     
     NSString* programPath;
     
     @autoreleasepool
     {
-        if (!binaryPaths) binaryPaths = [[NSMutableDictionary alloc] init];
+        if (binaryPaths == nil) binaryPaths = [[NSMutableDictionary alloc] init];
         
         programPath = [self runCommand:@[@"/usr/bin/type", @"-a", programName]];
-        if (!programPath) return nil;
+        if (programPath == nil) return nil;
         
         programPath = [[programPath componentsSeparatedByString:@" "] lastObject];
         if (programPath.length == 0) return nil;

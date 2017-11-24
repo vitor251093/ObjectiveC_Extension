@@ -31,7 +31,7 @@ static VMMDeviceObserver *_sharedObserver;
 
 -(void)observeDevicesOfTypes:(NSArray<NSNumber*>*)types forDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate
 {
-    if (!actionDelegate) return;
+    if (actionDelegate == nil) return;
     
     actionDelegate.hidManager = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
     
@@ -59,14 +59,14 @@ static VMMDeviceObserver *_sharedObserver;
 }
 -(void)stopObservingForDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate
 {
-    if (!actionDelegate) return;
+    if (actionDelegate == nil) return;
     
     actionDelegate.hidManager = NULL;
 }
 
 static void Handle_DeviceMatchingCallback(void *inContext, IOReturn inResult, void *inSender, IOHIDDeviceRef inIOHIDDeviceRef)
 {
-    if (!inIOHIDDeviceRef) return;
+    if (inIOHIDDeviceRef == NULL) return;
     
     dispatch_async(dispatch_get_main_queue(),^
     {
@@ -78,7 +78,7 @@ static void Handle_DeviceMatchingCallback(void *inContext, IOReturn inResult, vo
 }
 static void Handle_DeviceRemovalCallback (void *inContext, IOReturn inResult, void *inSender, IOHIDDeviceRef inIOHIDDeviceRef)
 {
-    if (!inIOHIDDeviceRef) return;
+    if (inIOHIDDeviceRef == NULL) return;
     
     dispatch_async(dispatch_get_main_queue(),^
     {
@@ -92,7 +92,7 @@ static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, vo
 {
     IOHIDElementRef element = IOHIDValueGetElement(value);      // Key
     IOHIDDeviceRef device = IOHIDElementGetDevice(element);     // Device
-    if (!device) return;
+    if (device == NULL) return;
     
     IOHIDElementCookie cookie = IOHIDElementGetCookie(element); // Cookie of key
     uint32_t usage = IOHIDElementGetUsage(element);             // Usage of key
@@ -101,7 +101,7 @@ static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, vo
     //NSDebugLog(@"Device ID = %p; Cookie = %u; Usage = %u; Value = %ld", (void*)device, cookie, usage, elementValue);
     
     NSObject<VMMDeviceObserverActionDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverActionDelegate>*)inContext;
-    if (!actionDelegate) return;
+    if (actionDelegate == nil) return;
     if (![actionDelegate conformsToProtocol:@protocol(VMMDeviceObserverActionDelegate)]) return;
     
     dispatch_async(dispatch_get_main_queue(),^
