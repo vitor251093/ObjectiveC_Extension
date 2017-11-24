@@ -34,7 +34,7 @@
     optionsForPanel(openPanel);
     
     NSWindow* window = [VMMModals modalsWindow];
-    if (window)
+    if (window != nil)
     {
         [openPanel beginSheetModalForWindow:window completionHandler:^(NSModalResponse result)
         {
@@ -98,7 +98,7 @@
     
     [NSThread dispatchBlockInMainQueue:^
     {
-        if (window)
+        if (window != nil)
         {
             [self beginSheetModalForWindow:window completionHandler:^(NSModalResponse result)
             {
@@ -139,7 +139,7 @@
     optionsForPanel(savePanel);
     
     NSWindow* window = [VMMModals modalsWindow];
-    if (window)
+    if (window != nil)
     {
         [savePanel beginSheetModalForWindow:window completionHandler:^(NSModalResponse result)
         {

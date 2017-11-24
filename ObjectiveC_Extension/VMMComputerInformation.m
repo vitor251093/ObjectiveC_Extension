@@ -355,7 +355,7 @@ static NSMutableDictionary* _macOsCompatibility;
     if (!localVendorID)
     {
         NSString* graphicCardType = [self graphicCardType];
-        if (graphicCardType)
+        if (graphicCardType != nil)
         {
             if ([@[VMMGraphicCardTypeIntelHD, VMMGraphicCardTypeIntelIris, VMMGraphicCardTypeIntelGMA] containsObject:graphicCardType])
             {

@@ -64,7 +64,7 @@ static VMMUserNotificationCenter *_sharedInstance;
     notification.soundName = NSUserNotificationDefaultSoundName;
     notification.userInfo = info ? @{NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY:info} : @{};
     
-    if (icon)
+    if (icon != nil)
     {
         @try
         {
@@ -83,7 +83,7 @@ static VMMUserNotificationCenter *_sharedInstance;
         }
     }
     
-    if (actionButton)
+    if (actionButton != nil)
     {
         [notification setHasActionButton:YES];
         [notification setActionButtonTitle:actionButton];

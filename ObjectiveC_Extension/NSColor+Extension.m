@@ -38,7 +38,7 @@
     
     NSColor *convertedColor = [self colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     
-    if (convertedColor)
+    if (convertedColor != nil)
     {
         [convertedColor getRed:&redFloatValue green:&greenFloatValue blue:&blueFloatValue alpha:NULL];
         

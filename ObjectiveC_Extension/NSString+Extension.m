@@ -266,7 +266,7 @@
         }
         
         minorBytes = ((minorBytes*1000)/divisor)/100;
-        if (minorBytes) result = [NSString stringWithFormat:@".%d%@",minorBytes,result];
+        if (minorBytes > 0) result = [NSString stringWithFormat:@".%d%@",minorBytes,result];
         
         result = [NSString stringWithFormat:@"%lld%@",bytes,result];
     }
@@ -389,7 +389,7 @@
     NSError* error;
     NSString* string = [self stringWithContentsOfFile:file encoding:enc error:&error];
     
-    if (error)
+    if (error != nil)
     {
         [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while reading file: %@",nil), error.localizedDescription]];
     }
@@ -420,7 +420,7 @@
     NSError* error;
     BOOL created = [self writeToFile:path atomically:useAuxiliaryFile encoding:enc error:&error];
     
-    if (error)
+    if (error != nil)
     {
         [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while writting file: %@",nil), error.localizedDescription]];
     }

@@ -114,9 +114,9 @@ static NSMutableDictionary* binaryPaths;
         {
             NSTask *server = [NSTask new];
             [server setLaunchPath:program];
-            if (path)  [server setCurrentDirectoryPath:path];
-            if (flags) [server setArguments:flags];
-            if (env)   [server setEnvironment:env];
+            if (path != nil)  [server setCurrentDirectoryPath:path];
+            if (flags != nil) [server setArguments:flags];
+            if (env != nil)   [server setEnvironment:env];
             
             NSFileHandle *errorFileHandle = [NSFileHandle fileHandleWithNullDevice];
             [server setStandardError:errorFileHandle];
@@ -149,7 +149,7 @@ static NSMutableDictionary* binaryPaths;
                     
                     @synchronized (lock)
                     {
-                        if (lock) [lock signal];
+                        if (lock != nil) [lock signal];
                     }
                 }];
                 
@@ -159,7 +159,7 @@ static NSMutableDictionary* binaryPaths;
                     
                     @synchronized (lock)
                     {
-                        if (lock)
+                        if (lock != nil)
                         {
                             [lock signal];
                             [server terminate];
@@ -209,7 +209,7 @@ static NSMutableDictionary* binaryPaths;
         programPath = [programPath substringToIndex:programPath.length-1];
     }
     
-    if (programPath) binaryPaths[programName] = programPath;
+    if (programPath != nil) binaryPaths[programName] = programPath;
     return programPath;
 }
 

@@ -143,7 +143,7 @@
     [_navigationBar setBackgroundColor:self.navigationBarColor];
     
     NSFont* buttonTextFont = self.navigationBarButtonsTextFont;
-    if (buttonTextFont)
+    if (buttonTextFont != nil)
     {
         buttonTextFont = [NSFont fontWithDescriptor:buttonTextFont.fontDescriptor size:self.navigationBarButtonsTextSize];
     }
@@ -153,7 +153,7 @@
     }
     
     NSFont* addressTextFont = self.navigationBarAddressFieldTextFont;
-    if (addressTextFont)
+    if (addressTextFont != nil)
     {
         addressTextFont = [NSFont fontWithDescriptor:addressTextFont.fontDescriptor size:self.navigationBarAddressFieldTextSize];
     }
@@ -204,7 +204,7 @@
     [_webViewErrorLabel setAutoresizingMask:NSViewMaxYMargin|NSViewMinYMargin|NSViewWidthSizable];
     
     NSFont* webViewTextFont = self.webViewErrorLabelTextFont;
-    if (webViewTextFont)
+    if (webViewTextFont != nil)
     {
         webViewTextFont = [NSFont fontWithDescriptor:webViewTextFont.fontDescriptor size:self.webViewErrorLabelTextSize];
     }

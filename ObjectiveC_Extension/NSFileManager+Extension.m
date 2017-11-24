@@ -22,8 +22,10 @@
     NSError* error;
     BOOL created = [self createSymbolicLinkAtPath:path withDestinationPath:destPath error:&error];
     
-    if (error)
+    if (error != nil)
+    {
         [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while creating symbolic link: %@",nil), error.localizedDescription]];
+    }
     
     return created;
 }
@@ -32,8 +34,10 @@
     NSError* error;
     BOOL created = [self createDirectoryAtPath:path withIntermediateDirectories:interDirs attributes:nil error:&error];
     
-    if (error)
+    if (error != nil)
+    {
         [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while creating folder: %@",nil), error.localizedDescription]];
+    }
     
     return created;
 }
@@ -47,9 +51,11 @@
     NSError* error;
     BOOL created = [self moveItemAtPath:path toPath:destination error:&error];
     
-    if (error)
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while moving file: %@",nil),
-                                                               error.localizedDescription]];
+    if (error != nil)
+    {
+        [NSAlert showAlertOfType:NSAlertTypeError
+            withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while moving file: %@",nil), error.localizedDescription]];
+    }
     
     return created;
 }
@@ -58,20 +64,24 @@
     NSError* error;
     BOOL created = [self copyItemAtPath:path toPath:destination error:&error];
     
-    if (error)
+    if (error != nil)
+    {
         [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while copying file: %@",nil), error.localizedDescription]];
+    }
     
     return created;
 }
 -(BOOL)removeItemAtPath:(NSString*)path
 {
-    if (![self fileExistsAtPath:path]) return YES;
+    if ([self fileExistsAtPath:path] == false) return YES;
     
     NSError* error;
     BOOL created = [self removeItemAtPath:path error:&error];
     
-    if (error)
+    if (error != nil)
+    {
         [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while removing file: %@",nil), error.localizedDescription]];
+    }
     
     return created;
 }
@@ -102,7 +112,7 @@
     NSError* error;
     NSArray* created = [self contentsOfDirectoryAtPath:path error:&error];
     
-    if (error)
+    if (error != nil)
     {
         [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while listing folder contents: %@",nil), error.localizedDescription]];
         return @[];
@@ -118,7 +128,7 @@
     NSError* error;
     NSString* destination = [self destinationOfSymbolicLinkAtPath:path error:&error];
     
-    if (error)
+    if (error != nil)
     {
         [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while retrieving symbolic link destination: %@",nil),error.localizedDescription]];
     }
@@ -146,7 +156,7 @@
     @autoreleasepool
     {
         NSDictionary *fileDictionary = [self attributesOfItemAtPath:path error:nil];
-        if (fileDictionary) result = [fileDictionary[NSFileSize] unsignedLongLongValue];
+        if (fileDictionary != nil) result = [fileDictionary[NSFileSize] unsignedLongLongValue];
     }
     
     return result;

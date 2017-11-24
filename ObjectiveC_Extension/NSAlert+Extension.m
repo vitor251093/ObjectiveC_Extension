@@ -99,7 +99,7 @@ static NSString* bundleName;
         default: break;
     }
     
-    if (bundleName) return bundleName;
+    if (bundleName != nil) return bundleName;
     
     NSString* placeholder = @"Info";
     NSString* bundleNameKey = @"CFBundleName";
@@ -149,7 +149,7 @@ static NSString* bundleName;
     NSWindow* window = [VMMModals modalsWindow];
     NSInteger modalCode;
     
-    if (window)
+    if (window != nil)
     {
         for (NSButton *button in self.buttons)
         {
@@ -373,7 +373,7 @@ static NSString* bundleName;
             [alert setInformativeText:message];
             
             NSTextField *input = [[NSTextField alloc] initWithFrame:INPUT_DIALOG_MESSAGE_FIELD_FRAME];
-            if (defaultValue) [input setStringValue:defaultValue];
+            if (defaultValue != nil) [input setStringValue:defaultValue];
             [alert setAccessoryView:input];
             [[alert window] setInitialFirstResponder:input];
             
@@ -396,7 +396,7 @@ static NSString* bundleName;
                  [alert setInformativeText:message];
                  
                  NSTextField *input = [[NSTextField alloc] initWithFrame:INPUT_DIALOG_MESSAGE_FIELD_FRAME];
-                 if (defaultValue) [input setStringValue:defaultValue];
+                 if (defaultValue != nil) [input setStringValue:defaultValue];
                  [alert setAccessoryView:input];
                  [[alert window] setInitialFirstResponder:input];
                  
@@ -463,7 +463,7 @@ static NSAlert* _alertWithButtonOptions;
             
             NSString* sourceName = options[i];
             NSImage* icon = iconForOption(sourceName);
-            BOOL doesNotHaveValidIcon = !icon;
+            BOOL doesNotHaveValidIcon = (icon == nil);
             
             button.tag = false;
             
@@ -488,7 +488,7 @@ static NSAlert* _alertWithButtonOptions;
             
             NSImage* resultImage;
             
-            if (icon)
+            if (icon != nil)
             {
                 resultImage = [[NSImage alloc] initWithSize:NSMakeSize(iconWidth, iconHeight)];
                 [resultImage lockFocus];

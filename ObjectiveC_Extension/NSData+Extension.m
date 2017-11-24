@@ -46,7 +46,7 @@
         NSError *error = nil;
         data = [[NSData alloc] initWithContentsOfFile:filePath options:0 error:&error];
         
-        if (error)
+        if (error != nil)
         {
             [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while reading file data: %@",nil), error.localizedDescription]];
         }
