@@ -88,20 +88,15 @@ static VMMDockProgressIndicator* progress_bar;
     NSRectFill(rect);
 }
 
-- (void)showProgressBar
+- (void)setHidden:(BOOL)hidden
 {
-    [self setHidden:NO];
-    [[NSApp dockTile] display];
-}
-- (void)hideProgressBar
-{
-    [self setHidden:YES];
+    [super setHidden:hidden];
     [[NSApp dockTile] display];
 }
 
-- (void)setProgress:(float)progress
+- (void)setDoubleValue:(double)doubleValue
 {
-    [self setDoubleValue:progress];
+    [super setDoubleValue:doubleValue];
     [[NSApp dockTile] display];
 }
 

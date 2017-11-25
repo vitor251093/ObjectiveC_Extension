@@ -37,9 +37,4 @@
 
 + (VMMDockProgressIndicator*)sharedInstance;
 
-- (void)showProgressBar;
-- (void)hideProgressBar;
-
-- (void)setProgress:(float)progress;
-
 @end
