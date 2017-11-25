@@ -57,7 +57,7 @@
 
 +(NSString*)jsonStringWithObject:(id)object
 {
-    if (IsNSJSONSerializationAvailable)
+    if (IsClassNSJSONSerializationAvailable)
     {
         NSString* jsonString;
         
@@ -113,7 +113,7 @@
 
 +(NSData*)jsonDataWithObject:(id)object
 {
-    if (IsNSJSONSerializationAvailable)
+    if (IsClassNSJSONSerializationAvailable)
     {
         return [NSJSONSerialization dataWithJSONObject:object options:NSJSONWritingPrettyPrinted error:nil];
     }
@@ -126,7 +126,7 @@
 
 -(id)objectWithJsonData
 {
-    if (IsNSJSONSerializationAvailable)
+    if (IsClassNSJSONSerializationAvailable)
     {
         return [NSJSONSerialization JSONObjectWithData:self options:0 error:nil];
     }

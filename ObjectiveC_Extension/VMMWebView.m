@@ -75,7 +75,7 @@
 // Initialization private methods
 -(void)initializeWebView
 {
-    _usingWkWebView = IsWKWebViewAvailable;
+    _usingWkWebView = IsClassWKWebViewAvailable;
     
     if (_usingWkWebView)
     {

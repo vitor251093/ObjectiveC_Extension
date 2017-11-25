@@ -16,7 +16,7 @@
 {
     @autoreleasepool
     {    
-        if (IsNSUUIDAvailable)
+        if (IsClassNSUUIDAvailable)
         {
             return [[NSUUID UUID] UUIDString];
         }
