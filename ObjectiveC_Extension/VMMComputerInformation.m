@@ -414,7 +414,7 @@ static NSMutableDictionary* _macOsCompatibility;
             if ([[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)])
             {
                 NSOperatingSystemVersion version = [[NSProcessInfo processInfo] operatingSystemVersion];
-                if (version.majorVersion > 0)
+                if (version.majorVersion >= 10)
                 {
                     macOsVersion = [NSString stringWithFormat:@"%ld.%ld.%ld",
                                     version.majorVersion, version.minorVersion, version.patchVersion];
@@ -429,7 +429,7 @@ static NSMutableDictionary* _macOsCompatibility;
                 Gestalt(gestaltSystemVersionMajor, &versMaj);
                 Gestalt(gestaltSystemVersionMinor, &versMin);
                 Gestalt(gestaltSystemVersionBugFix, &versBugFix);
-                if (versMaj > 0)
+                if (versMaj >= 10)
                 {
                     macOsVersion = [NSString stringWithFormat:@"%d.%d.%d", versMaj, versMin, versBugFix];
                 }
@@ -494,13 +494,13 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            NSString* plistFile = @"/System/Library/CoreServices/SystemVersion.plist";
-            NSDictionary *systemVersionDictionary = [NSDictionary dictionaryWithContentsOfFile:plistFile];
-            NSString* version = systemVersionDictionary[@"ProductBuildVersion"];
+            NSString* version = [NSTask runCommand:@[@"sw_vers", @"-buildVersion"]];
             
             if (version == nil)
             {
-                version = [NSTask runCommand:@[@"sw_vers", @"-buildVersion"]];
+                NSString* plistFile = @"/System/Library/CoreServices/SystemVersion.plist";
+                NSDictionary *systemVersionDictionary = [NSDictionary dictionaryWithContentsOfFile:plistFile];
+                version = systemVersionDictionary[@"ProductBuildVersion"];
             }
             
             if (version == nil)
