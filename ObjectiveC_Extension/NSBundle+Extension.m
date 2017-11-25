@@ -8,6 +8,8 @@
 
 #import "NSBundle+Extension.h"
 
+#include <stdlib.h>
+
 @implementation NSBundle (VMMBundle)
 
 static NSString* bundleName;
@@ -16,7 +18,20 @@ static NSString* bundleName;
 {
     if (bundleName != nil) return bundleName;
     
-    bundleName = [self objectForInfoDictionaryKey:@"CFBundleName"];
+    bundleName = [self objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    
+    if (!bundleName)
+    {
+        bundleName = [self objectForInfoDictionaryKey:@"CFBundleName"];
+    }
+    
+    if (!bundleName)
+    {
+        // Reference:
+        // https://stackoverflow.com/a/35322073/4370893
+        
+        bundleName = [NSString stringWithUTF8String:getprogname()];
+    }
     
     if (!bundleName)
     {
