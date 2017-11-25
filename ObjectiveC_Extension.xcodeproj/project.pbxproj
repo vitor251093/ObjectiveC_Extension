@@ -20,6 +20,8 @@
 		4E3EE4651F82BF42008A5CC3 /* CREDITS in Resources */ = {isa = PBXBuildFile; fileRef = 4E3EE4641F82BF42008A5CC3 /* CREDITS */; };
 		4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E53A8A41F8587D90038BDFE /* NSScreen+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */; };
+		4E5A45D91FC9FD7800FCEB42 /* VMMDockProgressIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E5A45D71FC9FD7800FCEB42 /* VMMDockProgressIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E5A45DA1FC9FD7800FCEB42 /* VMMDockProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5A45D81FC9FD7800FCEB42 /* VMMDockProgressIndicator.m */; };
 		4E6C51111F7E8EB700A187E9 /* ObjectiveC_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */; };
 		4E6C51161F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51151F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m */; };
 		4E6C51181F7E8EB700A187E9 /* ObjectiveC_Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -131,6 +133,8 @@
 		4E3EE4641F82BF42008A5CC3 /* CREDITS */ = {isa = PBXFileReference; lastKnownFileType = text; path = CREDITS; sourceTree = "<group>"; };
 		4E53A8A41F8587D90038BDFE /* NSScreen+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Extension.h"; sourceTree = "<group>"; };
 		4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Extension.m"; sourceTree = "<group>"; };
+		4E5A45D71FC9FD7800FCEB42 /* VMMDockProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMDockProgressIndicator.h; sourceTree = "<group>"; };
+		4E5A45D81FC9FD7800FCEB42 /* VMMDockProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMDockProgressIndicator.m; sourceTree = "<group>"; };
 		4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectiveC_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveC_Extension.h; sourceTree = "<group>"; };
 		4E6C510B1F7E8EB700A187E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -382,10 +386,12 @@
 		4E6C52601F7E950900A187E9 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */,
-				4E6C52701F7E954D00A187E9 /* VMMComputerInformation.m */,
 				4E6C52611F7E953A00A187E9 /* NKFTPManager.h */,
 				4E6C52621F7E953A00A187E9 /* NKFTPManager.m */,
+				4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */,
+				4E6C52701F7E954D00A187E9 /* VMMComputerInformation.m */,
+				4E5A45D71FC9FD7800FCEB42 /* VMMDockProgressIndicator.h */,
+				4E5A45D81FC9FD7800FCEB42 /* VMMDockProgressIndicator.m */,
 				4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */,
 				4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */,
 				4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */,
@@ -481,6 +487,7 @@
 				4EA035A81F9532E10059C2C5 /* VMMKeyCaptureField.h in Headers */,
 				4EEBF4701FAE238F00CE31A0 /* NSMutableString+Extension.h in Headers */,
 				4E1181591FB200E800D8029F /* VMMView.h in Headers */,
+				4E5A45D91FC9FD7800FCEB42 /* VMMDockProgressIndicator.h in Headers */,
 				4EA69BD41FC8DDEA00C70100 /* NSWorkspace+Extension.h in Headers */,
 				4EB392E11FC479060098F987 /* VMMTextFileView.h in Headers */,
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
@@ -637,6 +644,7 @@
 				4E6C52241F7E911000A187E9 /* NSAttributedString+Extension.m in Sources */,
 				4E6C526E1F7E953A00A187E9 /* VMMVersion.m in Sources */,
 				4E6C525E1F7E944F00A187E9 /* SZJsonParser.m in Sources */,
+				4E5A45DA1FC9FD7800FCEB42 /* VMMDockProgressIndicator.m in Sources */,
 				4E6C52301F7E911000A187E9 /* NSMenu+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
