@@ -53,7 +53,7 @@ static VMMDockProgressIndicator* progress_bar;
         [progress_bar setMaxValue:1];
     }
     
-    if ([dock_tile contentView] == NULL)
+    if (dock_tile.contentView == nil)
     {
         NSImageView* content_view = [[NSImageView alloc] init];
         [content_view setImage:[NSApp applicationIconImage]];
@@ -81,7 +81,7 @@ static VMMDockProgressIndicator* progress_bar;
     [bezier_path addClip];
     
     // Calculate the progress width.
-    rect.size.width = floor(rect.size.width * (self.doubleValue / self.maxValue));
+    rect.size.width = floor(rect.size.width * ((self.doubleValue - self.minValue) / (self.maxValue - self.minValue)));
     
     // Fill the progress bar with color blue.
     [RGB(51, 153, 255) set];
