@@ -494,21 +494,21 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            NSString* version = [NSTask runCommand:@[@"sw_vers", @"-buildVersion"]];
+            NSString* macOsBuildVersion = [NSTask runCommand:@[@"sw_vers", @"-buildVersion"]];
             
-            if (version == nil)
+            if (macOsBuildVersion == nil)
             {
                 NSString* plistFile = @"/System/Library/CoreServices/SystemVersion.plist";
                 NSDictionary *systemVersionDictionary = [NSDictionary dictionaryWithContentsOfFile:plistFile];
-                version = systemVersionDictionary[@"ProductBuildVersion"];
+                macOsBuildVersion = systemVersionDictionary[@"ProductBuildVersion"];
             }
             
-            if (version == nil)
+            if (macOsBuildVersion == nil)
             {
-                version = @"";
+                macOsBuildVersion = @"";
             }
             
-            _macOsBuildVersion = version;
+            _macOsBuildVersion = macOsBuildVersion;
         }
         
         return _macOsBuildVersion;
