@@ -8,7 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
+
 #import "VMMView.h"
+#import "VMMComputerInformation.h"
+
+#define VMMWebViewSupportsHTML5     IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR
 
 @interface VMMWebViewNavigationBar : VMMView
 @property (nonatomic, strong) NSTextField* addressBarField;
