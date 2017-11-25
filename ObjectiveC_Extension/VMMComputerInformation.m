@@ -409,21 +409,51 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            NSString* plistFile = @"/System/Library/CoreServices/SystemVersion.plist";
-            NSDictionary *systemVersionDictionary = [NSDictionary dictionaryWithContentsOfFile:plistFile];
-            NSString* version = systemVersionDictionary[@"ProductVersion"];
+            NSString* macOsVersion;
             
-            if (version == nil)
+            if ([[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)])
             {
-                version = [NSTask runCommand:@[@"sw_vers", @"-productVersion"]];
+                NSOperatingSystemVersion version = [[NSProcessInfo processInfo] operatingSystemVersion];
+                if (version.majorVersion > 0)
+                {
+                    macOsVersion = [NSString stringWithFormat:@"%ld.%ld.%ld",
+                                    version.majorVersion, version.minorVersion, version.patchVersion];
+                }
             }
             
-            if (version == nil)
+            if (macOsVersion == nil)
             {
-                version = @"";
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                SInt32 versMaj, versMin, versBugFix;
+                Gestalt(gestaltSystemVersionMajor, &versMaj);
+                Gestalt(gestaltSystemVersionMinor, &versMin);
+                Gestalt(gestaltSystemVersionBugFix, &versBugFix);
+                if (versMaj > 0)
+                {
+                    macOsVersion = [NSString stringWithFormat:@"%d.%d.%d", versMaj, versMin, versBugFix];
+                }
+#pragma clang diagnostic pop
             }
             
-            _macOsVersion = version;
+            if (macOsVersion == nil)
+            {
+                macOsVersion = [NSTask runCommand:@[@"sw_vers", @"-productVersion"]];
+            }
+            
+            if (macOsVersion == nil)
+            {
+                NSString* plistFile = @"/System/Library/CoreServices/SystemVersion.plist";
+                NSDictionary *systemVersionDictionary = [NSDictionary dictionaryWithContentsOfFile:plistFile];
+                macOsVersion = systemVersionDictionary[@"ProductVersion"];
+            }
+            
+            if (macOsVersion == nil)
+            {
+                macOsVersion = @"";
+            }
+            
+            _macOsVersion = macOsVersion;
         }
         
         return _macOsVersion;
