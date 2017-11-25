@@ -191,7 +191,7 @@
 {
     NSMutableArray* matches;
     
-    if (IsClassAvailable(@"NSRegularExpression") == false)
+    if (IsNSRegularExpressionAvailable == false)
     {
         @autoreleasepool
         {

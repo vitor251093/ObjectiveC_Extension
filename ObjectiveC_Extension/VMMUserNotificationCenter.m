@@ -46,7 +46,7 @@ static VMMUserNotificationCenter *_sharedInstance;
 
 -(void)deliverNotificationWithTitle:(NSString*)title message:(NSString*)message userInfo:(NSObject*)info icon:(NSImage*)icon actionButtonText:(NSString*)actionButton
 {
-    if (IsClassAvailable(@"NSUserNotificationCenter") == false)
+    if (IsNSUserNotificationCenterAvailable == false)
     {
         [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
         {

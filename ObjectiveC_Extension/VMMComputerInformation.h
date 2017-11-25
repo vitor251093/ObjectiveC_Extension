@@ -17,8 +17,11 @@
 #define IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR  [VMMComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.12"]  // Sierra
 #define IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR  [VMMComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.13"]  // High Sierra
 
-#define IsClassAvailable(X)   (NSClassFromString(X) != nil)
-#define IsWKWebViewAvailable  IsClassAvailable(@"WKWebView")
+#define IsNSUUIDAvailable                   IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR
+#define IsWKWebViewAvailable                IS_SYSTEM_MAC_OS_10_10_OR_SUPERIOR
+#define IsNSJSONSerializationAvailable      IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR
+#define IsNSRegularExpressionAvailable      IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR
+#define IsNSUserNotificationCenterAvailable IS_SYSTEM_MAC_OS_10_8_OR_SUPERIOR
 
 #define VMMGraphicCardTypeIntelHD   @"Intel HD"
 #define VMMGraphicCardTypeIntelIris @"Intel Iris"
