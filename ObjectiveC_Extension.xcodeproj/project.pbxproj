@@ -22,6 +22,8 @@
 		4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */; };
 		4E5A45D91FC9FD7800FCEB42 /* VMMDockProgressIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E5A45D71FC9FD7800FCEB42 /* VMMDockProgressIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E5A45DA1FC9FD7800FCEB42 /* VMMDockProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5A45D81FC9FD7800FCEB42 /* VMMDockProgressIndicator.m */; };
+		4E5A45DD1FCA103800FCEB42 /* NSBundle+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E5A45DB1FCA103800FCEB42 /* NSBundle+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E5A45DE1FCA103800FCEB42 /* NSBundle+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5A45DC1FCA103800FCEB42 /* NSBundle+Extension.m */; };
 		4E6C51111F7E8EB700A187E9 /* ObjectiveC_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */; };
 		4E6C51161F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51151F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m */; };
 		4E6C51181F7E8EB700A187E9 /* ObjectiveC_Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -135,6 +137,8 @@
 		4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Extension.m"; sourceTree = "<group>"; };
 		4E5A45D71FC9FD7800FCEB42 /* VMMDockProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMDockProgressIndicator.h; sourceTree = "<group>"; };
 		4E5A45D81FC9FD7800FCEB42 /* VMMDockProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMDockProgressIndicator.m; sourceTree = "<group>"; };
+		4E5A45DB1FCA103800FCEB42 /* NSBundle+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Extension.h"; sourceTree = "<group>"; };
+		4E5A45DC1FCA103800FCEB42 /* NSBundle+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Extension.m"; sourceTree = "<group>"; };
 		4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectiveC_Extension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveC_Extension.h; sourceTree = "<group>"; };
 		4E6C510B1F7E8EB700A187E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -322,6 +326,8 @@
 				4E6C51F41F7E911000A187E9 /* NSArray+Extension.m */,
 				4E6C51F51F7E911000A187E9 /* NSAttributedString+Extension.h */,
 				4E6C51F61F7E911000A187E9 /* NSAttributedString+Extension.m */,
+				4E5A45DB1FCA103800FCEB42 /* NSBundle+Extension.h */,
+				4E5A45DC1FCA103800FCEB42 /* NSBundle+Extension.m */,
 				4E6C51F71F7E911000A187E9 /* NSColor+Extension.h */,
 				4E6C51F81F7E911000A187E9 /* NSColor+Extension.m */,
 				4E6C51F91F7E911000A187E9 /* NSData+Extension.h */,
@@ -489,6 +495,7 @@
 				4E1181591FB200E800D8029F /* VMMView.h in Headers */,
 				4E5A45D91FC9FD7800FCEB42 /* VMMDockProgressIndicator.h in Headers */,
 				4EA69BD41FC8DDEA00C70100 /* NSWorkspace+Extension.h in Headers */,
+				4E5A45DD1FCA103800FCEB42 /* NSBundle+Extension.h in Headers */,
 				4EB392E11FC479060098F987 /* VMMTextFileView.h in Headers */,
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* VMMUsageKeycode.h in Headers */,
@@ -605,6 +612,7 @@
 			files = (
 				4E6C52281F7E911000A187E9 /* NSData+Extension.m in Sources */,
 				4E6C52441F7E911000A187E9 /* NSText+Extension.m in Sources */,
+				4E5A45DE1FCA103800FCEB42 /* NSBundle+Extension.m in Sources */,
 				4E6C526C1F7E953A00A187E9 /* VMMUserNotificationCenter.m in Sources */,
 				4E3BD7041FAD2FCF00AF8418 /* VMMUUID.m in Sources */,
 				4E6C52261F7E911000A187E9 /* NSColor+Extension.m in Sources */,

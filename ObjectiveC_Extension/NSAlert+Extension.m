@@ -10,6 +10,7 @@
 
 #import "NSAlert+Extension.h"
 
+#import "NSBundle+Extension.h"
 #import "NSThread+Extension.h"
 #import "NSMutableAttributedString+Extension.h"
 
@@ -77,8 +78,6 @@
 
 @implementation NSAlert (VMMAlert)
 
-static NSString* bundleName;
-
 +(NSString*)titleForAlertType:(NSAlertType)alertType
 {
     switch (alertType)
@@ -99,20 +98,7 @@ static NSString* bundleName;
         default: break;
     }
     
-    if (bundleName != nil) return bundleName;
-    
-    NSString* placeholder = @"Info";
-    NSString* bundleNameKey = @"CFBundleName";
-    
-    NSString* bundlePath = [[NSBundle mainBundle] bundlePath];
-    if (bundlePath == nil) return placeholder;
-    
-    NSString* infoPlistPath = [[bundlePath stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Info.plist"];
-    NSDictionary* infoPlist = [[NSDictionary alloc] initWithContentsOfFile:infoPlistPath];
-    if (!infoPlist || !infoPlist[bundleNameKey]) return bundlePath.stringByDeletingPathExtension.lastPathComponent;
-    
-    bundleName = infoPlist[bundleNameKey];
-    return bundleName;
+    return [[NSBundle mainBundle] bundleName];
 }
 -(void)setIconWithAlertType:(NSAlertType)alertType
 {
