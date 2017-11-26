@@ -179,11 +179,25 @@
 #define IsClassAVRouteDetectorAvailable                 [VMMComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.13.2"]
 
 
-#define VMMGraphicCardTypeIntelHD   @"Intel HD"
-#define VMMGraphicCardTypeIntelIris @"Intel Iris"
-#define VMMGraphicCardTypeIntelGMA  @"Intel GMA"
-#define VMMGraphicCardTypeATiAMD    @"ATi/AMD"
-#define VMMGraphicCardTypeNVIDIA    @"NVIDIA"
+#define VMMVideoCardNameKey                @"Video card name"
+#define VMMVideoCardChipsetModelKey        @"Chipset Model"
+#define VMMVideoCardBusKey                 @"Bus"
+#define VMMVideoCardMemorySizeBuiltInKey   @"VRAM (Dynamic, Max)"
+#define VMMVideoCardMemorySizePciOrPcieKey @"VRAM (Total)"
+#define VMMVideoCardVendorKey              @"Vendor"
+#define VMMVideoCardVendorIDKey            @"Vendor ID"
+#define VMMVideoCardDeviceIDKey            @"Device ID"
+
+#define VMMVideoCardTypeIntelHD   @"Intel HD"
+#define VMMVideoCardTypeIntelIris @"Intel Iris"
+#define VMMVideoCardTypeIntelGMA  @"Intel GMA"
+#define VMMVideoCardTypeATiAMD    @"ATi/AMD"
+#define VMMVideoCardTypeNVIDIA    @"NVIDIA"
+
+#define VMMVideoCardBusPCIe     @"PCIe"
+#define VMMVideoCardBusPCI      @"PCI"
+#define VMMVideoCardBusBuiltIn  @"Built-In"
+
 
 #import <Foundation/Foundation.h>
 

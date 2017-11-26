@@ -14,19 +14,6 @@
 #import "NSArray+Extension.h"
 #import "NSString+Extension.h"
 
-#define GRAPHIC_CARD_NAME_KEY           @"Graphic card name"
-#define CHIPSET_MODEL_KEY               @"Chipset Model"
-#define BUS_KEY                         @"Bus"
-#define BUILTIN_VIDEO_CARD_VRAM_KEY     @"VRAM (Dynamic, Max)"
-#define PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY @"VRAM (Total)"
-#define VENDOR_KEY                      @"Vendor"
-#define VENDOR_ID_KEY                   @"Vendor ID"
-#define DEVICE_ID_KEY                   @"Device ID"
-
-#define BUS_VALUE_PCIE     @"PCIe"
-#define BUS_VALUE_PCI      @"PCI"
-#define BUS_VALUE_BUILT_IN @"Built-In"
-
 #define STAFF_GROUP_MEMBER_CODE @"20"
 
 @implementation VMMComputerInformation
@@ -75,7 +62,7 @@ static NSMutableDictionary* _macOsCompatibility;
                 
                 graphicCardName = [displayLineNoSpaces getFragmentAfter:nil andBefore:@":"];
                 lastGraphicCardDict = [[NSMutableDictionary alloc] init];
-                lastGraphicCardDict[GRAPHIC_CARD_NAME_KEY] = graphicCardName;
+                lastGraphicCardDict[VMMVideoCardNameKey] = graphicCardName;
             }
         }
     }
@@ -83,8 +70,8 @@ static NSMutableDictionary* _macOsCompatibility;
     // Adding last graphic card to the list
     [graphicCards addObject:lastGraphicCardDict];
     
-    NSArray* cards = [graphicCards sortedDictionariesArrayWithKey:BUS_KEY
-                                            orderingByValuesOrder:@[BUS_VALUE_PCIE, BUS_VALUE_PCI, BUS_VALUE_BUILT_IN]];
+    NSArray* cards = [graphicCards sortedDictionariesArrayWithKey:VMMVideoCardBusKey
+                                            orderingByValuesOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
     return [cards firstObject];
 }
 +(NSMutableDictionary*)graphicCardDictionaryFromIOServiceMatch
@@ -116,7 +103,7 @@ static NSMutableDictionary* _macOsCompatibility;
                     NSString *gpuModelString = [[NSString alloc] initWithData:gpuModel encoding:NSASCIIStringEncoding];
                     if (gpuModelString != nil)
                     {
-                        graphicCardDict[GRAPHIC_CARD_NAME_KEY] = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                        graphicCardDict[VMMVideoCardNameKey] = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@""];
                     }
                 }
                 
@@ -130,7 +117,7 @@ static NSMutableDictionary* _macOsCompatibility;
                     {
                         deviceIDString = [NSString stringWithFormat:@"0x%@%@",[deviceIDString substringFromIndex:2],
                                           [deviceIDString substringToIndex:2]];
-                        graphicCardDict[DEVICE_ID_KEY] = deviceIDString;
+                        graphicCardDict[VMMVideoCardDeviceIDKey] = deviceIDString;
                     }
                 }
                 
@@ -143,11 +130,11 @@ static NSMutableDictionary* _macOsCompatibility;
                         vendorIDString = [vendorIDString substringWithRange:NSMakeRange(1, 4)];
                         vendorIDString = [NSString stringWithFormat:@"0x%@%@",[vendorIDString substringFromIndex:2],
                                           [vendorIDString substringToIndex:2]];
-                        graphicCardDict[VENDOR_ID_KEY] = vendorIDString;
+                        graphicCardDict[VMMVideoCardVendorIDKey] = vendorIDString;
                     }
                 }
                 
-                graphicCardDict[BUS_KEY] = BUS_VALUE_PCIE;
+                graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusPCIe;
                 NSData* hdaGfx = service[@"hda-gfx"];
                 if (hdaGfx != nil && [hdaGfx isKindOfClass:[NSData class]])
                 {
@@ -155,11 +142,11 @@ static NSMutableDictionary* _macOsCompatibility;
                     
                     if (hdaGfxString != nil)
                     {
-                        graphicCardDict[BUS_KEY] = hdaGfxString;
+                        graphicCardDict[VMMVideoCardBusKey] = hdaGfxString;
                         
                         if ([hdaGfxString hasPrefix:@"onboard"])
                         {
-                            graphicCardDict[BUS_KEY] = BUS_VALUE_BUILT_IN;
+                            graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusBuiltIn;
                         }
                     }
                 }
@@ -213,12 +200,12 @@ static NSMutableDictionary* _macOsCompatibility;
 {
     if (self.graphicCardName == nil) return false;
     
-    if (_computerGraphicCardDictionary[DEVICE_ID_KEY] == nil) return false;
+    if (_computerGraphicCardDictionary[VMMVideoCardDeviceIDKey] == nil) return false;
     
     if (haveMemorySize)
     {
-        if (_computerGraphicCardDictionary[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY] == nil &&
-            _computerGraphicCardDictionary[BUILTIN_VIDEO_CARD_VRAM_KEY]     == nil) return false;
+        if (_computerGraphicCardDictionary[VMMVideoCardMemorySizePciOrPcieKey] == nil &&
+            _computerGraphicCardDictionary[VMMVideoCardMemorySizeBuiltInKey]   == nil) return false;
     }
     
     return true;
@@ -233,8 +220,8 @@ static NSMutableDictionary* _macOsCompatibility;
         return nil;
     }
     
-    NSString* videoCardName = graphicCardDictionary[GRAPHIC_CARD_NAME_KEY];
-    NSString* chipsetModel  = graphicCardDictionary[CHIPSET_MODEL_KEY];
+    NSString* videoCardName = graphicCardDictionary[VMMVideoCardNameKey];
+    NSString* chipsetModel  = graphicCardDictionary[VMMVideoCardChipsetModelKey];
     
     if (!videoCardName || videoCardName.length < chipsetModel.length)
     {
@@ -262,20 +249,20 @@ static NSMutableDictionary* _macOsCompatibility;
             
             if ([graphicCardModelComponents containsObject:@"INTEL"])
             {
-                if ([graphicCardModelComponents containsObject:@"HD"])   _computerGraphicCardType = VMMGraphicCardTypeIntelHD;
-                if ([graphicCardModelComponents containsObject:@"IRIS"]) _computerGraphicCardType = VMMGraphicCardTypeIntelIris;
+                if ([graphicCardModelComponents containsObject:@"HD"])   _computerGraphicCardType = VMMVideoCardTypeIntelHD;
+                if ([graphicCardModelComponents containsObject:@"IRIS"]) _computerGraphicCardType = VMMVideoCardTypeIntelIris;
             }
             
-            if ([graphicCardModelComponents containsObject:@"GMA"]) _computerGraphicCardType = VMMGraphicCardTypeIntelGMA;
+            if ([graphicCardModelComponents containsObject:@"GMA"]) _computerGraphicCardType = VMMVideoCardTypeIntelGMA;
             
             for (NSString* model in @[@"AMD",@"ATI",@"RADEON"])
             {
-                if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMGraphicCardTypeATiAMD;
+                if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeATiAMD;
             }
             
             for (NSString* model in @[@"NVIDIA",@"GEFORCE",@"NVS",@"QUADRO"])
             {
-                if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMGraphicCardTypeNVIDIA;
+                if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
             }
         }
         
@@ -287,17 +274,17 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(NSString*)graphicCardDeviceID
 {
-    return self.graphicCardDictionary[DEVICE_ID_KEY];
+    return self.graphicCardDictionary[VMMVideoCardDeviceIDKey];
 }
 +(NSString*)graphicCardVendorID
 {
     NSDictionary* localVideoCard = self.graphicCardDictionary;
     
-    NSString* localVendorID = localVideoCard[VENDOR_ID_KEY]; // eg. 0x10de
+    NSString* localVendorID = localVideoCard[VMMVideoCardVendorIDKey]; // eg. 0x10de
     
     if (localVendorID == nil)
     {
-        NSString* localVendor = localVideoCard[VENDOR_KEY]; // eg. NVIDIA (0x10de)
+        NSString* localVendor = localVideoCard[VMMVideoCardVendorKey]; // eg. NVIDIA (0x10de)
         if (localVendor && [localVendor contains:@"("])
         {
             localVendorID = [localVendor getFragmentAfter:@"(" andBefore:@")"];
@@ -309,17 +296,17 @@ static NSMutableDictionary* _macOsCompatibility;
         NSString* graphicCardType = [self graphicCardType];
         if (graphicCardType != nil)
         {
-            if ([@[VMMGraphicCardTypeIntelHD, VMMGraphicCardTypeIntelIris, VMMGraphicCardTypeIntelGMA] containsObject:graphicCardType])
+            if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:graphicCardType])
             {
                 localVendorID = @"0x8086"; // Intel Vendor ID
             }
             
-            if ([@[VMMGraphicCardTypeATiAMD] containsObject:graphicCardType])
+            if ([@[VMMVideoCardTypeATiAMD] containsObject:graphicCardType])
             {
                 localVendorID = @"0x1002"; // ATi/AMD Vendor ID
             }
             
-            if ([@[VMMGraphicCardTypeNVIDIA] containsObject:graphicCardType])
+            if ([@[VMMVideoCardTypeNVIDIA] containsObject:graphicCardType])
             {
                 localVendorID = @"0x10de"; // NVIDIA Vendor ID
             }
@@ -333,8 +320,8 @@ static NSMutableDictionary* _macOsCompatibility;
     NSDictionary* gcDict = [self graphicCardDictionary];
     if (!gcDict || gcDict.count == 0) return 0;
     
-    NSString* memSize = [gcDict[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY] uppercaseString];
-    if (memSize == nil) memSize = [gcDict[BUILTIN_VIDEO_CARD_VRAM_KEY] uppercaseString];
+    NSString* memSize = [gcDict[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
+    if (memSize == nil) memSize = [gcDict[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
     
     int memSizeInt = 0;
     
