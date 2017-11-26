@@ -87,11 +87,11 @@ static NSMutableDictionary* _macOsCompatibility;
                                             orderingByValuesOrder:@[BUS_VALUE_PCIE, BUS_VALUE_PCI, BUS_VALUE_BUILT_IN]];
     return [cards firstObject];
 }
-+(NSMutableDictionary*)graphicCardDictionaryFromIOServiceMatching:(const char*)type
++(NSMutableDictionary*)graphicCardDictionaryFromIOServiceMatch
 {
     NSMutableDictionary* graphicCardDict = [[NSMutableDictionary alloc] init];
     
-    CFMutableDictionaryRef matchDict = IOServiceMatching(type);
+    CFMutableDictionaryRef matchDict = IOServiceMatching("IOPCIDevice");
     
     io_iterator_t iterator;
     if (IOServiceGetMatchingServices(kIOMasterPortDefault,matchDict,&iterator) == kIOReturnSuccess)
@@ -169,54 +169,6 @@ static NSMutableDictionary* _macOsCompatibility;
             IOObjectRelease(regEntry);
         }
         
-        IOObjectRelease(iterator);
-    }
-    
-    return graphicCardDict;
-}
-+(NSMutableDictionary*)graphicCardDictionaryFromIOServiceMatch
-{
-    NSMutableDictionary* graphicCardDict = [self graphicCardDictionaryFromIOServiceMatching:"IOPCIDevice"];
-    
-    CFMutableDictionaryRef matchDict = IOServiceMatching(kIOAcceleratorClassName);
-    io_iterator_t iterator;
-    
-    if (IOServiceGetMatchingServices(kIOMasterPortDefault, matchDict, &iterator) == kIOReturnSuccess)
-    {
-        io_registry_entry_t regEntry;
-        
-        while ((regEntry = IOIteratorNext(iterator)))
-        {
-            CFMutableDictionaryRef serviceDictionary;
-            if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess)
-            {
-                IOObjectRelease(regEntry);
-                continue;
-            }
-            
-            CFMutableDictionaryRef perf_properties = (CFMutableDictionaryRef) CFDictionaryGetValue(serviceDictionary,
-                                                                                                   CFSTR("PerformanceStatistics"));
-            if (perf_properties)
-            {
-                static ssize_t freeVramCount=0;
-                static ssize_t usedVramCount=0;
-                
-                const void* freeVram = CFDictionaryGetValue(perf_properties, CFSTR("vramFreeBytes"));
-                const void* usedVram = CFDictionaryGetValue(perf_properties, CFSTR("vramUsedBytes"));
-                if (freeVram && usedVram)
-                {
-                    CFNumberGetValue((CFNumberRef)freeVram, kCFNumberSInt64Type, &freeVramCount);
-                    CFNumberGetValue((CFNumberRef)usedVram, kCFNumberSInt64Type, &usedVramCount);
-                    
-                    long vramValue = (freeVramCount+usedVramCount)/(1024*1024);
-                    NSString* vram = [NSString stringWithFormat:@"%ld MB",vramValue];
-                    graphicCardDict[PCI_OR_PCIE_VIDEO_CARD_VRAM_KEY] = vram;
-                }
-            }
-            
-            CFRelease(serviceDictionary);
-            IOObjectRelease(regEntry);
-        }
         IOObjectRelease(iterator);
     }
     
