@@ -97,6 +97,7 @@ static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, vo
     IOHIDElementCookie cookie = IOHIDElementGetCookie(element); // Cookie of key
     uint32_t usage = IOHIDElementGetUsage(element);             // Usage of key
     CFIndex elementValue = IOHIDValueGetIntegerValue(value);    // Actual state of key
+    CFStringRef name = IOHIDElementGetName(element);
     
     //NSDebugLog(@"Device ID = %p; Cookie = %u; Usage = %u; Value = %ld", (void*)device, cookie, usage, elementValue);
     
@@ -106,7 +107,7 @@ static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, vo
     
     dispatch_async(dispatch_get_main_queue(),^
     {
-        [actionDelegate observedEventWithCookie:cookie andUsage:usage withValue:elementValue fromDevice:device];
+        [actionDelegate observedEventWithName:name cookie:cookie usage:usage value:elementValue device:device];
     });
 }
 

@@ -24,7 +24,7 @@
 @end
 
 @protocol VMMDeviceObserverActionDelegate
--(void)observedEventWithCookie:(IOHIDElementCookie)event andUsage:(uint32_t)usage withValue:(CFIndex)value fromDevice:(IOHIDDeviceRef)device;
+-(void)observedEventWithName:(CFStringRef)name cookie:(IOHIDElementCookie)event usage:(uint32_t)usage value:(CFIndex)value device:(IOHIDDeviceRef)device;
 @end
 
 
