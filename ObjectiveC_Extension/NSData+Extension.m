@@ -126,7 +126,14 @@
     {
         @autoreleasepool
         {
-            return [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] jsonObject];
+            @try
+            {
+                return [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] jsonObject];
+            }
+            @catch (NSException* exception)
+            {
+                return nil;
+            }
         }
     }
 
