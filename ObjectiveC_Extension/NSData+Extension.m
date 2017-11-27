@@ -57,84 +57,80 @@
 
 +(NSString*)jsonStringWithObject:(id)object
 {
-    if (IsClassNSJSONSerializationAvailable)
+    if (IsClassNSJSONSerializationAvailable == false)
     {
-        NSString* jsonString;
-        
         @autoreleasepool
         {
-            jsonString = [[NSString alloc] initWithData:[self jsonDataWithObject:object] encoding:NSUTF8StringEncoding];
+            if ([object isKindOfClass:[NSString class]])
+            {
+                return [NSString stringWithFormat:@"\"%@\"",[[[(NSString*)object stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
+                                                              stringByReplacingOccurrencesOfString:@"\n" withString:@"\\\n"]
+                                                             stringByReplacingOccurrencesOfString:@"/" withString:@"\\/"]];
+            }
+            
+            if ([object isKindOfClass:[NSArray class]])
+            {
+                NSMutableArray* array = [[NSMutableArray alloc] init];
+                for (id innerObject in (NSArray*)object)
+                {
+                    [array addObject:[self jsonStringWithObject:innerObject]];
+                }
+                return [NSString stringWithFormat:@"[%@]",[array componentsJoinedByString:@","]];
+            }
+            
+            if ([object isKindOfClass:[NSDictionary class]])
+            {
+                NSMutableArray* dict = [[NSMutableArray alloc] init];
+                for (NSString* key in [(NSDictionary*)object allKeys])
+                {
+                    [dict addObject:[NSString stringWithFormat:@"%@:%@",[self jsonStringWithObject:key],
+                                     [self jsonStringWithObject:[(NSDictionary*)object objectForKey:key]]]];
+                }
+                return [NSString stringWithFormat:@"{%@}",[dict componentsJoinedByString:@","]];
+            }
+            
+            if ([object isKindOfClass:[NSNumber class]])
+            {
+                NSInteger integerValue = [(NSNumber*)object integerValue];
+                double doubleValue = [(NSNumber*)object doubleValue];
+                BOOL boolValue = [(NSNumber*)object boolValue];
+                
+                if (integerValue != doubleValue) return [NSString stringWithFormat:@"%lf",doubleValue];
+                if (integerValue != boolValue)   return [NSString stringWithFormat:@"%ld",integerValue];
+                return boolValue ? @"true" : @"false";
+            }
+            
+            return @"";
         }
-        
-        return jsonString;
     }
 
-    if ([object isKindOfClass:[NSString class]])
-    {
-        return [NSString stringWithFormat:@"\"%@\"",[[[(NSString*)object stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
-                                                                         stringByReplacingOccurrencesOfString:@"\n" withString:@"\\\n"]
-                                                                         stringByReplacingOccurrencesOfString:@"/" withString:@"\\/"]];
-    }
-    
-    if ([object isKindOfClass:[NSArray class]])
-    {
-        NSMutableArray* array = [[NSMutableArray alloc] init];
-        for (id innerObject in (NSArray*)object)
-        {
-            [array addObject:[self jsonStringWithObject:innerObject]];
-        }
-        return [NSString stringWithFormat:@"[%@]",[array componentsJoinedByString:@","]];
-    }
-    
-    if ([object isKindOfClass:[NSDictionary class]])
-    {
-        NSMutableArray* dict = [[NSMutableArray alloc] init];
-        for (NSString* key in [(NSDictionary*)object allKeys])
-        {
-            [dict addObject:[NSString stringWithFormat:@"%@:%@",[self jsonStringWithObject:key],
-                                        [self jsonStringWithObject:[(NSDictionary*)object objectForKey:key]]]];
-        }
-        return [NSString stringWithFormat:@"{%@}",[dict componentsJoinedByString:@","]];
-    }
-    
-    if ([object isKindOfClass:[NSNumber class]])
-    {
-        NSInteger integerValue = [(NSNumber*)object integerValue];
-        double doubleValue = [(NSNumber*)object doubleValue];
-        BOOL boolValue = [(NSNumber*)object boolValue];
-        
-        if (integerValue != doubleValue) return [NSString stringWithFormat:@"%lf",doubleValue];
-        if (integerValue != boolValue)   return [NSString stringWithFormat:@"%ld",integerValue];
-        return boolValue ? @"true" : @"false";
-    }
-    
-    return @"";
+    return [[NSString alloc] initWithData:[self jsonDataWithObject:object] encoding:NSUTF8StringEncoding];
 }
 
 +(NSData*)jsonDataWithObject:(id)object
 {
-    if (IsClassNSJSONSerializationAvailable)
+    if (IsClassNSJSONSerializationAvailable == false)
     {
-        return [NSJSONSerialization dataWithJSONObject:object options:NSJSONWritingPrettyPrinted error:nil];
+        @autoreleasepool
+        {
+            return [[self jsonStringWithObject:object] dataUsingEncoding:NSUTF8StringEncoding];
+        }
     }
-
-    @autoreleasepool
-    {
-        return [[self jsonStringWithObject:object] dataUsingEncoding:NSUTF8StringEncoding];
-    }
+    
+    return [NSJSONSerialization dataWithJSONObject:object options:NSJSONWritingPrettyPrinted error:nil];
 }
 
 -(id)objectWithJsonData
 {
-    if (IsClassNSJSONSerializationAvailable)
+    if (IsClassNSJSONSerializationAvailable == false)
     {
-        return [NSJSONSerialization JSONObjectWithData:self options:0 error:nil];
+        @autoreleasepool
+        {
+            return [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] jsonObject];
+        }
     }
 
-    @autoreleasepool
-    {
-        return [[[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding] jsonObject];
-    }
+    return [NSJSONSerialization JSONObjectWithData:self options:0 error:nil];
 }
 
 @end
