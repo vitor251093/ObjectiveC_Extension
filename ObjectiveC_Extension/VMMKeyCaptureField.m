@@ -64,7 +64,7 @@ static VMMKeyCaptureField* _activeKeyCaptureField;
     return result;
 }
 
--(void)observedEventWithName:(CFStringRef)name cookie:(IOHIDElementCookie)event usage:(uint32_t)usage
+-(void)observedEventWithName:(CFStringRef)name cookie:(IOHIDElementCookie)cookie usage:(uint32_t)usage
                        value:(CFIndex)value device:(IOHIDDeviceRef)device
 {
     if (!self.window.isKeyWindow) return;
@@ -74,9 +74,9 @@ static VMMKeyCaptureField* _activeKeyCaptureField;
     if (value != 1) return;
     
     // Exception
-    if (usage == 128 && event == 242) return; // Logitech G600 Mouse Left-button click
-    if (usage == 128 && event == 243) return; // Logitech G600 Mouse Middle-button click
-    if (usage == 128 && event == 244) return; // Logitech G600 Mouse Right-button click
+    if (usage == 128 && cookie == 242) return; // Logitech G600 Mouse Left-button click
+    if (usage == 128 && cookie == 243) return; // Logitech G600 Mouse Middle-button click
+    if (usage == 128 && cookie == 244) return; // Logitech G600 Mouse Right-button click
     
     [self setKeyUsageKeycode:usage];
     
