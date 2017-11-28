@@ -222,13 +222,19 @@ static NSMutableDictionary* _macOsCompatibility;
     
     NSString* videoCardName = graphicCardDictionary[VMMVideoCardNameKey];
     NSString* chipsetModel  = graphicCardDictionary[VMMVideoCardChipsetModelKey];
+    BOOL validVideoCardName = (videoCardName != nil && [videoCardName isEqualToString:@"Display"] == false);
+    BOOL validChipsetModel  = (chipsetModel  != nil && [chipsetModel  isEqualToString:@"Display"] == false);
     
-    if (!videoCardName || videoCardName.length < chipsetModel.length)
+    if (validVideoCardName == false)
+    {
+        videoCardName = nil;
+    }
+    
+    if (validChipsetModel == true && (validVideoCardName == false || videoCardName.length < chipsetModel.length))
     {
         videoCardName = chipsetModel;
     }
     
-    if ([videoCardName isEqualToString:@"Display"]) return nil;
     return videoCardName;
 }
 +(NSString*)graphicCardType
