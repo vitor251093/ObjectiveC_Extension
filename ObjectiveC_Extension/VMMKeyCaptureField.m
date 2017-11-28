@@ -73,6 +73,12 @@ static VMMKeyCaptureField* _activeKeyCaptureField;
     if (_activeKeyCaptureField != self) return;
     if (value != 1) return;
     
+    NSDebugLog(@"Name = %@; Device ID = %p; Cookie = %u; Usage = %u; Value = %ld", (__bridge NSString *)name, (void*)device, event, usage, value);
+    
+    if (event == 242 && usage == 128) return; // Logitech G600 Mouse Left-button click
+    if (event == 243 && usage == 128) return; // Logitech G600 Mouse Middle(?)-button click
+    if (event == 244 && usage == 128) return; // Logitech G600 Mouse Right(?)-button click
+    
     [self setKeyUsageKeycode:usage];
     
     if (_keyCaptureDelegate)
