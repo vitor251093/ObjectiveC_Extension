@@ -29,7 +29,7 @@ static VMMDeviceObserver *_sharedObserver;
     return nil;
 }
 
--(void)observeDevicesOfTypes:(NSArray<NSNumber*>*)types forDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate
+-(void)observeDevicesOfTypes:(NSArray<NSNumber*>*)types forDelegate:(id<VMMDeviceObserverDelegate>)actionDelegate
 {
     if (actionDelegate == nil) return;
     
@@ -57,7 +57,7 @@ static VMMDeviceObserver *_sharedObserver;
         NSDebugLog(@"Couldn't look for devices. IOHIDManagerOpen failed.");
     }
 }
--(void)stopObservingForDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate
+-(void)stopObservingForDelegate:(id<VMMDeviceObserverDelegate>)actionDelegate
 {
     if (actionDelegate == nil) return;
     
@@ -70,8 +70,8 @@ static void Handle_DeviceMatchingCallback(void *inContext, IOReturn inResult, vo
     
     dispatch_async(dispatch_get_main_queue(),^
     {
-        NSObject<VMMDeviceObserverConnectionDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverConnectionDelegate>*)inContext;
-        if (![actionDelegate conformsToProtocol:@protocol(VMMDeviceObserverConnectionDelegate)]) return;
+        NSObject<VMMDeviceObserverDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverDelegate>*)inContext;
+        if (![actionDelegate respondsToSelector:@selector(observedConnectionOfDevice:)]) return;
         
         [actionDelegate observedConnectionOfDevice:inIOHIDDeviceRef];
     });
@@ -82,8 +82,8 @@ static void Handle_DeviceRemovalCallback (void *inContext, IOReturn inResult, vo
     
     dispatch_async(dispatch_get_main_queue(),^
     {
-        NSObject<VMMDeviceObserverConnectionDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverConnectionDelegate>*)inContext;
-        if (![actionDelegate conformsToProtocol:@protocol(VMMDeviceObserverConnectionDelegate)]) return;
+        NSObject<VMMDeviceObserverDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverDelegate>*)inContext;
+        if (![actionDelegate respondsToSelector:@selector(observedRemovalOfDevice:)]) return;
         
         [actionDelegate observedRemovalOfDevice:inIOHIDDeviceRef];
     });
@@ -101,9 +101,9 @@ static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, vo
     
     //NSDebugLog(@"Device ID = %p; Cookie = %u; Usage = %u; Value = %ld", (void*)device, cookie, usage, elementValue);
     
-    NSObject<VMMDeviceObserverActionDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverActionDelegate>*)inContext;
+    NSObject<VMMDeviceObserverDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverDelegate>*)inContext;
     if (actionDelegate == nil) return;
-    if (![actionDelegate conformsToProtocol:@protocol(VMMDeviceObserverActionDelegate)]) return;
+    if (![actionDelegate respondsToSelector:@selector(observedEventWithName:cookie:usage:value:device:)]) return;
     
     dispatch_async(dispatch_get_main_queue(),^
     {

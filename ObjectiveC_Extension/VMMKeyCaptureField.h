@@ -15,7 +15,7 @@
 -(void)keyCaptureField:(NSTextField*)field didChangedKeyUsageKeycode:(uint32_t)keyUsage;
 @end
 
-@interface VMMKeyCaptureField : NSTextField<VMMDeviceObserverManagementDelegate,VMMDeviceObserverActionDelegate>
+@interface VMMKeyCaptureField : NSTextField<VMMDeviceObserverDelegate>
 
 @property (nonatomic, strong) IBOutlet NSObject<VMMKeyCaptureFieldDelegate>* keyCaptureDelegate;
 @property (nonatomic) IOHIDManagerRef hidManager;
