@@ -396,8 +396,6 @@
 				4E6C52621F7E953A00A187E9 /* NKFTPManager.m */,
 				4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */,
 				4E6C52701F7E954D00A187E9 /* VMMComputerInformation.m */,
-				4E5A45D71FC9FD7800FCEB42 /* VMMDockProgressIndicator.h */,
-				4E5A45D81FC9FD7800FCEB42 /* VMMDockProgressIndicator.m */,
 				4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */,
 				4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */,
 				4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */,
@@ -436,6 +434,8 @@
 		4EA035A51F9532C80059C2C5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4E5A45D71FC9FD7800FCEB42 /* VMMDockProgressIndicator.h */,
+				4E5A45D81FC9FD7800FCEB42 /* VMMDockProgressIndicator.m */,
 				4E1181571FB200E800D8029F /* VMMView.h */,
 				4E1181581FB200E800D8029F /* VMMView.m */,
 				4E3771041FA7A57C00E2F511 /* VMMWebView.h */,
