@@ -103,7 +103,8 @@ static NSMutableDictionary* _macOsCompatibility;
                     NSString *gpuModelString = [[NSString alloc] initWithData:gpuModel encoding:NSASCIIStringEncoding];
                     if (gpuModelString != nil)
                     {
-                        graphicCardDict[VMMVideoCardNameKey] = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@""];
+                        graphicCardDict[VMMVideoCardChipsetModelKey] = [gpuModelString stringByReplacingOccurrencesOfString:@"\0"
+                                                                                                                 withString:@""];
                     }
                 }
                 
@@ -134,22 +135,7 @@ static NSMutableDictionary* _macOsCompatibility;
                     }
                 }
                 
-                graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusPCIe;
-                NSData* hdaGfx = service[@"hda-gfx"];
-                if (hdaGfx != nil && [hdaGfx isKindOfClass:[NSData class]])
-                {
-                    NSString* hdaGfxString = [[NSString alloc] initWithData:hdaGfx encoding:NSASCIIStringEncoding];
-                    
-                    if (hdaGfxString != nil)
-                    {
-                        graphicCardDict[VMMVideoCardBusKey] = hdaGfxString;
-                        
-                        if ([hdaGfxString hasPrefix:@"onboard"])
-                        {
-                            graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusBuiltIn;
-                        }
-                    }
-                }
+                graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusBuiltIn;
             }
             
             CFRelease(serviceDictionary);
@@ -184,8 +170,9 @@ static NSMutableDictionary* _macOsCompatibility;
             
             if (_computerGraphicCardDictionary.count == 0 || [self isGraphicCardDictionaryCompleteWithMemorySize:false] == false)
             {
-                NSDictionary* computerGraphicCardDictionary = [self graphicCardDictionaryFromIOServiceMatch];
-                [_computerGraphicCardDictionary addEntriesFromDictionary:computerGraphicCardDictionary];
+                NSMutableDictionary* computerGraphicCardDictionary = [[self graphicCardDictionaryFromIOServiceMatch] mutableCopy];
+                [computerGraphicCardDictionary addEntriesFromDictionary:_computerGraphicCardDictionary];
+                _computerGraphicCardDictionary = computerGraphicCardDictionary;
             }
         }
         
@@ -241,7 +228,7 @@ static NSMutableDictionary* _macOsCompatibility;
 {
     @synchronized(_computerGraphicCardType)
     {
-        if (_computerGraphicCardType)
+        if (_computerGraphicCardType != nil)
         {
             return _computerGraphicCardType;
         }
@@ -270,6 +257,13 @@ static NSMutableDictionary* _macOsCompatibility;
             {
                 if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
             }
+            
+            if (_computerGraphicCardType == nil)
+            {
+                NSString* localVendorID = [self graphicCardVendorIDFromVendorAndVendorIDKeysOnly];
+                if ([localVendorID isEqualToString:@"0x1002"]) _computerGraphicCardType = VMMVideoCardTypeATiAMD;
+                if ([localVendorID isEqualToString:@"0x10de"]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
+            }
         }
         
         return _computerGraphicCardType;
@@ -282,7 +276,8 @@ static NSMutableDictionary* _macOsCompatibility;
 {
     return self.graphicCardDictionary[VMMVideoCardDeviceIDKey];
 }
-+(NSString*)graphicCardVendorID
+
++(NSString*)graphicCardVendorIDFromVendorAndVendorIDKeysOnly
 {
     NSDictionary* localVideoCard = self.graphicCardDictionary;
     
@@ -296,6 +291,12 @@ static NSMutableDictionary* _macOsCompatibility;
             localVendorID = [localVendor getFragmentAfter:@"(" andBefore:@")"];
         }
     }
+    
+    return localVendorID;
+}
++(NSString*)graphicCardVendorID
+{
+    NSString* localVendorID = [self graphicCardVendorIDFromVendorAndVendorIDKeysOnly];
     
     if (localVendorID == nil)
     {
