@@ -5,6 +5,10 @@
 //  Created by Vitor Marques de Miranda on 22/02/17.
 //  Copyright © 2017 Vitor Marques de Miranda. All rights reserved.
 //
+//
+//  Obtaining VRAM with the API:
+//  https://gist.github.com/ScrimpyCat/8043890
+//
 
 #import "VMMComputerInformation.h"
 
@@ -86,17 +90,18 @@ static NSMutableDictionary* _macOsCompatibility;
         io_registry_entry_t regEntry;
         while ((regEntry = IOIteratorNext(iterator)))
         {
-            CFMutableDictionaryRef serviceDictionary;
-            if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess)
+            CFStringRef gpuName = IORegistryEntrySearchCFProperty(regEntry, kIOServicePlane, CFSTR("IOName"),
+                                                                  kCFAllocatorDefault, kNilOptions);
+            if (gpuName && CFStringCompare(gpuName, CFSTR("display"), 0) == kCFCompareEqualTo)
             {
-                IOObjectRelease(regEntry);
-                continue;
-            }
-            
-            NSMutableDictionary* service = (__bridge NSMutableDictionary*)serviceDictionary;
-            
-            if (service[@"model"] != nil && service[@"device-id"] != nil && service[@"vendor-id"] != nil)
-            {
+                CFMutableDictionaryRef serviceDictionary;
+                if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess)
+                {
+                    IOObjectRelease(regEntry);
+                    continue;
+                }
+                NSMutableDictionary* service = (__bridge NSMutableDictionary*)serviceDictionary;
+                
                 NSData* gpuModel = service[@"model"];
                 if (gpuModel != nil && [gpuModel isKindOfClass:[NSData class]])
                 {
@@ -136,9 +141,44 @@ static NSMutableDictionary* _macOsCompatibility;
                 }
                 
                 graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusBuiltIn;
+                
+                
+                _Bool vramValueInBytes = TRUE;
+                CFTypeRef vramSize = IORegistryEntrySearchCFProperty(regEntry, kIOServicePlane, CFSTR("VRAM,totalsize"),
+                                                                     kCFAllocatorDefault, kIORegistryIterateRecursively);
+                if (!vramSize)
+                {
+                    vramValueInBytes = FALSE;
+                    vramSize = IORegistryEntrySearchCFProperty(regEntry, kIOServicePlane, CFSTR("VRAM,totalMB"),
+                                                               kCFAllocatorDefault, kIORegistryIterateRecursively);
+                }
+                
+                if (vramSize)
+                {
+                    mach_vm_size_t size = 0;
+                    CFTypeID Type = CFGetTypeID(vramSize);
+                    if (Type == CFDataGetTypeID())
+                    {
+                        if (CFDataGetLength(vramSize) == sizeof(uint32_t))
+                        {
+                            size = (mach_vm_size_t)*(const uint32_t*)CFDataGetBytePtr(vramSize);
+                        }
+                        else
+                        {
+                            size = *(const uint64_t*)CFDataGetBytePtr(vramSize);
+                        }
+                    }
+                    else if (Type == CFNumberGetTypeID()) CFNumberGetValue(vramSize, kCFNumberSInt64Type, &size);
+                    
+                    if (vramValueInBytes) size >>= 20;
+                    
+                    graphicCardDict[VMMVideoCardMemorySizeBuiltInKey] = [NSString stringWithFormat:@"%llu MB", size];
+                }
+                
+                CFRelease(serviceDictionary);
             }
             
-            CFRelease(serviceDictionary);
+            CFRelease(gpuName);
             IOObjectRelease(regEntry);
         }
         
