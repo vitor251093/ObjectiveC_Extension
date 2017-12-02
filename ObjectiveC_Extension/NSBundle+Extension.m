@@ -18,6 +18,7 @@
 
 NSString* _bundleName;
 NSString* _bundlePathBeforeAppTranslocation;
+NSBundle* _originalMainBundle;
 
 -(NSString*)bundleName
 {
@@ -145,11 +146,17 @@ NSString* _bundlePathBeforeAppTranslocation;
 {
     if ([[NSBundle mainBundle] isAppTranslocationActive])
     {
+        if (_originalMainBundle != nil && [[NSFileManager defaultManager] fileExistsAtPath:_originalMainBundle.bundlePath])
+        {
+            return _originalMainBundle;
+        }
+        
         NSString* originalPath = [[NSBundle mainBundle] bundlePathBeforeAppTranslocation];
         
         [NSTask runProgram:@"xattr" withFlags:@[@"-r",@"-d",@"com.apple.quarantine",originalPath]];
         
-        return [[NSBundle alloc] initWithPath:originalPath];
+        _originalMainBundle = [[NSBundle alloc] initWithPath:originalPath];
+        return _originalMainBundle;
     }
     
     return [NSBundle mainBundle];
