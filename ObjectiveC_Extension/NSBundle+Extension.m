@@ -152,10 +152,14 @@ NSBundle* _originalMainBundle;
         }
         
         NSString* originalPath = [[NSBundle mainBundle] bundlePathBeforeAppTranslocation];
+        if (originalPath == nil)
+        {
+            return nil;
+        }
         
         [NSTask runProgram:@"xattr" withFlags:@[@"-r",@"-d",@"com.apple.quarantine",originalPath]];
         
-        _originalMainBundle = [[NSBundle alloc] initWithPath:originalPath];
+        _originalMainBundle = [NSBundle bundleWithPath:originalPath];
         return _originalMainBundle;
     }
     
