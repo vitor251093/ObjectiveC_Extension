@@ -12,4 +12,8 @@
 
 -(NSString*)bundleName;
 
+-(BOOL)isAppTranslocationActive;
+
++(NSBundle*)originalMainBundle;
+
 @end

@@ -41,6 +41,7 @@ typedef enum NSChecksumType
 -(BOOL)directoryExistsAtPath:(NSString*)path;
 -(BOOL)regularFileExistsAtPath:(NSString*)path;
 -(NSArray<NSString*>*)contentsOfDirectoryAtPath:(NSString*)path;
+-(NSArray<NSString*>*)subpathsAtPath:(NSString *)path ofFilesNamed:(NSString*)fileName;
 -(NSString*)destinationOfSymbolicLinkAtPath:(NSString *)path;
 
 -(NSString*)userReadablePathForItemAtPath:(NSString*)path joinedByString:(NSString*)join;

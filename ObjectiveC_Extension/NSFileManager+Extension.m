@@ -12,6 +12,7 @@
 #import "NSTask+Extension.h"
 #import "NSString+Extension.h"
 #import "NSThread+Extension.h"
+#import "NSMutableArray+Extension.h"
 
 #import "VMMComputerInformation.h"
 
@@ -122,6 +123,20 @@
     [createdMutable removeObject:@".DS_Store"];
     
     return createdMutable;
+}
+-(NSArray<NSString*>*)subpathsAtPath:(NSString *)path ofFilesNamed:(NSString*)fileName
+{
+    NSString* matchesOutputString = [NSTask runProgram:@"find" withFlags:@[path,@"-name",fileName]];
+    NSMutableArray* matchesOutput = [[matchesOutputString componentsSeparatedByString:@"\n"] mutableCopy];
+    
+    [matchesOutput replaceObjectsWithVariation:^id(NSString* object, NSUInteger index)
+    {
+        if ([object hasPrefix:@"find: "]) return nil;
+        return [object stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
+    }];
+    [matchesOutput removeObject:[NSNull null]];
+    
+    return matchesOutput;
 }
 -(NSString*)destinationOfSymbolicLinkAtPath:(NSString *)path
 {
