@@ -54,11 +54,7 @@ NSBundle* _originalMainBundle;
     // App Translocation description:
     // http://lapcatsoftware.com/articles/app-translocation.html
     
-    if (IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR == false) return false;
-    
-    if ([[self bundlePath] hasPrefix:@"/private/var/folders/"]) return true;
-    
-    return false;
+    return IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR && [[self bundlePath] hasPrefix:@"/private/var/folders/"];
 }
 
 -(BOOL)doesBundleAtPath:(NSString*)bundlePath executableMatchesWithMD5Checksum:(NSString*)checksum
