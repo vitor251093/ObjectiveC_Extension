@@ -13,8 +13,8 @@
 
 @interface NSUnarchiver (VMMUnarchiver)
 
-+(id)safeUnarchiveObjectWithData:(NSData*)data;
-+(id)safeUnarchiveObjectFromFile:(NSString*)wsiPath;
++(nullable id)safeUnarchiveObjectWithData:(nonnull NSData*)data;
++(nullable id)safeUnarchiveObjectFromFile:(nonnull NSString*)wsiPath;
 
 @end
 

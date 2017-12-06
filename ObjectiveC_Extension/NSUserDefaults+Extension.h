@@ -10,6 +10,6 @@
 
 @interface NSUserDefaults (VMMUserDefaults)
 
--(id)objectForKey:(NSString *)key withDefaultValue:(id)value;
+-(nonnull id)objectForKey:(nonnull NSString *)key withDefaultValue:(nonnull id)value;
 
 @end

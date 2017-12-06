@@ -10,7 +10,7 @@
 
 @implementation NSMutableArray (VMMMutableArray)
 
--(void)sortAlphabeticallyByKey:(NSString*)key ascending:(BOOL)ascending
+-(void)sortAlphabeticallyByKey:(nonnull NSString*)key ascending:(BOOL)ascending
 {
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:key ascending:ascending selector:@selector(caseInsensitiveCompare:)];
     [self sortUsingDescriptors:@[sort]];
@@ -21,7 +21,7 @@
     [self sortUsingDescriptors:@[sort]];
 }
 
--(void)replaceObjectsWithVariation:(id (^)(id object, NSUInteger index))newObjectForObject
+-(void)replaceObjectsWithVariation:(nullable id (^)(id object, NSUInteger index))newObjectForObject
 {
     for (NSUInteger index = 0; index < self.count; index++)
     {

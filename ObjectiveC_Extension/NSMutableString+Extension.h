@@ -13,7 +13,7 @@
 
 @interface NSMutableString (VMMMutableString)
 
--(void)replaceOccurrencesOfString:(NSString *)target withString:(NSString *)replacement;
+-(void)replaceOccurrencesOfString:(nonnull NSString *)target withString:(nonnull NSString *)replacement;
 
 @end
 

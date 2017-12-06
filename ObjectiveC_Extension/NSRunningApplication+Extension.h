@@ -10,12 +10,12 @@
 
 @interface NSRunningApplication (VMMRunningApplication)
 
--(NSArray<NSDictionary*>*)visibleWindows;
+-(nonnull NSArray<NSDictionary*>*)visibleWindows;
 
 -(BOOL)isVisible;
 
--(NSArray<NSDictionary*>*)visibleWindowsSizes;
--(NSDictionary*)windowWithSize:(NSSize)size;
+-(nonnull NSArray<NSDictionary*>*)visibleWindowsSizes;
+-(nullable NSDictionary*)windowWithSize:(NSSize)size;
 -(BOOL)hasWindowWithSize:(NSSize)size;
 
 -(void)bringWindowsToFront;

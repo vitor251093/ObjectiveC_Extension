@@ -12,7 +12,7 @@
 
 @implementation NSWorkspace (VMMWorkspace)
 
--(NSArray<NSRunningApplication*>*)runningApplicationsFromInsideBundle:(NSString*)bundlePath
+-(nonnull NSArray<NSRunningApplication*>*)runningApplicationsFromInsideBundle:(nonnull NSString*)bundlePath
 {
     NSMutableArray* list = [[NSMutableArray alloc] init];
     
@@ -34,7 +34,7 @@
     return list;
 }
 
--(void)forceOpenURL:(NSURL*)url
+-(void)forceOpenURL:(nonnull NSURL*)url
 {
     BOOL opened = [self openURL:url];
     

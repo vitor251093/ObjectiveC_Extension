@@ -17,7 +17,7 @@
 
 @implementation NSString (VMMString)
 
--(BOOL)contains:(NSString*)string
+-(BOOL)contains:(nonnull NSString*)string
 {
     return [self rangeOfString:string].location != NSNotFound;
 }
@@ -109,7 +109,7 @@
         return patternMatches;
     }
 }
--(BOOL)matchesWithSearchTerms:(NSArray*)searchTerms
+-(BOOL)matchesWithSearchTerms:(nonnull NSArray*)searchTerms
 {
     NSCharacterSet* unitingSetItem    = [NSCharacterSet characterSetWithCharactersInString:@"'."];
     NSCharacterSet* separatingSetItem = [NSCharacterSet characterSetWithCharactersInString:@"&"];
@@ -144,7 +144,7 @@
     
     return YES;
 }
--(NSArray<NSString*>*)searchTermsWithString
+-(nonnull NSArray<NSString*>*)searchTermsWithString
 {
     NSArray* searchTerms;
     
@@ -175,7 +175,7 @@
     return searchTerms;
 }
 
--(BOOL)matchesWithRegex:(NSString*)regexString
+-(BOOL)matchesWithRegex:(nonnull NSString*)regexString
 {
     BOOL result;
     
@@ -187,7 +187,7 @@
     
     return result;
 }
--(NSArray<NSString*>*)componentsMatchingWithRegex:(NSString*)regexString
+-(nonnull NSArray<NSString*>*)componentsMatchingWithRegex:(nonnull NSString*)regexString
 {
     NSMutableArray* matches;
     
@@ -235,7 +235,7 @@
     return matches;
 }
 
-+(NSString*)humanReadableSizeForBytes:(long long int)bytes withDecimalMeasureSystem:(BOOL)measure
++(nonnull NSString*)humanReadableSizeForBytes:(long long int)bytes withDecimalMeasureSystem:(BOOL)measure
 {
     NSString* result;
     
@@ -274,14 +274,14 @@
     return result;
 }
 
--(NSString*)hexadecimalString
+-(nonnull NSString*)hexadecimalString
 {
     const char* cString = [self cStringUsingEncoding:NSUTF8StringEncoding];
     NSString* hexStr = [NSString stringWithFormat:@"%@", [NSData dataWithBytes:cString length:strlen(cString)]];
     hexStr = [hexStr stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<> "]];
     return hexStr;
 }
-+(NSString*)stringWithHexadecimalUTF8String:(NSString*)string
++(nullable NSString*)stringWithHexadecimalUTF8String:(nonnull NSString*)string
 {
     NSMutableString* newString;
     
@@ -300,7 +300,7 @@
     return newString;
 }
 
-+(NSString*)stringByRemovingEvenCharsFromString:(NSString*)text
++(nonnull NSString*)stringByRemovingEvenCharsFromString:(nonnull NSString*)text
 {
     NSMutableString* text2;
     
@@ -316,7 +316,7 @@
     
     return text2;
 }
--(NSString*)stringToWebStructure
+-(nonnull NSString*)stringToWebStructure
 {
     NSString* webString;
     
@@ -333,7 +333,7 @@
     return webString;
 }
 
--(NSRange)rangeAfterString:(NSString*)before andBeforeString:(NSString*)after
+-(NSRange)rangeAfterString:(nullable NSString*)before andBeforeString:(nullable NSString*)after
 {
     NSRange beforeRange = before ? [self rangeOfString:before] : NSMakeRange(0, 0);
     
@@ -353,14 +353,14 @@
     
     return NSMakeRange(afterBeforeRangeStart, afterRange.location - afterBeforeRangeStart);
 }
--(NSString*)getFragmentAfter:(NSString*)before andBefore:(NSString*)after
+-(nullable NSString*)getFragmentAfter:(nullable NSString*)before andBefore:(nullable NSString*)after
 {
     NSRange range = [self rangeAfterString:before andBeforeString:after];
     if (range.location == NSNotFound) return nil;
     return [self substringWithRange:range];
 }
 
--(NSNumber*)initialIntegerValue
+-(nullable NSNumber*)initialIntegerValue
 {
     NSNumber* numberValue;
     
@@ -382,7 +382,7 @@
     return numberValue;
 }
 
-+(NSString*)stringWithContentsOfFile:(NSString*)file encoding:(NSStringEncoding)enc
++(nullable NSString*)stringWithContentsOfFile:(nonnull NSString*)file encoding:(NSStringEncoding)enc
 {
     if (![[NSFileManager defaultManager] regularFileExistsAtPath:file]) return nil;
     
@@ -396,7 +396,7 @@
     
     return string;
 }
-+(NSString*)stringWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)enc timeoutInterval:(long long int)timeoutInterval
++(nullable NSString*)stringWithContentsOfURL:(nonnull NSURL *)url encoding:(NSStringEncoding)enc timeoutInterval:(long long int)timeoutInterval
 {
     NSString* stringValue;
     
@@ -410,7 +410,7 @@
     return stringValue;
 }
 
--(BOOL)writeToFile:(NSString*)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc
+-(BOOL)writeToFile:(nonnull NSString*)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc
 {
     if (![[NSFileManager defaultManager] regularFileExistsAtPath:path])
     {
@@ -428,7 +428,7 @@
     return created;
 }
 
--(NSData*)dataWithBase64Encoding
+-(nonnull NSData*)dataWithBase64Encoding
 {
     if (!IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR)
     {

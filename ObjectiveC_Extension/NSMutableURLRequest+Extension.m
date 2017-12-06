@@ -14,7 +14,7 @@
 
 @implementation NSMutableURLRequest (VMMMutableURLRequest)
 
--(void)ifModifiedSince:(NSDate*)modificationDate
+-(void)ifModifiedSince:(nonnull NSDate*)modificationDate
 {
     NSString *dateString;
     

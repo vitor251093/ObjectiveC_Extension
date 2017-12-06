@@ -36,11 +36,11 @@
     return self.visibleWindows.count > 0;
 }
 
--(NSArray<NSDictionary*>*)visibleWindowsSizes
+-(nonnull NSArray<NSDictionary*>*)visibleWindowsSizes
 {
     return [self.visibleWindows valueForKey:@"kCGWindowBounds"];
 }
--(NSDictionary*)windowWithSize:(NSSize)size
+-(nullable NSDictionary*)windowWithSize:(NSSize)size
 {
     for (NSDictionary *window in self.visibleWindows)
     {

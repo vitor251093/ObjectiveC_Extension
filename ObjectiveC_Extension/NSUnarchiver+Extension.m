@@ -12,7 +12,7 @@
 
 @implementation NSUnarchiver (VMMUnarchiver)
 
-+(id)safeUnarchiveObjectWithData:(NSData*)data
++(nullable id)safeUnarchiveObjectWithData:(nonnull NSData*)data
 {
     @try
     {
@@ -23,7 +23,7 @@
         return nil;
     }
 }
-+(id)safeUnarchiveObjectFromFile:(NSString*)wsiPath
++(nullable id)safeUnarchiveObjectFromFile:(nonnull NSString*)wsiPath
 {
     if (![[NSFileManager defaultManager] fileExistsAtPath:wsiPath]) return nil;
     

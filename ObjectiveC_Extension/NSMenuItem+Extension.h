@@ -10,6 +10,6 @@
 
 @interface NSMenuItem (VMMMenuItem)
 
-+(NSMenuItem*)menuItemWithTitle:(NSString*)title andAction:(SEL)action forTarget:(id)target;
++(nonnull NSMenuItem*)menuItemWithTitle:(nonnull NSString*)title andAction:(nullable SEL)action forTarget:(nullable id)target;
 
 @end

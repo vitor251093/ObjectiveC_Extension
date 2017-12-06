@@ -10,8 +10,8 @@
 
 @interface NSWorkspace (VMMWorkspace)
 
--(NSArray<NSRunningApplication*>*)runningApplicationsFromInsideBundle:(NSString*)bundlePath;
+-(nonnull NSArray<NSRunningApplication*>*)runningApplicationsFromInsideBundle:(nonnull NSString*)bundlePath;
 
--(void)forceOpenURL:(NSURL*)url;
+-(void)forceOpenURL:(nonnull NSURL*)url;
 
 @end

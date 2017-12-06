@@ -49,7 +49,7 @@
     [NSTask runCommand:@[@"qlmanage", @"-t", @"-s",[NSString stringWithFormat:@"%d",QLMANAGE_ICON_SIZE], @"-o.", arquivo]
              atRunPath:[arquivo stringByDeletingLastPathComponent]];
     
-    NSString* newFile = [NSString stringWithFormat:@"%@.png",arquivo, nil];
+    NSString* newFile = [NSString stringWithFormat:@"%@.png",arquivo];
     if ([[NSFileManager defaultManager] regularFileExistsAtPath:newFile])
     {
         img = [[NSImage alloc] initWithContentsOfFile:newFile];

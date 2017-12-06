@@ -10,7 +10,7 @@
 
 @implementation NSMutableDictionary (VMMMutableDictionary)
 
-+(instancetype)mutableDictionaryWithContentsOfFile:(NSString*)filePath
++(nullable instancetype)mutableDictionaryWithContentsOfFile:(nonnull NSString*)filePath
 {
     NSMutableDictionary *dictionary;
     

@@ -13,7 +13,7 @@
 
 @interface NSMutableURLRequest (VMMMutableURLRequest)
 
--(void)ifModifiedSince:(NSDate*)modificationDate;
+-(void)ifModifiedSince:(nonnull NSDate*)modificationDate;
 
 @end
 

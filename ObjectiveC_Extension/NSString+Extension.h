@@ -13,32 +13,32 @@
 
 @interface NSString (VMMString)
 
--(BOOL)contains:(NSString*)string;
--(BOOL)matchesWithSearchTerms:(NSArray*)searchTerms;
--(NSArray<NSString*>*)searchTermsWithString;
+-(BOOL)contains:(nonnull NSString*)string;
+-(BOOL)matchesWithSearchTerms:(nonnull NSArray*)searchTerms;
+-(nonnull NSArray<NSString*>*)searchTermsWithString;
 
--(BOOL)matchesWithRegex:(NSString*)regexString;
--(NSArray<NSString*>*)componentsMatchingWithRegex:(NSString*)regexString;
+-(BOOL)matchesWithRegex:(nonnull NSString*)regexString;
+-(nonnull NSArray<NSString*>*)componentsMatchingWithRegex:(nonnull NSString*)regexString;
 
-+(NSString*)humanReadableSizeForBytes:(long long int)bytes withDecimalMeasureSystem:(BOOL)measure;
++(nonnull NSString*)humanReadableSizeForBytes:(long long int)bytes withDecimalMeasureSystem:(BOOL)measure;
 
--(NSString*)hexadecimalString;
-+(NSString*)stringWithHexadecimalUTF8String:(NSString*)string;
+-(nonnull NSString*)hexadecimalString;
++(nullable NSString*)stringWithHexadecimalUTF8String:(nonnull NSString*)string;
 
-+(NSString*)stringByRemovingEvenCharsFromString:(NSString*)text;
--(NSString*)stringToWebStructure;
++(nonnull NSString*)stringByRemovingEvenCharsFromString:(nonnull NSString*)text;
+-(nonnull NSString*)stringToWebStructure;
 
--(NSRange)rangeAfterString:(NSString*)before andBeforeString:(NSString*)after;
--(NSString*)getFragmentAfter:(NSString*)before andBefore:(NSString*)after;
+-(NSRange)rangeAfterString:(nullable NSString*)before andBeforeString:(nullable NSString*)after;
+-(nullable NSString*)getFragmentAfter:(nullable NSString*)before andBefore:(nullable NSString*)after;
 
--(NSNumber*)initialIntegerValue;
+-(nullable NSNumber*)initialIntegerValue;
 
-+(NSString*)stringWithContentsOfFile:(NSString*)file encoding:(NSStringEncoding)enc;
-+(NSString*)stringWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)enc timeoutInterval:(long long int)timeoutInterval;
++(nullable NSString*)stringWithContentsOfFile:(nonnull NSString*)file encoding:(NSStringEncoding)enc;
++(nullable NSString*)stringWithContentsOfURL:(nonnull NSURL *)url encoding:(NSStringEncoding)enc timeoutInterval:(long long int)timeoutInterval;
 
--(BOOL)writeToFile:(NSString*)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc;
+-(BOOL)writeToFile:(nonnull NSString*)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc;
 
--(NSData*)dataWithBase64Encoding;
+-(nonnull NSData*)dataWithBase64Encoding;
 
 -(BOOL)isAValidURL;
 

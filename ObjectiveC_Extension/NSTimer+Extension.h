@@ -10,6 +10,6 @@
 
 @interface NSTimer (VMMTimer)
 
-+(NSTimer*)scheduledTimerWithRunLoopMode:(NSRunLoopMode)runLoopMode timeInterval:(NSTimeInterval)interval target:(id)target selector:(SEL)selector userInfo:(id)userInfo;
++(nonnull NSTimer*)scheduledTimerWithRunLoopMode:(NSRunLoopMode)runLoopMode timeInterval:(NSTimeInterval)interval target:(nonnull id)target selector:(nonnull SEL)selector userInfo:(id)userInfo;
 
 @end

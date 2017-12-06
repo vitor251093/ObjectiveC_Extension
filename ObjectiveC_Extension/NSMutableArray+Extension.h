@@ -10,9 +10,9 @@
 
 @interface NSMutableArray (VMMMutableArray)
 
--(void)sortAlphabeticallyByKey:(NSString*)key ascending:(BOOL)ascending;
+-(void)sortAlphabeticallyByKey:(nonnull NSString*)key ascending:(BOOL)ascending;
 -(void)sortAlphabeticallyAscending:(BOOL)ascending;
 
--(void)replaceObjectsWithVariation:(id (^)(id object, NSUInteger index))newObjectForObject;
+-(void)replaceObjectsWithVariation:(nullable id (^)(id object, NSUInteger index))newObjectForObject;
 
 @end
