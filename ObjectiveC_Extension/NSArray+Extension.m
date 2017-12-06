@@ -10,7 +10,7 @@
 
 @implementation NSArray (VMMArray)
 
--(NSArray*)sortedDictionariesArrayWithKey:(NSString *)key orderingByValuesOrder:(NSArray*)value
+-(nonnull NSArray*)sortedDictionariesArrayWithKey:(nonnull NSString *)key orderingByValuesOrder:(nonnull NSArray*)value
 {
     return [self sortedArrayUsingComparator:^NSComparisonResult(NSDictionary* obj1, NSDictionary* obj2)
     {
@@ -27,12 +27,12 @@
     }];
 }
 
--(NSArray*)arrayByRemovingRepetitions
+-(nonnull NSArray*)arrayByRemovingRepetitions
 {
     return [NSSet setWithArray:self].allObjects;
 }
 
--(NSArray*)arrayByRemovingObjectsFromArray:(NSArray*)otherArray
+-(nonnull NSArray*)arrayByRemovingObjectsFromArray:(nonnull NSArray*)otherArray
 {
     NSMutableArray* newArray = [self mutableCopy];
     

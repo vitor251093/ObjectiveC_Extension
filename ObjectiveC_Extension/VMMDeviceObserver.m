@@ -16,7 +16,7 @@
 
 static VMMDeviceObserver *_sharedObserver;
 
-+(instancetype)sharedObserver
++(nonnull instancetype)sharedObserver
 {
     @synchronized([self class])
     {
@@ -26,13 +26,10 @@ static VMMDeviceObserver *_sharedObserver;
         }
         return _sharedObserver;
     }
-    return nil;
 }
 
--(void)observeDevicesOfTypes:(NSArray<NSNumber*>*)types forDelegate:(id<VMMDeviceObserverDelegate>)actionDelegate
+-(void)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate
 {
-    if (actionDelegate == nil) return;
-    
     actionDelegate.hidManager = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
     
     NSMutableArray* deviceTypes = [types mutableCopy];
@@ -57,10 +54,8 @@ static VMMDeviceObserver *_sharedObserver;
         NSDebugLog(@"Couldn't look for devices. IOHIDManagerOpen failed.");
     }
 }
--(void)stopObservingForDelegate:(id<VMMDeviceObserverDelegate>)actionDelegate
+-(void)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate
 {
-    if (actionDelegate == nil) return;
-    
     actionDelegate.hidManager = NULL;
 }
 

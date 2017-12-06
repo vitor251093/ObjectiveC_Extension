@@ -10,20 +10,20 @@
 
 @implementation NSAttributedString (VMMAttributedString)
 
--(instancetype)initWithHTMLData:(NSData*)data
+-(nullable instancetype)initWithHTMLData:(nonnull NSData*)data
 {
     self = [self initWithData:data options:@{NSDocumentTypeDocumentAttribute:     NSHTMLTextDocumentType,
                                              NSCharacterEncodingDocumentAttribute:@(NSUTF8StringEncoding)}
            documentAttributes:nil error:nil];
     return self;
 }
--(instancetype)initWithHTMLString:(NSString*)string
+-(nullable instancetype)initWithHTMLString:(nonnull NSString*)string
 {
     self = [self initWithHTMLData:[string dataUsingEncoding:NSUTF8StringEncoding]];
     return self;
 }
 
--(NSString*)htmlString
+-(nonnull NSString*)htmlString
 {
     NSString* htmlString;
     

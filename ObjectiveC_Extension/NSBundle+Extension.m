@@ -20,7 +20,7 @@ NSString* _bundleName;
 NSString* _bundlePathBeforeAppTranslocation;
 NSBundle* _originalMainBundle;
 
--(NSString*)bundleName
+-(nonnull NSString*)bundleName
 {
     if (_bundleName != nil) return _bundleName;
     
@@ -138,7 +138,7 @@ NSBundle* _originalMainBundle;
     return nil;
 }
 
-+(NSBundle*)originalMainBundle
++(nullable NSBundle*)originalMainBundle
 {
     if ([[NSBundle mainBundle] isAppTranslocationActive])
     {

@@ -13,7 +13,7 @@
 
 @interface NSColor (VMMColor)
 
-+(NSColor*)colorWithHexColorString:(NSString*)inColorString;
--(NSString*)hexColorString;
++(nullable NSColor*)colorWithHexColorString:(nonnull NSString*)inColorString;
+-(nullable NSString*)hexColorString;
 
 @end

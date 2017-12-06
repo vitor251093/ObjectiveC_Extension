@@ -15,15 +15,15 @@
 #define VMMDeviceObserverTypesKeyboard  @[@(kHIDUsage_GD_Keyboard), @(kHIDUsage_GD_Keypad)]
 
 @protocol VMMDeviceObserverDelegate
-@property (nonatomic) IOHIDManagerRef hidManager;
+@property (nonatomic, nullable) IOHIDManagerRef hidManager;
 @optional
--(void)observedConnectionOfDevice:(IOHIDDeviceRef)device;
--(void)observedRemovalOfDevice:(IOHIDDeviceRef)device;
--(void)observedEventWithName:(CFStringRef)name cookie:(IOHIDElementCookie)cookie usage:(uint32_t)usage value:(CFIndex)value device:(IOHIDDeviceRef)device;
+-(void)observedConnectionOfDevice:(nonnull IOHIDDeviceRef)device;
+-(void)observedRemovalOfDevice:(nonnull IOHIDDeviceRef)device;
+-(void)observedEventWithName:(nullable CFStringRef)name cookie:(IOHIDElementCookie)cookie usage:(uint32_t)usage value:(CFIndex)value device:(nonnull IOHIDDeviceRef)device;
 @end
 
 @interface VMMDeviceObserver : NSObject
-+(instancetype)sharedObserver;
--(void)observeDevicesOfTypes:(NSArray<NSNumber*>*)types forDelegate:(id<VMMDeviceObserverDelegate>)actionDelegate;
--(void)stopObservingForDelegate:(id<VMMDeviceObserverDelegate>)actionDelegate;
++(nonnull instancetype)sharedObserver;
+-(void)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
+-(void)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
 @end

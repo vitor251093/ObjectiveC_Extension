@@ -16,7 +16,7 @@
 #import "VMMComputerInformation.h"
 
 @implementation NSData (VMMData)
-+(NSData*)dataWithContentsOfURL:(NSURL *)url timeoutInterval:(long long int)timeoutInterval
++(nullable NSData*)dataWithContentsOfURL:(nonnull NSURL *)url timeoutInterval:(long long int)timeoutInterval
 {
     NSData* stringData;
     
@@ -36,7 +36,7 @@
     
     return stringData;
 }
-+(NSData*)safeDataWithContentsOfFile:(NSString*)filePath
++(nullable NSData*)safeDataWithContentsOfFile:(nonnull NSString*)filePath
 {
     if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) return nil;
     
@@ -56,7 +56,7 @@
     return data;
 }
 
-+(NSString*)jsonStringWithObject:(id)object
++(nullable NSString*)jsonStringWithObject:(nonnull id)object
 {
     if (IsClassNSJSONSerializationAvailable == false)
     {
@@ -110,7 +110,7 @@
     return [[NSString alloc] initWithData:[self jsonDataWithObject:object] encoding:NSUTF8StringEncoding];
 }
 
-+(NSData*)jsonDataWithObject:(id)object
++(nullable NSData*)jsonDataWithObject:(nonnull id)object
 {
     if (IsClassNSJSONSerializationAvailable == false)
     {
@@ -123,7 +123,7 @@
     return [NSJSONSerialization dataWithJSONObject:object options:NSJSONWritingPrettyPrinted error:nil];
 }
 
--(id)objectWithJsonData
+-(nullable id)objectWithJsonData
 {
     if (IsClassNSJSONSerializationAvailable == false)
     {

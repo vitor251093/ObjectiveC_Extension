@@ -12,12 +12,12 @@
 
 NSDictionary* _virtualKeycodeNames;
 
-+(NSArray<NSString*>*)allKeyNames
++(nonnull NSArray<NSString*>*)allKeyNames
 {
     return self.virtualKeycodeNames.allValues;
 }
 
-+(NSDictionary*)virtualKeycodeNames
++(nonnull NSDictionary*)virtualKeycodeNames
 {
     if (!_virtualKeycodeNames)
     {
@@ -167,7 +167,7 @@ NSDictionary* _virtualKeycodeNames;
     
     return _virtualKeycodeNames;
 }
-+(NSString*)nameOfVirtualKeycode:(CGKeyCode)key
++(nullable NSString*)nameOfVirtualKeycode:(CGKeyCode)key
 {
     return self.virtualKeycodeNames[@(key)];
 }

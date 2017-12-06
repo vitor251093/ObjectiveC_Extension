@@ -10,6 +10,6 @@
 
 @interface NSDateFormatter (VMMDateFormatter)
 
-+(NSDate*)dateFromString:(NSString *)string withFormat:(NSString*)format;
++(nullable NSDate*)dateFromString:(nonnull NSString *)string withFormat:(nonnull NSString*)format;
 
 @end

@@ -13,10 +13,10 @@
 
 @interface NSAttributedString (VMMAttributedString)
 
--(instancetype)initWithHTMLData:(NSData*)data;
--(instancetype)initWithHTMLString:(NSString*)string;
+-(nullable instancetype)initWithHTMLData:(nonnull NSData*)data;
+-(nullable instancetype)initWithHTMLString:(nonnull NSString*)string;
 
--(NSString*)htmlString;
+-(nonnull NSString*)htmlString;
 
 @end
 

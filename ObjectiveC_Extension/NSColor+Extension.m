@@ -10,17 +10,25 @@
 
 @implementation NSColor (VMMColor)
 
-+(NSColor*)colorWithHexColorString:(NSString*)inColorString
++(nullable NSColor*)colorWithHexColorString:(nonnull NSString*)inColorString
 {
     NSColor* result = nil;
     unsigned colorCode = 0;
     unsigned char redByte, greenByte, blueByte;
     
-    if (nil != inColorString)
+    if (inColorString.length == 7 && [inColorString hasPrefix:@"#"])
     {
-        NSScanner* scanner = [NSScanner scannerWithString:inColorString];
-        (void) [scanner scanHexInt:&colorCode]; // ignore error
+        inColorString = [inColorString substringFromIndex:1];
     }
+    
+    if (inColorString.length != 6)
+    {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"colorWithHexColorString: only accepts hexadecimal colors, with 6 or 7 characters (eg. 000000 or #000000)" userInfo:nil];
+    }
+    
+    NSScanner* scanner = [NSScanner scannerWithString:inColorString];
+    (void) [scanner scanHexInt:&colorCode]; // ignore error
+    
     redByte = (unsigned char)(colorCode >> 16);
     greenByte = (unsigned char)(colorCode >> 8);
     blueByte = (unsigned char)(colorCode); // masks off high bits
@@ -28,7 +36,7 @@
     result = RGB((CGFloat)redByte, (CGFloat)greenByte, (CGFloat)blueByte);
     return result;
 }
--(NSString*)hexColorString
+-(nullable NSString*)hexColorString
 {
     // https://developer.apple.com/library/content/qa/qa1576/_index.html
     

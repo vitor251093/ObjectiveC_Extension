@@ -10,10 +10,10 @@
 
 @interface NSArray (VMMArray)
 
--(NSArray*)sortedDictionariesArrayWithKey:(NSString *)key orderingByValuesOrder:(NSArray*)value;
+-(nonnull NSArray*)sortedDictionariesArrayWithKey:(nonnull NSString *)key orderingByValuesOrder:(nonnull NSArray*)value;
 
--(NSArray*)arrayByRemovingRepetitions;
+-(nonnull NSArray*)arrayByRemovingRepetitions;
 
--(NSArray*)arrayByRemovingObjectsFromArray:(NSArray*)otherArray;
+-(nonnull NSArray*)arrayByRemovingObjectsFromArray:(nonnull NSArray*)otherArray;
 
 @end

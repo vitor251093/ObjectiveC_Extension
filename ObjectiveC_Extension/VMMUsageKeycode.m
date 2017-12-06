@@ -12,12 +12,12 @@
 
 NSDictionary* _usageNamesByKeycode;
 
-+(NSArray<NSString*>*)allUsageNames
++(nonnull NSArray<NSString*>*)allUsageNames
 {
     return self.usageNamesByKeycode.allValues;
 }
 
-+(NSDictionary*)usageNamesByKeycode
++(nonnull NSDictionary*)usageNamesByKeycode
 {
     if (!_usageNamesByKeycode)
     {
@@ -274,7 +274,7 @@ NSDictionary* _usageNamesByKeycode;
     
     return _usageNamesByKeycode;
 }
-+(NSString*)nameOfUsageKeycode:(uint32_t)key
++(nullable NSString*)nameOfUsageKeycode:(uint32_t)key
 {
     NSString* name = self.usageNamesByKeycode[@(key)];
     return (name && name.length > 0) ? name : nil;

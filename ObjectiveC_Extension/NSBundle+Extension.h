@@ -10,10 +10,10 @@
 
 @interface NSBundle (VMMBundle)
 
--(NSString*)bundleName;
+-(nonnull NSString*)bundleName;
 
 -(BOOL)isAppTranslocationActive;
 
-+(NSBundle*)originalMainBundle;
++(nullable NSBundle*)originalMainBundle;
 
 @end

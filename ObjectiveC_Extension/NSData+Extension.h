@@ -13,12 +13,12 @@
 
 @interface NSData (VMMData)
 
-+(NSData*)dataWithContentsOfURL:(NSURL *)url timeoutInterval:(long long int)timeoutInterval;
-+(NSData*)safeDataWithContentsOfFile:(NSString*)filePath;
++(nullable NSData*)dataWithContentsOfURL:(nonnull NSURL *)url timeoutInterval:(long long int)timeoutInterval;
++(nullable NSData*)safeDataWithContentsOfFile:(nonnull NSString*)filePath;
 
-+(NSString*)jsonStringWithObject:(id)object;
-+(NSData*)jsonDataWithObject:(id)object;
--(id)objectWithJsonData;
++(nullable NSString*)jsonStringWithObject:(nonnull id)object;
++(nullable NSData*)jsonDataWithObject:(nonnull id)object;
+-(nullable id)objectWithJsonData;
 
 @end
 

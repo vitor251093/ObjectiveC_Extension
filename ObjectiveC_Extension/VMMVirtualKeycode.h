@@ -35,10 +35,10 @@
 
 @interface VMMVirtualKeycode : NSObject
 
-+(NSArray<NSString*>*)allKeyNames;
++(nonnull NSArray<NSString*>*)allKeyNames;
 
-+(NSDictionary*)virtualKeycodeNames;
-+(NSString*)nameOfVirtualKeycode:(CGKeyCode)key;
++(nonnull NSDictionary*)virtualKeycodeNames;
++(nullable NSString*)nameOfVirtualKeycode:(CGKeyCode)key;
 
 @end
 
