@@ -39,7 +39,7 @@
 
 static VMMDockProgressIndicator* progress_bar;
 
-+ (VMMDockProgressIndicator*)sharedInstance
++ (nonnull VMMDockProgressIndicator*)sharedInstance
 {
     NSDockTile* dock_tile = [NSApp dockTile];
     

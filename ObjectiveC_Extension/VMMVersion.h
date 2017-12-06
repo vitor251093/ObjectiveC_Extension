@@ -17,6 +17,6 @@ typedef enum VMMVersionCompare
 
 @interface VMMVersion : NSObject
 
-+(VMMVersionCompare)compareVersionString:(NSString*)PK1 withVersionString:(NSString*)PK2;
++(VMMVersionCompare)compareVersionString:(nonnull NSString*)PK1 withVersionString:(nonnull NSString*)PK2;
 
 @end

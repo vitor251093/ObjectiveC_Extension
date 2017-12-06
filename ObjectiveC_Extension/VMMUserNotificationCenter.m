@@ -31,7 +31,7 @@
 
 static VMMUserNotificationCenter *_sharedInstance;
 
-+(instancetype)defaultUserNotificationCenter
++(nonnull instancetype)defaultUserNotificationCenter
 {
     @synchronized([self class])
     {
@@ -41,10 +41,9 @@ static VMMUserNotificationCenter *_sharedInstance;
         }
         return _sharedInstance;
     }
-    return nil;
 }
 
--(void)deliverNotificationWithTitle:(NSString*)title message:(NSString*)message userInfo:(NSObject*)info icon:(NSImage*)icon actionButtonText:(NSString*)actionButton
+-(void)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton
 {
     if (IsClassNSUserNotificationCenterAvailable == false)
     {

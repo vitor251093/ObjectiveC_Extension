@@ -18,7 +18,7 @@
 
 @implementation NSFileManager (VMMFileManager)
 
--(BOOL)createSymbolicLinkAtPath:(NSString *)path withDestinationPath:(NSString *)destPath
+-(BOOL)createSymbolicLinkAtPath:(nonnull NSString *)path withDestinationPath:(nonnull NSString *)destPath
 {
     NSError* error;
     BOOL created = [self createSymbolicLinkAtPath:path withDestinationPath:destPath error:&error];
@@ -30,7 +30,7 @@
     
     return created;
 }
--(BOOL)createDirectoryAtPath:(NSString*)path withIntermediateDirectories:(BOOL)interDirs
+-(BOOL)createDirectoryAtPath:(nonnull NSString*)path withIntermediateDirectories:(BOOL)interDirs
 {
     NSError* error;
     BOOL created = [self createDirectoryAtPath:path withIntermediateDirectories:interDirs attributes:nil error:&error];
@@ -42,12 +42,12 @@
     
     return created;
 }
--(BOOL)createEmptyFileAtPath:(NSString*)path
+-(BOOL)createEmptyFileAtPath:(nonnull NSString*)path
 {
     return [self createFileAtPath:path contents:nil attributes:nil];
 }
 
--(BOOL)moveItemAtPath:(NSString*)path toPath:(NSString*)destination
+-(BOOL)moveItemAtPath:(nonnull NSString*)path toPath:(nonnull NSString*)destination
 {
     NSError* error;
     BOOL created = [self moveItemAtPath:path toPath:destination error:&error];
@@ -60,7 +60,7 @@
     
     return created;
 }
--(BOOL)copyItemAtPath:(NSString*)path toPath:(NSString*)destination
+-(BOOL)copyItemAtPath:(nonnull NSString*)path toPath:(nonnull NSString*)destination
 {
     NSError* error;
     BOOL created = [self copyItemAtPath:path toPath:destination error:&error];
@@ -72,7 +72,7 @@
     
     return created;
 }
--(BOOL)removeItemAtPath:(NSString*)path
+-(BOOL)removeItemAtPath:(nonnull NSString*)path
 {
     if ([self fileExistsAtPath:path] == false) return YES;
     
@@ -86,17 +86,17 @@
     
     return created;
 }
--(BOOL)directoryExistsAtPath:(NSString*)path
+-(BOOL)directoryExistsAtPath:(nonnull NSString*)path
 {
     BOOL isDir = NO;
     return [self fileExistsAtPath:path isDirectory:&isDir] && isDir;
 }
--(BOOL)regularFileExistsAtPath:(NSString*)path
+-(BOOL)regularFileExistsAtPath:(nonnull NSString*)path
 {
     BOOL isDir = NO;
     return [self fileExistsAtPath:path isDirectory:&isDir] && !isDir;
 }
--(NSArray<NSString*>*)contentsOfDirectoryAtPath:(NSString*)path
+-(nullable NSArray<NSString*>*)contentsOfDirectoryAtPath:(nonnull NSString*)path
 {
     if (![self fileExistsAtPath:path])
     {
@@ -124,7 +124,7 @@
     
     return createdMutable;
 }
--(NSArray<NSString*>*)subpathsAtPath:(NSString *)path ofFilesNamed:(NSString*)fileName
+-(nullable NSArray<NSString*>*)subpathsAtPath:(nonnull NSString *)path ofFilesNamed:(nonnull NSString*)fileName
 {
     NSString* matchesOutputString = [NSTask runProgram:@"find" withFlags:@[path,@"-name",fileName]];
     NSMutableArray* matchesOutput = [[matchesOutputString componentsSeparatedByString:@"\n"] mutableCopy];
@@ -138,7 +138,7 @@
     
     return matchesOutput;
 }
--(NSString*)destinationOfSymbolicLinkAtPath:(NSString *)path
+-(nullable NSString*)destinationOfSymbolicLinkAtPath:(nonnull NSString *)path
 {
     NSError* error;
     NSString* destination = [self destinationOfSymbolicLinkAtPath:path error:&error];
@@ -151,9 +151,11 @@
     return destination;
 }
 
--(NSString*)userReadablePathForItemAtPath:(NSString*)path joinedByString:(NSString*)join
+-(nullable NSString*)userReadablePathForItemAtPath:(nonnull NSString*)path joinedByString:(nullable NSString*)join
 {
     NSArray* components = [self componentsToDisplayForPath:path];
+    
+    if (join == nil) join = @" → ";
     
     if (([self fileExistsAtPath:path] == false) || (components == nil))
     {
@@ -164,7 +166,7 @@
     return [components componentsJoinedByString:join];
 }
 
--(unsigned long long int)sizeOfRegularFileAtPath:(NSString*)path
+-(unsigned long long int)sizeOfRegularFileAtPath:(nonnull NSString*)path
 {
     unsigned long long int result = 0;
     
@@ -176,7 +178,7 @@
     
     return result;
 }
--(unsigned long long int)sizeOfDirectoryAtPath:(NSString*)path
+-(unsigned long long int)sizeOfDirectoryAtPath:(nonnull NSString*)path
 {
     unsigned long long int fileSize = 0;
     
@@ -198,7 +200,7 @@
     return fileSize;
 }
 
--(NSString*)checksum:(NSChecksumType)checksum ofFileAtPath:(NSString*)file
+-(nullable NSString*)checksum:(NSChecksumType)checksum ofFileAtPath:(nonnull NSString*)file
 {
     if (file == nil) return nil;
     
@@ -245,7 +247,7 @@
     return result;
 }
 
--(NSString*)base64OfFileAtPath:(NSString*)path
+-(nullable NSString*)base64OfFileAtPath:(nonnull NSString*)path
 {
     NSData* data = [NSData dataWithContentsOfFile:path];
     

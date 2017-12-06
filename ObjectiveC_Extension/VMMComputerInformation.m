@@ -187,7 +187,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return graphicCardDict;
 }
-+(NSDictionary*)graphicCardDictionary
++(nullable NSDictionary*)graphicCardDictionary
 {
     @synchronized(_computerGraphicCardDictionary)
     {
@@ -238,7 +238,7 @@ static NSMutableDictionary* _macOsCompatibility;
     return true;
 }
 
-+(NSString*)graphicCardName
++(nullable NSString*)graphicCardName
 {
     NSDictionary* graphicCardDictionary = self.graphicCardDictionary;
     
@@ -264,7 +264,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return videoCardName;
 }
-+(NSString*)graphicCardType
++(nullable NSString*)graphicCardType
 {
     @synchronized(_computerGraphicCardType)
     {
@@ -312,7 +312,7 @@ static NSMutableDictionary* _macOsCompatibility;
     return nil;
 }
 
-+(NSString*)graphicCardDeviceID
++(nullable NSString*)graphicCardDeviceID
 {
     return self.graphicCardDictionary[VMMVideoCardDeviceIDKey];
 }
@@ -334,7 +334,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return localVendorID;
 }
-+(NSString*)graphicCardVendorID
++(nullable NSString*)graphicCardVendorID
 {
     NSString* localVendorID = [self graphicCardVendorIDFromVendorAndVendorIDKeysOnly];
     
@@ -384,7 +384,7 @@ static NSMutableDictionary* _macOsCompatibility;
     return memSizeInt;
 }
 
-+(NSString*)macOsVersion
++(nullable NSString*)macOsVersion
 {
     @synchronized(_macOsVersion)
     {
@@ -447,7 +447,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return nil;
 }
-+(BOOL)isSystemMacOsEqualOrSuperiorTo:(NSString*)version
++(BOOL)isSystemMacOsEqualOrSuperiorTo:(nonnull NSString*)version
 {
     @synchronized (_macOsCompatibility)
     {
@@ -469,7 +469,7 @@ static NSMutableDictionary* _macOsCompatibility;
     return false;
 }
 
-+(NSString*)macOsBuildVersion
++(nullable NSString*)macOsBuildVersion
 {
     @synchronized(_macOsBuildVersion)
     {

@@ -13,11 +13,11 @@
     NSTimer *monitorTimer;
 }
 
-@property (nonatomic, strong) NSString* textFilePath;
+@property (nonatomic, strong, nullable) NSString* textFilePath;
 @property (nonatomic) NSStringEncoding textFileEncoding;
-@property (nonatomic) NSRunLoopMode runLoopMode;
+@property (nonatomic, nullable) NSRunLoopMode runLoopMode;
 
--(void)showTextFileAtPath:(NSString*)filePath withEncoding:(NSStringEncoding)encoding refreshingWithTimeInterval:(NSTimeInterval)interval;
+-(void)showTextFileAtPath:(nonnull NSString*)filePath withEncoding:(NSStringEncoding)encoding refreshingWithTimeInterval:(NSTimeInterval)interval;
 -(void)stopRefreshing;
 
 @end

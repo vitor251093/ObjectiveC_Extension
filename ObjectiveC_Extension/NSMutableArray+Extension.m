@@ -21,7 +21,7 @@
     [self sortUsingDescriptors:@[sort]];
 }
 
--(void)replaceObjectsWithVariation:(nullable id (^)(id object, NSUInteger index))newObjectForObject
+-(void)replaceObjectsWithVariation:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
 {
     for (NSUInteger index = 0; index < self.count; index++)
     {

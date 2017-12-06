@@ -203,18 +203,18 @@
 
 @interface VMMComputerInformation : NSObject
 
-+(NSDictionary*)graphicCardDictionary;
-+(NSString*)graphicCardName;
-+(NSString*)graphicCardType;
++(nullable NSDictionary*)graphicCardDictionary;
++(nullable NSString*)graphicCardName;
++(nullable NSString*)graphicCardType;
 
-+(NSString*)graphicCardDeviceID;
-+(NSString*)graphicCardVendorID;
++(nullable NSString*)graphicCardDeviceID;
++(nullable NSString*)graphicCardVendorID;
 +(NSUInteger)graphicCardMemorySizeInMegabytes;
 
-+(NSString*)macOsVersion;
-+(BOOL)isSystemMacOsEqualOrSuperiorTo:(NSString*)version;
++(nullable NSString*)macOsVersion;
++(BOOL)isSystemMacOsEqualOrSuperiorTo:(nonnull NSString*)version;
 
-+(NSString*)macOsBuildVersion;
++(nullable NSString*)macOsBuildVersion;
 
 +(BOOL)isUserStaffGroupMember;
 

@@ -10,6 +10,6 @@
 
 @interface VMMUUID : NSObject
 
-+(NSString*)newUUIDString;
++(nonnull NSString*)newUUIDString;
 
 @end

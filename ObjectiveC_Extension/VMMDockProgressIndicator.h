@@ -35,6 +35,6 @@
 
 @interface VMMDockProgressIndicator : NSProgressIndicator
 
-+ (VMMDockProgressIndicator*)sharedInstance;
++ (nonnull VMMDockProgressIndicator*)sharedInstance;
 
 @end

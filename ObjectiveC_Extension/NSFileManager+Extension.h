@@ -31,27 +31,27 @@ typedef enum NSChecksumType
 
 @interface NSFileManager (VMMFileManager)
 
--(BOOL)createSymbolicLinkAtPath:(NSString *)path withDestinationPath:(NSString *)destPath;
--(BOOL)createDirectoryAtPath:(NSString*)path withIntermediateDirectories:(BOOL)interDirs;
--(BOOL)createEmptyFileAtPath:(NSString*)path;
+-(BOOL)createSymbolicLinkAtPath:(nonnull NSString *)path withDestinationPath:(nonnull NSString *)destPath;
+-(BOOL)createDirectoryAtPath:(nonnull NSString*)path withIntermediateDirectories:(BOOL)interDirs;
+-(BOOL)createEmptyFileAtPath:(nonnull NSString*)path;
 
--(BOOL)moveItemAtPath:(NSString*)path toPath:(NSString*)destination;
--(BOOL)copyItemAtPath:(NSString*)path toPath:(NSString*)destination;
--(BOOL)removeItemAtPath:(NSString*)path;
--(BOOL)directoryExistsAtPath:(NSString*)path;
--(BOOL)regularFileExistsAtPath:(NSString*)path;
--(NSArray<NSString*>*)contentsOfDirectoryAtPath:(NSString*)path;
--(NSArray<NSString*>*)subpathsAtPath:(NSString *)path ofFilesNamed:(NSString*)fileName;
--(NSString*)destinationOfSymbolicLinkAtPath:(NSString *)path;
+-(BOOL)moveItemAtPath:(nonnull NSString*)path toPath:(nonnull NSString*)destination;
+-(BOOL)copyItemAtPath:(nonnull NSString*)path toPath:(nonnull NSString*)destination;
+-(BOOL)removeItemAtPath:(nonnull NSString*)path;
+-(BOOL)directoryExistsAtPath:(nonnull NSString*)path;
+-(BOOL)regularFileExistsAtPath:(nonnull NSString*)path;
+-(nullable NSArray<NSString*>*)contentsOfDirectoryAtPath:(nonnull NSString*)path;
+-(nullable NSArray<NSString*>*)subpathsAtPath:(nonnull NSString *)path ofFilesNamed:(nonnull NSString*)fileName;
+-(nullable NSString*)destinationOfSymbolicLinkAtPath:(nonnull NSString *)path;
 
--(NSString*)userReadablePathForItemAtPath:(NSString*)path joinedByString:(NSString*)join;
+-(nullable NSString*)userReadablePathForItemAtPath:(nonnull NSString*)path joinedByString:(nullable NSString*)join;
 
--(unsigned long long int)sizeOfRegularFileAtPath:(NSString*)path;
--(unsigned long long int)sizeOfDirectoryAtPath:(NSString*)path;
+-(unsigned long long int)sizeOfRegularFileAtPath:(nonnull NSString*)path;
+-(unsigned long long int)sizeOfDirectoryAtPath:(nonnull NSString*)path;
 
--(NSString*)checksum:(NSChecksumType)checksum ofFileAtPath:(NSString*)file;
+-(nullable NSString*)checksum:(NSChecksumType)checksum ofFileAtPath:(nonnull NSString*)file;
 
--(NSString*)base64OfFileAtPath:(NSString*)path;
+-(nullable NSString*)base64OfFileAtPath:(nonnull NSString*)path;
 
 @end
 

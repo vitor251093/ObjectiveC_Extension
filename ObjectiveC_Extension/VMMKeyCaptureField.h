@@ -12,13 +12,13 @@
 #import "VMMUsageKeycode.h"
 
 @protocol VMMKeyCaptureFieldDelegate <NSObject>
--(void)keyCaptureField:(NSTextField*)field didChangedKeyUsageKeycode:(uint32_t)keyUsage;
+-(void)keyCaptureField:(nonnull NSTextField*)field didChangedKeyUsageKeycode:(uint32_t)keyUsage;
 @end
 
 @interface VMMKeyCaptureField : NSTextField<VMMDeviceObserverDelegate>
 
-@property (nonatomic, strong) IBOutlet NSObject<VMMKeyCaptureFieldDelegate>* keyCaptureDelegate;
-@property (nonatomic) IOHIDManagerRef hidManager;
+@property (nonatomic, strong, nullable) IBOutlet NSObject<VMMKeyCaptureFieldDelegate>* keyCaptureDelegate;
+@property (nonatomic, nullable) IOHIDManagerRef hidManager;
 @property (nonatomic) uint32_t keyUsageKeycode;
 
 @end

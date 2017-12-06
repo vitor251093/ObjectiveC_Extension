@@ -12,7 +12,7 @@
 
 @implementation VMMUUID
 
-+(NSString*)newUUIDString
++(nonnull NSString*)newUUIDString
 {
     @autoreleasepool
     {    

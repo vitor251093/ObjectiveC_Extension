@@ -15,25 +15,25 @@
 #define VMMWebViewSupportsHTML5     IS_SYSTEM_MAC_OS_10_9_OR_SUPERIOR
 
 @interface VMMWebViewNavigationBar : VMMView
-@property (nonatomic, strong) NSTextField* addressBarField;
-@property (nonatomic, strong) NSButton* refreshButton;
+@property (nonatomic, strong, nullable) NSTextField* addressBarField;
+@property (nonatomic, strong, nullable) NSButton* refreshButton;
 @end
 
 @interface VMMWebView : VMMView
 
 @property (nonatomic) BOOL urlLoaded;
 @property (nonatomic) BOOL usingWkWebView;
-@property (nonatomic, strong) NSView* webView;
-@property (nonatomic, strong) VMMWebViewNavigationBar* navigationBar;
-@property (nonatomic, strong) NSTextField* webViewErrorLabel;
+@property (nonatomic, strong, nullable) NSView* webView;
+@property (nonatomic, strong, nullable) VMMWebViewNavigationBar* navigationBar;
+@property (nonatomic, strong, nullable) NSTextField* webViewErrorLabel;
 
-@property (nonatomic, strong) NSURL* lastAccessedUrl;
+@property (nonatomic, strong, nullable) NSURL* lastAccessedUrl;
 
--(void)showErrorMessage:(NSString*)errorMessage;
+-(void)showErrorMessage:(nonnull NSString*)errorMessage;
 
--(BOOL)loadURL:(NSURL*)url;
--(BOOL)loadURLWithString:(NSString*)website;
--(void)loadHTMLString:(NSString*)htmlPage;
+-(BOOL)loadURL:(nonnull NSURL*)url;
+-(BOOL)loadURLWithString:(nonnull NSString*)website;
+-(void)loadHTMLString:(nonnull NSString*)htmlPage;
 -(void)loadEmptyPage;
 
 @end

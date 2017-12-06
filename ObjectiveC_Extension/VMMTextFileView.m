@@ -30,7 +30,7 @@
     monitorTimer = [NSTimer scheduledTimerWithRunLoopMode:_runLoopMode timeInterval:interval target:self
                                                  selector:@selector(reloadTextFileForTimer:) userInfo:nil];
 }
--(void)showTextFileAtPath:(NSString*)filePath withEncoding:(NSStringEncoding)encoding refreshingWithTimeInterval:(NSTimeInterval)interval
+-(void)showTextFileAtPath:(nonnull NSString*)filePath withEncoding:(NSStringEncoding)encoding refreshingWithTimeInterval:(NSTimeInterval)interval
 {
     _textFilePath = filePath;
     _textFileEncoding = encoding;

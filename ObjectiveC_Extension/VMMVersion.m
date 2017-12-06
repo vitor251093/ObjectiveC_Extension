@@ -12,7 +12,7 @@
 
 @implementation VMMVersion
 
-+(VMMVersionCompare)compareVersionString:(NSString*)PK1 withVersionString:(NSString*)PK2
++(VMMVersionCompare)compareVersionString:(nonnull NSString*)PK1 withVersionString:(nonnull NSString*)PK2
 {
     NSArray* PKArray1 = [PK1 componentsSeparatedByString:@"."];
     NSArray* PKArray2 = [PK2 componentsSeparatedByString:@"."];

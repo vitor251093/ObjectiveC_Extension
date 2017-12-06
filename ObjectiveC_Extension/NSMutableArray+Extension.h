@@ -13,6 +13,6 @@
 -(void)sortAlphabeticallyByKey:(nonnull NSString*)key ascending:(BOOL)ascending;
 -(void)sortAlphabeticallyAscending:(BOOL)ascending;
 
--(void)replaceObjectsWithVariation:(nullable id (^)(id object, NSUInteger index))newObjectForObject;
+-(void)replaceObjectsWithVariation:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject;
 
 @end

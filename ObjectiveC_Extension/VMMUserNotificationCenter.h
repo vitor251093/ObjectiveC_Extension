@@ -9,15 +9,15 @@
 #import <Foundation/Foundation.h>
 
 @protocol VMMUserNotificationCenterDelegate
--(void)actionButtonPressedForNotificationWithUserInfo:(NSObject*)userInfo;
+-(void)actionButtonPressedForNotificationWithUserInfo:(nullable NSObject*)userInfo;
 @end
 
 @interface VMMUserNotificationCenter : NSObject
 
-@property (nonatomic) id<VMMUserNotificationCenterDelegate> delegate;
+@property (nonatomic, nullable) id<VMMUserNotificationCenterDelegate> delegate;
 
-+(instancetype)defaultUserNotificationCenter;
++(nonnull instancetype)defaultUserNotificationCenter;
 
--(void)deliverNotificationWithTitle:(NSString*)title message:(NSString*)message userInfo:(NSObject*)info icon:(NSImage*)icon actionButtonText:(NSString*)actionButton;
+-(void)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton;
 
 @end

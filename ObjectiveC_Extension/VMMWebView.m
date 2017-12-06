@@ -341,7 +341,7 @@
 }
 
 // Public functions
--(BOOL)loadURL:(NSURL*)url
+-(BOOL)loadURL:(nonnull NSURL*)url
 {
     if (!_usingWkWebView && [url.absoluteString contains:@"://www.youtube.com/v/"])
     {
@@ -371,7 +371,7 @@
     
     return YES;
 }
--(BOOL)loadURLWithString:(NSString*)website
+-(BOOL)loadURLWithString:(nonnull NSString*)website
 {
     if (![website isAValidURL])
     {
@@ -381,7 +381,7 @@
     
     return [self loadURL:[NSURL URLWithString:website]];
 }
--(void)loadHTMLString:(NSString*)htmlPage
+-(void)loadHTMLString:(nonnull NSString*)htmlPage
 {
     _urlLoaded = false;
     [self reloadWebViewIfNeeded];
@@ -395,7 +395,7 @@
         [((WebView*)self.webView).mainFrame loadHTMLString:htmlPage baseURL:[NSURL URLWithString:@"about:blank"]];
     }
 }
--(void)showErrorMessage:(NSString*)errorMessage
+-(void)showErrorMessage:(nonnull NSString*)errorMessage
 {
     [self loadHTMLString:@"<HTML><BODY bgcolor=\"black\" style=\"margin: 0; padding: 0; height: 100%%; width: 100%%;\" oncontextmenu=\"return false;\"></BODY></HTML>"];
     
