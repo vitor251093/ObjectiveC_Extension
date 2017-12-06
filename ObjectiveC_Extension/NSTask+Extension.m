@@ -13,6 +13,7 @@
 #import "NSFileManager+Extension.h"
 
 #import "VMMLogUtility.h"
+#import "VMMLocalizationUtility.h"
 
 @implementation NSTask (VMMTask)
 
@@ -71,7 +72,7 @@ static NSMutableDictionary* binaryPaths;
         if (newProgramPath == nil)
         {
             [NSAlert showAlertOfType:NSAlertTypeError
-                         withMessage:[NSString stringWithFormat:NSLocalizedString(@"Path for %@ not found.",nil), program]];
+                         withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Path for %@ not found."), program]];
             return @"";
         }
         
@@ -90,21 +91,21 @@ static NSMutableDictionary* binaryPaths;
     if (![[NSFileManager defaultManager] fileExistsAtPath:program])
     {
         [NSAlert showAlertOfType:NSAlertTypeError
-                     withMessage:[NSString stringWithFormat:NSLocalizedString(@"File %@ not found.",nil), program]];
+                     withMessage:[NSString stringWithFormat:VMMLocalizedString(@"File %@ not found."), program]];
         return @"";
     }
     
     if (![[NSFileManager defaultManager] isExecutableFileAtPath:program])
     {
         [NSAlert showAlertOfType:NSAlertTypeError
-                     withMessage:[NSString stringWithFormat:NSLocalizedString(@"File %@ not runnable.",nil), program]];
+                     withMessage:[NSString stringWithFormat:VMMLocalizedString(@"File %@ not runnable."), program]];
         return @"";
     }
     
     if (path && ![[NSFileManager defaultManager] directoryExistsAtPath:path])
     {
         [NSAlert showAlertOfType:NSAlertTypeError
-                     withMessage:[NSString stringWithFormat:NSLocalizedString(@"Directory %@ does not exists.",nil), path]];
+                     withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Directory %@ does not exists."), path]];
         return @"";
     }
     

@@ -175,10 +175,11 @@ static NSMutableDictionary* _macOsCompatibility;
                     graphicCardDict[VMMVideoCardMemorySizeBuiltInKey] = [NSString stringWithFormat:@"%llu MB", size];
                 }
                 
+                if (vramSize != NULL) CFRelease(vramSize);
                 CFRelease(serviceDictionary);
             }
             
-            CFRelease(gpuName);
+            if (gpuName != NULL) CFRelease(gpuName);
             IOObjectRelease(regEntry);
         }
         

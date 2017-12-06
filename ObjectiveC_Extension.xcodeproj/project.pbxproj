@@ -13,6 +13,7 @@
 		4E11815A1FB200E800D8029F /* VMMView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1181581FB200E800D8029F /* VMMView.m */; };
 		4E231F931F8191DD00148A30 /* VMMDeviceSimulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E231F911F8191DD00148A30 /* VMMDeviceSimulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E231F941F8191DD00148A30 /* VMMDeviceSimulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E231F921F8191DD00148A30 /* VMMDeviceSimulator.m */; };
+		4E34B2F41FD879DE001F0B4F /* VMMLocalizationUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E0DD3B81FD878F90033AA72 /* VMMLocalizationUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E3771041FA7A57C00E2F511 /* VMMWebView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E3771071FA7A57C00E2F511 /* VMMWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3771051FA7A57C00E2F511 /* VMMWebView.m */; };
 		4E3BD7031FAD2FCF00AF8418 /* VMMUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E3BD7011FAD2FCF00AF8418 /* VMMUUID.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -122,6 +123,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4E0DD3B81FD878F90033AA72 /* VMMLocalizationUtility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMLocalizationUtility.h; sourceTree = "<group>"; };
 		4E0DE40C1FC703A2004AA363 /* NSTimer+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Extension.h"; sourceTree = "<group>"; };
 		4E0DE40D1FC703A2004AA363 /* NSTimer+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Extension.m"; sourceTree = "<group>"; };
 		4E1181571FB200E800D8029F /* VMMView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMView.h; sourceTree = "<group>"; };
@@ -396,6 +398,7 @@
 				4E6C52621F7E953A00A187E9 /* NKFTPManager.m */,
 				4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */,
 				4E6C52701F7E954D00A187E9 /* VMMComputerInformation.m */,
+				4E0DD3B81FD878F90033AA72 /* VMMLocalizationUtility.h */,
 				4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */,
 				4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */,
 				4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */,
@@ -498,6 +501,7 @@
 				4E5A45DD1FCA103800FCEB42 /* NSBundle+Extension.h in Headers */,
 				4EB392E11FC479060098F987 /* VMMTextFileView.h in Headers */,
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
+				4E34B2F41FD879DE001F0B4F /* VMMLocalizationUtility.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* VMMUsageKeycode.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
 				4E6C525D1F7E944F00A187E9 /* SZJsonParser.h in Headers */,

@@ -23,6 +23,8 @@
         
         CFUUIDRef udid = CFUUIDCreate(NULL);
         NSString* newUUID = (NSString *) CFBridgingRelease(CFUUIDCreateString(NULL, udid));
+        CFRelease(udid);
+        
         return newUUID;
     }
 }

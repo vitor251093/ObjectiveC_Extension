@@ -78,7 +78,7 @@ NSBundle* _originalMainBundle;
     NSString* appBinaryPath = [self executablePath];
     NSString* appBinaryChecksum = [[NSFileManager defaultManager] checksum:NSChecksumTypeMD5 ofFileAtPath:appBinaryPath];
     NSString* appBundleFileName = [[self bundlePath] lastPathComponent];
-    if (!appBinaryChecksum && !appBundleFileName) return nil;
+    if (!appBinaryChecksum || !appBundleFileName) return nil;
     
     NSString* applicationsFolderPath = @"/Applications/";
     NSString* desktopFolderPath = [NSString stringWithFormat:@"%@/Desktop/",NSHomeDirectory()];

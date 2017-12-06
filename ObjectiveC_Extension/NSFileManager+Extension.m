@@ -15,6 +15,7 @@
 #import "NSMutableArray+Extension.h"
 
 #import "VMMComputerInformation.h"
+#import "VMMLocalizationUtility.h"
 
 @implementation NSFileManager (VMMFileManager)
 
@@ -25,7 +26,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while creating symbolic link: %@",nil), error.localizedDescription]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while creating symbolic link: %@"), error.localizedDescription]];
     }
     
     return created;
@@ -37,7 +38,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while creating folder: %@",nil), error.localizedDescription]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while creating folder: %@"), error.localizedDescription]];
     }
     
     return created;
@@ -55,7 +56,7 @@
     if (error != nil)
     {
         [NSAlert showAlertOfType:NSAlertTypeError
-            withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while moving file: %@",nil), error.localizedDescription]];
+            withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while moving file: %@"), error.localizedDescription]];
     }
     
     return created;
@@ -67,7 +68,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while copying file: %@",nil), error.localizedDescription]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while copying file: %@"), error.localizedDescription]];
     }
     
     return created;
@@ -81,7 +82,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while removing file: %@",nil), error.localizedDescription]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while removing file: %@"), error.localizedDescription]];
     }
     
     return created;
@@ -100,13 +101,13 @@
 {
     if (![self fileExistsAtPath:path])
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while listing folder contents: %@ doesn't exist.",nil), path.lastPathComponent]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while listing folder contents: %@ doesn't exist."), path.lastPathComponent]];
         return @[];
     }
     
     if (![self directoryExistsAtPath:path])
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while listing folder contents: %@ is not a folder.",nil), path.lastPathComponent]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while listing folder contents: %@ is not a folder."), path.lastPathComponent]];
         return @[];
     }
     
@@ -115,7 +116,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while listing folder contents: %@",nil), error.localizedDescription]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while listing folder contents: %@"), error.localizedDescription]];
         return @[];
     }
     
@@ -145,7 +146,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while retrieving symbolic link destination: %@",nil),error.localizedDescription]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while retrieving symbolic link destination: %@"),error.localizedDescription]];
     }
     
     return destination;

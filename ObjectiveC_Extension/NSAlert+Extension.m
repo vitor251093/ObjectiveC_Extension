@@ -16,6 +16,7 @@
 
 #import "VMMLogUtility.h"
 #import "VMMModals.h"
+#import "VMMLocalizationUtility.h"
 
 #define ALERT_WITH_ATTRIBUTED_MESSAGE_PARAGRAPH_SPACING  2.0f
 #define ALERT_WITH_ATTRIBUTED_MESSAGE_WIDTH_MARGIN       50
@@ -83,16 +84,16 @@
     switch (alertType)
     {
         case NSAlertTypeSuccess:
-            return NSLocalizedString(@"Success",nil);
+            return VMMLocalizedString(@"Success");
             
         case NSAlertTypeWarning:
-            return NSLocalizedString(@"Warning",nil);
+            return VMMLocalizedString(@"Warning");
             
         case NSAlertTypeError:
-            return NSLocalizedString(@"Error",nil);
+            return VMMLocalizedString(@"Error");
             
         case NSAlertTypeCritical:
-            return NSLocalizedString(@"Error",nil);
+            return VMMLocalizedString(@"Error");
             
         case NSAlertTypeCustom:
         default: break;
@@ -233,7 +234,7 @@
     {
         NSAlert* msgBox = [[NSAlert alloc] init];
         [msgBox setMessageText: title];
-        [msgBox addButtonWithTitle:NSLocalizedString(@"OK",nil)];
+        [msgBox addButtonWithTitle:VMMLocalizedString(@"OK")];
         [msgBox setInformativeText: message];
         
         optionsForAlert(msgBox);
@@ -299,13 +300,13 @@
     
     if (highlight)
     {
-        defaultButton = NSLocalizedString(@"Yes",nil);
-        alternateButton = NSLocalizedString(@"No",nil);
+        defaultButton = VMMLocalizedString(@"Yes");
+        alternateButton = VMMLocalizedString(@"No");
     }
     else
     {
-        defaultButton = NSLocalizedString(@"No",nil);
-        alternateButton = NSLocalizedString(@"Yes",nil);
+        defaultButton = VMMLocalizedString(@"No");
+        alternateButton = VMMLocalizedString(@"Yes");
     }
     
     NSUInteger alertResult = [self runThreadSafeModalWithAlert:^NSAlert *
@@ -333,8 +334,8 @@
         {
             NSAlert *alert = [[NSAlert alloc] init];
             [alert setMessageText:prompt];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK",nil)];
-            [alert addButtonWithTitle:NSLocalizedString(@"Cancel",nil)];
+            [alert addButtonWithTitle:VMMLocalizedString(@"OK")];
+            [alert addButtonWithTitle:VMMLocalizedString(@"Cancel")];
             [alert setInformativeText:message];
             optionsForAlert(alert);
             return alert;
@@ -354,8 +355,8 @@
         {
             NSAlert *alert = [[NSAlert alloc] init];
             [alert setMessageText:prompt];
-            [alert addButtonWithTitle:NSLocalizedString(@"OK",nil)];
-            [alert addButtonWithTitle:NSLocalizedString(@"Cancel",nil)];
+            [alert addButtonWithTitle:VMMLocalizedString(@"OK")];
+            [alert addButtonWithTitle:VMMLocalizedString(@"Cancel")];
             [alert setInformativeText:message];
             
             NSTextField *input = [[NSTextField alloc] initWithFrame:INPUT_DIALOG_MESSAGE_FIELD_FRAME];
@@ -377,8 +378,8 @@
              {
                  NSAlert *alert = [[NSAlert alloc] init];
                  [alert setMessageText:prompt];
-                 [alert addButtonWithTitle:NSLocalizedString(@"OK",nil)];
-                 [alert addButtonWithTitle:NSLocalizedString(@"Cancel",nil)];
+                 [alert addButtonWithTitle:VMMLocalizedString(@"OK")];
+                 [alert addButtonWithTitle:VMMLocalizedString(@"Cancel")];
                  [alert setInformativeText:message];
                  
                  NSTextField *input = [[NSTextField alloc] initWithFrame:INPUT_DIALOG_MESSAGE_FIELD_FRAME];
@@ -499,7 +500,7 @@ static NSAlert* _alertWithButtonOptions;
         {
             _alertWithButtonOptions = [[NSAlert alloc] init];
             [_alertWithButtonOptions setMessageText:title];
-            [_alertWithButtonOptions addButtonWithTitle:NSLocalizedString(@"Cancel",nil)];
+            [_alertWithButtonOptions addButtonWithTitle:VMMLocalizedString(@"Cancel")];
             [_alertWithButtonOptions setInformativeText:message];
             
             CGFloat properWidth = _alertWithButtonOptions.window.frame.size.width - ALERT_WITH_BUTTON_OPTIONS_WINDOW_MIN_X_MARGIN - ALERT_WITH_BUTTON_OPTIONS_WINDOW_MAX_X_MARGIN - ALERT_WITH_BUTTON_OPTIONS_WINDOW_X_EXTRA_MARGIN;

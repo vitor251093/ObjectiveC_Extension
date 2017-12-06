@@ -14,6 +14,7 @@
 #import "NSMutableString+Extension.h"
 
 #import "VMMComputerInformation.h"
+#import "VMMLocalizationUtility.h"
 
 @implementation NSData (VMMData)
 +(nullable NSData*)dataWithContentsOfURL:(nonnull NSURL *)url timeoutInterval:(long long int)timeoutInterval
@@ -49,7 +50,7 @@
         
         if (error != nil)
         {
-            [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while reading file data: %@",nil), error.localizedDescription]];
+            [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while reading file data: %@"), error.localizedDescription]];
         }
     }
     

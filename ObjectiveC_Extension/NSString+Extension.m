@@ -14,6 +14,7 @@
 #import "NSFileManager+Extension.h"
 
 #import "VMMComputerInformation.h"
+#import "VMMLocalizationUtility.h"
 
 @implementation NSString (VMMString)
 
@@ -391,7 +392,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while reading file: %@",nil), error.localizedDescription]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while reading file: %@"), error.localizedDescription]];
     }
     
     return string;
@@ -422,7 +423,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:NSLocalizedString(@"Error while writting file: %@",nil), error.localizedDescription]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while writting file: %@"), error.localizedDescription]];
     }
     
     return created;

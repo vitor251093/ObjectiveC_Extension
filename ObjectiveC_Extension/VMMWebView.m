@@ -13,6 +13,7 @@
 #import "NSMutableAttributedString+Extension.h"
 
 #import "VMMComputerInformation.h"
+#import "VMMLocalizationUtility.h"
 
 @implementation VMMWebViewNavigationBar
 @end
@@ -176,7 +177,7 @@
     [_navigationBar.addressBarField setEditable:NO];
     [_navigationBar.addressBarField setBackgroundColor:self.navigationBarColor];
     [_navigationBar.addressBarField setFont:addressTextFont];
-    [_navigationBar.addressBarField setStringValue:@"Tj"];
+    [_navigationBar.addressBarField setStringValue:VMMLocalizationNotNeeded(@"Tj")];
     CGFloat addressMaxHeight = _navigationBar.addressBarField.attributedStringValue.size.height;
     [_navigationBar.addressBarField setFrame:NSMakeRect(leftMargin, (navigationBarHeight - addressMaxHeight)/2,
                                                         fullWidth - navigationBarHeight - leftMargin, addressMaxHeight)];
@@ -351,7 +352,7 @@
         if (![[NSFileManager defaultManager] fileExistsAtPath:mainFolderPluginPath] &&
             ![[NSFileManager defaultManager] fileExistsAtPath:userFolderPluginPath])
         {
-            [self showErrorMessage:NSLocalizedString(@"You need Flash Player in order to watch YouTube videos in your macOS version",nil)];
+            [self showErrorMessage:VMMLocalizedString(@"You need Flash Player in order to watch YouTube videos in your macOS version")];
             return NO;
         }
     }
@@ -375,7 +376,7 @@
 {
     if (![website isAValidURL])
     {
-        [self showErrorMessage:NSLocalizedString(@"Invalid URL provided",nil)];
+        [self showErrorMessage:VMMLocalizedString(@"Invalid URL provided")];
         return NO;
     }
     
