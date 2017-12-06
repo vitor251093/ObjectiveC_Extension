@@ -11,6 +11,7 @@
 #import "SZJsonParser.h"
 
 #import "NSAlert+Extension.h"
+#import "NSMutableString+Extension.h"
 
 #import "VMMComputerInformation.h"
 
@@ -63,9 +64,11 @@
         {
             if ([object isKindOfClass:[NSString class]])
             {
-                return [NSString stringWithFormat:@"\"%@\"",[[[(NSString*)object stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
-                                                              stringByReplacingOccurrencesOfString:@"\n" withString:@"\\\n"]
-                                                             stringByReplacingOccurrencesOfString:@"/" withString:@"\\/"]];
+                NSMutableString* stringObject = [(NSString*)object mutableCopy];
+                [stringObject replaceOccurrencesOfString:@"\"" withString:@"\\\""];
+                [stringObject replaceOccurrencesOfString:@"\n" withString:@"\\\n"];
+                [stringObject replaceOccurrencesOfString:@"/"  withString:@"\\/" ];
+                return [NSString stringWithFormat:@"\"%@\"",stringObject];
             }
             
             if ([object isKindOfClass:[NSArray class]])

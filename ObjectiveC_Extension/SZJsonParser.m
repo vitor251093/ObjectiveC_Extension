@@ -199,25 +199,16 @@
                 [ret appendFormat:@"%C", c];
             }
         } else {
-            if (c == '"') {
-                [ret appendString:@"\""];
-            } else if (c == '\'') {
-                [ret appendString:@"'"];
-            } else if (c == '\\') {
-                [ret appendString:@"\\"];
-            } else if (c == '/') {
-                [ret appendString:@"/"];
-            } else if (c == 'b') {
-                [ret appendString:@"\b"];
-            } else if (c == 'f') {
-                [ret appendString:@"\f"];
-            } else if (c == 'n') {
-                [ret appendString:@"\n"];
-            } else if (c == 'r') {
-                [ret appendString:@"\r"];
-            } else if (c == 't') {
-                [ret appendString:@"\t"];
-            } else if (c == 'u') {
+                 if (c == '"' ) {[ret appendString:@"\""];}
+            else if (c == '\'') {[ret appendString:@"'" ];}
+            else if (c == '\\') {[ret appendString:@"\\"];}
+            else if (c == '/' ) {[ret appendString:@"/" ];}
+            else if (c == 'b' ) {[ret appendString:@"\b"];}
+            else if (c == 'f' ) {[ret appendString:@"\f"];}
+            else if (c == 'n' ) {[ret appendString:@"\n"];}
+            else if (c == 'r' ) {[ret appendString:@"\r"];}
+            else if (c == 't' ) {[ret appendString:@"\t"];}
+            else if (c == 'u' ) {
                 NSString *fourHexDigits = [self getNextString:4];
                 NSScanner *scanner = [NSScanner scannerWithString:fourHexDigits];
                 unsigned charCode;
@@ -228,10 +219,11 @@
                                                    reason:[NSString stringWithFormat:@"Illegal unicode character (u%@).", fourHexDigits]
                                                  userInfo:nil];
                 }
-            } else {
-                @throw [NSException exceptionWithName:@"JSON Parsing Error"
-                                               reason:[NSString stringWithFormat:@"Illegal string escaped character (%C).", c]
-                                             userInfo:nil];
+            }
+            else
+            {
+                // Seems to fix the issue that may occur with base 64 strings inside a JSON
+                [ret appendString:[NSString stringWithFormat:@"%c",c]];
             }
             isEscaped = NO;
         }
