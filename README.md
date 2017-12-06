@@ -55,26 +55,25 @@ A class which makes working with HID devices easier.
 HID device observer shared instance.
 
 ```objectivec
--(void)observeDevicesOfTypes:(NSArray*)types forDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate;
+-(void)observeDevicesOfTypes:(NSArray*)types forDelegate:(id<VMMDeviceObserverDelegate>)actionDelegate;
 ```
 
 Adds object that should receive notifications of observer.
 
 ```objectivec
--(void)stopObservingForDelegate:(id<VMMDeviceObserverManagementDelegate>)actionDelegate;
+-(void)stopObservingForDelegate:(id<VMMDeviceObserverDelegate>)actionDelegate;
 ```
 
 Makes an object stop receiving the observer notifications.
 
-#### VMMDeviceObserverManagementDelegate (Protocol)
+#### VMMDeviceObserverDelegate (Protocol)
+Protocol for `VMMDeviceObserver` delegate. All the methods below are optionals. The only thing mandatory is the `hidManager` property.
 
 ```objectivec
 @property (nonatomic) IOHIDManagerRef hidManager;
 ```
 
 Manager that makes any object capable of observing HID devices.
-
-#### VMMDeviceObserverConnectionDelegate (Protocol)
 
 ```objectivec
 -(void)observedConnectionOfDevice:(IOHIDDeviceRef)device;
@@ -88,10 +87,8 @@ Notify an object that a HID device has been connected.
 
 Notify an object that a HID device has been disconnected.
 
-#### VMMDeviceObserverActionDelegate (Protocol)
-
 ```objectivec
--(void)observedEventWithCookie:(IOHIDElementCookie)event andUsage:(uint32_t)usage withValue:(CFIndex)value fromDevice:(IOHIDDeviceRef)device;
+-(void)observedEventWithName:(CFStringRef)name cookie:(IOHIDElementCookie)cookie usage:(uint32_t)usage value:(CFIndex)value device:(IOHIDDeviceRef)device;
 ```
 
 Notify an object that a HID device has performed an event.
