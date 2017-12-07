@@ -56,7 +56,7 @@ static VMMDockProgressIndicator* progress_bar;
     if (dock_tile.contentView == nil)
     {
         NSImageView* content_view = [[NSImageView alloc] init];
-        [content_view setImage:[NSApp applicationIconImage]];
+        [content_view setImage:[[NSApplication sharedApplication] applicationIconImage]];
         [dock_tile setContentView:content_view];
         [content_view addSubview:progress_bar];
     }
