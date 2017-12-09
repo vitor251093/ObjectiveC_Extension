@@ -302,8 +302,8 @@ static NSMutableDictionary* _macOsCompatibility;
             if (_computerGraphicCardType == nil)
             {
                 NSString* localVendorID = [self graphicCardVendorIDFromVendorAndVendorIDKeysOnly];
-                if ([localVendorID isEqualToString:@"0x1002"]) _computerGraphicCardType = VMMVideoCardTypeATiAMD;
-                if ([localVendorID isEqualToString:@"0x10de"]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDATiAMD]) _computerGraphicCardType = VMMVideoCardTypeATiAMD;
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
             }
         }
         
@@ -346,17 +346,17 @@ static NSMutableDictionary* _macOsCompatibility;
         {
             if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:graphicCardType])
             {
-                localVendorID = @"0x8086"; // Intel Vendor ID
+                localVendorID = VMMVideoCardVendorIDIntel; // Intel Vendor ID
             }
             
             if ([@[VMMVideoCardTypeATiAMD] containsObject:graphicCardType])
             {
-                localVendorID = @"0x1002"; // ATi/AMD Vendor ID
+                localVendorID = VMMVideoCardVendorIDATiAMD; // ATi/AMD Vendor ID
             }
             
             if ([@[VMMVideoCardTypeNVIDIA] containsObject:graphicCardType])
             {
-                localVendorID = @"0x10de"; // NVIDIA Vendor ID
+                localVendorID = VMMVideoCardVendorIDNVIDIA; // NVIDIA Vendor ID
             }
         }
     }
@@ -371,7 +371,7 @@ static NSMutableDictionary* _macOsCompatibility;
     NSString* memSize = [gcDict[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
     if (memSize == nil) memSize = [gcDict[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
     
-    int memSizeInt = 0;
+    int memSizeInt = -1;
     
     if ([memSize contains:@" MB"])
     {
@@ -382,7 +382,30 @@ static NSMutableDictionary* _macOsCompatibility;
         memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
     }
     
-    return memSizeInt;
+    if (memSize == 0)
+    {
+        if ([[self graphicCardVendorID] isEqualToString:VMMVideoCardVendorIDNVIDIA] &&
+            [[self graphicCardDeviceID] isEqualToString:@"0x1056"]) // NVIDIA NVS 4200M
+        {
+            //
+            // Once that video card was detect, the video memory size was returned as '0 MB';
+            // Since IOServiceMatching("IOPCIDevice") couldn't detect the video memory size
+            // either, we gonna enter it manually for that video card only. It may be a
+            // problem related with that video card and macOS.
+            //
+            // The correct video memory size was discovered thanks to the links below, and
+            // to the fact that the said video card had 'Vendor ID' equal to '0x10de' and
+            // 'Device ID' equal to '0x1056'.
+            //
+            // http://us.download.nvidia.com/solaris/304.137/README/supportedchips.html
+            // https://www.notebookcheck.net/NVIDIA-NVS-4200M.47343.0.html
+            //
+            
+            return 1024;
+        }
+    }
+    
+    return memSizeInt == -1 ? 0 : memSizeInt;
 }
 
 +(nullable NSString*)macOsVersion

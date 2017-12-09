@@ -198,6 +198,10 @@
 #define VMMVideoCardBusPCI      @"PCI"
 #define VMMVideoCardBusBuiltIn  @"Built-In"
 
+#define VMMVideoCardVendorIDIntel  @"0x8086"
+#define VMMVideoCardVendorIDNVIDIA @"0x10de"
+#define VMMVideoCardVendorIDATiAMD @"0x1002"
+
 
 #import <Foundation/Foundation.h>
 
