@@ -363,49 +363,82 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return localVendorID;
 }
+
++(NSUInteger)graphicCardMemorySizeInMegabytesFromAPI
+{
+    // Reference:
+    // https://developer.apple.com/library/content/qa/qa1168/_index.html
+    
+    NSUInteger videoMemorySize = 0;
+    
+    GLint i, nrend = 0;
+    CGLRendererInfoObj rend;
+    const GLint displayMask = 0xFFFFFFFF;
+    CGLQueryRendererInfo((GLuint)displayMask, &rend, &nrend);
+    
+    for (i = 0; i < nrend; i++)
+    {
+        GLint videoMemory = 0;
+        CGLDescribeRenderer(rend, i, (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR ? kCGLRPVideoMemoryMegabytes : kCGLRPVideoMemory), &videoMemory);
+        if (videoMemory > videoMemorySize) videoMemorySize = videoMemory;
+    }
+    
+    CGLDestroyRendererInfo(rend);
+    return videoMemorySize;
+}
 +(NSUInteger)graphicCardMemorySizeInMegabytes
 {
-    NSDictionary* gcDict = [self graphicCardDictionary];
-    if (!gcDict || gcDict.count == 0) return 0;
-    
-    NSString* memSize = [gcDict[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
-    if (memSize == nil) memSize = [gcDict[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
-    
     int memSizeInt = -1;
     
-    if ([memSize contains:@" MB"])
+    NSDictionary* gcDict = [self graphicCardDictionary];
+    if (gcDict != nil && gcDict.count > 0)
     {
-        memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" MB"] intValue];
-    }
-    else if ([memSize contains:@" GB"])
-    {
-        memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
-    }
-    
-    if (memSize == 0)
-    {
-        if ([[self graphicCardVendorID] isEqualToString:VMMVideoCardVendorIDNVIDIA] &&
-            [[self graphicCardDeviceID] isEqualToString:@"0x1056"]) // NVIDIA NVS 4200M
+        NSString* memSize = [gcDict[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
+        if (memSize == nil) memSize = [gcDict[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
+        
+        if ([memSize contains:@" MB"])
         {
-            //
-            // Once that video card was detect, the video memory size was returned as '0 MB';
-            // Since IOServiceMatching("IOPCIDevice") couldn't detect the video memory size
-            // either, we gonna enter it manually for that video card only. It may be a
-            // problem related with that video card and macOS.
-            //
-            // The correct video memory size was discovered thanks to the links below, and
-            // to the fact that the said video card had 'Vendor ID' equal to '0x10de' and
-            // 'Device ID' equal to '0x1056'.
-            //
-            // http://us.download.nvidia.com/solaris/304.137/README/supportedchips.html
-            // https://www.notebookcheck.net/NVIDIA-NVS-4200M.47343.0.html
-            //
-            
-            return 1024;
+            memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" MB"] intValue];
+        }
+        else if ([memSize contains:@" GB"])
+        {
+            memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
         }
     }
     
-    return memSizeInt == -1 ? 0 : memSizeInt;
+    if (memSizeInt == 0 || memSizeInt == -1)
+    {
+        NSUInteger apiResult = [self graphicCardMemorySizeInMegabytesFromAPI];
+        if (apiResult != 0) return apiResult;
+    }
+    
+    if (memSizeInt == 0 && [[self graphicCardVendorID] isEqualToString:VMMVideoCardVendorIDNVIDIA])
+    {
+        //
+        // Apparently, this is a common bug that happens with Hackintoshes that
+        // use NVIDIA video cards that were badly configured. Considering that,
+        // there is no use in fixing that manually, since it would require a manual
+        // fix for every known NVIDIA video card that may have the issue.
+        //
+        // We can't detect the real video memory size with system_profiler or
+        // IOServiceMatching("IOPCIDevice"), but we just implemented the API method,
+        // which may detect the size correctly even on those cases (hopefully).
+        //
+        // The same bug may also happen in old legitimate Apple computers, and
+        // it also seems to happen only with NVIDIA video cards.
+        //
+        // References:
+        // https://www.tonymacx86.com/threads/graphics-card-0mb.138428/
+        // https://www.tonymacx86.com/threads/gtx-770-show-vram-of-0-mb.138629/
+        // https://www.reddit.com/r/hackintosh/comments/3e5bi1/gtx_970_vram_0_mb_help/
+        // http://www.techsurvivors.net/forums/index.php?showtopic=22889
+        // https://discussions.apple.com/thread/2494867?tstart=0
+        //
+        
+        return 0;
+    }
+    
+    return memSizeInt;
 }
 
 +(nullable NSString*)macOsVersion
