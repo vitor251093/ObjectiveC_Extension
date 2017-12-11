@@ -553,7 +553,7 @@ The JSON data is created based in the function above, since `NSJSONSerialization
 The JSON object is created using `SZJsonParser` since `NSJSONSerialization` was not available before macOS 10.7. Some changes were in `SZJsonParser` to support the existence of base64 strings inside the JSON.
 
 ### ![#0000ff](https://placehold.it/15/0000ff/000000?text=+) [(NSImage*)img saveAsIcnsAtPath:path] (macOS = 10.6)
-In macOS 10.7+ systems, icns files are created with `iconutil`, using `tiff2icns` only if the first one does not return a valid image. macOS 10.6 systems create using `tiff2icns` only, since `iconutil` was introduced in macOS 10.7. The only consequence of that is that the icons created in macOS 10.6 are going to have only one size, which makes them a bit bugged if you move them to a macOS 10.12+ computer.
+In macOS 10.7+ systems, icns files are created with `iconutil`, using `tiff2icns` only if the first one does not return a valid image. macOS 10.6 systems create using `tiff2icns` only, since `iconutil` was introduced in macOS 10.7. The only consequence of that is that the icons created in macOS 10.6 are going to have only one size, which makes them look a bit bugged if you move them to a macOS 10.12+ computer and show them in Finder with the list view mode.
 
 ### ![#ffff00](https://placehold.it/15/ffff00/000000?text=+) [(NSOpenPanel*)panel setWindowTitle:title] (macOS >= 10.11 )
 From macOS 10.11 and on, the `setTitle:` function does nothing to `NSOpenPanel`'s. Considering that, this function uses `setMessage:` for macOS 10.11+ and `setTitle:` for macOS 10.10-.
