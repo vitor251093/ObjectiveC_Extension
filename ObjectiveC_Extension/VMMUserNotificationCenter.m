@@ -8,12 +8,15 @@
 //  Reference:
 //  https://github.com/indragiek/NSUserNotificationPrivate
 //
+//  Growl support with Applescript:
+//  http://growl.info/documentation/applescript-support.php
+//  TODO: Check if it's working
+//
 
 #import "VMMUserNotificationCenter.h"
 
 #import "VMMComputerInformation.h"
 
-// Needed by the 10.6 support
 #import "NSAlert+Extension.h"
 #import "NSBundle+Extension.h"
 #import "NSFileManager+Extension.h"
@@ -48,67 +51,69 @@ static VMMUserNotificationCenter *_sharedInstance;
     }
 }
 
+-(BOOL)isGrowlAvailable
+{
+    NSArray* scriptToCheckIfGrowlExists = @[@"tell application \"System Events\"",
+                                            @"\tset isRunning to ¬",
+                                            @"\t\t(count of (every process whose bundle identifier is \"com.Growl.GrowlHelperApp\")) > 0",
+                                            @"end tell"];
+    NSAppleScript* growlExistsScript = [[NSAppleScript alloc] initWithSource:[scriptToCheckIfGrowlExists componentsJoinedByString:@"\n"]];
+    NSAppleEventDescriptor* growlExists = [growlExistsScript executeAndReturnError:nil];
+    
+    return growlExists.booleanValue;
+}
+-(BOOL)deliverGrowlNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message icon:(nullable NSImage*)icon
+{
+    NSURL* iconFileUrl;
+    BOOL doesGrowlSupportImageFromLocation = (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR == false);
+    BOOL useIcon = doesGrowlSupportImageFromLocation && (icon != nil);
+    
+    if (useIcon)
+    {
+        NSString* iconFilePath = [NSString stringWithFormat:@"%@growlTemp%@.png",NSTemporaryDirectory(),[VMMUUID newUUIDString]];
+        [icon writeToFile:iconFilePath atomically:YES];
+        iconFileUrl = [NSURL fileURLWithPath:iconFilePath];
+    }
+    
+    NSString* appName = [[NSBundle originalMainBundle] bundleName];
+    NSArray* growlScript = @[                           @"tell application id \"com.Growl.GrowlHelperApp\"",
+                                                        @"\tregister as application ¬",
+                             [NSString stringWithFormat:@"\t\t\"%@\" all notifications allNotificationsList ¬",appName],
+                                                        @"\t\tdefault notifications enabledNotificationsList ¬",
+                             [NSString stringWithFormat:@"\t\ticon of application \"%@\"",appName],
+                                                        @"\t",
+                                                        @"\tnotify with ¬",
+            (title != nil) ? [NSString stringWithFormat:@"\t\tname \"%@\"  ¬",title] : @"\t\t¬",
+            (title != nil) ? [NSString stringWithFormat:@"\t\ttitle \"%@\"  ¬",title] : @"\t\t¬",
+          (message != nil) ? [NSString stringWithFormat:@"\t\tdescription \"%@\"  ¬",message] : @"\t\t¬",
+                             [NSString stringWithFormat:@"\t\tapplication name \"%@\" ¬",appName],
+                 (useIcon) ? [NSString stringWithFormat:@"\t\timage from location \"%@\"",iconFileUrl.absoluteString] : @"\t\t",
+                                                        @"end tell"];
+    NSAppleScript* notification = [[NSAppleScript alloc] initWithSource:[growlScript componentsJoinedByString:@"\n"]];
+    NSAppleEventDescriptor* notificationSent = [notification executeAndReturnError:nil];
+    return (notificationSent != nil);
+}
+
 -(void)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton
 {
     if (IsClassNSUserNotificationCenterAvailable == false)
     {
-        // TODO: Test if that works; it should work, but it needs to be tested
+        BOOL showAlert = true;
         
-        // Growl support with Applescript
-        // http://growl.info/documentation/applescript-support.php
-        
-        BOOL growlIsInstalledAndWorking = true;
-        BOOL doesGrowlSupportImageFromLocation = (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR == false);
-        
-        NSArray* scriptToCheckIfGrowlExists = @[@"tell application \"System Events\"",
-                                                @"\tset isRunning to ¬",
-                                                @"\t\t(count of (every process whose bundle identifier is \"com.Growl.GrowlHelperApp\")) > 0",
-                                                @"end tell"];
-        NSAppleScript* growlExistsScript = [[NSAppleScript alloc] initWithSource:[scriptToCheckIfGrowlExists componentsJoinedByString:@"\n"]];
-        NSAppleEventDescriptor* growlExists = [growlExistsScript executeAndReturnError:nil];
-        
-        if (growlExists.booleanValue == false)
+        if ([self isGrowlAvailable])
         {
-            growlIsInstalledAndWorking = false;
-        }
-        else
-        {
-            NSURL* iconFileUrl;
-            BOOL useIcon = doesGrowlSupportImageFromLocation && (icon != nil);
-            
-            if (useIcon)
-            {
-                NSString* iconFilePath = [NSString stringWithFormat:@"%@growlTemp%@.png",NSTemporaryDirectory(),[VMMUUID newUUIDString]];
-                [icon writeToFile:iconFilePath atomically:YES];
-                iconFileUrl = [NSURL fileURLWithPath:iconFilePath];
-            }
-            
-            NSString* appName = [[NSBundle originalMainBundle] bundleName];
-            NSArray* growlScript = @[@"tell application id \"com.Growl.GrowlHelperApp\"",
-                                     @"\tregister as application ¬",
-                                     [NSString stringWithFormat:@"\t\t\"%@\" all notifications allNotificationsList ¬",appName],
-                                     @"\t\tdefault notifications enabledNotificationsList ¬",
-                                     [NSString stringWithFormat:@"\t\ticon of application \"%@\"",appName],
-                                     @"\t",
-                                     @"\tnotify with ¬",
-                    (title != nil) ? [NSString stringWithFormat:@"\t\tname \"%@\"  ¬",title] : @"\t\t¬",
-                    (title != nil) ? [NSString stringWithFormat:@"\t\ttitle \"%@\"  ¬",title] : @"\t\t¬",
-                  (message != nil) ? [NSString stringWithFormat:@"\t\tdescription \"%@\"  ¬",message] : @"\t\t¬",
-                                     [NSString stringWithFormat:@"\t\tapplication name \"%@\" ¬",appName],
-                         (useIcon) ? [NSString stringWithFormat:@"\t\timage from location \"%@\"",iconFileUrl.absoluteString] : @"\t\t",
-                                     @"end tell"];
-            NSAppleScript* notification = [[NSAppleScript alloc] initWithSource:[growlScript componentsJoinedByString:@"\n"]];
-            NSAppleEventDescriptor* notificationSent = [notification executeAndReturnError:nil];
-            if (notificationSent == nil) growlIsInstalledAndWorking = false;
+            BOOL success = [self deliverGrowlNotificationWithTitle:title message:message icon:icon];
+            if (success) showAlert = false;
         }
         
-        if (growlIsInstalledAndWorking == false)
+        if (showAlert)
         {
             [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
             {
                 [alert setIcon:icon];
             }];
         }
+        
         return;
     }
     

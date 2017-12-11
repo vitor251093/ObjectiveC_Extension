@@ -16,16 +16,18 @@
 {
     @autoreleasepool
     {    
-        if (IsClassNSUUIDAvailable)
+        if (IsClassNSUUIDAvailable == false)
         {
-            return [[NSUUID UUID] UUIDString];
+            @autoreleasepool
+            {
+                CFUUIDRef udid = CFUUIDCreate(NULL);
+                NSString* newUUID = (NSString *) CFBridgingRelease(CFUUIDCreateString(NULL, udid));
+                CFRelease(udid);
+                return newUUID;
+            }
         }
         
-        CFUUIDRef udid = CFUUIDCreate(NULL);
-        NSString* newUUID = (NSString *) CFBridgingRelease(CFUUIDCreateString(NULL, udid));
-        CFRelease(udid);
-        
-        return newUUID;
+        return [[NSUUID UUID] UUIDString];
     }
 }
 

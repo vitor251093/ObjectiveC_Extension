@@ -18,6 +18,9 @@
 
 +(nonnull instancetype)defaultUserNotificationCenter;
 
+-(BOOL)isGrowlAvailable;
+-(BOOL)deliverGrowlNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message icon:(nullable NSImage*)icon;
+
 -(void)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton;
 
 @end
