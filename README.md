@@ -541,7 +541,7 @@ measureTime(__message){}
 Based in `LOOProfiling.h`'s `LOO_MEASURE_TIME` (https://gist.github.com/sfider/3072143). Measure the time that its block takes to run and print it using `NSDebugLog`.
 
 ## Workarounds and Hacks
-Colors indecate the level of the hack: Green means it can't be noticed; Blue means it can only be noticed under certain circunstances, but it does not affect the UX; Yellow means it can be noticed, but does not affect the UX; Red means it can be noticed AND affect the UX.
+Colors indecate the level of the hack: Green (![#00ff00](https://placehold.it/15/00ff00/000000?text=+)) means it can't be noticed; Blue (![#0000ff](https://placehold.it/15/0000ff/000000?text=+)) means it can only be noticed under certain circunstances, but it does not affect the UX; Yellow (![#ffff00](https://placehold.it/15/ffff00/000000?text=+)) means it can be noticed, and affect the UX, but just a little bit; Red (![#f03c15](https://placehold.it/15/f03c15/000000?text=+)) means it can be noticed AND may affect the UX harshly.
 
 ### - ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) [NSData jsonStringWithJsonObject:object] (macOS = 10.6)
 The JSON string is created manually since `NSJSONSerialization` was not available before macOS 10.7.
