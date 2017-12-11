@@ -543,25 +543,25 @@ Based in `LOOProfiling.h`'s `LOO_MEASURE_TIME` (https://gist.github.com/sfider/3
 ## Workarounds and Hacks
 Colors indecate the level of the hack: Green means it can't be noticed; Blue means it can only be noticed under certain circunstances, but it does not affect the UX; Yellow means it can be noticed, but does not affect the UX; Red means it can be noticed AND affect the UX.
 
-### ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) [NSData jsonStringWithJsonObject:object] (macOS = 10.6)
+### - ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) [NSData jsonStringWithJsonObject:object] (macOS = 10.6)
 The JSON string is created manually since `NSJSONSerialization` was not available before macOS 10.7.
 
-### ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) [NSData dataWithJsonObject:object] (macOS = 10.6)
+### - ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) [NSData dataWithJsonObject:object] (macOS = 10.6)
 The JSON data is created based in the function above, since `NSJSONSerialization` was not available before macOS 10.7.
 
-### ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) [(NSData*)object jsonObject] (macOS = 10.6)
+### - ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) [(NSData*)object jsonObject] (macOS = 10.6)
 The JSON object is created using `SZJsonParser` since `NSJSONSerialization` was not available before macOS 10.7. Some changes were in `SZJsonParser` to support the existence of base64 strings inside the JSON.
 
-### ![#0000ff](https://placehold.it/15/0000ff/000000?text=+) [(NSImage*)img saveAsIcnsAtPath:path] (macOS = 10.6)
+### - ![#0000ff](https://placehold.it/15/0000ff/000000?text=+) [(NSImage*)img saveAsIcnsAtPath:path] (macOS = 10.6)
 In macOS 10.7+ systems, icns files are created with `iconutil`, using `tiff2icns` only if the first one does not return a valid image. macOS 10.6 systems create using `tiff2icns` only, since `iconutil` was introduced in macOS 10.7. The only consequence of that is that the icons created in macOS 10.6 are going to have only one size, which makes them look a bit bugged if you move them to a macOS 10.12+ computer and show them in Finder with the list view mode.
 
-### ![#ffff00](https://placehold.it/15/ffff00/000000?text=+) [(NSOpenPanel*)panel setWindowTitle:title] (macOS >= 10.11 )
+### - ![#ffff00](https://placehold.it/15/ffff00/000000?text=+) [(NSOpenPanel*)panel setWindowTitle:title] (macOS >= 10.11 )
 From macOS 10.11 and on, the `setTitle:` function does nothing to `NSOpenPanel`'s. Considering that, this function uses `setMessage:` for macOS 10.11+ and `setTitle:` for macOS 10.10-.
 
-### ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) [(VMMUserNotificationCenter*)notificationCenter deliverNotificationWithTitle:title message:message userInfo:info icon:icon actionButtonText:actionButton] (macOS <= 10.7)
+### - ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) [(VMMUserNotificationCenter*)notificationCenter deliverNotificationWithTitle:title message:message userInfo:info icon:icon actionButtonText:actionButton] (macOS <= 10.7)
 Since `NSUserNotification` was only introduced in macOS 10.8, macOS 10.7 and below require a different approach. In those systems, `VMMUserNotificationCenter` uses Growl instead, if it can found. If it don't, it shows a simple `NSAlert` instead of a notification. So you still have notifications in macOS 10.6 and 10.7, but only if you have Growl. Considering that, that function has two ratings.
 
-### ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) [(NSString*)string componentsMatchingWithRegex:regex] (macOS = 10.6)
+### - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) [(NSString*)string componentsMatchingWithRegex:regex] (macOS = 10.6)
 This is the dirtiest hack of them all. Since `NSRegularExpression` was introduced in macOS 10.7, the only method that I found to do that (since the `RegexKit` framework do not compile anymore) is using Python. In macOS 10.6 only, that function will create a temporary file with `string` and a temporary python script which should parse `string` and return the components matching with `regex`. It's very slow in comparison to `NSRegularExpression`, and should not be used multiple times in sequence (however, it can be used simultaneously in the latest versions). At least it works using the same kind of regex that `NSRegularExpression` accepts... please, forgive me.
 
 I tried using RegexKitLite as well (https://github.com/inquisitiveSoft/RegexKitLite), however it has some weird bugs when you use it multiple times, even after cleaning its cache.
