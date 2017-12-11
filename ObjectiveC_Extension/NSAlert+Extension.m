@@ -233,9 +233,9 @@
     [self runThreadSafeModalWithAlert:^NSAlert *
     {
         NSAlert* msgBox = [[NSAlert alloc] init];
-        [msgBox setMessageText: title];
+        [msgBox setMessageText:title];
         [msgBox addButtonWithTitle:VMMLocalizedString(@"OK")];
-        [msgBox setInformativeText: message];
+        [msgBox setInformativeText:message];
         
         optionsForAlert(msgBox);
         
