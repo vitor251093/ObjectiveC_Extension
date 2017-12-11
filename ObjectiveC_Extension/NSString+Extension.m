@@ -15,6 +15,7 @@
 
 #import "VMMComputerInformation.h"
 #import "VMMLocalizationUtility.h"
+#import "VMMUUID.h"
 
 @implementation NSString (VMMString)
 
@@ -196,13 +197,17 @@
     {
         @autoreleasepool
         {
-            NSString* pythonScriptPath = [NSString stringWithFormat:@"%@pythonRegex.py",NSTemporaryDirectory()];
-            NSString* stringFilePath   = [NSString stringWithFormat:@"%@pythonFile.dat",NSTemporaryDirectory()];
+            NSString* uuid = [VMMUUID newUUIDString];
+            NSString* pyFileName  = [NSString stringWithFormat:@"pythonRegex%@.py",uuid];
+            NSString* datFileName = [NSString stringWithFormat:@"pythonFile%@.dat",uuid];
+            
+            NSString* pythonScriptPath = [NSString stringWithFormat:@"%@%@",NSTemporaryDirectory(),pyFileName ];
+            NSString* stringFilePath   = [NSString stringWithFormat:@"%@%@",NSTemporaryDirectory(),datFileName];
             
             NSArray* pythonScriptContentsArray = @[@"import re",
                                                    @"import os",
                                                    @"dir_path = os.path.dirname(os.path.abspath(__file__))",
-                                                   @"text_file = open(dir_path + \"/pythonFile.dat\", \"r\")",
+                                                   [NSString stringWithFormat:@"text_file = open(dir_path + \"/%@\", \"r\")",datFileName],
                                                    @"text = text_file.read()",
                                                    [NSString stringWithFormat:@"regex = re.compile(r\"(%@)\")",regexString],
                                                    @"matches = regex.finditer(text)",
