@@ -333,9 +333,10 @@
         webString = [self stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
         webString = [webString stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
-        webString = [webString stringByReplacingOccurrencesOfString:@"?" withString:@"%3F"];
         webString = [webString stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+        webString = [webString stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
         webString = [webString stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"];
+        webString = [webString stringByReplacingOccurrencesOfString:@"?" withString:@"%3F"];
     }
     
     return webString;
