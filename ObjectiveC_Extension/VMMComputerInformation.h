@@ -191,7 +191,7 @@
 #define VMMVideoCardTypeIntelHD   @"Intel HD"
 #define VMMVideoCardTypeIntelIris @"Intel Iris"
 #define VMMVideoCardTypeIntelGMA  @"Intel GMA"
-#define VMMVideoCardTypeATiAMD    @"ATi/AMD"
+#define VMMVideoCardTypeATIAMD    @"ATI/AMD"
 #define VMMVideoCardTypeNVIDIA    @"NVIDIA"
 
 #define VMMVideoCardBusPCIe     @"PCIe"
@@ -200,7 +200,7 @@
 
 #define VMMVideoCardVendorIDIntel  @"0x8086"
 #define VMMVideoCardVendorIDNVIDIA @"0x10de"
-#define VMMVideoCardVendorIDATiAMD @"0x1002"
+#define VMMVideoCardVendorIDATIAMD @"0x1002"
 
 
 #import <Foundation/Foundation.h>

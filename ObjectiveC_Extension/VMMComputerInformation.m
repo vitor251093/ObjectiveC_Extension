@@ -291,7 +291,7 @@ static NSMutableDictionary* _macOsCompatibility;
             
             for (NSString* model in @[@"AMD",@"ATI",@"RADEON"])
             {
-                if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeATiAMD;
+                if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeATIAMD;
             }
             
             for (NSString* model in @[@"NVIDIA",@"GEFORCE",@"NVS",@"QUADRO"])
@@ -302,7 +302,7 @@ static NSMutableDictionary* _macOsCompatibility;
             if (_computerGraphicCardType == nil)
             {
                 NSString* localVendorID = [self graphicCardVendorIDFromVendorAndVendorIDKeysOnly];
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDATiAMD]) _computerGraphicCardType = VMMVideoCardTypeATiAMD;
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDATIAMD]) _computerGraphicCardType = VMMVideoCardTypeATIAMD;
                 if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
             }
         }
@@ -349,9 +349,9 @@ static NSMutableDictionary* _macOsCompatibility;
                 localVendorID = VMMVideoCardVendorIDIntel; // Intel Vendor ID
             }
             
-            if ([@[VMMVideoCardTypeATiAMD] containsObject:graphicCardType])
+            if ([@[VMMVideoCardTypeATIAMD] containsObject:graphicCardType])
             {
-                localVendorID = VMMVideoCardVendorIDATiAMD; // ATi/AMD Vendor ID
+                localVendorID = VMMVideoCardVendorIDATIAMD; // ATI/AMD Vendor ID
             }
             
             if ([@[VMMVideoCardTypeNVIDIA] containsObject:graphicCardType])
