@@ -33,6 +33,7 @@
 
 #import "VMMDockProgressIndicator.h"
 
+#import "NSBundle+Extension.h"
 #import "NSColor+Extension.h"
 
 @implementation VMMDockProgressIndicator
@@ -55,10 +56,37 @@ static VMMDockProgressIndicator* progress_bar;
     
     if (dock_tile.contentView == nil)
     {
-        NSImageView* content_view = [[NSImageView alloc] init];
-        [content_view setImage:[[NSApplication sharedApplication] applicationIconImage]];
-        [dock_tile setContentView:content_view];
-        [content_view addSubview:progress_bar];
+        NSImage* contentViewImage;
+        
+        @try
+        {
+            contentViewImage = [NSApp applicationIconImage];
+        }
+        @catch(NSException* exception)
+        {
+            NSBundle* mainBundle = [NSBundle originalMainBundle];
+            NSString* gameImageFileName = [mainBundle objectForInfoDictionaryKey:@"CFBundleIconFile"];
+            
+            if (![gameImageFileName hasSuffix:@".icns"])
+                gameImageFileName = [gameImageFileName stringByAppendingString:@".icns"];
+            
+            NSString* gameImageCompletePath = [NSString stringWithFormat:@"%@/Contents/Resources/%@",
+                                               [mainBundle bundlePath],gameImageFileName];
+            
+            @try
+            {
+                contentViewImage = [[NSImage alloc] initWithContentsOfFile:gameImageCompletePath];
+            }
+            @catch(NSException* otherException)
+            {
+                [exception raise];
+            }
+        }
+        
+        NSImageView* contentView = [[NSImageView alloc] init];
+        [contentView setImage:contentViewImage];
+        [dock_tile setContentView:contentView];
+        [contentView addSubview:progress_bar];
     }
     
     return progress_bar;
