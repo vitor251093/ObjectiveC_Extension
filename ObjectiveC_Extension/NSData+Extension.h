@@ -20,6 +20,8 @@
 +(nullable NSData*)jsonDataWithObject:(nonnull id)object;
 -(nullable id)objectWithJsonData;
 
+-(nonnull NSString*)base64EncodedString;
+
 @end
 
 #endif

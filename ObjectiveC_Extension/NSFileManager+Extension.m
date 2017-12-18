@@ -9,6 +9,7 @@
 #import "NSFileManager+Extension.h"
 
 #import "NSAlert+Extension.h"
+#import "NSData+Extension.h"
 #import "NSTask+Extension.h"
 #import "NSString+Extension.h"
 #import "NSThread+Extension.h"
@@ -250,14 +251,7 @@
 
 -(nullable NSString*)base64OfFileAtPath:(nonnull NSString*)path
 {
-    NSData* data = [NSData dataWithContentsOfFile:path];
-    
-    if (![data respondsToSelector:@selector(base64EncodedStringWithOptions:)])
-    {
-        return [data base64Encoding];
-    }
-    
-    return [data base64EncodedStringWithOptions:0];
+    return [[NSData dataWithContentsOfFile:path] base64EncodedString];
 }
 
 @end

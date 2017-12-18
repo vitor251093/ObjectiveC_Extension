@@ -144,4 +144,14 @@
     return [NSJSONSerialization JSONObjectWithData:self options:0 error:nil];
 }
 
+-(nonnull NSString*)base64EncodedString
+{
+    if (![self respondsToSelector:@selector(base64EncodedStringWithOptions:)])
+    {
+        return [self base64Encoding];
+    }
+    
+    return [self base64EncodedStringWithOptions:0];
+}
+
 @end
