@@ -400,7 +400,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while reading file: %@"), error.localizedDescription]];
+        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while reading file text: %@"), error.localizedDescription]];
     }
     
     return string;

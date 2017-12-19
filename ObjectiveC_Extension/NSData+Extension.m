@@ -50,7 +50,7 @@
         
         if (error != nil)
         {
-            [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while reading file data: %@"), error.localizedDescription]];
+            [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while loading file data: %@"), error.localizedDescription]];
         }
     }
     
