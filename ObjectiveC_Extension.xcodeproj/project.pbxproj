@@ -110,6 +110,9 @@
 		4EEBF4711FAE238F00CE31A0 /* NSMutableString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */; };
 		4EF16B1F1F8E36A600A78DC0 /* VMMModals.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EF16B201F8E36A600A78DC0 /* VMMModals.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */; };
+		4EFA51931FE96C8C002D68FC /* NSException+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EFA51911FE96C8C002D68FC /* NSException+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4EFA51941FE96C8C002D68FC /* NSException+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EFA51921FE96C8C002D68FC /* NSException+Extension.m */; };
+		4EFA51961FE9710B002D68FC /* VMMLogUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EFA51951FE9710B002D68FC /* VMMLogUtility.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -233,6 +236,9 @@
 		4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+Extension.m"; sourceTree = "<group>"; };
 		4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMModals.h; sourceTree = "<group>"; };
 		4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMModals.m; sourceTree = "<group>"; };
+		4EFA51911FE96C8C002D68FC /* NSException+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSException+Extension.h"; sourceTree = "<group>"; };
+		4EFA51921FE96C8C002D68FC /* NSException+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSException+Extension.m"; sourceTree = "<group>"; };
+		4EFA51951FE9710B002D68FC /* VMMLogUtility.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMLogUtility.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -336,6 +342,8 @@
 				4E6C51FA1F7E911000A187E9 /* NSData+Extension.m */,
 				4E6C51FB1F7E911000A187E9 /* NSDateFormatter+Extension.h */,
 				4E6C51FC1F7E911000A187E9 /* NSDateFormatter+Extension.m */,
+				4EFA51911FE96C8C002D68FC /* NSException+Extension.h */,
+				4EFA51921FE96C8C002D68FC /* NSException+Extension.m */,
 				4E6C51FD1F7E911000A187E9 /* NSFileManager+Extension.h */,
 				4E6C51FE1F7E911000A187E9 /* NSFileManager+Extension.m */,
 				4E6C51FF1F7E911000A187E9 /* NSImage+Extension.h */,
@@ -400,6 +408,7 @@
 				4E6C52701F7E954D00A187E9 /* VMMComputerInformation.m */,
 				4E0DD3B81FD878F90033AA72 /* VMMLocalizationUtility.h */,
 				4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */,
+				4EFA51951FE9710B002D68FC /* VMMLogUtility.m */,
 				4EF16B1D1F8E36A600A78DC0 /* VMMModals.h */,
 				4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */,
 				4E6C52641F7E953A00A187E9 /* VMMUserNotificationCenter.h */,
@@ -499,6 +508,7 @@
 				4E5A45D91FC9FD7800FCEB42 /* VMMDockProgressIndicator.h in Headers */,
 				4EA69BD41FC8DDEA00C70100 /* NSWorkspace+Extension.h in Headers */,
 				4E5A45DD1FCA103800FCEB42 /* NSBundle+Extension.h in Headers */,
+				4EFA51931FE96C8C002D68FC /* NSException+Extension.h in Headers */,
 				4EB392E11FC479060098F987 /* VMMTextFileView.h in Headers */,
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
 				4E34B2F41FD879DE001F0B4F /* VMMLocalizationUtility.h in Headers */,
@@ -630,6 +640,7 @@
 				4E6C522E1F7E911000A187E9 /* NSImage+Extension.m in Sources */,
 				4E6C52461F7E911000A187E9 /* NSThread+Extension.m in Sources */,
 				4EB392E21FC479060098F987 /* VMMTextFileView.m in Sources */,
+				4EFA51941FE96C8C002D68FC /* NSException+Extension.m in Sources */,
 				4E6C524A1F7E911000A187E9 /* NSUserDefaults+Extension.m in Sources */,
 				4E6C51EB1F7E90A300A187E9 /* VMMVirtualKeycode.m in Sources */,
 				4E6C523E1F7E911000A187E9 /* NSSavePanel+Extension.m in Sources */,
@@ -649,6 +660,7 @@
 				4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */,
 				4E6C51EF1F7E90A300A187E9 /* VMMUsageKeycode.m in Sources */,
 				4E6C52401F7E911000A187E9 /* NSString+Extension.m in Sources */,
+				4EFA51961FE9710B002D68FC /* VMMLogUtility.m in Sources */,
 				4EA035A91F9532E10059C2C5 /* VMMKeyCaptureField.m in Sources */,
 				4E6C522A1F7E911000A187E9 /* NSDateFormatter+Extension.m in Sources */,
 				4E6C52201F7E911000A187E9 /* NSAlert+Extension.m in Sources */,

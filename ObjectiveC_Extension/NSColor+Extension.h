@@ -8,8 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define RGBA(r,g,b,a) [NSColor colorWithDeviceRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a/255.0]
-#define RGB(r,g,b)    RGBA(r,g,b,255.0)
+NSColor* _Nullable RGBA(CGFloat r, CGFloat g, CGFloat b, CGFloat a);
+NSColor* _Nullable RGB(CGFloat r, CGFloat g, CGFloat b);
 
 @interface NSColor (VMMColor)
 

@@ -199,7 +199,7 @@
         
         @autoreleasepool
         {
-            NSString* uuid = [VMMUUID newUUIDString];
+            NSString* uuid = VMMUUIDCreate();
             NSString* pyFileName  = [NSString stringWithFormat:@"pythonRegex%@.py",uuid];
             NSString* datFileName = [NSString stringWithFormat:@"pythonFile%@.dat",uuid];
             

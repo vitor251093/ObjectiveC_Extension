@@ -7,6 +7,17 @@
 //
 
 #import "NSColor+Extension.h"
+#import "NSException+Extension.h"
+
+NSColor* _Nullable RGBA(CGFloat r, CGFloat g, CGFloat b, CGFloat a)
+{
+    return [NSColor colorWithDeviceRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a/255.0];
+}
+
+NSColor* _Nullable RGB(CGFloat r, CGFloat g, CGFloat b)
+{
+    return RGBA(r,g,b,255.0);
+}
 
 @implementation NSColor (VMMColor)
 
@@ -23,7 +34,8 @@
     
     if (inColorString.length != 6)
     {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"colorWithHexColorString: only accepts hexadecimal colors, with 6 or 7 characters (eg. 000000 or #000000)" userInfo:nil];
+        @throw exception(NSInvalidArgumentException,
+                         @"colorWithHexColorString: only accepts hexadecimal colors, with 6 or 7 characters (eg. 000000 or #000000)");
     }
     
     NSScanner* scanner = [NSScanner scannerWithString:inColorString];

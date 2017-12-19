@@ -8,6 +8,7 @@
 
 #import <CoreImage/CoreImage.h>
 
+#import "NSException+Extension.h"
 #import "NSFileManager+Extension.h"
 #import "NSImage+Extension.h"
 #import "NSString+Extension.h"
@@ -194,9 +195,8 @@
     
     if ([typeForExtension.allKeys containsObject:extension] == false)
     {
-        [[NSException exceptionWithName:NSInvalidArgumentException
-                                 reason:[NSString stringWithFormat:@"Invalid extension for saving image file: %@",extension]
-                               userInfo:nil] raise];
+        @throw exception(NSInvalidArgumentException,
+                         [NSString stringWithFormat:@"Invalid extension for saving image file: %@",extension]);
         return false;
     }
     

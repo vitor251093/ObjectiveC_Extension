@@ -70,7 +70,7 @@ static VMMUserNotificationCenter *_sharedInstance;
     
     if (useIcon)
     {
-        NSString* iconFilePath = [NSString stringWithFormat:@"%@growlTemp%@.png",NSTemporaryDirectory(),[VMMUUID newUUIDString]];
+        NSString* iconFilePath = [NSString stringWithFormat:@"%@growlTemp%@.png",NSTemporaryDirectory(),VMMUUIDCreate()];
         [icon writeToFile:iconFilePath atomically:YES];
         iconFileUrl = [NSURL fileURLWithPath:iconFilePath];
     }

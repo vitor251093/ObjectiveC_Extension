@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NSString* _Nonnull VMMUUIDCreate(void);
+
 @interface VMMUUID : NSObject
 
 +(nonnull NSString*)newUUIDString;

@@ -6,15 +6,15 @@
 //  Copyright © 2017 Vitor Marques de Miranda. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 #ifdef DEBUG
     #define NSDebugLog(FORMAT, ...) system([[NSString stringWithFormat:@"echo \"%@\" | tee -a ~/Desktop/debug.log", [[[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""] stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\0"]]] UTF8String])
 #else
     #define NSDebugLog(...)
 #endif
 
-
-#define NSStackTraceLog() NSDebugLog(@"%@",[NSThread callStackSymbols])
-
+void NSStackTraceLog(void);
 
 // Source:
 // https://gist.github.com/sfider/3072143

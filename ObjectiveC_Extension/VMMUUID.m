@@ -10,6 +10,11 @@
 
 #import "VMMComputerInformation.h"
 
+NSString* _Nonnull VMMUUIDCreate(void)
+{
+    return [VMMUUID newUUIDString];
+}
+
 @implementation VMMUUID
 
 +(nonnull NSString*)newUUIDString

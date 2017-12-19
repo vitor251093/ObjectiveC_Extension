@@ -30,6 +30,7 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 #import <ObjectiveC_Extension/NSColor+Extension.h>
 #import <ObjectiveC_Extension/NSData+Extension.h>
 #import <ObjectiveC_Extension/NSDateFormatter+Extension.h>
+#import <ObjectiveC_Extension/NSException+Extension.h>
 #import <ObjectiveC_Extension/NSFileManager+Extension.h>
 #import <ObjectiveC_Extension/NSImage+Extension.h>
 #import <ObjectiveC_Extension/NSMenu+Extension.h>
