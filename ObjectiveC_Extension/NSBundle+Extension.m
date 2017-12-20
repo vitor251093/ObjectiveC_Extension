@@ -14,39 +14,42 @@
 
 #include <stdlib.h>
 
+@interface NSBundle (VMMBundle_Interface)
+@property (nonatomic, strong) NSString* _bundleName;
+@property (nonatomic, strong) NSString* _bundlePathBeforeAppTranslocation;
+@end
+
 @implementation NSBundle (VMMBundle)
 
-NSString* _bundleName;
-NSString* _bundlePathBeforeAppTranslocation;
 NSBundle* _originalMainBundle;
 
 -(nonnull NSString*)bundleName
 {
-    if (_bundleName != nil) return _bundleName;
+    if (self._bundleName != nil) return self._bundleName;
     
-    _bundleName = [self objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    self._bundleName = [self objectForInfoDictionaryKey:@"CFBundleDisplayName"];
     
-    if (!_bundleName)
+    if (!self._bundleName)
     {
-        _bundleName = [self objectForInfoDictionaryKey:@"CFBundleName"];
+        self._bundleName = [self objectForInfoDictionaryKey:@"CFBundleName"];
     }
     
-    if (!_bundleName)
+    if (!self._bundleName)
     {
         // Reference:
         // https://stackoverflow.com/a/35322073/4370893
         
-        _bundleName = [NSString stringWithUTF8String:getprogname()];
+        self._bundleName = [NSString stringWithUTF8String:getprogname()];
     }
     
-    if (!_bundleName)
+    if (!self._bundleName)
     {
         NSString* placeholder = @"App";
         NSString* bundlePath = [self bundlePath];
-        _bundleName = bundlePath ? bundlePath.stringByDeletingPathExtension.lastPathComponent : placeholder;
+        self._bundleName = bundlePath ? bundlePath.stringByDeletingPathExtension.lastPathComponent : placeholder;
     }
     
-    return _bundleName;
+    return self._bundleName;
 }
 
 -(BOOL)isAppTranslocationActive
@@ -70,9 +73,10 @@ NSBundle* _originalMainBundle;
 }
 -(NSString*)bundlePathBeforeAppTranslocation
 {
-    if (_bundlePathBeforeAppTranslocation != nil && [[NSFileManager defaultManager] fileExistsAtPath:_bundlePathBeforeAppTranslocation])
+    if (self._bundlePathBeforeAppTranslocation != nil &&
+        [[NSFileManager defaultManager] fileExistsAtPath:self._bundlePathBeforeAppTranslocation])
     {
-        return _bundlePathBeforeAppTranslocation;
+        return self._bundlePathBeforeAppTranslocation;
     }
     
     NSString* appBinaryPath = [self executablePath];
@@ -87,22 +91,22 @@ NSBundle* _originalMainBundle;
     NSString* applicationInDesktopFolderPath = [desktopFolderPath stringByAppendingString:appBundleFileName];
     if ([self doesBundleAtPath:applicationInDesktopFolderPath executableMatchesWithMD5Checksum:appBinaryChecksum])
     {
-        _bundlePathBeforeAppTranslocation = applicationInDesktopFolderPath;
-        return _bundlePathBeforeAppTranslocation;
+        self._bundlePathBeforeAppTranslocation = applicationInDesktopFolderPath;
+        return self._bundlePathBeforeAppTranslocation;
     }
     
     NSString* applicationInDownloadsFolderPath = [downloadsFolderPath stringByAppendingString:appBundleFileName];
     if ([self doesBundleAtPath:applicationInDownloadsFolderPath executableMatchesWithMD5Checksum:appBinaryChecksum])
     {
-        _bundlePathBeforeAppTranslocation = applicationInDownloadsFolderPath;
-        return _bundlePathBeforeAppTranslocation;
+        self._bundlePathBeforeAppTranslocation = applicationInDownloadsFolderPath;
+        return self._bundlePathBeforeAppTranslocation;
     }
     
     NSString* applicationInApplicationsFolderPath = [applicationsFolderPath stringByAppendingString:appBundleFileName];
     if ([self doesBundleAtPath:applicationInApplicationsFolderPath executableMatchesWithMD5Checksum:appBinaryChecksum])
     {
-        _bundlePathBeforeAppTranslocation = applicationInApplicationsFolderPath;
-        return _bundlePathBeforeAppTranslocation;
+        self._bundlePathBeforeAppTranslocation = applicationInApplicationsFolderPath;
+        return self._bundlePathBeforeAppTranslocation;
     }
     
     NSArray* desktopFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:desktopFolderPath ofFilesNamed:appBundleFileName];
@@ -110,8 +114,8 @@ NSBundle* _originalMainBundle;
     {
         if ([self doesBundleAtPath:desktopFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
         {
-            _bundlePathBeforeAppTranslocation = desktopFilesMatch;
-            return _bundlePathBeforeAppTranslocation;
+            self._bundlePathBeforeAppTranslocation = desktopFilesMatch;
+            return self._bundlePathBeforeAppTranslocation;
         }
     }
     
@@ -120,8 +124,8 @@ NSBundle* _originalMainBundle;
     {
         if ([self doesBundleAtPath:downloadsFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
         {
-            _bundlePathBeforeAppTranslocation = downloadsFilesMatch;
-            return _bundlePathBeforeAppTranslocation;
+            self._bundlePathBeforeAppTranslocation = downloadsFilesMatch;
+            return self._bundlePathBeforeAppTranslocation;
         }
     }
     
@@ -130,8 +134,8 @@ NSBundle* _originalMainBundle;
     {
         if ([self doesBundleAtPath:applicationsFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
         {
-            _bundlePathBeforeAppTranslocation = applicationsFilesMatch;
-            return _bundlePathBeforeAppTranslocation;
+            self._bundlePathBeforeAppTranslocation = applicationsFilesMatch;
+            return self._bundlePathBeforeAppTranslocation;
         }
     }
     
