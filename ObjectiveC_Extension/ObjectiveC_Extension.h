@@ -24,6 +24,7 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 
 // Extensions
 #import <ObjectiveC_Extension/NSAlert+Extension.h>
+#import <ObjectiveC_Extension/NSApplication+Extension.h>
 #import <ObjectiveC_Extension/NSArray+Extension.h>
 #import <ObjectiveC_Extension/NSAttributedString+Extension.h>
 #import <ObjectiveC_Extension/NSBundle+Extension.h>

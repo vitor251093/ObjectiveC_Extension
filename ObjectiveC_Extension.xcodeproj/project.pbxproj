@@ -99,6 +99,8 @@
 		4E6C52881F7EA42700A187E9 /* NSArrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52851F7EA42700A187E9 /* NSArrayTests.m */; };
 		4E6C52891F7EA42700A187E9 /* NSStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52861F7EA42700A187E9 /* NSStringTests.m */; };
 		4E6C52941F7EB50300A187E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4E6C52961F7EB50300A187E9 /* Localizable.strings */; };
+		4E9986701FEEC85600E434E4 /* NSApplication+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E99866E1FEEC85600E434E4 /* NSApplication+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E9986711FEEC85600E434E4 /* NSApplication+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E99866F1FEEC85600E434E4 /* NSApplication+Extension.m */; };
 		4EA035A81F9532E10059C2C5 /* VMMKeyCaptureField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EA035A91F9532E10059C2C5 /* VMMKeyCaptureField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */; };
 		4EA69BD41FC8DDEA00C70100 /* NSWorkspace+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA69BD21FC8DDEA00C70100 /* NSWorkspace+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -225,6 +227,8 @@
 		4E6C52981F7EB52100A187E9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4E6C52991F7EB52500A187E9 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		4E6C529A1F7EB52A00A187E9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4E99866E1FEEC85600E434E4 /* NSApplication+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSApplication+Extension.h"; sourceTree = "<group>"; };
+		4E99866F1FEEC85600E434E4 /* NSApplication+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+Extension.m"; sourceTree = "<group>"; };
 		4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMKeyCaptureField.h; sourceTree = "<group>"; };
 		4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMKeyCaptureField.m; sourceTree = "<group>"; };
 		4EA69BD21FC8DDEA00C70100 /* NSWorkspace+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWorkspace+Extension.h"; sourceTree = "<group>"; };
@@ -330,6 +334,8 @@
 			children = (
 				4E6C51F11F7E911000A187E9 /* NSAlert+Extension.h */,
 				4E6C51F21F7E911000A187E9 /* NSAlert+Extension.m */,
+				4E99866E1FEEC85600E434E4 /* NSApplication+Extension.h */,
+				4E99866F1FEEC85600E434E4 /* NSApplication+Extension.m */,
 				4E6C51F31F7E911000A187E9 /* NSArray+Extension.h */,
 				4E6C51F41F7E911000A187E9 /* NSArray+Extension.m */,
 				4E6C51F51F7E911000A187E9 /* NSAttributedString+Extension.h */,
@@ -511,6 +517,7 @@
 				4EFA51931FE96C8C002D68FC /* NSException+Extension.h in Headers */,
 				4EB392E11FC479060098F987 /* VMMTextFileView.h in Headers */,
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
+				4E9986701FEEC85600E434E4 /* NSApplication+Extension.h in Headers */,
 				4E34B2F41FD879DE001F0B4F /* VMMLocalizationUtility.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* VMMUsageKeycode.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
@@ -649,6 +656,7 @@
 				4E6C52341F7E911000A187E9 /* NSMutableArray+Extension.m in Sources */,
 				4E3771071FA7A57C00E2F511 /* VMMWebView.m in Sources */,
 				4E6C52321F7E911000A187E9 /* NSMenuItem+Extension.m in Sources */,
+				4E9986711FEEC85600E434E4 /* NSApplication+Extension.m in Sources */,
 				4E6C52691F7E953A00A187E9 /* NKFTPManager.m in Sources */,
 				4E6C52721F7E954D00A187E9 /* VMMComputerInformation.m in Sources */,
 				4E6C52361F7E911000A187E9 /* NSMutableAttributedString+Extension.m in Sources */,
