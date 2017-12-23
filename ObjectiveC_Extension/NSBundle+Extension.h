@@ -13,6 +13,7 @@
 -(nonnull NSString*)bundleName;
 
 -(BOOL)isAppTranslocationActive;
+-(BOOL)disableAppTranslocation;
 
 +(nullable NSBundle*)originalMainBundle;
 

@@ -60,14 +60,6 @@ NSBundle* _originalMainBundle;
     }
 }
 
--(BOOL)isAppTranslocationActive
-{
-    // App Translocation description:
-    // http://lapcatsoftware.com/articles/app-translocation.html
-    
-    return IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR && [[self bundlePath] hasPrefix:@"/private/var/folders/"];
-}
-
 -(BOOL)doesBundleAtPath:(NSString*)bundlePath executableMatchesWithMD5Checksum:(NSString*)checksum
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:bundlePath] == false) return false;
@@ -172,28 +164,45 @@ NSBundle* _originalMainBundle;
     }
 }
 
+-(BOOL)isAppTranslocationActive
+{
+    // App Translocation description:
+    // http://lapcatsoftware.com/articles/app-translocation.html
+    
+    return IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR && [[self bundlePath] hasPrefix:@"/private/var/folders/"];
+}
+-(BOOL)disableAppTranslocation
+{
+    NSString* originalPath = [self bundlePathBeforeAppTranslocation];
+    if (originalPath == nil) return false;
+    
+    [NSTask runProgram:@"xattr" withFlags:@[@"-r",@"-d",@"com.apple.quarantine",originalPath]];
+    return true;
+}
+
 +(nullable NSBundle*)originalMainBundle
 {
-    if ([[NSBundle mainBundle] isAppTranslocationActive])
+    @synchronized ([NSBundle class])
     {
-        if (_originalMainBundle != nil && [[NSFileManager defaultManager] fileExistsAtPath:_originalMainBundle.bundlePath])
+        if ([[NSBundle mainBundle] isAppTranslocationActive])
         {
+            if (_originalMainBundle != nil && [[NSFileManager defaultManager] fileExistsAtPath:_originalMainBundle.bundlePath])
+            {
+                return _originalMainBundle;
+            }
+            
+            NSString* originalPath = [[NSBundle mainBundle] bundlePathBeforeAppTranslocation];
+            if (originalPath == nil)
+            {
+                return nil;
+            }
+            
+            _originalMainBundle = [NSBundle bundleWithPath:originalPath];
             return _originalMainBundle;
         }
         
-        NSString* originalPath = [[NSBundle mainBundle] bundlePathBeforeAppTranslocation];
-        if (originalPath == nil)
-        {
-            return nil;
-        }
-        
-        [NSTask runProgram:@"xattr" withFlags:@[@"-r",@"-d",@"com.apple.quarantine",originalPath]];
-        
-        _originalMainBundle = [NSBundle bundleWithPath:originalPath];
-        return _originalMainBundle;
+        return [NSBundle mainBundle];
     }
-    
-    return [NSBundle mainBundle];
 }
 
 @end
