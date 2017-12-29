@@ -30,10 +30,10 @@ static NSNumber* _userIsMemberOfStaff;
 
 static NSMutableDictionary* _macOsCompatibility;
 
-+(NSMutableDictionary*)graphicCardDictionaryFromSystemProfilerOutput:(NSString*)displayData
++(NSMutableDictionary*)videoCardDictionaryFromSystemProfilerOutput:(NSString*)displayData
 {
     NSMutableArray* graphicCards = [[NSMutableArray alloc] init];
-    NSString* graphicCardName;
+    NSString* videoCardName;
     int spacesCounter = 0;
     BOOL firstInput = YES;
     
@@ -64,9 +64,9 @@ static NSMutableDictionary* _macOsCompatibility;
                 if (!firstInput) [graphicCards addObject:lastGraphicCardDict];
                 firstInput = NO;
                 
-                graphicCardName = [displayLineNoSpaces getFragmentAfter:nil andBefore:@":"];
+                videoCardName = [displayLineNoSpaces getFragmentAfter:nil andBefore:@":"];
                 lastGraphicCardDict = [[NSMutableDictionary alloc] init];
-                lastGraphicCardDict[VMMVideoCardNameKey] = graphicCardName;
+                lastGraphicCardDict[VMMVideoCardNameKey] = videoCardName;
             }
         }
     }
@@ -78,7 +78,7 @@ static NSMutableDictionary* _macOsCompatibility;
                                             orderingByValuesOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
     return [cards firstObject];
 }
-+(NSMutableDictionary*)graphicCardDictionaryFromIOServiceMatch
++(NSMutableDictionary*)videoCardDictionaryFromIOServiceMatch
 {
     NSMutableDictionary* graphicCardDict = [[NSMutableDictionary alloc] init];
     
@@ -188,7 +188,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return graphicCardDict;
 }
-+(nullable NSDictionary*)graphicCardDictionary
++(nullable NSDictionary*)videoCardDictionary
 {
     @synchronized(_computerGraphicCardDictionary)
     {
@@ -202,16 +202,16 @@ static NSMutableDictionary* _macOsCompatibility;
             NSString* displayData;
             
             displayData = [NSTask runCommand:@[@"system_profiler", @"SPDisplaysDataType"]];
-            _computerGraphicCardDictionary = [self graphicCardDictionaryFromSystemProfilerOutput:displayData];
+            _computerGraphicCardDictionary = [self videoCardDictionaryFromSystemProfilerOutput:displayData];
             if (_computerGraphicCardDictionary.count == 0)
             {
                 displayData = [NSTask runCommand:@[@"/usr/sbin/system_profiler", @"SPDisplaysDataType"]];
-                _computerGraphicCardDictionary = [self graphicCardDictionaryFromSystemProfilerOutput:displayData];
+                _computerGraphicCardDictionary = [self videoCardDictionaryFromSystemProfilerOutput:displayData];
             }
             
             if (_computerGraphicCardDictionary.count == 0 || [self isGraphicCardDictionaryCompleteWithMemorySize:false] == false)
             {
-                NSMutableDictionary* computerGraphicCardDictionary = [[self graphicCardDictionaryFromIOServiceMatch] mutableCopy];
+                NSMutableDictionary* computerGraphicCardDictionary = [[self videoCardDictionaryFromIOServiceMatch] mutableCopy];
                 [computerGraphicCardDictionary addEntriesFromDictionary:_computerGraphicCardDictionary];
                 _computerGraphicCardDictionary = computerGraphicCardDictionary;
             }
@@ -226,7 +226,7 @@ static NSMutableDictionary* _macOsCompatibility;
 
 
 
-+(NSUInteger)graphicCardMemorySizeInMegabytesFromAPI
++(NSUInteger)videoCardMemorySizeInMegabytesFromAPI
 {
     // Reference:
     // https://developer.apple.com/library/content/qa/qa1168/_index.html
@@ -249,9 +249,9 @@ static NSMutableDictionary* _macOsCompatibility;
     return videoMemorySize;
 }
 
-+(NSString*)graphicCardVendorIDFromVendorAndVendorIDKeysOnly
++(NSString*)videoCardVendorIDFromVendorAndVendorIDKeysOnly
 {
-    NSDictionary* localVideoCard = self.graphicCardDictionary;
+    NSDictionary* localVideoCard = self.videoCardDictionary;
     
     NSString* localVendorID = localVideoCard[VMMVideoCardVendorIDKey]; // eg. 0x10de
     
@@ -267,21 +267,21 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return localVendorID;
 }
-+(nullable NSString*)graphicCardDeviceID
++(nullable NSString*)videoCardDeviceID
 {
-    return self.graphicCardDictionary[VMMVideoCardDeviceIDKey];
+    return self.videoCardDictionary[VMMVideoCardDeviceIDKey];
 }
-+(nullable NSString*)graphicCardName
++(nullable NSString*)videoCardName
 {
-    NSDictionary* graphicCardDictionary = self.graphicCardDictionary;
+    NSDictionary* videoCardDictionary = self.videoCardDictionary;
     
-    if (graphicCardDictionary == nil)
+    if (videoCardDictionary == nil)
     {
         return nil;
     }
     
-    NSString* videoCardName = graphicCardDictionary[VMMVideoCardNameKey];
-    NSString* chipsetModel  = graphicCardDictionary[VMMVideoCardChipsetModelKey];
+    NSString* videoCardName = videoCardDictionary[VMMVideoCardNameKey];
+    NSString* chipsetModel  = videoCardDictionary[VMMVideoCardChipsetModelKey];
     BOOL validVideoCardName = (videoCardName != nil && [videoCardName isEqualToString:@"Display"] == false);
     BOOL validChipsetModel  = (chipsetModel  != nil && [chipsetModel  isEqualToString:@"Display"] == false);
     
@@ -300,7 +300,7 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(BOOL)isGraphicCardDictionaryCompleteWithMemorySize:(BOOL)haveMemorySize
 {
-    if (self.graphicCardName == nil) return false;
+    if (self.videoCardName == nil) return false;
     
     if (_computerGraphicCardDictionary[VMMVideoCardDeviceIDKey] == nil) return false;
     
@@ -312,7 +312,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return true;
 }
-+(nullable NSString*)graphicCardType
++(nullable NSString*)videoCardType
 {
     @synchronized(_computerGraphicCardType)
     {
@@ -323,7 +323,7 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            NSString* graphicCardModel = [self.graphicCardName uppercaseString];
+            NSString* graphicCardModel = [self.videoCardName uppercaseString];
             if (graphicCardModel != nil)
             {
                 NSArray* graphicCardModelComponents = [graphicCardModel componentsSeparatedByString:@" "];
@@ -352,7 +352,7 @@ static NSMutableDictionary* _macOsCompatibility;
             
             if (_computerGraphicCardType == nil)
             {
-                NSString* localVendorID = [self graphicCardVendorIDFromVendorAndVendorIDKeysOnly];
+                NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
                 if ([localVendorID isEqualToString:VMMVideoCardVendorIDATIAMD]) _computerGraphicCardType = VMMVideoCardTypeATIAMD;
                 if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
             }
@@ -364,26 +364,26 @@ static NSMutableDictionary* _macOsCompatibility;
     return nil;
 }
 
-+(nullable NSString*)graphicCardVendorID
++(nullable NSString*)videoCardVendorID
 {
-    NSString* localVendorID = [self graphicCardVendorIDFromVendorAndVendorIDKeysOnly];
+    NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
     
     if (localVendorID == nil)
     {
-        NSString* graphicCardType = [self graphicCardType];
-        if (graphicCardType != nil)
+        NSString* videoCardType = [self videoCardType];
+        if (videoCardType != nil)
         {
-            if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:graphicCardType])
+            if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
             {
                 localVendorID = VMMVideoCardVendorIDIntel; // Intel Vendor ID
             }
             
-            if ([@[VMMVideoCardTypeATIAMD] containsObject:graphicCardType])
+            if ([@[VMMVideoCardTypeATIAMD] containsObject:videoCardType])
             {
                 localVendorID = VMMVideoCardVendorIDATIAMD; // ATI/AMD Vendor ID
             }
             
-            if ([@[VMMVideoCardTypeNVIDIA] containsObject:graphicCardType])
+            if ([@[VMMVideoCardTypeNVIDIA] containsObject:videoCardType])
             {
                 localVendorID = VMMVideoCardVendorIDNVIDIA; // NVIDIA Vendor ID
             }
@@ -393,11 +393,11 @@ static NSMutableDictionary* _macOsCompatibility;
     return localVendorID;
 }
 
-+(NSUInteger)graphicCardMemorySizeInMegabytes
++(NSUInteger)videoCardMemorySizeInMegabytes
 {
     int memSizeInt = -1;
     
-    NSDictionary* gcDict = [self graphicCardDictionary];
+    NSDictionary* gcDict = [self videoCardDictionary];
     if (gcDict != nil && gcDict.count > 0)
     {
         NSString* memSize = [gcDict[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
@@ -415,11 +415,11 @@ static NSMutableDictionary* _macOsCompatibility;
     
     if (memSizeInt == 0 || memSizeInt == -1)
     {
-        NSUInteger apiResult = [self graphicCardMemorySizeInMegabytesFromAPI];
+        NSUInteger apiResult = [self videoCardMemorySizeInMegabytesFromAPI];
         if (apiResult != 0) return apiResult;
     }
     
-    if (memSizeInt == 0 && [[self graphicCardVendorID] isEqualToString:VMMVideoCardVendorIDNVIDIA])
+    if (memSizeInt == 0 && [[self videoCardVendorID] isEqualToString:VMMVideoCardVendorIDNVIDIA])
     {
         //
         // Apparently, this is a common bug that happens with Hackintoshes that
