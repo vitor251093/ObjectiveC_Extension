@@ -224,21 +224,53 @@ static NSMutableDictionary* _macOsCompatibility;
     return nil;
 }
 
-+(BOOL)isGraphicCardDictionaryCompleteWithMemorySize:(BOOL)haveMemorySize
+
+
++(NSUInteger)graphicCardMemorySizeInMegabytesFromAPI
 {
-    if (self.graphicCardName == nil) return false;
+    // Reference:
+    // https://developer.apple.com/library/content/qa/qa1168/_index.html
     
-    if (_computerGraphicCardDictionary[VMMVideoCardDeviceIDKey] == nil) return false;
+    NSUInteger videoMemorySize = 0;
     
-    if (haveMemorySize)
+    GLint i, nrend = 0;
+    CGLRendererInfoObj rend;
+    const GLint displayMask = 0xFFFFFFFF;
+    CGLQueryRendererInfo((GLuint)displayMask, &rend, &nrend);
+    
+    for (i = 0; i < nrend; i++)
     {
-        if (_computerGraphicCardDictionary[VMMVideoCardMemorySizePciOrPcieKey] == nil &&
-            _computerGraphicCardDictionary[VMMVideoCardMemorySizeBuiltInKey]   == nil) return false;
+        GLint videoMemory = 0;
+        CGLDescribeRenderer(rend, i, (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR ? kCGLRPVideoMemoryMegabytes : kCGLRPVideoMemory), &videoMemory);
+        if (videoMemory > videoMemorySize) videoMemorySize = videoMemory;
     }
     
-    return true;
+    CGLDestroyRendererInfo(rend);
+    return videoMemorySize;
 }
 
++(NSString*)graphicCardVendorIDFromVendorAndVendorIDKeysOnly
+{
+    NSDictionary* localVideoCard = self.graphicCardDictionary;
+    
+    NSString* localVendorID = localVideoCard[VMMVideoCardVendorIDKey]; // eg. 0x10de
+    
+    if (localVendorID == nil)
+    {
+        NSString* localVendor = localVideoCard[VMMVideoCardVendorKey]; // eg. NVIDIA (0x10de)
+        
+        if (localVendor != nil && [localVendor contains:@"("])
+        {
+            localVendorID = [localVendor getFragmentAfter:@"(" andBefore:@")"];
+        }
+    }
+    
+    return localVendorID;
+}
++(nullable NSString*)graphicCardDeviceID
+{
+    return self.graphicCardDictionary[VMMVideoCardDeviceIDKey];
+}
 +(nullable NSString*)graphicCardName
 {
     NSDictionary* graphicCardDictionary = self.graphicCardDictionary;
@@ -265,6 +297,21 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return videoCardName;
 }
+
++(BOOL)isGraphicCardDictionaryCompleteWithMemorySize:(BOOL)haveMemorySize
+{
+    if (self.graphicCardName == nil) return false;
+    
+    if (_computerGraphicCardDictionary[VMMVideoCardDeviceIDKey] == nil) return false;
+    
+    if (haveMemorySize)
+    {
+        if (_computerGraphicCardDictionary[VMMVideoCardMemorySizePciOrPcieKey] == nil &&
+            _computerGraphicCardDictionary[VMMVideoCardMemorySizeBuiltInKey]   == nil) return false;
+    }
+    
+    return true;
+}
 +(nullable NSString*)graphicCardType
 {
     @synchronized(_computerGraphicCardType)
@@ -287,7 +334,10 @@ static NSMutableDictionary* _macOsCompatibility;
                     if ([graphicCardModelComponents containsObject:@"IRIS"]) _computerGraphicCardType = VMMVideoCardTypeIntelIris;
                 }
                 
-                if ([graphicCardModelComponents containsObject:@"GMA"]) _computerGraphicCardType = VMMVideoCardTypeIntelGMA;
+                for (NSString* model in @[@"GMA"])
+                {
+                    if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeIntelGMA;
+                }
                 
                 for (NSString* model in @[@"AMD",@"ATI",@"RADEON"])
                 {
@@ -314,29 +364,6 @@ static NSMutableDictionary* _macOsCompatibility;
     return nil;
 }
 
-+(nullable NSString*)graphicCardDeviceID
-{
-    return self.graphicCardDictionary[VMMVideoCardDeviceIDKey];
-}
-
-+(NSString*)graphicCardVendorIDFromVendorAndVendorIDKeysOnly
-{
-    NSDictionary* localVideoCard = self.graphicCardDictionary;
-    
-    NSString* localVendorID = localVideoCard[VMMVideoCardVendorIDKey]; // eg. 0x10de
-    
-    if (localVendorID == nil)
-    {
-        NSString* localVendor = localVideoCard[VMMVideoCardVendorKey]; // eg. NVIDIA (0x10de)
-        
-        if (localVendor != nil && [localVendor contains:@"("])
-        {
-            localVendorID = [localVendor getFragmentAfter:@"(" andBefore:@")"];
-        }
-    }
-    
-    return localVendorID;
-}
 +(nullable NSString*)graphicCardVendorID
 {
     NSString* localVendorID = [self graphicCardVendorIDFromVendorAndVendorIDKeysOnly];
@@ -366,28 +393,6 @@ static NSMutableDictionary* _macOsCompatibility;
     return localVendorID;
 }
 
-+(NSUInteger)graphicCardMemorySizeInMegabytesFromAPI
-{
-    // Reference:
-    // https://developer.apple.com/library/content/qa/qa1168/_index.html
-    
-    NSUInteger videoMemorySize = 0;
-    
-    GLint i, nrend = 0;
-    CGLRendererInfoObj rend;
-    const GLint displayMask = 0xFFFFFFFF;
-    CGLQueryRendererInfo((GLuint)displayMask, &rend, &nrend);
-    
-    for (i = 0; i < nrend; i++)
-    {
-        GLint videoMemory = 0;
-        CGLDescribeRenderer(rend, i, (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR ? kCGLRPVideoMemoryMegabytes : kCGLRPVideoMemory), &videoMemory);
-        if (videoMemory > videoMemorySize) videoMemorySize = videoMemory;
-    }
-    
-    CGLDestroyRendererInfo(rend);
-    return videoMemorySize;
-}
 +(NSUInteger)graphicCardMemorySizeInMegabytes
 {
     int memSizeInt = -1;
@@ -442,6 +447,8 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return memSizeInt;
 }
+
+
 
 +(nullable NSString*)macOsVersion
 {

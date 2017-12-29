@@ -208,10 +208,10 @@
 @interface VMMComputerInformation : NSObject
 
 +(nullable NSDictionary*)graphicCardDictionary;
-+(nullable NSString*)graphicCardName;
-+(nullable NSString*)graphicCardType;
 
 +(nullable NSString*)graphicCardDeviceID;
++(nullable NSString*)graphicCardName;
++(nullable NSString*)graphicCardType;
 +(nullable NSString*)graphicCardVendorID;
 +(NSUInteger)graphicCardMemorySizeInMegabytes;
 
