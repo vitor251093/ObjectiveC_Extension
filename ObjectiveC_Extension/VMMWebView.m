@@ -115,7 +115,7 @@
         
         webView.shouldUpdateWhileOffscreen = false;
         
-        // TODO: Find out exactly what should be used here
+        // TODO: Find out exactly what should be to change the opaque value
         @try
         {
             [webView setValue:@FALSE forKey:@"opaque"];

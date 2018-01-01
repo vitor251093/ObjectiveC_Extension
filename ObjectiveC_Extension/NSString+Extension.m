@@ -195,7 +195,7 @@
     
     if (IsClassNSRegularExpressionAvailable == false)
     {
-        // TODO: Find a different way to do that... there must be a better way
+        // TODO: Find a different way to replace NSRegularExpression... there must be a better way
         
         @autoreleasepool
         {

@@ -10,7 +10,7 @@
 //
 //  Growl support with Applescript:
 //  http://growl.info/documentation/applescript-support.php
-//  TODO: Check if it's working
+//  TODO: Check if Growl support is working
 //
 
 #import "VMMUserNotificationCenter.h"
