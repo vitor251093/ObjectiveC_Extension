@@ -22,7 +22,11 @@
 -(void)reloadTextFileForTimer:(NSTimer*)timer
 {
     NSString* wineLog = [NSString stringWithContentsOfFile:_textFilePath encoding:_textFileEncoding];
+    NSRange priorSelectedRange = wineLog.length >= self.string.length ? self.selectedRange : NSMakeRange(0, 0);
+    
     [self setString:(wineLog != nil) ? wineLog : @""];
+    [self setSelectedRange:priorSelectedRange];
+    
     [self scrollToBottom];
 }
 -(void)startReloadingTextFileWithTimeInterval:(NSTimeInterval)interval
