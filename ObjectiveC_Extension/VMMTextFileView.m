@@ -19,13 +19,28 @@
     _runLoopMode = NSDefaultRunLoopMode;
 }
 
+-(NSString*)textFileContents
+{
+    return [NSString stringWithContentsOfFile:_textFilePath encoding:_textFileEncoding];
+}
 -(void)reloadTextFileForTimer:(NSTimer*)timer
 {
-    NSString* wineLog = [NSString stringWithContentsOfFile:_textFilePath encoding:_textFileEncoding];
+    NSString* wineLog = [self textFileContents];
     NSRange priorSelectedRange = wineLog.length >= self.string.length ? self.selectedRange : NSMakeRange(0, 0);
     
-    [self setString:(wineLog != nil) ? wineLog : @""];
-    [self setSelectedRange:priorSelectedRange];
+    if (wineLog != nil)
+    {
+        @try
+        {
+            [self setString:wineLog];
+            [self setSelectedRange:priorSelectedRange];
+        }
+        @catch (NSException* exception)
+        {
+            [self setString:@""];
+            [self setSelectedRange:NSMakeRange(0, 0)];
+        }
+    }
     
     [self scrollToBottom];
 }
@@ -49,6 +64,8 @@
     if (monitorTimer == nil) return;
     
     [monitorTimer invalidate];
+    [self setSelectable:NO];
+    [self setSelectable:YES];
     [self reloadTextFileForTimer:nil];
 }
 
