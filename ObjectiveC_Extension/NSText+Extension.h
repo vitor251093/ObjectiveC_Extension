@@ -12,15 +12,18 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NSText (VMMText)
--(void)setSelectedRangeHasTheEndOfTheField;
+-(void)setSelectedRangeAsTheBeginOfTheField;
+-(void)setSelectedRangeAsTheEndOfTheField;
 @end
 
 @interface NSTextView (VMMTextView)
 -(void)setJustifiedAttributedString:(NSAttributedString*)string withColor:(NSColor*)color;
+-(void)scrollToBottom;
 @end
 
 @interface NSTextField (VMMTextField)
--(void)setSelectedRangeHasTheEndOfTheField;
+-(void)setSelectedRangeAsTheBeginOfTheField;
+-(void)setSelectedRangeAsTheEndOfTheField;
 -(void)setAnyStringValue:(NSString*)stringValue;
 @end
 

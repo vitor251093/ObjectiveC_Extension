@@ -9,6 +9,7 @@
 #import "VMMTextFileView.h"
 
 #import "NSString+Extension.h"
+#import "NSText+Extension.h"
 #import "NSTimer+Extension.h"
 
 @implementation VMMTextFileView
@@ -22,9 +23,11 @@
 {
     NSString* wineLog = [NSString stringWithContentsOfFile:_textFilePath encoding:_textFileEncoding];
     [self setString:(wineLog != nil) ? wineLog : @""];
+    [self scrollToBottom];
 }
 -(void)startReloadingTextFileWithTimeInterval:(NSTimeInterval)interval
 {
+    [self setSelectedRangeAsTheBeginOfTheField];
     [self setString:@""];
     
     monitorTimer = [NSTimer scheduledTimerWithRunLoopMode:_runLoopMode timeInterval:interval target:self

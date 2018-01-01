@@ -13,7 +13,11 @@
 #import "VMMComputerInformation.h"
 
 @implementation NSText (VMMText)
--(void)setSelectedRangeHasTheEndOfTheField
+-(void)setSelectedRangeAsTheBeginOfTheField
+{
+    [self setSelectedRange:NSMakeRange(0,0)];
+}
+-(void)setSelectedRangeAsTheEndOfTheField
 {
     [self setSelectedRange:NSMakeRange(self.string.length,0)];
 }
@@ -36,12 +40,31 @@
     
     [[self textStorage] setAttributedString:str];
 }
+-(void)scrollToBottom
+{
+    // Reference:
+    // https://stackoverflow.com/a/28708474/4370893
+    // TODO: Find a better method; that one is better than other options, but it's still not perfect. 
+    
+    NSPoint pt = NSMakePoint(0, 100000000000.0);
+    
+    id scrollView = [self enclosingScrollView];
+    id clipView = [scrollView contentView];
+    
+    pt = [clipView constrainScrollPoint:pt];
+    [clipView scrollToPoint:pt];
+    [scrollView reflectScrolledClipView:clipView];
+}
 @end
 
 @implementation NSTextField (VMMTextField)
--(void)setSelectedRangeHasTheEndOfTheField
+-(void)setSelectedRangeAsTheBeginOfTheField
 {
-    [[self currentEditor] setSelectedRangeHasTheEndOfTheField];
+    [[self currentEditor] setSelectedRangeAsTheBeginOfTheField];
+}
+-(void)setSelectedRangeAsTheEndOfTheField
+{
+    [[self currentEditor] setSelectedRangeAsTheEndOfTheField];
 }
 -(void)setAnyStringValue:(NSString*)stringValue
 {
