@@ -11,12 +11,14 @@
 @interface VMMTextFileView : NSTextView
 {
     NSTimer *monitorTimer;
+    
+    NSString* _textFilePath;
+    NSStringEncoding _textFileEncoding;
 }
 
-@property (nonatomic, strong, nullable) NSString* textFilePath;
-@property (nonatomic) NSStringEncoding textFileEncoding;
 @property (nonatomic, nullable) NSRunLoopMode runLoopMode;
 
+-(NSString* _Nullable)textFileContents;
 -(void)showTextFileAtPath:(nonnull NSString*)filePath withEncoding:(NSStringEncoding)encoding refreshingWithTimeInterval:(NSTimeInterval)interval;
 -(void)stopRefreshing;
 

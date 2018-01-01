@@ -18,6 +18,7 @@
 
 @interface NSTextView (VMMTextView)
 -(void)setJustifiedAttributedString:(NSAttributedString*)string withColor:(NSColor*)color;
+-(void)deselectText;
 -(void)scrollToBottom;
 @end
 

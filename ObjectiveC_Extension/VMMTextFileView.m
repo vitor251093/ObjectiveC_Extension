@@ -19,7 +19,7 @@
     _runLoopMode = NSDefaultRunLoopMode;
 }
 
--(NSString*)textFileContents
+-(NSString* _Nullable)textFileContents
 {
     return [NSString stringWithContentsOfFile:_textFilePath encoding:_textFileEncoding];
 }
@@ -27,6 +27,7 @@
 {
     NSString* wineLog = [self textFileContents];
     NSRange priorSelectedRange = wineLog.length >= self.string.length ? self.selectedRange : NSMakeRange(0, 0);
+    [self deselectText];
     
     if (wineLog != nil)
     {
@@ -64,8 +65,6 @@
     if (monitorTimer == nil) return;
     
     [monitorTimer invalidate];
-    [self setSelectable:NO];
-    [self setSelectable:YES];
     [self reloadTextFileForTimer:nil];
 }
 

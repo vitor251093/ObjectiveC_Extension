@@ -40,6 +40,11 @@
     
     [[self textStorage] setAttributedString:str];
 }
+-(void)deselectText
+{
+    [self setSelectable:NO];
+    [self setSelectable:YES];
+}
 -(void)scrollToBottom
 {
     // Reference:
