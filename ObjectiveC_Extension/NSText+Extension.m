@@ -48,8 +48,7 @@
 -(void)scrollToBottom
 {
     // Reference:
-    // https://stackoverflow.com/a/28708474/4370893
-    // TODO: Find a better method; that one is better than other options, but it's still not perfect. 
+    // https://stackoverflow.com/a/28708474/4370893 
     
     NSPoint pt = NSMakePoint(0, 100000000000.0);
     
