@@ -451,8 +451,17 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 
 
-
 +(nullable NSString*)macOsVersion
+{
+    NSString* completeMacOsVersion = [self completeMacOsVersion];
+    if (completeMacOsVersion == nil) return nil;
+    
+    NSArray* components = [completeMacOsVersion componentsSeparatedByString:@"."];
+    if (components.count < 2) return nil;
+    
+    return [NSString stringWithFormat:@"%@.%@",components[0],components[1]];
+}
++(nullable NSString*)completeMacOsVersion
 {
     @synchronized(_macOsVersion)
     {

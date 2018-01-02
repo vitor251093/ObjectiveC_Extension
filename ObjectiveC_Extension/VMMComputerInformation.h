@@ -216,6 +216,7 @@
 +(NSUInteger)videoCardMemorySizeInMegabytes;
 
 +(nullable NSString*)macOsVersion;
++(nullable NSString*)completeMacOsVersion;
 +(BOOL)isSystemMacOsEqualOrSuperiorTo:(nonnull NSString*)version;
 
 +(nullable NSString*)macOsBuildVersion;
