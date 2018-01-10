@@ -158,8 +158,8 @@ static NSMutableDictionary* _macOsCompatibility;
                 if (vramSize)
                 {
                     mach_vm_size_t size = 0;
-                    CFTypeID Type = CFGetTypeID(vramSize);
-                    if (Type == CFDataGetTypeID())
+                    CFTypeID type = CFGetTypeID(vramSize);
+                    if (type == CFDataGetTypeID())
                     {
                         if (CFDataGetLength(vramSize) == sizeof(uint32_t))
                         {
@@ -170,7 +170,7 @@ static NSMutableDictionary* _macOsCompatibility;
                             size = *(const uint64_t*)CFDataGetBytePtr(vramSize);
                         }
                     }
-                    else if (Type == CFNumberGetTypeID()) CFNumberGetValue(vramSize, kCFNumberSInt64Type, &size);
+                    else if (type == CFNumberGetTypeID()) CFNumberGetValue(vramSize, kCFNumberSInt64Type, &size);
                     
                     if (vramValueInBytes) size >>= 20;
                     
