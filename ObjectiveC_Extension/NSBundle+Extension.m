@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #import <objc/runtime.h>
 
+#define BUNDLE_NAME_PLACEHOLDER @"App"
+
 static char NSBundleBundleNameKey;
 static char NSBundleBundlePathBeforeAppTranslocationKey;
 
@@ -46,17 +48,17 @@ NSBundle* _originalMainBundle;
         
         if (bundleName == nil)
         {
-            NSString* placeholder = @"App";
-            NSString* bundlePath = [self bundlePath];
-            bundleName = bundlePath ? bundlePath.stringByDeletingPathExtension.lastPathComponent : placeholder;
+            NSString* newBundleName = self.bundlePath.stringByDeletingPathExtension.lastPathComponent;
+            if (newBundleName != nil) bundleName = newBundleName;
         }
         
         if (bundleName != nil)
         {
             objc_setAssociatedObject(self, &NSBundleBundleNameKey, bundleName, OBJC_ASSOCIATION_ASSIGN);
+            return bundleName;
         }
         
-        return bundleName;
+        return BUNDLE_NAME_PLACEHOLDER;
     }
 }
 
