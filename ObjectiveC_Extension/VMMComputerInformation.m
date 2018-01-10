@@ -80,7 +80,7 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(NSMutableDictionary*)videoCardDictionaryFromIOServiceMatch
 {
-    NSMutableDictionary* graphicCardDict = [[NSMutableDictionary alloc] init];
+    NSMutableArray* graphicCardDicts = [[NSMutableArray alloc] init];
     
     CFMutableDictionaryRef matchDict = IOServiceMatching("IOPCIDevice");
     
@@ -94,6 +94,8 @@ static NSMutableDictionary* _macOsCompatibility;
                                                                   kCFAllocatorDefault, kNilOptions);
             if (gpuName && CFStringCompare(gpuName, CFSTR("display"), 0) == kCFCompareEqualTo)
             {
+                NSMutableDictionary* graphicCardDict = [[NSMutableDictionary alloc] init];
+                
                 CFMutableDictionaryRef serviceDictionary;
                 if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess)
                 {
@@ -177,6 +179,8 @@ static NSMutableDictionary* _macOsCompatibility;
                 
                 if (vramSize != NULL) CFRelease(vramSize);
                 CFRelease(serviceDictionary);
+                
+                [graphicCardDicts addObject:graphicCardDict];
             }
             
             if (gpuName != NULL) CFRelease(gpuName);
@@ -186,7 +190,17 @@ static NSMutableDictionary* _macOsCompatibility;
         IOObjectRelease(iterator);
     }
     
-    return graphicCardDict;
+    if (graphicCardDicts.count == 1) return graphicCardDicts.firstObject;
+    
+    for (NSMutableDictionary* graphicCardDict in graphicCardDicts)
+    {
+        if ([graphicCardDict[VMMVideoCardChipsetModelKey] hasPrefix:@"Intel"] == false)
+        {
+            return graphicCardDict;
+        }
+    }
+    
+    return [[NSMutableDictionary alloc] init];
 }
 +(nullable NSDictionary*)videoCardDictionary
 {
