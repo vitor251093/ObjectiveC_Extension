@@ -12,8 +12,6 @@
 
 +(nullable NSDate*)dateFromString:(nonnull NSString *)string withFormat:(nonnull NSString*)format
 {
-    if (!format || !string) return nil;
-    
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateFormat:format];
     return [df dateFromString:string];
