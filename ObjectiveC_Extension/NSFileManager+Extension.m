@@ -204,8 +204,6 @@
 
 -(nullable NSString*)checksum:(NSChecksumType)checksum ofFileAtPath:(nonnull NSString*)file
 {
-    if (file == nil) return nil;
-    
     NSString* result;
     
     @autoreleasepool
