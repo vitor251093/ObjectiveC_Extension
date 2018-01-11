@@ -68,9 +68,10 @@ NSBundle* _originalMainBundle;
     
     NSBundle* applicationInDesktopBundle = [[NSBundle alloc] initWithPath:bundlePath];
     NSString* applicationInDesktopExecutablePath = [applicationInDesktopBundle executablePath];
+    if (!applicationInDesktopExecutablePath) return false;
+    
     NSString* applicationInDesktopBinaryChecksum = [[NSFileManager defaultManager] checksum:NSChecksumTypeMD5
                                                                                ofFileAtPath:applicationInDesktopExecutablePath];
-    
     return [applicationInDesktopBinaryChecksum isEqualToString:checksum];
 }
 -(NSString*)bundlePathBeforeAppTranslocation
