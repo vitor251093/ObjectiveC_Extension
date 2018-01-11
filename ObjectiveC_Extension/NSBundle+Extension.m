@@ -61,6 +61,19 @@ NSBundle* _originalMainBundle;
         return BUNDLE_NAME_PLACEHOLDER;
     }
 }
+-(nullable NSImage*)bundleIcon
+{
+    NSString* appImageFileName = [self objectForInfoDictionaryKey:@"CFBundleIconFile"];
+    
+    if (![appImageFileName hasSuffix:@".icns"])
+        appImageFileName = [appImageFileName stringByAppendingString:@".icns"];
+    
+    NSString* appImageCompletePath = [NSString stringWithFormat:@"%@/Contents/Resources/%@",[self bundlePath],appImageFileName];
+    
+    NSImage* appImage = [[NSImage alloc] initWithContentsOfFile:appImageCompletePath];
+    
+    return appImage;
+}
 
 -(BOOL)doesBundleAtPath:(NSString*)bundlePath executableMatchesWithMD5Checksum:(NSString*)checksum
 {

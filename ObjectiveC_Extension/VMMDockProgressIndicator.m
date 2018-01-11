@@ -65,17 +65,10 @@ static VMMDockProgressIndicator* progress_bar;
         @catch(NSException* exception)
         {
             NSBundle* mainBundle = [NSBundle originalMainBundle];
-            NSString* gameImageFileName = [mainBundle objectForInfoDictionaryKey:@"CFBundleIconFile"];
-            
-            if (![gameImageFileName hasSuffix:@".icns"])
-                gameImageFileName = [gameImageFileName stringByAppendingString:@".icns"];
-            
-            NSString* gameImageCompletePath = [NSString stringWithFormat:@"%@/Contents/Resources/%@",
-                                               [mainBundle bundlePath],gameImageFileName];
             
             @try
             {
-                contentViewImage = [[NSImage alloc] initWithContentsOfFile:gameImageCompletePath];
+                contentViewImage = [mainBundle bundleIcon];
             }
             @catch(NSException* otherException)
             {
