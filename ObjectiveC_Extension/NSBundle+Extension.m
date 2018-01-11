@@ -17,7 +17,6 @@
 
 #define BUNDLE_NAME_PLACEHOLDER @"App"
 
-static char NSBundleBundleNameKey;
 static char NSBundleBundlePathBeforeAppTranslocationKey;
 
 @implementation NSBundle (VMMBundle)
@@ -28,10 +27,7 @@ NSBundle* _originalMainBundle;
 {
     @synchronized (self)
     {
-        NSString* bundleName = (NSString*)objc_getAssociatedObject(self, &NSBundleBundleNameKey);
-        if (bundleName != nil) return bundleName;
-        
-        bundleName = [self objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+        NSString* bundleName = [self objectForInfoDictionaryKey:@"CFBundleDisplayName"];
         
         if (bundleName == nil)
         {
@@ -54,7 +50,6 @@ NSBundle* _originalMainBundle;
         
         if (bundleName != nil)
         {
-            objc_setAssociatedObject(self, &NSBundleBundleNameKey, bundleName, OBJC_ASSOCIATION_ASSIGN);
             return bundleName;
         }
         
