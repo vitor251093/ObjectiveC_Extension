@@ -77,13 +77,15 @@ static VMMUserNotificationCenter *_sharedInstance;
     
     NSString* appName = [[NSBundle originalMainBundle] bundleName];
     NSArray* growlScript = @[                           @"tell application id \"com.Growl.GrowlHelperApp\"",
+                                                        @"\tset the allNotificationsList to {\"Notification\"}",
+                                                        @"\tset the enabledNotificationsList to {\"Notification\"}",
                                                         @"\tregister as application ¬",
                              [NSString stringWithFormat:@"\t\t\"%@\" all notifications allNotificationsList ¬",appName],
                                                         @"\t\tdefault notifications enabledNotificationsList ¬",
                              [NSString stringWithFormat:@"\t\ticon of application \"%@\"",appName],
                                                         @"\t",
                                                         @"\tnotify with ¬",
-            (title != nil) ? [NSString stringWithFormat:@"\t\tname \"%@\"  ¬",title] : @"\t\t¬",
+                                                        @"\t\tname \"Notification\"  ¬",
             (title != nil) ? [NSString stringWithFormat:@"\t\ttitle \"%@\"  ¬",title] : @"\t\t¬",
           (message != nil) ? [NSString stringWithFormat:@"\t\tdescription \"%@\"  ¬",message] : @"\t\t¬",
                              [NSString stringWithFormat:@"\t\tapplication name \"%@\" ¬",appName],
