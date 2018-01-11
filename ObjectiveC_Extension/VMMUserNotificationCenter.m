@@ -110,10 +110,26 @@ static VMMUserNotificationCenter *_sharedInstance;
         
         if (showAlert)
         {
-            [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
+            if (actionButton != nil)
             {
-                [alert setIcon:icon];
-            }];
+                BOOL runAction = [NSAlert confirmationDialogWithTitle:title message:message andSettings:^(NSAlert *alert)
+                {
+                    [alert.buttons.firstObject setTitle:actionButton];
+                    [alert setIcon:icon];
+                }];
+                
+                if (runAction && self.delegate != nil)
+                {
+                    [self.delegate actionButtonPressedForNotificationWithUserInfo:info];
+                }
+            }
+            else
+            {
+                [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
+                {
+                    [alert setIcon:icon];
+                }];
+            }
         }
         
         return;
