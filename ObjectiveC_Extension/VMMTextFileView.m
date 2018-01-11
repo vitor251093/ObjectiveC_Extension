@@ -58,7 +58,14 @@
     _textFilePath = filePath;
     _textFileEncoding = encoding;
     
-    [self startReloadingTextFileWithTimeInterval:interval];
+    if (interval == 0)
+    {
+        [self reloadTextFileForTimer:nil];
+    }
+    else
+    {
+        [self startReloadingTextFileWithTimeInterval:interval];
+    }
 }
 -(void)stopRefreshing
 {
