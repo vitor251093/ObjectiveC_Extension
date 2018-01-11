@@ -38,6 +38,7 @@
 @implementation VMMUserNotificationCenter
 
 static VMMUserNotificationCenter *_sharedInstance;
+static BOOL _isGrowlEnabled;
 
 +(nonnull instancetype)defaultUserNotificationCenter
 {
@@ -46,12 +47,22 @@ static VMMUserNotificationCenter *_sharedInstance;
         if (!_sharedInstance)
         {
             _sharedInstance = [[VMMUserNotificationCenter alloc] init];
+            _isGrowlEnabled = [self isGrowlAvailable];
         }
         return _sharedInstance;
     }
 }
 
--(BOOL)isGrowlAvailable
++(BOOL)isGrowlEnabled
+{
+    return _isGrowlEnabled;
+}
++(void)setGrowlEnabled:(BOOL)enabled
+{
+    _isGrowlEnabled = enabled;
+}
+
++(BOOL)isGrowlAvailable
 {
     NSArray* scriptToCheckIfGrowlExists = @[@"tell application \"System Events\"",
                                             @"\tset isRunning to ¬",
@@ -102,7 +113,7 @@ static VMMUserNotificationCenter *_sharedInstance;
     {
         BOOL showAlert = true;
         
-        if ([self isGrowlAvailable])
+        if ([VMMUserNotificationCenter isGrowlEnabled] && [VMMUserNotificationCenter isGrowlAvailable])
         {
             BOOL success = [self deliverGrowlNotificationWithTitle:title message:message icon:icon];
             if (success) showAlert = false;
@@ -110,7 +121,7 @@ static VMMUserNotificationCenter *_sharedInstance;
         
         if (showAlert)
         {
-            if (actionButton != nil)
+            if (actionButton != nil && self.delegate != nil)
             {
                 BOOL runAction = [NSAlert confirmationDialogWithTitle:title message:message andSettings:^(NSAlert *alert)
                 {
@@ -118,7 +129,7 @@ static VMMUserNotificationCenter *_sharedInstance;
                     [alert setIcon:icon];
                 }];
                 
-                if (runAction && self.delegate != nil)
+                if (runAction)
                 {
                     [self.delegate actionButtonPressedForNotificationWithUserInfo:info];
                 }
