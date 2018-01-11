@@ -47,7 +47,7 @@ static BOOL _isGrowlEnabled;
         if (!_sharedInstance)
         {
             _sharedInstance = [[VMMUserNotificationCenter alloc] init];
-            _isGrowlEnabled = [self isGrowlAvailable];
+            _isGrowlEnabled = [self isGrowlAvailable] && !IsClassNSUserNotificationCenterAvailable;
         }
         return _sharedInstance;
     }
@@ -109,77 +109,77 @@ static BOOL _isGrowlEnabled;
 
 -(void)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton
 {
-    if (IsClassNSUserNotificationCenterAvailable == false)
+    BOOL useUserNotificationCenter = IsClassNSUserNotificationCenterAvailable;
+    BOOL useGrowl = [VMMUserNotificationCenter isGrowlEnabled] && [VMMUserNotificationCenter isGrowlAvailable];
+    
+    // Growl
+    if (useGrowl)
     {
-        BOOL showAlert = true;
+        BOOL success = [self deliverGrowlNotificationWithTitle:title message:message icon:icon];
+        if (success) return;
+    }
+    
+    // NSUserNotificationCenter
+    if (useUserNotificationCenter)
+    {
+        [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:(id<NSUserNotificationCenterDelegate>)self];
         
-        if ([VMMUserNotificationCenter isGrowlEnabled] && [VMMUserNotificationCenter isGrowlAvailable])
-        {
-            BOOL success = [self deliverGrowlNotificationWithTitle:title message:message icon:icon];
-            if (success) showAlert = false;
-        }
+        NSUserNotification *notification = [[NSUserNotification alloc] init];
+        notification.title = title;
+        notification.informativeText = message;
+        notification.soundName = NSUserNotificationDefaultSoundName;
+        notification.userInfo = info ? @{NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY:info} : @{};
         
-        if (showAlert)
+        if (icon != nil)
         {
-            if (actionButton != nil && self.delegate != nil)
+            @try
             {
-                BOOL runAction = [NSAlert confirmationDialogWithTitle:title message:message andSettings:^(NSAlert *alert)
-                {
-                    [alert.buttons.firstObject setTitle:actionButton];
-                    [alert setIcon:icon];
-                }];
+                [notification setValue:icon   forKey:@"_identityImage"];
+                [notification setValue:@FALSE forKey:@"_identityImageHasBorder"];
+            }
+            @catch (NSException* exception)
+            {
+                // Avoiding API exception in case something changes in the future
                 
-                if (runAction)
+                // That feature is only available from macOS 10.9 and beyond
+                if ([notification respondsToSelector:@selector(setContentImage:)])
                 {
-                    [self.delegate actionButtonPressedForNotificationWithUserInfo:info];
+                    notification.contentImage = icon;
                 }
             }
-            else
-            {
-                [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
-                {
-                    [alert setIcon:icon];
-                }];
-            }
         }
         
+        if (actionButton != nil)
+        {
+            [notification setHasActionButton:YES];
+            [notification setActionButtonTitle:actionButton];
+        }
+        
+        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
         return;
     }
     
-    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:(id<NSUserNotificationCenterDelegate>)self];
-    
-    NSUserNotification *notification = [[NSUserNotification alloc] init];
-    notification.title = title;
-    notification.informativeText = message;
-    notification.soundName = NSUserNotificationDefaultSoundName;
-    notification.userInfo = info ? @{NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY:info} : @{};
-    
-    if (icon != nil)
+    // NSAlert
+    if (actionButton != nil && self.delegate != nil)
     {
-        @try
+        BOOL runAction = [NSAlert confirmationDialogWithTitle:title message:message andSettings:^(NSAlert *alert)
         {
-            [notification setValue:icon   forKey:@"_identityImage"];
-            [notification setValue:@FALSE forKey:@"_identityImageHasBorder"];
-        }
-        @catch (NSException* exception)
+            [alert.buttons.firstObject setTitle:actionButton];
+            [alert setIcon:icon];
+        }];
+        
+        if (runAction)
         {
-            // Avoiding API exception in case something changes in the future
-            
-            // That feature is only available from macOS 10.9 and beyond
-            if ([notification respondsToSelector:@selector(setContentImage:)])
-            {
-                notification.contentImage = icon;
-            }
+            [self.delegate actionButtonPressedForNotificationWithUserInfo:info];
         }
     }
-    
-    if (actionButton != nil)
+    else
     {
-        [notification setHasActionButton:YES];
-        [notification setActionButtonTitle:actionButton];
+        [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
+        {
+            [alert setIcon:icon];
+        }];
     }
-    
-    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
 
 -(BOOL)userNotificationCenter:(id)center shouldPresentNotification:(id)notification
