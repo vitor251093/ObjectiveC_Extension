@@ -61,7 +61,6 @@ static BOOL _isGrowlEnabled;
 {
     _isGrowlEnabled = enabled;
 }
-
 +(BOOL)isGrowlAvailable
 {
     NSArray* scriptToCheckIfGrowlExists = @[@"tell application \"System Events\"",
@@ -73,6 +72,7 @@ static BOOL _isGrowlEnabled;
     
     return growlExists.booleanValue;
 }
+
 -(BOOL)deliverGrowlNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message icon:(nullable NSImage*)icon
 {
     NSURL* iconFileUrl;
