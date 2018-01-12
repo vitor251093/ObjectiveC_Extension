@@ -86,11 +86,7 @@ NSBundle* _originalMainBundle;
 {
     @synchronized (self)
     {
-        NSString* bundlePathBeforeAppTranslocation = (NSString*)objc_getAssociatedObject(self, &NSBundleBundlePathBeforeAppTranslocationKey);
-        if (bundlePathBeforeAppTranslocation != nil && [[NSFileManager defaultManager] fileExistsAtPath:bundlePathBeforeAppTranslocation])
-        {
-            return bundlePathBeforeAppTranslocation;
-        }
+        NSString* bundlePathBeforeAppTranslocation;
         
         NSString* appBinaryPath = [self executablePath];
         NSString* appBundleFileName = [[self bundlePath] lastPathComponent];
@@ -195,12 +191,6 @@ NSBundle* _originalMainBundle;
                     break;
                 }
             }
-        }
-        
-        if (bundlePathBeforeAppTranslocation != nil)
-        {
-            objc_setAssociatedObject(self, &NSBundleBundlePathBeforeAppTranslocationKey,
-                                     bundlePathBeforeAppTranslocation, OBJC_ASSOCIATION_ASSIGN);
         }
         
         return bundlePathBeforeAppTranslocation;
