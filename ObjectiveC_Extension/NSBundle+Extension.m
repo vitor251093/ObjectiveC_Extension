@@ -17,8 +17,6 @@
 
 #define BUNDLE_NAME_PLACEHOLDER @"App"
 
-static char NSBundleBundlePathBeforeAppTranslocationKey;
-
 @implementation NSBundle (VMMBundle)
 
 NSBundle* _originalMainBundle;
