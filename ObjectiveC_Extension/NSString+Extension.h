@@ -22,7 +22,7 @@
 
 +(nonnull NSString*)humanReadableSizeForBytes:(long long int)bytes withDecimalMeasureSystem:(BOOL)measure;
 
--(nonnull NSString*)hexadecimalString;
+-(nonnull NSString*)hexadecimalUTF8String;
 +(nullable NSString*)stringWithHexadecimalUTF8String:(nonnull NSString*)string;
 
 +(nonnull NSString*)stringByRemovingEvenCharsFromString:(nonnull NSString*)text;

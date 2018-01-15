@@ -282,7 +282,7 @@
     return result;
 }
 
--(nonnull NSString*)hexadecimalString
+-(nonnull NSString*)hexadecimalUTF8String
 {
     const char* cString = [self cStringUsingEncoding:NSUTF8StringEncoding];
     NSString* hexStr = [NSString stringWithFormat:@"%@", [NSData dataWithBytes:cString length:strlen(cString)]];
