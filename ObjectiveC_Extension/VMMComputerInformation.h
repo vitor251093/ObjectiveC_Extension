@@ -183,31 +183,31 @@
 #define IsClassAVRouteDetectorAvailable                 [VMMComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.13.2"]
 
 
-#define VMMVideoCardNameKey                @"Video card name"
-#define VMMVideoCardChipsetModelKey        @"Chipset Model"
-#define VMMVideoCardBusKey                 @"Bus"
-#define VMMVideoCardMemorySizeBuiltInKey   @"VRAM (Dynamic, Max)"
-#define VMMVideoCardMemorySizePciOrPcieKey @"VRAM (Total)"
-#define VMMVideoCardVendorKey              @"Vendor"
-#define VMMVideoCardVendorIDKey            @"Vendor ID"
-#define VMMVideoCardDeviceIDKey            @"Device ID"
-
-#define VMMVideoCardTypeIntelHD   @"Intel HD"
-#define VMMVideoCardTypeIntelIris @"Intel Iris"
-#define VMMVideoCardTypeIntelGMA  @"Intel GMA"
-#define VMMVideoCardTypeATIAMD    @"ATI/AMD"
-#define VMMVideoCardTypeNVIDIA    @"NVIDIA"
-
-#define VMMVideoCardBusPCIe     @"PCIe"
-#define VMMVideoCardBusPCI      @"PCI"
-#define VMMVideoCardBusBuiltIn  @"Built-In"
-
-#define VMMVideoCardVendorIDIntel  @"0x8086"
-#define VMMVideoCardVendorIDNVIDIA @"0x10de"
-#define VMMVideoCardVendorIDATIAMD @"0x1002"
-
-
 #import <Foundation/Foundation.h>
+
+static NSString * _Nonnull const VMMVideoCardNameKey =                @"Video card name";
+static NSString * _Nonnull const VMMVideoCardChipsetModelKey =        @"Chipset Model";
+static NSString * _Nonnull const VMMVideoCardBusKey =                 @"Bus";
+static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInKey =   @"VRAM (Dynamic, Max)";
+static NSString * _Nonnull const VMMVideoCardMemorySizePciOrPcieKey = @"VRAM (Total)";
+static NSString * _Nonnull const VMMVideoCardVendorKey =              @"Vendor";
+static NSString * _Nonnull const VMMVideoCardVendorIDKey =            @"Vendor ID";
+static NSString * _Nonnull const VMMVideoCardDeviceIDKey =            @"Device ID";
+
+static NSString * _Nonnull const VMMVideoCardTypeIntelHD =   @"Intel HD";
+static NSString * _Nonnull const VMMVideoCardTypeIntelIris = @"Intel Iris";
+static NSString * _Nonnull const VMMVideoCardTypeIntelGMA =  @"Intel GMA";
+static NSString * _Nonnull const VMMVideoCardTypeATIAMD =    @"ATI/AMD";
+static NSString * _Nonnull const VMMVideoCardTypeNVIDIA =    @"NVIDIA";
+
+static NSString * _Nonnull const VMMVideoCardBusPCIe =    @"PCIe";
+static NSString * _Nonnull const VMMVideoCardBusPCI =     @"PCI";
+static NSString * _Nonnull const VMMVideoCardBusBuiltIn = @"Built-In";
+
+static NSString * _Nonnull const VMMVideoCardVendorIDIntel =  @"0x8086";
+static NSString * _Nonnull const VMMVideoCardVendorIDNVIDIA = @"0x10de";
+static NSString * _Nonnull const VMMVideoCardVendorIDATIAMD = @"0x1002";
+
 
 typedef enum VMMUserGroup
 {
