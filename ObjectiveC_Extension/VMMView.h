@@ -11,5 +11,6 @@
 @interface VMMView : NSView
 
 @property (nonatomic, strong) NSColor* backgroundColor;
+@property (nonatomic, strong) NSImage* backgroundImage;
 
 @end

@@ -13,8 +13,14 @@
 -(void)setBackgroundColor:(NSColor*)color
 {
     _backgroundColor = color;
-    [self needsDisplay];
+    [self setNeedsDisplay:YES];
 }
+-(void)setBackgroundImage:(NSImage *)backgroundImage
+{
+    _backgroundImage = backgroundImage;
+    [self setNeedsDisplay:YES];
+}
+
 -(void)drawRect:(NSRect)dirtyRect
 {
     if (_backgroundColor)
@@ -24,6 +30,12 @@
     }
     
     [super drawRect:dirtyRect];
+    
+    if (_backgroundImage)
+    {
+        [_backgroundImage setSize:self.frame.size];
+        [_backgroundImage drawAtPoint:NSZeroPoint fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1];
+    }
 }
 
 @end
