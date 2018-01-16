@@ -16,6 +16,7 @@
 //
 //  User groups references:
 //  https://apple.stackexchange.com/a/240281
+//  dscl . list /Groups PrimaryGroupID | tr -s ' ' | sort -n -t ' ' -k2,2
 //
 
 #ifndef VMMComputerInformation_Class
