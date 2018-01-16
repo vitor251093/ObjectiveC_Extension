@@ -18,15 +18,13 @@
 #import "NSArray+Extension.h"
 #import "NSString+Extension.h"
 
-#define STAFF_GROUP_MEMBER_CODE @"20"
-
 @implementation VMMComputerInformation
 
 static NSMutableDictionary* _computerGraphicCardDictionary;
 static NSString* _computerGraphicCardType;
 static NSString* _macOsVersion;
 static NSString* _macOsBuildVersion;
-static NSNumber* _userIsMemberOfStaff;
+static NSArray* _userGroups;
 
 static NSMutableDictionary* _macOsCompatibility;
 
@@ -594,23 +592,22 @@ static NSMutableDictionary* _macOsCompatibility;
     return nil;
 }
 
-+(BOOL)isUserStaffGroupMember
++(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup
 {
-    @synchronized(_userIsMemberOfStaff)
+    @synchronized(_userGroups)
     {
-        if (_userIsMemberOfStaff == nil)
+        @autoreleasepool
         {
-            @autoreleasepool
+            if (_userGroups == nil)
             {
                 // Obtaining a string with the usergroups of the current user
                 NSString* usergroupsString = [NSTask runCommand:@[@"id", @"-G"]];
                 
-                NSArray* usergroups = [usergroupsString componentsSeparatedByString:@" "];
-                _userIsMemberOfStaff = @([usergroups containsObject:STAFF_GROUP_MEMBER_CODE]);
+                _userGroups = [usergroupsString componentsSeparatedByString:@" "];
             }
+            
+            return [_userGroups containsObject:[NSString stringWithFormat:@"%d",userGroup]];
         }
-        
-        return [_userIsMemberOfStaff boolValue];
     }
     
     return NO;

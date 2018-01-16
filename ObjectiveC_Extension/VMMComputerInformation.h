@@ -5,7 +5,7 @@
 //  Created by Vitor Marques de Miranda on 22/02/17.
 //  Copyright © 2017 Vitor Marques de Miranda. All rights reserved.
 //
-//  References:
+//  System requirements references:
 //  https://developer.apple.com/library/content/releasenotes/MacOSX/WhatsNewInOSX/Articles/MacOSX10_7.html
 //  https://developer.apple.com/library/content/releasenotes/MacOSX/WhatsNewInOSX/Articles/MacOSX10_8.html
 //  https://developer.apple.com/library/content/releasenotes/MacOSX/WhatsNewInOSX/Articles/MacOSX10_9.html
@@ -13,6 +13,9 @@
 //  https://developer.apple.com/library/content/releasenotes/MacOSX/WhatsNewInOSX/Articles/MacOSX10_11.html
 //  https://developer.apple.com/library/content/releasenotes/MacOSX/WhatsNewInOSX/Articles/OSXv10.html
 //  https://developer.apple.com/library/content/releasenotes/MacOSX/WhatsNewInOSX/Articles/macOS_10_13_0.html
+//
+//  User groups references:
+//  https://apple.stackexchange.com/a/240281
 //
 
 #ifndef VMMComputerInformation_Class
@@ -205,6 +208,19 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum VMMUserGroup
+{
+    VMMUserGroupEveryone      = 12,
+    VMMUserGroupStaff         = 20,
+    VMMUserGroupInteractUsers = 51,
+    VMMUserGroupNetUsers      = 52,
+    VMMUserGroupConsoleUsers  = 53,
+    VMMUserGroupLocalAccounts = 61,
+    VMMUserGroupNetAccounts   = 62,
+    VMMUserGroupAdmin         = 80,
+    VMMUserGroupAccessibility = 90,
+} VMMUserGroup;
+
 @interface VMMComputerInformation : NSObject
 
 +(nullable NSDictionary*)videoCardDictionary;
@@ -221,7 +237,7 @@
 
 +(nullable NSString*)macOsBuildVersion;
 
-+(BOOL)isUserStaffGroupMember;
++(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup;
 
 @end
 
