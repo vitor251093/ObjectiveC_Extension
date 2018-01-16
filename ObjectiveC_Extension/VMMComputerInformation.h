@@ -218,7 +218,7 @@ typedef enum VMMUserGroup
     VMMUserGroupConsoleUsers  = 53,
     VMMUserGroupLocalAccounts = 61,
     VMMUserGroupNetAccounts   = 62,
-    VMMUserGroupAdmin         = 80,
+    VMMUserGroupAdmin         = 80, // Admin rights
     VMMUserGroupAccessibility = 90,
 } VMMUserGroup;
 
