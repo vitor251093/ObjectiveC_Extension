@@ -212,7 +212,7 @@ static NSString * _Nonnull const VMMVideoCardVendorIDATIAMD = @"0x1002";
 typedef enum VMMUserGroup
 {
     VMMUserGroupEveryone      = 12,
-    VMMUserGroupStaff         = 20,
+    VMMUserGroupStaff         = 20, // root
     VMMUserGroupInteractUsers = 51,
     VMMUserGroupNetUsers      = 52,
     VMMUserGroupConsoleUsers  = 53,
