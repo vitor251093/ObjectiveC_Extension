@@ -13,6 +13,7 @@
 #include <IOKit/usb/IOUSBLib.h>
 
 #define VMMDeviceObserverTypesKeyboard  @[@(kHIDUsage_GD_Keyboard), @(kHIDUsage_GD_Keypad)]
+#define VMMDeviceObserverTypesJoystick  @[@(kHIDUsage_GD_Joystick), @(kHIDUsage_GD_GamePad), @(kHIDUsage_GD_MultiAxisController)]
 
 @protocol VMMDeviceObserverDelegate
 @property (nonatomic, nullable) IOHIDManagerRef hidManager;
