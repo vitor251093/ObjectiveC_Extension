@@ -108,7 +108,7 @@
 		4EAD49251FBBB5AE008B562F /* NSColorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD49241FBBB5AE008B562F /* NSColorTests.m */; };
 		4EB392E11FC479060098F987 /* VMMTextFileView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EB392DF1FC479060098F987 /* VMMTextFileView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EB392E21FC479060098F987 /* VMMTextFileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EB392E01FC479060098F987 /* VMMTextFileView.m */; };
-		4ECB93A620289E4B00F0A369 /* VMMParentalControls.h in Headers */ = {isa = PBXBuildFile; fileRef = 4ECB93A420289E4B00F0A369 /* VMMParentalControls.h */; };
+		4ECB93A620289E4B00F0A369 /* VMMParentalControls.h in Headers */ = {isa = PBXBuildFile; fileRef = 4ECB93A420289E4B00F0A369 /* VMMParentalControls.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4ECB93A720289E4B00F0A369 /* VMMParentalControls.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ECB93A520289E4B00F0A369 /* VMMParentalControls.m */; };
 		4EEBF4701FAE238F00CE31A0 /* NSMutableString+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EEBF46E1FAE238F00CE31A0 /* NSMutableString+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EEBF4711FAE238F00CE31A0 /* NSMutableString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EEBF46F1FAE238F00CE31A0 /* NSMutableString+Extension.m */; };
@@ -485,7 +485,6 @@
 				4E6C52251F7E911000A187E9 /* NSColor+Extension.h in Headers */,
 				4E6C52451F7E911000A187E9 /* NSThread+Extension.h in Headers */,
 				4E6C52391F7E911000A187E9 /* NSMutableURLRequest+Extension.h in Headers */,
-				4ECB93A620289E4B00F0A369 /* VMMParentalControls.h in Headers */,
 				4E6C52291F7E911000A187E9 /* NSDateFormatter+Extension.h in Headers */,
 				4E6C51181F7E8EB700A187E9 /* ObjectiveC_Extension.h in Headers */,
 				4E6C526D1F7E953A00A187E9 /* VMMVersion.h in Headers */,
@@ -526,6 +525,7 @@
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
 				4E9986701FEEC85600E434E4 /* NSApplication+Extension.h in Headers */,
 				4E34B2F41FD879DE001F0B4F /* VMMLocalizationUtility.h in Headers */,
+				4ECB93A620289E4B00F0A369 /* VMMParentalControls.h in Headers */,
 				4E6C51EE1F7E90A300A187E9 /* VMMUsageKeycode.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
 				4E6C525D1F7E944F00A187E9 /* SZJsonParser.h in Headers */,
