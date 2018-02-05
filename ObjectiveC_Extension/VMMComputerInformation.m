@@ -388,7 +388,7 @@ static NSMutableDictionary* _macOsCompatibility;
         NSString* videoCardType = [self videoCardType];
         if (videoCardType != nil)
         {
-            if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
+            if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelUHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
             {
                 localVendorID = VMMVideoCardVendorIDIntel; // Intel Vendor ID
             }
