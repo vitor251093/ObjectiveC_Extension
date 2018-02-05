@@ -30,4 +30,7 @@ typedef enum VMMParentalControlsItunesGamesAgeRestriction
 +(BOOL)isAppRestrictionEnabled;
 +(BOOL)isAppUseRestricted:(NSString*)appPath;
 
++(BOOL)isInternetUseRestricted;
++(BOOL)isWebsiteAllowed:(NSString*)websiteAddress;
+
 @end

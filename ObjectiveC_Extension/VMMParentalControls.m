@@ -54,10 +54,10 @@
 }
 +(VMMParentalControlsItunesGamesAgeRestriction)iTunesAgeRestrictionForGames
 {
-    NSString* valueString = [self parentalControlsValueForAppWithDomain:@"com.apple.iTunes" keyName:@"gamesLimit"];
-    if (valueString == nil || [valueString isKindOfClass:[NSString class]] == FALSE) return VMMParentalControlsItunesGamesAgeRestrictionNone;
+    NSNumber* valueNumber = [self parentalControlsValueForAppWithDomain:@"com.apple.iTunes" keyName:@"gamesLimit"];
+    if (valueNumber == nil || [valueNumber isKindOfClass:[NSNumber class]] == FALSE) return VMMParentalControlsItunesGamesAgeRestrictionNone;
     
-    NSInteger value = valueString.integerValue;
+    NSInteger value = valueNumber.integerValue;
     if (value == 0) return VMMParentalControlsItunesGamesAgeRestrictionNone;
     
     return (VMMParentalControlsItunesGamesAgeRestriction)value;
@@ -65,13 +65,10 @@
 
 +(BOOL)isAppRestrictionEnabled
 {
-    NSString* valueString = [self parentalControlsValueForAppWithDomain:@"com.apple.applicationaccess.new" keyName:@"familyControlsEnabled"];
-    if (valueString == nil || [valueString isKindOfClass:[NSString class]] == FALSE) return FALSE;
+    NSNumber* valueNumber = [self parentalControlsValueForAppWithDomain:@"com.apple.applicationaccess.new" keyName:@"familyControlsEnabled"];
+    if (valueNumber == nil || [valueNumber isKindOfClass:[NSNumber class]] == FALSE) return FALSE;
     
-    NSInteger value = valueString.integerValue;
-    if (value == 0) return FALSE;
-    
-    return TRUE;
+    return valueNumber.boolValue;
 }
 +(BOOL)isAppUseRestricted:(NSString*)appPath
 {
@@ -86,6 +83,44 @@
     }
     
     return TRUE;
+}
+
++(BOOL)isInternetUseRestricted
+{
+    NSNumber* whiteListEnabled = [self parentalControlsValueForAppWithDomain:@"com.apple.familycontrols.contentfilter"
+                                                                     keyName:@"whitelistEnabled"];
+    if (whiteListEnabled == nil || [whiteListEnabled isKindOfClass:[NSNumber class]] == FALSE) return FALSE;
+    
+    return whiteListEnabled.boolValue;
+}
++(BOOL)isWebsiteAllowed:(NSString*)websiteAddress
+{
+    if ([self isInternetUseRestricted] == FALSE) return TRUE;
+    
+    NSArray* whiteList = [self parentalControlsValueForAppWithDomain:@"com.apple.familycontrols.contentfilter" keyName:@"siteWhitelist"];
+    if (whiteList == nil || [whiteList isKindOfClass:[NSArray class]] == FALSE) return TRUE;
+    
+    NSArray* blackList = [self parentalControlsValueForAppWithDomain:@"com.apple.familycontrols.contentfilter" keyName:@"filterBlacklist"];
+    if (blackList == nil || [blackList isKindOfClass:[NSArray class]] == FALSE) return TRUE;
+    
+    for (NSString* blackListItemAddress in blackList)
+    {
+        if ([websiteAddress hasPrefix:blackListItemAddress])
+        {
+            return FALSE;
+        }
+    }
+    
+    for (NSDictionary* whiteListItem in whiteList)
+    {
+        NSString* whiteListItemAddress = whiteListItem[@"address"];
+        if (whiteListItemAddress != nil && [websiteAddress hasPrefix:whiteListItemAddress])
+        {
+            return TRUE;
+        }
+    }
+    
+    return FALSE;
 }
 
 @end
