@@ -195,6 +195,7 @@ static NSString * _Nonnull const VMMVideoCardVendorIDKey =            @"Vendor I
 static NSString * _Nonnull const VMMVideoCardDeviceIDKey =            @"Device ID";
 
 static NSString * _Nonnull const VMMVideoCardTypeIntelHD =    @"Intel HD";
+static NSString * _Nonnull const VMMVideoCardTypeIntelUHD =   @"Intel UHD";
 static NSString * _Nonnull const VMMVideoCardTypeIntelIris =  @"Intel Iris";
 static NSString * _Nonnull const VMMVideoCardTypeIntelGMA =   @"Intel GMA";
 static NSString * _Nonnull const VMMVideoCardTypeATIAMD =     @"ATI/AMD";

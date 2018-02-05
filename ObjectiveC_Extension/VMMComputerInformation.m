@@ -345,6 +345,7 @@ static NSMutableDictionary* _macOsCompatibility;
                 if ([graphicCardModelComponents containsObject:@"INTEL"])
                 {
                     if ([graphicCardModelComponents containsObject:@"HD"])   _computerGraphicCardType = VMMVideoCardTypeIntelHD;
+                    if ([graphicCardModelComponents containsObject:@"UHD"])  _computerGraphicCardType = VMMVideoCardTypeIntelUHD;
                     if ([graphicCardModelComponents containsObject:@"IRIS"]) _computerGraphicCardType = VMMVideoCardTypeIntelIris;
                 }
                 
