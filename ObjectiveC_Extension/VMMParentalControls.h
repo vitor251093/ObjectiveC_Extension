@@ -24,7 +24,8 @@ typedef enum VMMParentalControlsItunesGamesAgeRestriction
 
 +(id)parentalControlsValueForAppWithDomain:(NSString*)appDomain keyName:(NSString*)keyName;
 
-+(VMMParentalControlsItunesGamesAgeRestriction)iTunesUserAgeRestrictionForGames;
++(BOOL)iTunesMatureGamesAllowed;
++(VMMParentalControlsItunesGamesAgeRestriction)iTunesAgeRestrictionForGames;
 
 +(BOOL)isAppRestrictionEnabled;
 +(BOOL)isAppUseRestricted:(NSString*)appPath;

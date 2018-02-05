@@ -46,7 +46,13 @@
     }
 }
 
-+(VMMParentalControlsItunesGamesAgeRestriction)iTunesUserAgeRestrictionForGames
++(BOOL)iTunesMatureGamesAllowed
+{
+    VMMParentalControlsItunesGamesAgeRestriction value = [self iTunesAgeRestrictionForGames];
+    return value == VMMParentalControlsItunesGamesAgeRestrictionNone ||
+           value == VMMParentalControlsItunesGamesAgeRestriction17;
+}
++(VMMParentalControlsItunesGamesAgeRestriction)iTunesAgeRestrictionForGames
 {
     NSString* valueString = [self parentalControlsValueForAppWithDomain:@"com.apple.iTunes" keyName:@"gamesLimit"];
     if (valueString == nil || [valueString isKindOfClass:[NSString class]] == FALSE) return VMMParentalControlsItunesGamesAgeRestrictionNone;
