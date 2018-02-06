@@ -16,18 +16,15 @@ static NSString* _Nonnull const VMMParentalControlsAppDomainItunes            = 
 static NSString* _Nonnull const VMMParentalControlsAppDomainApplicationAccess = @"com.apple.applicationaccess.new";
 static NSString* _Nonnull const VMMParentalControlsAppDomainContentFilter     = @"com.apple.familycontrols.contentfilter";
 
-static NSString* _Nonnull const VMMParentalControlsItunesGamesAgeLimit = @"gamesLimit";
-
+static NSString* _Nonnull const VMMParentalControlsItunesGamesAgeLimit                   = @"gamesLimit";
 static NSString* _Nonnull const VMMParentalControlsApplicationAccessFamilyControlEnabled = @"familyControlsEnabled";
 static NSString* _Nonnull const VMMParentalControlsApplicationAccessWhiteList            = @"whiteList";
-
-static NSString* _Nonnull const VMMParentalControlsContentFilterWhiteListEnabled = @"whitelistEnabled";
-static NSString* _Nonnull const VMMParentalControlsContentFilterWhiteList        = @"siteWhitelist";
-static NSString* _Nonnull const VMMParentalControlsContentFilterBlackList        = @"filterBlacklist";
+static NSString* _Nonnull const VMMParentalControlsContentFilterWhiteListEnabled         = @"whitelistEnabled";
+static NSString* _Nonnull const VMMParentalControlsContentFilterWhiteList                = @"siteWhitelist";
+static NSString* _Nonnull const VMMParentalControlsContentFilterBlackList                = @"filterBlacklist";
 
 static NSString* _Nonnull const VMMParentalControlsApplicationAccessWhiteListPath = @"path";
-
-static NSString* _Nonnull const VMMParentalControlsContentFilterWhiteListAddress = @"address";
+static NSString* _Nonnull const VMMParentalControlsContentFilterWhiteListAddress  = @"address";
 
 @implementation VMMParentalControls
 
