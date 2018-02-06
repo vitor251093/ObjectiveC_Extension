@@ -8,9 +8,9 @@
 
 #import "NSMutableURLRequest+Extension.h"
 
-#define RFC2822_STANDARD             @"EEE, dd MMM yyyy HH:mm:ss Z"
-#define RFC2822_LOCALE               @"en_US_POSIX"
-#define IF_MODIFIED_SINCE_HEADER     @"If-Modified-Since"
+static NSString* const RFC2822_STANDARD             = @"EEE, dd MMM yyyy HH:mm:ss Z";
+static NSString* const RFC2822_LOCALE               = @"en_US_POSIX";
+static NSString* const IF_MODIFIED_SINCE_HEADER     = @"If-Modified-Since";
 
 @implementation NSMutableURLRequest (VMMMutableURLRequest)
 

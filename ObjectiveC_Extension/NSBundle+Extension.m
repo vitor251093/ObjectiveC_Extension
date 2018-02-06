@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #import <objc/runtime.h>
 
-#define BUNDLE_NAME_PLACEHOLDER @"App"
+static NSString* const BUNDLE_NAME_PLACEHOLDER = @"App";
 
 @implementation NSBundle (VMMBundle)
 

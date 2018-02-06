@@ -23,7 +23,7 @@
 #import "NSImage+Extension.h"
 #import "VMMUUID.h"
 
-#define NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY @"info"
+static NSString* const NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY = @"info";
 
 @interface NSUserNotification (NSUserNotificationPrivate)
 
