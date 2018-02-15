@@ -85,13 +85,15 @@ static void Handle_DeviceRemovalCallback (void *inContext, IOReturn inResult, vo
 }
 static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, void *inSender, IOHIDValueRef value)
 {
-    IOHIDElementRef element = IOHIDValueGetElement(value);      // Key
+    IOHIDElementRef element = IOHIDValueGetElement(value);      // Pressed key
+    if (element == NULL) return;
+    
     IOHIDDeviceRef device = IOHIDElementGetDevice(element);     // Device
     if (device == NULL) return;
     
-    IOHIDElementCookie cookie = IOHIDElementGetCookie(element); // Cookie of key
-    uint32_t usage = IOHIDElementGetUsage(element);             // Usage of key
-    CFIndex elementValue = IOHIDValueGetIntegerValue(value);    // Actual state of key
+    CFIndex elementValue = IOHIDValueGetIntegerValue(value);    // Actual state of the pressed key
+    IOHIDElementCookie cookie = IOHIDElementGetCookie(element); // Cookie of the pressed key
+    uint32_t usage = IOHIDElementGetUsage(element);             // Usage of the pressed key
     CFStringRef name = IOHIDElementGetName(element);
     
     //NSDebugLog(@"Device ID = %p; Cookie = %u; Usage = %u; Value = %ld", (void*)device, cookie, usage, elementValue);
