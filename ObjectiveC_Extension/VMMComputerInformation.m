@@ -277,11 +277,11 @@ static NSMutableDictionary* _macOsCompatibility;
         }
     }
     
-    return localVendorID;
+    return localVendorID.lowercaseString;
 }
 +(nullable NSString*)videoCardDeviceID
 {
-    return self.videoCardDictionary[VMMVideoCardDeviceIDKey];
+    return [self.videoCardDictionary[VMMVideoCardDeviceIDKey] lowercaseString];
 }
 +(nullable NSString*)videoCardName
 {
@@ -307,6 +307,15 @@ static NSMutableDictionary* _macOsCompatibility;
     if (validChipsetModel == true && (validVideoCardName == false || videoCardName.length < chipsetModel.length))
     {
         videoCardName = chipsetModel;
+    }
+    
+    if (videoCardName == nil)
+    {
+        if ([[self videoCardDeviceID]                              isEqualToString:VMMVideoCardDeviceIDVirtualBox] &&
+            [[self videoCardVendorIDFromVendorAndVendorIDKeysOnly] isEqualToString:VMMVideoCardVendorIDVirtualBox])
+        {
+            videoCardName = VMMVideoCardNameVirtualBox;
+        }
     }
     
     return videoCardName;
@@ -368,8 +377,9 @@ static NSMutableDictionary* _macOsCompatibility;
             if (_computerGraphicCardType == nil)
             {
                 NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDATIAMD]) _computerGraphicCardType = VMMVideoCardTypeATIAMD;
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDATIAMD])     _computerGraphicCardType = VMMVideoCardTypeATIAMD;
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA])     _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDVirtualBox]) _computerGraphicCardType = VMMVideoCardTypeVirtualBox;
             }
         }
         
