@@ -50,7 +50,17 @@ static NSString* _Nonnull const VMMParentalControlsContentFilterWhiteListAddress
         if (dsclOutputString == nil || dsclOutputString.length == 0) return nil;
         
         NSData* dsclOutputData = [dsclOutputString dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary* dsclOutput = (NSDictionary*)[NSKeyedUnarchiver unarchiveObjectWithData:dsclOutputData];
+        NSDictionary* dsclOutput;
+        
+        @try
+        {
+            dsclOutput = (NSDictionary*)[NSKeyedUnarchiver unarchiveObjectWithData:dsclOutputData];
+        }
+        @catch (NSException* exception)
+        {
+            return nil;
+        }
+        
         if ([dsclOutput isKindOfClass:[NSDictionary class]] == FALSE) return nil;
         
         NSDictionary* dict = dsclOutput[appDomain][keyName];
