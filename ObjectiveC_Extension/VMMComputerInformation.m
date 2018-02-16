@@ -283,6 +283,7 @@ static NSMutableDictionary* _macOsCompatibility;
 {
     return [self.videoCardDictionary[VMMVideoCardDeviceIDKey] lowercaseString];
 }
+
 +(nullable NSString*)videoCardName
 {
     NSDictionary* videoCardDictionary = self.videoCardDictionary;
