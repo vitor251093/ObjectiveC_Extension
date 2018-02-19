@@ -210,6 +210,14 @@ Returns a copy of the existing array removing duplicates of the same element. No
 
 Returns a copy of the existing array, but without the elements that are present in the other array.
 
+### NSApplication
+
+```objectivec
++(void)restart;
+```
+
+Restarts the application.
+
 ### NSAttributedString
 
 ```objectivec
@@ -229,6 +237,38 @@ Init a `NSAttributedString` using a `NSString` with a HTML page.
 ```
 
 Returns an HTML page with the text and formatting of the `NSAttributedString` object.
+
+### NSBundle
+
+```objectivec
+-(nonnull NSString*)bundleName;
+```
+
+Returns the name of the bundle. It returns the first non-nil value from those: CFBundleDisplayName from Info.plist, CFBundleName from Info.plist, `getprogname()`, the bundle path last component with no extension, `@"App"`.
+
+```objectivec
+-(nullable NSImage*)bundleIcon;
+```
+
+Returns the icon of the bundle.
+
+```objectivec
+-(BOOL)isAppTranslocationActive;
+```
+
+Checks if the app is being executed in App Translocation.
+
+```objectivec
+-(BOOL)disableAppTranslocation;
+```
+
+Disable App Translocation in the app at the bundle path.
+
+```objectivec
++(nullable NSBundle*)originalMainBundle;
+```
+
+Returns the `NSBundle` of the original bundle, not App Translocated, in case the app is App Translocated. If the app isn't App Translocated, it returns the `mainBundle`.
 
 ### NSColor
 
@@ -444,37 +484,37 @@ Equivalent to `alloc` + `initWithTitle:action:keyEquivalent:` + `setTarget:`, wi
 Used to retrieve informations about the computer hardware and software.
 
 ```objectivec
-+(NSDictionary*)graphicCardDictionary;
++(nullable NSDictionary*)videoCardDictionary;
 ```
 
 Dictionary with the informations available with the command `system_profiler SPDisplaysDataType` about the computer main graphic card. 
 
 ```objectivec
-+(NSString*)graphicCardName;
++(nullable NSString*)videoCardName;
 ```
 
 Model name of the computer main graphic card.
 
 ```objectivec
-+(NSString*)graphicCardType;
++(nullable NSString*)videoCardType;
 ```
 
 Type of the computer main graphic card (Intel HD, Intel Iris, Intel GMA, NVIDIA or ATi/AMD). 
 
 ```objectivec
-+(NSString*)graphicCardDeviceID;
++(nullable NSString*)videoCardDeviceID;
 ```
 
 Device ID of the computer main graphic card.
 
 ```objectivec
-+(NSString*)graphicCardVendorID;
++(nullable NSString*)videoCardVendorID;
 ```
 
 Vendor ID of the computer main graphic card.
 
 ```objectivec
-+(NSString*)graphicCardMemorySize;
++(NSUInteger)videoCardMemorySizeInMegabytes;
 ```
 
 Memory size of the computer main graphic card.
@@ -510,10 +550,111 @@ IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR
 Defines that use `isSystemMacOsEqualOrSuperiorTo:`. Requires non-sandboxed application.
 
 ```objectivec
-+(BOOL)isUserStaffGroupMember;
++(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup;
 ```
 
-Returns true if the user is member of the staff group in his computer.
+Returns true if the user is member of a specific user group in his computer.
+
+### VMMParentalControls
+Used to check if there is any Parental Control restrictions to the actual user.
+
+```objectivec
++(BOOL)isEnabled;
+```
+
+Check if Parental Controls are enabled for the actual users.
+
+```objectivec
++(BOOL)iTunesMatureGamesAllowed;
+```
+
+Return `true` if the user is allowed to play mature rated games.
+
+```objectivec
++(VMMParentalControlsItunesGamesAgeRestriction)iTunesAgeRestrictionForGames;
+```
+
+Return the user age restriction for games (None, 4+, 9+, 12+ or 17+).
+
+```objectivec
++(BOOL)isAppRestrictionEnabled;
+```
+
+Return `true` if the user is restricted to use only specific apps.
+
+```objectivec
++(BOOL)isAppUseRestricted:(NSString*)appPath;
+```
+
+Return `false` if the user is allowed to use the app at the specified path.
+
+```objectivec
++(BOOL)isInternetUseRestricted;
+```
+
+Return `true` if the user internet access is restricted in some way.
+
+```objectivec
++(BOOL)isWebsiteAllowed:(NSString*)websiteAddress;
+```
+
+Return `true` if the user can access a specific web address.
+
+
+### VMMUserNotificationCenter
+Replacement for `NSUserNotificationCenter`, which uses `NSUserNotificationCenter` if available, but still shows the message in macOS 10.6 and 10.7.
+
+```objectivec
++(nonnull instancetype)defaultUserNotificationCenter;
+```
+
+Shared instance of `VMMUserNotificationCenter`.
+
+```objectivec
+@property (nonatomic, nullable) id<VMMUserNotificationCenterDelegate> delegate;
+```
+
+Delegate of the `VMMUserNotificationCenter` instance.
+
+```objectivec
++(BOOL)isGrowlEnabled;
+```
+
+Checks if the use of Growl to send notifications is enabled or not. Growl is enabled by default only if the macOS version is 10.7- and Growl is available.
+
+```objectivec
++(void)setGrowlEnabled:(BOOL)enabled;
+```
+
+Force `VMMUserNotificationCenter` to use Growl. That may result in an error if Growl is unavailable.
+
+```objectivec
++(BOOL)isGrowlAvailable;
+```
+
+Check if Growl is installed in the user machine.
+
+```objectivec
+-(BOOL)deliverGrowlNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message icon:(nullable NSImage*)icon;
+```
+
+Sends Growl notification with a specific title, message and icon. An icon can only be used in macOS 10.6. The function returns `true` if the notification was shown succesfully.
+
+```objectivec
+-(void)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton;
+```
+
+Sends a notification with a specific title, message and icon, with an user information and a title for the action button. It sends a Growl notification only if it's enabled. If it's disabled, a `NSUserNotificationCenter`  notification if it's available; otherwise, it shows a regular `NSAlert` with the message. That function warranties that the user will receive the message.
+
+#### VMMUserNotificationCenterDelegate (Protocol)
+Protocol for `VMMUserNotificationCenter`  delegate.
+
+```objectivec
+-(void)actionButtonPressedForNotificationWithUserInfo:(nullable NSObject*)userInfo;
+```
+
+If `NSUserNotificationCenter` or `NSAlert` is used, that function is called when the action button is pressed, and the user information is provided.
+
 
 ### NKFTPManager
 
