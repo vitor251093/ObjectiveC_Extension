@@ -204,7 +204,7 @@ NSBundle* _originalMainBundle;
 }
 -(BOOL)disableAppTranslocation
 {
-    NSString* originalPath = [self bundlePathBeforeAppTranslocation];
+    NSString* originalPath = [self bundlePath];
     if (originalPath == nil) return false;
     
     [NSTask runProgram:@"xattr" withFlags:@[@"-r",@"-d",@"com.apple.quarantine",originalPath]];
