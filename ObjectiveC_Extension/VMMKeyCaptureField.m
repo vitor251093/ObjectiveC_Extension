@@ -9,6 +9,7 @@
 #import "VMMKeyCaptureField.h"
 
 #import "VMMUsageKeycode.h"
+#import "VMMLocalizationUtility.h"
 
 static VMMKeyCaptureField* _activeKeyCaptureField;
 
@@ -97,7 +98,7 @@ static VMMKeyCaptureField* _activeKeyCaptureField;
     
     _keyUsageKeycode = keyUsageKeycode;
     NSString* keyName = [VMMUsageKeycode nameOfUsageKeycode:keyUsageKeycode];
-    [self setStringValue:keyName ? keyName : [NSString stringWithFormat:@"Unknown Key (%d)",keyUsageKeycode]];
+    [self setStringValue:keyName ? keyName : [NSString stringWithFormat:VMMLocalizedString(@"Unknown Key (%d)"),keyUsageKeycode]];
 }
 
 -(IBAction)clearField:(id)sender
