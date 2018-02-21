@@ -215,9 +215,9 @@ static NSString * _Nonnull const VMMVideoCardTypeVirtualBox =     @"VirtualBox";
 static NSString * _Nonnull const VMMVideoCardVendorIDVirtualBox = @"0x80ee";
 static NSString * _Nonnull const VMMVideoCardDeviceIDVirtualBox = @"0xbeef";
 
-static NSString * _Nonnull const VMMVideoCardNameVMware =     @"VMware";
-static NSString * _Nonnull const VMMVideoCardTypeVMware =     @"VMware";
-static NSString * _Nonnull const VMMVideoCardVendorIDVMware = @"0x15ad";
+static NSString * _Nonnull const VMMVideoCardNameVMware =         @"VMware";
+static NSString * _Nonnull const VMMVideoCardTypeVMware =         @"VMware";
+static NSString * _Nonnull const VMMVideoCardVendorIDVMware =     @"0x15ad";
 
 
 typedef enum VMMUserGroup
@@ -235,12 +235,41 @@ typedef enum VMMUserGroup
 
 @interface VMMComputerInformation : NSObject
 
+/*!
+ * @discussion  Returns a dictionary with information related with the main video card.
+ * @return      A Dictionary with the system_profiler information related with the main video card.
+ */
 +(nullable NSDictionary*)videoCardDictionary;
 
+
+/*!
+ * @discussion  Returns the Device ID (eg. 0x1234) of the main video card.
+ * @return      The Device ID (eg. 0x1234) of the main video card.
+ */
 +(nullable NSString*)videoCardDeviceID;
+
+/*!
+ * @discussion  Returns the name of the main video card.
+ * @return      The name of the main video card.
+ */
 +(nullable NSString*)videoCardName;
+
+/*!
+ * @discussion  Returns the type (eg. Intel Iris) of the main video card.
+ * @return      The type (eg. Intel Iris) of the main video card.
+ */
 +(nullable NSString*)videoCardType;
+
+/*!
+ * @discussion  Returns the Vendor ID (eg. 0x8086) of the main video card.
+ * @return      The Vendor ID (eg. 0x8086) of the main video card.
+ */
 +(nullable NSString*)videoCardVendorID;
+
+/*!
+ * @discussion  Returns the VRAM size of the main video card in Megabytes.
+ * @return      The VRAM size of the main video card in Megabytes.
+ */
 +(NSUInteger)videoCardMemorySizeInMegabytes;
 
 +(nullable NSString*)macOsVersion;
