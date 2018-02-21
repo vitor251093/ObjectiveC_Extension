@@ -322,6 +322,11 @@ static NSMutableDictionary* _macOsCompatibility;
         {
             videoCardName = VMMVideoCardNameVMware;
         }
+        
+        if ([[self videoCardVendorIDFromVendorAndVendorIDKeysOnly] isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
+        {
+            videoCardName = VMMVideoCardNameParallelsDesktop;
+        }
     }
     
     return videoCardName;
@@ -383,10 +388,21 @@ static NSMutableDictionary* _macOsCompatibility;
             if (_computerGraphicCardType == nil)
             {
                 NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDATIAMD])     _computerGraphicCardType = VMMVideoCardTypeATIAMD;
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA])     _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDVirtualBox]) _computerGraphicCardType = VMMVideoCardTypeVirtualBox;
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDVMware])     _computerGraphicCardType = VMMVideoCardTypeVMware;
+                
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDATIAMD])
+                    _computerGraphicCardType = VMMVideoCardTypeATIAMD;
+                
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA])
+                    _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
+                
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDVirtualBox])
+                    _computerGraphicCardType = VMMVideoCardTypeVirtualBox;
+                
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDVMware])
+                    _computerGraphicCardType = VMMVideoCardTypeVMware;
+                
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
+                    _computerGraphicCardType = VMMVideoCardTypeParallelsDesktop;
             }
         }
         

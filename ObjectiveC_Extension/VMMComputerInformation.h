@@ -210,14 +210,18 @@ static NSString * _Nonnull const VMMVideoCardVendorIDIntel =  @"0x8086";
 static NSString * _Nonnull const VMMVideoCardVendorIDNVIDIA = @"0x10de";
 static NSString * _Nonnull const VMMVideoCardVendorIDATIAMD = @"0x1002";
 
-static NSString * _Nonnull const VMMVideoCardNameVirtualBox =     @"VirtualBox";
-static NSString * _Nonnull const VMMVideoCardTypeVirtualBox =     @"VirtualBox";
-static NSString * _Nonnull const VMMVideoCardVendorIDVirtualBox = @"0x80ee";
-static NSString * _Nonnull const VMMVideoCardDeviceIDVirtualBox = @"0xbeef";
+static NSString * _Nonnull const VMMVideoCardNameVirtualBox =           @"VirtualBox VM";
+static NSString * _Nonnull const VMMVideoCardTypeVirtualBox =           @"VirtualBox";
+static NSString * _Nonnull const VMMVideoCardVendorIDVirtualBox =       @"0x80ee";
+static NSString * _Nonnull const VMMVideoCardDeviceIDVirtualBox =       @"0xbeef";
 
-static NSString * _Nonnull const VMMVideoCardNameVMware =         @"VMware";
-static NSString * _Nonnull const VMMVideoCardTypeVMware =         @"VMware";
-static NSString * _Nonnull const VMMVideoCardVendorIDVMware =     @"0x15ad";
+static NSString * _Nonnull const VMMVideoCardNameVMware =               @"VMware VM";
+static NSString * _Nonnull const VMMVideoCardTypeVMware =               @"VMware";
+static NSString * _Nonnull const VMMVideoCardVendorIDVMware =           @"0x15ad";
+
+static NSString * _Nonnull const VMMVideoCardNameParallelsDesktop =     @"Parallels Desktop VM";
+static NSString * _Nonnull const VMMVideoCardTypeParallelsDesktop =     @"Parallels Desktop";
+static NSString * _Nonnull const VMMVideoCardVendorIDParallelsDesktop = @"0x1ab8";
 
 
 typedef enum VMMUserGroup
