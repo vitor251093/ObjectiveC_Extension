@@ -187,6 +187,7 @@
 
 static NSString * _Nonnull const VMMVideoCardNameKey =                @"Video card name";
 static NSString * _Nonnull const VMMVideoCardChipsetModelKey =        @"Chipset Model";
+static NSString * _Nonnull const VMMVideoCardTypeKey =                @"Type";
 static NSString * _Nonnull const VMMVideoCardBusKey =                 @"Bus";
 static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInKey =   @"VRAM (Dynamic, Max)";
 static NSString * _Nonnull const VMMVideoCardMemorySizePciOrPcieKey = @"VRAM (Total)";
