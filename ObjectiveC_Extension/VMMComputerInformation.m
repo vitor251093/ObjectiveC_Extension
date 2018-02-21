@@ -423,30 +423,42 @@ static NSMutableDictionary* _macOsCompatibility;
 +(nullable NSString*)videoCardVendorID
 {
     NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
-    
-    if (localVendorID == nil)
+    if (localVendorID != nil)
     {
-        NSString* videoCardType = [self videoCardType];
-        if (videoCardType != nil)
+        if ([localVendorID isEqualToString:VMMVideoCardVendorIDIntel])                  return localVendorID;
+        if ([localVendorID isEqualToString:VMMVideoCardVendorIDATIAMD])                 return localVendorID;
+        if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA])                 return localVendorID;
+        if ([localVendorID isEqualToString:VMMVideoCardVendorIDVirtualBox])             return localVendorID;
+        if ([localVendorID isEqualToString:VMMVideoCardVendorIDVMware])                 return localVendorID;
+        if ([localVendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])       return localVendorID;
+        if ([localVendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop]) return localVendorID;
+        
+        // If the Vendor ID doesn't match with any of the above, it's a Hackintosh, using a fake video card vendor ID
+        // https://www.tonymacx86.com/threads/problem-with-hd4000-graphics-only-3mb-ram-showing.242113/
+        
+        return nil;
+    }
+    
+    NSString* videoCardType = [self videoCardType];
+    if (videoCardType != nil)
+    {
+        if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelUHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
         {
-            if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelUHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
-            {
-                localVendorID = VMMVideoCardVendorIDIntel; // Intel Vendor ID
-            }
-            
-            if ([@[VMMVideoCardTypeATIAMD] containsObject:videoCardType])
-            {
-                localVendorID = VMMVideoCardVendorIDATIAMD; // ATI/AMD Vendor ID
-            }
-            
-            if ([@[VMMVideoCardTypeNVIDIA] containsObject:videoCardType])
-            {
-                localVendorID = VMMVideoCardVendorIDNVIDIA; // NVIDIA Vendor ID
-            }
+            return VMMVideoCardVendorIDIntel; // Intel Vendor ID
+        }
+        
+        if ([@[VMMVideoCardTypeATIAMD] containsObject:videoCardType])
+        {
+            return VMMVideoCardVendorIDATIAMD; // ATI/AMD Vendor ID
+        }
+        
+        if ([@[VMMVideoCardTypeNVIDIA] containsObject:videoCardType])
+        {
+            return VMMVideoCardVendorIDNVIDIA; // NVIDIA Vendor ID
         }
     }
     
-    return localVendorID;
+    return nil;
 }
 
 +(NSUInteger)videoCardMemorySizeInMegabytes
