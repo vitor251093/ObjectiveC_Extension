@@ -215,6 +215,10 @@ static NSString * _Nonnull const VMMVideoCardTypeVirtualBox =     @"VirtualBox";
 static NSString * _Nonnull const VMMVideoCardVendorIDVirtualBox = @"0x80ee";
 static NSString * _Nonnull const VMMVideoCardDeviceIDVirtualBox = @"0xbeef";
 
+static NSString * _Nonnull const VMMVideoCardNameVMware =     @"VMware";
+static NSString * _Nonnull const VMMVideoCardTypeVMware =     @"VMware";
+static NSString * _Nonnull const VMMVideoCardVendorIDVMware = @"0x15ad";
+
 
 typedef enum VMMUserGroup
 {

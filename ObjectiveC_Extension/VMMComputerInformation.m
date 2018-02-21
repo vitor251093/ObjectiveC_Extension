@@ -317,6 +317,11 @@ static NSMutableDictionary* _macOsCompatibility;
         {
             videoCardName = VMMVideoCardNameVirtualBox;
         }
+        
+        if ([[self videoCardVendorIDFromVendorAndVendorIDKeysOnly] isEqualToString:VMMVideoCardVendorIDVMware])
+        {
+            videoCardName = VMMVideoCardNameVMware;
+        }
     }
     
     return videoCardName;
@@ -381,6 +386,7 @@ static NSMutableDictionary* _macOsCompatibility;
                 if ([localVendorID isEqualToString:VMMVideoCardVendorIDATIAMD])     _computerGraphicCardType = VMMVideoCardTypeATIAMD;
                 if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA])     _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
                 if ([localVendorID isEqualToString:VMMVideoCardVendorIDVirtualBox]) _computerGraphicCardType = VMMVideoCardTypeVirtualBox;
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDVMware])     _computerGraphicCardType = VMMVideoCardTypeVMware;
             }
         }
         
