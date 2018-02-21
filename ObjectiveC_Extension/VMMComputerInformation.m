@@ -327,6 +327,11 @@ static NSMutableDictionary* _macOsCompatibility;
         {
             videoCardName = VMMVideoCardNameParallelsDesktop;
         }
+        
+        if ([[self videoCardVendorIDFromVendorAndVendorIDKeysOnly] isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
+        {
+            videoCardName = VMMVideoCardNameMicrosoftRemoteDesktop;
+        }
     }
     
     return videoCardName;
@@ -403,6 +408,9 @@ static NSMutableDictionary* _macOsCompatibility;
                 
                 if ([localVendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
                     _computerGraphicCardType = VMMVideoCardTypeParallelsDesktop;
+                
+                if ([localVendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
+                    _computerGraphicCardType = VMMVideoCardTypeMicrosoftRemoteDesktop;
             }
         }
         

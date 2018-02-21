@@ -223,6 +223,9 @@ static NSString * _Nonnull const VMMVideoCardNameParallelsDesktop =     @"Parall
 static NSString * _Nonnull const VMMVideoCardTypeParallelsDesktop =     @"Parallels Desktop";
 static NSString * _Nonnull const VMMVideoCardVendorIDParallelsDesktop = @"0x1ab8";
 
+static NSString * _Nonnull const VMMVideoCardNameMicrosoftRemoteDesktop =     @"Microsoft Remote Desktop";
+static NSString * _Nonnull const VMMVideoCardTypeMicrosoftRemoteDesktop =     @"Microsoft Remote Desktop";
+static NSString * _Nonnull const VMMVideoCardVendorIDMicrosoftRemoteDesktop = @"0xbaad";
 
 typedef enum VMMUserGroup
 {
