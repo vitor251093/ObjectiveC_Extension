@@ -231,9 +231,6 @@ static NSMutableDictionary* _macOsCompatibility;
         
         return _computerGraphicCardDictionary;
     }
-    
-    // to avoid compiler warning
-    return nil;
 }
 
 
@@ -362,31 +359,31 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            NSString* graphicCardModel = [self.videoCardName uppercaseString];
-            if (graphicCardModel != nil)
+            NSString* graphicCardName = [self.videoCardName uppercaseString];
+            if (graphicCardName != nil)
             {
-                NSArray* graphicCardModelComponents = [graphicCardModel componentsSeparatedByString:@" "];
+                NSArray* graphicCardNameComponents = [graphicCardName componentsSeparatedByString:@" "];
                 
-                if ([graphicCardModelComponents containsObject:@"INTEL"])
+                if ([graphicCardNameComponents containsObject:@"INTEL"])
                 {
-                    if ([graphicCardModelComponents containsObject:@"HD"])   _computerGraphicCardType = VMMVideoCardTypeIntelHD;
-                    if ([graphicCardModelComponents containsObject:@"UHD"])  _computerGraphicCardType = VMMVideoCardTypeIntelUHD;
-                    if ([graphicCardModelComponents containsObject:@"IRIS"]) _computerGraphicCardType = VMMVideoCardTypeIntelIris;
+                    if ([graphicCardNameComponents containsObject:@"HD"])   _computerGraphicCardType = VMMVideoCardTypeIntelHD;
+                    if ([graphicCardNameComponents containsObject:@"UHD"])  _computerGraphicCardType = VMMVideoCardTypeIntelUHD;
+                    if ([graphicCardNameComponents containsObject:@"IRIS"]) _computerGraphicCardType = VMMVideoCardTypeIntelIris;
                 }
                 
                 for (NSString* model in @[@"GMA"])
                 {
-                    if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeIntelGMA;
+                    if ([graphicCardNameComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeIntelGMA;
                 }
                 
                 for (NSString* model in @[@"AMD",@"ATI",@"RADEON"])
                 {
-                    if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeATIAMD;
+                    if ([graphicCardNameComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeATIAMD;
                 }
                 
                 for (NSString* model in @[@"NVIDIA",@"GEFORCE",@"NVS",@"QUADRO"])
                 {
-                    if ([graphicCardModelComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
+                    if ([graphicCardNameComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
                 }
             }
             
