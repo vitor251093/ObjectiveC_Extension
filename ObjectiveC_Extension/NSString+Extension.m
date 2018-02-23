@@ -391,6 +391,26 @@
     return numberValue;
 }
 
++(nullable NSString*)stringWithContentsOfFile:(nonnull NSString*)file
+{
+    if (![[NSFileManager defaultManager] regularFileExistsAtPath:file]) return nil;
+    
+    @autoreleasepool
+    {
+        for (NSNumber* encoding in @[@(NSUTF8StringEncoding),@(NSASCIIStringEncoding),@(NSISOLatin1StringEncoding)])
+        {
+            NSError* error;
+            NSString* string = [self stringWithContentsOfFile:file encoding:encoding.unsignedIntegerValue error:&error];
+            
+            if (error == nil && string != nil)
+            {
+                return string;
+            }
+        }
+    }
+    
+    return nil;
+}
 +(nullable NSString*)stringWithContentsOfFile:(nonnull NSString*)file encoding:(NSStringEncoding)enc
 {
     if (![[NSFileManager defaultManager] regularFileExistsAtPath:file]) return nil;

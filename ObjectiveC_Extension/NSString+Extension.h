@@ -33,6 +33,7 @@
 
 -(nullable NSNumber*)initialIntegerValue;
 
++(nullable NSString*)stringWithContentsOfFile:(nonnull NSString*)file;
 +(nullable NSString*)stringWithContentsOfFile:(nonnull NSString*)file encoding:(NSStringEncoding)enc;
 +(nullable NSString*)stringWithContentsOfURL:(nonnull NSURL *)url encoding:(NSStringEncoding)enc timeoutInterval:(long long int)timeoutInterval;
 

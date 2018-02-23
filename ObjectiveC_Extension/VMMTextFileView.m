@@ -21,6 +21,11 @@
 
 -(NSString* _Nullable)textFileContents
 {
+    if (_textFileEncoding == -1)
+    {
+        return [NSString stringWithContentsOfFile:_textFilePath];
+    }
+    
     return [NSString stringWithContentsOfFile:_textFilePath encoding:_textFileEncoding];
 }
 -(void)reloadTextFileForTimer:(NSTimer*)timer
