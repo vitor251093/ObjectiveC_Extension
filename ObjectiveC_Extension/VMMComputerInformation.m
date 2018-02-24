@@ -424,7 +424,7 @@ static NSMutableDictionary* _macOsCompatibility;
     {
         if ([@[VMMVideoCardVendorIDIntel,      VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA,
                VMMVideoCardVendorIDVirtualBox, VMMVideoCardVendorIDVMware, VMMVideoCardVendorIDParallelsDesktop,
-               VMMVideoCardVendorIDMicrosoftRemoteDesktop, VMMVideoCardVendorIDQemu] containsObject:localVendorID])
+               VMMVideoCardVendorIDQemu,       VMMVideoCardVendorIDMicrosoftRemoteDesktop] containsObject:localVendorID])
         {
             return localVendorID;
         }
