@@ -422,13 +422,12 @@ static NSMutableDictionary* _macOsCompatibility;
     NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
     if (localVendorID != nil)
     {
-        if ([localVendorID isEqualToString:VMMVideoCardVendorIDIntel])                  return localVendorID;
-        if ([localVendorID isEqualToString:VMMVideoCardVendorIDATIAMD])                 return localVendorID;
-        if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA])                 return localVendorID;
-        if ([localVendorID isEqualToString:VMMVideoCardVendorIDVirtualBox])             return localVendorID;
-        if ([localVendorID isEqualToString:VMMVideoCardVendorIDVMware])                 return localVendorID;
-        if ([localVendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])       return localVendorID;
-        if ([localVendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop]) return localVendorID;
+        if ([@[VMMVideoCardVendorIDIntel,      VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA,
+               VMMVideoCardVendorIDVirtualBox, VMMVideoCardVendorIDVMware, VMMVideoCardVendorIDParallelsDesktop,
+               VMMVideoCardVendorIDMicrosoftRemoteDesktop] containsObject:localVendorID])
+        {
+            return localVendorID;
+        }
         
         // If the Vendor ID doesn't match with any of the above, it's a Hackintosh, using a fake video card vendor ID
         // https://www.tonymacx86.com/threads/problem-with-hd4000-graphics-only-3mb-ram-showing.242113/
