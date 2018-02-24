@@ -309,25 +309,33 @@ static NSMutableDictionary* _macOsCompatibility;
     
     if (videoCardName == nil)
     {
-        if ([[self videoCardDeviceID]                              isEqualToString:VMMVideoCardDeviceIDVirtualBox] &&
-            [[self videoCardVendorIDFromVendorAndVendorIDKeysOnly] isEqualToString:VMMVideoCardVendorIDVirtualBox])
+        NSString* vendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
+        
+        if ([vendorID isEqualToString:VMMVideoCardVendorIDVirtualBox] &&
+            [[self videoCardDeviceID] isEqualToString:VMMVideoCardDeviceIDVirtualBox])
         {
             videoCardName = VMMVideoCardNameVirtualBox;
         }
         
-        if ([[self videoCardVendorIDFromVendorAndVendorIDKeysOnly] isEqualToString:VMMVideoCardVendorIDVMware])
+        if ([vendorID isEqualToString:VMMVideoCardVendorIDVMware])
         {
             videoCardName = VMMVideoCardNameVMware;
         }
         
-        if ([[self videoCardVendorIDFromVendorAndVendorIDKeysOnly] isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
+        if ([vendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
         {
             videoCardName = VMMVideoCardNameParallelsDesktop;
         }
         
-        if ([[self videoCardVendorIDFromVendorAndVendorIDKeysOnly] isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
+        if ([vendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
         {
             videoCardName = VMMVideoCardNameMicrosoftRemoteDesktop;
+        }
+        
+        if ([vendorID isEqualToString:VMMVideoCardVendorIDQemu] &&
+            [[self videoCardDeviceID] isEqualToString:VMMVideoCardDeviceIDQemu])
+        {
+            videoCardName = VMMVideoCardNameQemu;
         }
     }
     
@@ -391,23 +399,15 @@ static NSMutableDictionary* _macOsCompatibility;
             {
                 NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
                 
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDATIAMD])
-                    _computerGraphicCardType = VMMVideoCardTypeATIAMD;
+                NSDictionary* vendorIDType = @{VMMVideoCardVendorIDATIAMD:                 VMMVideoCardTypeATIAMD,
+                                               VMMVideoCardVendorIDNVIDIA:                 VMMVideoCardTypeNVIDIA,
+                                               VMMVideoCardVendorIDVirtualBox:             VMMVideoCardTypeVirtualBox,
+                                               VMMVideoCardVendorIDVMware:                 VMMVideoCardTypeVMware,
+                                               VMMVideoCardVendorIDParallelsDesktop:       VMMVideoCardTypeParallelsDesktop,
+                                               VMMVideoCardVendorIDMicrosoftRemoteDesktop: VMMVideoCardTypeMicrosoftRemoteDesktop,
+                                               VMMVideoCardVendorIDQemu:                   VMMVideoCardTypeQemu };
                 
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDNVIDIA])
-                    _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
-                
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDVirtualBox])
-                    _computerGraphicCardType = VMMVideoCardTypeVirtualBox;
-                
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDVMware])
-                    _computerGraphicCardType = VMMVideoCardTypeVMware;
-                
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
-                    _computerGraphicCardType = VMMVideoCardTypeParallelsDesktop;
-                
-                if ([localVendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
-                    _computerGraphicCardType = VMMVideoCardTypeMicrosoftRemoteDesktop;
+                _computerGraphicCardType = vendorIDType[localVendorID];
             }
         }
         
@@ -424,7 +424,7 @@ static NSMutableDictionary* _macOsCompatibility;
     {
         if ([@[VMMVideoCardVendorIDIntel,      VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA,
                VMMVideoCardVendorIDVirtualBox, VMMVideoCardVendorIDVMware, VMMVideoCardVendorIDParallelsDesktop,
-               VMMVideoCardVendorIDMicrosoftRemoteDesktop] containsObject:localVendorID])
+               VMMVideoCardVendorIDMicrosoftRemoteDesktop, VMMVideoCardVendorIDQemu] containsObject:localVendorID])
         {
             return localVendorID;
         }

@@ -227,6 +227,12 @@ static NSString * _Nonnull const VMMVideoCardNameMicrosoftRemoteDesktop =     @"
 static NSString * _Nonnull const VMMVideoCardTypeMicrosoftRemoteDesktop =     @"Microsoft Remote Desktop";
 static NSString * _Nonnull const VMMVideoCardVendorIDMicrosoftRemoteDesktop = @"0xbaad";
 
+// https://lists.denx.de/pipermail/u-boot/2015-May/215147.html
+static NSString * _Nonnull const VMMVideoCardNameQemu =     @"QEMU Emulated Graphic Card";
+static NSString * _Nonnull const VMMVideoCardTypeQemu =     @"QEMU";
+static NSString * _Nonnull const VMMVideoCardVendorIDQemu = @"0x1234";
+static NSString * _Nonnull const VMMVideoCardDeviceIDQemu = @"0x1111";
+
 typedef enum VMMUserGroup
 {
     VMMUserGroupEveryone      = 12,
