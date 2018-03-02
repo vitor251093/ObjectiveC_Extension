@@ -280,6 +280,12 @@ typedef enum VMMUserGroup
 +(nullable NSString*)videoCardVendorID;
 
 /*!
+ * @discussion  Returns true if the main video card is Intel, NVIDIA or ATI/AMD.
+ * @return      True if the main video card seems legitimate.
+ */
++(BOOL)isVideoCardReal;
+
+/*!
  * @discussion  Returns the VRAM size of the main video card in Megabytes.
  * @return      The VRAM size of the main video card in Megabytes.
  */

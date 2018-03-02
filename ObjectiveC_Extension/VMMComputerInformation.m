@@ -457,6 +457,13 @@ static NSMutableDictionary* _macOsCompatibility;
     return nil;
 }
 
++(BOOL)isVideoCardReal
+{
+    NSString* vendorID = self.videoCardType;
+    if (vendorID == nil) return false;
+    
+    return [@[VMMVideoCardVendorIDIntel, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA] containsObject:vendorID];
+}
 +(NSUInteger)videoCardMemorySizeInMegabytes
 {
     int memSizeInt = -1;
