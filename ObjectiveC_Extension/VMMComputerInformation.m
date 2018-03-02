@@ -21,7 +21,12 @@
 @implementation VMMComputerInformation
 
 static NSMutableDictionary* _computerGraphicCardDictionary;
+
+static NSString* _computerGraphicCardDeviceID;
+static NSString* _computerGraphicCardName;
 static NSString* _computerGraphicCardType;
+static NSString* _computerGraphicCardVendorID;
+
 static NSString* _macOsVersion;
 static NSString* _macOsBuildVersion;
 static NSArray* _userGroups;
@@ -278,68 +283,92 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(nullable NSString*)videoCardDeviceID
 {
-    return [self.videoCardDictionary[VMMVideoCardDeviceIDKey] lowercaseString];
+    @synchronized(_computerGraphicCardDeviceID)
+    {
+        if (_computerGraphicCardDeviceID != nil)
+        {
+            return _computerGraphicCardDeviceID;
+        }
+        
+        @autoreleasepool
+        {
+            _computerGraphicCardDeviceID = [self.videoCardDictionary[VMMVideoCardDeviceIDKey] lowercaseString];
+            return _computerGraphicCardDeviceID;
+        }
+    }
 }
 
 +(nullable NSString*)videoCardName
 {
-    NSDictionary* videoCardDictionary = self.videoCardDictionary;
-    
-    if (videoCardDictionary == nil)
+    @synchronized(_computerGraphicCardName)
     {
-        return nil;
+        if (_computerGraphicCardName != nil)
+        {
+            return _computerGraphicCardName;
+        }
+        
+        @autoreleasepool
+        {
+            NSDictionary* videoCardDictionary = self.videoCardDictionary;
+            
+            if (videoCardDictionary == nil)
+            {
+                return nil;
+            }
+            
+            NSString* videoCardName = videoCardDictionary[VMMVideoCardNameKey];
+            NSString* chipsetModel  = videoCardDictionary[VMMVideoCardChipsetModelKey];
+            
+            NSArray* invalidVideoCardNames = @[@"Display", @"Apple WiFi card"];
+            BOOL validVideoCardName = (videoCardName != nil && [invalidVideoCardNames containsObject:videoCardName] == false);
+            BOOL validChipsetModel  = (chipsetModel  != nil && [invalidVideoCardNames containsObject:chipsetModel]  == false);
+            
+            if (validVideoCardName == false)
+            {
+                videoCardName = nil;
+            }
+            
+            if (validChipsetModel == true && (validVideoCardName == false || videoCardName.length < chipsetModel.length))
+            {
+                videoCardName = chipsetModel;
+            }
+            
+            if (videoCardName == nil)
+            {
+                NSString* vendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
+                
+                if ([vendorID isEqualToString:VMMVideoCardVendorIDVirtualBox] &&
+                    [[self videoCardDeviceID] isEqualToString:VMMVideoCardDeviceIDVirtualBox])
+                {
+                    videoCardName = VMMVideoCardNameVirtualBox;
+                }
+                
+                if ([vendorID isEqualToString:VMMVideoCardVendorIDVMware])
+                {
+                    videoCardName = VMMVideoCardNameVMware;
+                }
+                
+                if ([vendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
+                {
+                    videoCardName = VMMVideoCardNameParallelsDesktop;
+                }
+                
+                if ([vendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
+                {
+                    videoCardName = VMMVideoCardNameMicrosoftRemoteDesktop;
+                }
+                
+                if ([vendorID isEqualToString:VMMVideoCardVendorIDQemu] &&
+                    [[self videoCardDeviceID] isEqualToString:VMMVideoCardDeviceIDQemu])
+                {
+                    videoCardName = VMMVideoCardNameQemu;
+                }
+            }
+            
+            _computerGraphicCardName = videoCardName;
+            return _computerGraphicCardName;
+        }
     }
-    
-    NSString* videoCardName = videoCardDictionary[VMMVideoCardNameKey];
-    NSString* chipsetModel  = videoCardDictionary[VMMVideoCardChipsetModelKey];
-    
-    NSArray* invalidVideoCardNames = @[@"Display", @"Apple WiFi card"];
-    BOOL validVideoCardName = (videoCardName != nil && [invalidVideoCardNames containsObject:videoCardName] == false);
-    BOOL validChipsetModel  = (chipsetModel  != nil && [invalidVideoCardNames containsObject:chipsetModel]  == false);
-    
-    if (validVideoCardName == false)
-    {
-        videoCardName = nil;
-    }
-    
-    if (validChipsetModel == true && (validVideoCardName == false || videoCardName.length < chipsetModel.length))
-    {
-        videoCardName = chipsetModel;
-    }
-    
-    if (videoCardName == nil)
-    {
-        NSString* vendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
-        
-        if ([vendorID isEqualToString:VMMVideoCardVendorIDVirtualBox] &&
-            [[self videoCardDeviceID] isEqualToString:VMMVideoCardDeviceIDVirtualBox])
-        {
-            videoCardName = VMMVideoCardNameVirtualBox;
-        }
-        
-        if ([vendorID isEqualToString:VMMVideoCardVendorIDVMware])
-        {
-            videoCardName = VMMVideoCardNameVMware;
-        }
-        
-        if ([vendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
-        {
-            videoCardName = VMMVideoCardNameParallelsDesktop;
-        }
-        
-        if ([vendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
-        {
-            videoCardName = VMMVideoCardNameMicrosoftRemoteDesktop;
-        }
-        
-        if ([vendorID isEqualToString:VMMVideoCardVendorIDQemu] &&
-            [[self videoCardDeviceID] isEqualToString:VMMVideoCardDeviceIDQemu])
-        {
-            videoCardName = VMMVideoCardNameQemu;
-        }
-    }
-    
-    return videoCardName;
 }
 
 +(BOOL)isGraphicCardDictionaryCompleteWithMemorySize:(BOOL)haveMemorySize
@@ -419,42 +448,57 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(nullable NSString*)videoCardVendorID
 {
-    NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
-    if (localVendorID != nil)
+    @synchronized(_computerGraphicCardVendorID)
     {
-        if ([@[VMMVideoCardVendorIDIntel,      VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA,
-               VMMVideoCardVendorIDVirtualBox, VMMVideoCardVendorIDVMware, VMMVideoCardVendorIDParallelsDesktop,
-               VMMVideoCardVendorIDQemu,       VMMVideoCardVendorIDMicrosoftRemoteDesktop] containsObject:localVendorID])
+        if (_computerGraphicCardVendorID != nil)
         {
-            return localVendorID;
+            return _computerGraphicCardVendorID;
         }
         
-        // If the Vendor ID doesn't match with any of the above, it's a Hackintosh, using a fake video card vendor ID
-        // https://www.tonymacx86.com/threads/problem-with-hd4000-graphics-only-3mb-ram-showing.242113/
-        
-        return nil;
+        @autoreleasepool
+        {
+            NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
+            if (localVendorID != nil)
+            {
+                if ([@[VMMVideoCardVendorIDIntel,      VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA,
+                       VMMVideoCardVendorIDVirtualBox, VMMVideoCardVendorIDVMware, VMMVideoCardVendorIDParallelsDesktop,
+                       VMMVideoCardVendorIDQemu,       VMMVideoCardVendorIDMicrosoftRemoteDesktop] containsObject:localVendorID])
+                {
+                    _computerGraphicCardVendorID = localVendorID;
+                    return _computerGraphicCardVendorID;
+                }
+                
+                // If the Vendor ID doesn't match with any of the above, it's a Hackintosh, using a fake video card vendor ID
+                // https://www.tonymacx86.com/threads/problem-with-hd4000-graphics-only-3mb-ram-showing.242113/
+                
+                return nil;
+            }
+            
+            NSString* videoCardType = [self videoCardType];
+            if (videoCardType != nil)
+            {
+                if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelUHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
+                {
+                    _computerGraphicCardVendorID = VMMVideoCardVendorIDIntel; // Intel Vendor ID
+                    return _computerGraphicCardVendorID;
+                }
+                
+                if ([@[VMMVideoCardTypeATIAMD] containsObject:videoCardType])
+                {
+                    _computerGraphicCardVendorID = VMMVideoCardVendorIDATIAMD; // ATI/AMD Vendor ID
+                    return _computerGraphicCardVendorID;
+                }
+                
+                if ([@[VMMVideoCardTypeNVIDIA] containsObject:videoCardType])
+                {
+                    _computerGraphicCardVendorID = VMMVideoCardVendorIDNVIDIA; // NVIDIA Vendor ID
+                    return _computerGraphicCardVendorID;
+                }
+            }
+            
+            return nil;
+        }
     }
-    
-    NSString* videoCardType = [self videoCardType];
-    if (videoCardType != nil)
-    {
-        if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelUHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
-        {
-            return VMMVideoCardVendorIDIntel; // Intel Vendor ID
-        }
-        
-        if ([@[VMMVideoCardTypeATIAMD] containsObject:videoCardType])
-        {
-            return VMMVideoCardVendorIDATIAMD; // ATI/AMD Vendor ID
-        }
-        
-        if ([@[VMMVideoCardTypeNVIDIA] containsObject:videoCardType])
-        {
-            return VMMVideoCardVendorIDNVIDIA; // NVIDIA Vendor ID
-        }
-    }
-    
-    return nil;
 }
 
 +(BOOL)isVideoCardReal
