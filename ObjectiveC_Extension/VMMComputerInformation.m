@@ -472,7 +472,7 @@ static NSMutableDictionary* _macOsCompatibility;
                 // If the Vendor ID doesn't match with any of the above, it's a Hackintosh, using a fake video card vendor ID
                 // https://www.tonymacx86.com/threads/problem-with-hd4000-graphics-only-3mb-ram-showing.242113/
                 
-                return localVendorID;
+                return nil;
             }
             
             NSString* videoCardType = [self videoCardType];
