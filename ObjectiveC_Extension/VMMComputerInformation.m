@@ -26,6 +26,7 @@ static NSString* _computerGraphicCardDeviceID;
 static NSString* _computerGraphicCardName;
 static NSString* _computerGraphicCardType;
 static NSString* _computerGraphicCardVendorID;
+static NSNumber* _computerGraphicCardMemorySizeInMegabytes;
 
 static NSString* _macOsVersion;
 static NSString* _macOsBuildVersion;
@@ -510,57 +511,79 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(NSUInteger)videoCardMemorySizeInMegabytes
 {
-    int memSizeInt = -1;
-    
-    NSDictionary* gcDict = [self videoCardDictionary];
-    if (gcDict != nil && gcDict.count > 0)
+    @synchronized(_computerGraphicCardMemorySizeInMegabytes)
     {
-        NSString* memSize = [gcDict[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
-        if (memSize == nil) memSize = [gcDict[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
-        
-        if ([memSize contains:@" MB"])
+        if (_computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue != 0 &&
+            _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue != -1)
         {
-            memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" MB"] intValue];
+            return _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue;
         }
-        else if ([memSize contains:@" GB"])
-        {
-            memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
-        }
-    }
-    
-    if (memSizeInt == 0 || memSizeInt == -1)
-    {
-        NSUInteger apiResult = [self videoCardMemorySizeInMegabytesFromAPI];
-        if (apiResult != 0) return apiResult;
-    }
-    
-    if (memSizeInt == 0 && [[self videoCardVendorID] isEqualToString:VMMVideoCardVendorIDNVIDIA])
-    {
-        //
-        // Apparently, this is a common bug that happens with Hackintoshes that
-        // use NVIDIA video cards that were badly configured. Considering that,
-        // there is no use in fixing that manually, since it would require a manual
-        // fix for every known NVIDIA video card that may have the issue.
-        //
-        // We can't detect the real video memory size with system_profiler or
-        // IOServiceMatching("IOPCIDevice"), but we just implemented the API method,
-        // which may detect the size correctly even on those cases (hopefully).
-        //
-        // The same bug may also happen in old legitimate Apple computers, and
-        // it also seems to happen only with NVIDIA video cards.
-        //
-        // References:
-        // https://www.tonymacx86.com/threads/graphics-card-0mb.138428/
-        // https://www.tonymacx86.com/threads/gtx-770-show-vram-of-0-mb.138629/
-        // https://www.reddit.com/r/hackintosh/comments/3e5bi1/gtx_970_vram_0_mb_help/
-        // http://www.techsurvivors.net/forums/index.php?showtopic=22889
-        // https://discussions.apple.com/thread/2494867?tstart=0
-        //
         
-        return 0;
+        @autoreleasepool
+        {
+            int memSizeInt = -1;
+            
+            NSDictionary* gcDict = [self videoCardDictionary];
+            if (gcDict != nil && gcDict.count > 0)
+            {
+                NSString* memSize = [gcDict[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
+                if (memSize == nil) memSize = [gcDict[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
+                
+                if ([memSize contains:@" MB"])
+                {
+                    memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" MB"] intValue];
+                }
+                else if ([memSize contains:@" GB"])
+                {
+                    memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
+                }
+            }
+            
+            if (memSizeInt == 0 || memSizeInt == -1)
+            {
+                NSUInteger apiResult = [self videoCardMemorySizeInMegabytesFromAPI];
+                if (apiResult != 0)
+                {
+                    _computerGraphicCardMemorySizeInMegabytes = @(apiResult);
+                    return _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue;
+                }
+            }
+            
+            if (memSizeInt == 0 && [[self videoCardVendorID] isEqualToString:VMMVideoCardVendorIDNVIDIA])
+            {
+                //
+                // Apparently, this is a common bug that happens with Hackintoshes that
+                // use NVIDIA video cards that were badly configured. Considering that,
+                // there is no use in fixing that manually, since it would require a manual
+                // fix for every known NVIDIA video card that may have the issue.
+                //
+                // We can't detect the real video memory size with system_profiler or
+                // IOServiceMatching("IOPCIDevice"), but we just implemented the API method,
+                // which may detect the size correctly even on those cases (hopefully).
+                //
+                // The same bug may also happen in old legitimate Apple computers, and
+                // it also seems to happen only with NVIDIA video cards.
+                //
+                // References:
+                // https://www.tonymacx86.com/threads/graphics-card-0mb.138428/
+                // https://www.tonymacx86.com/threads/gtx-770-show-vram-of-0-mb.138629/
+                // https://www.reddit.com/r/hackintosh/comments/3e5bi1/gtx_970_vram_0_mb_help/
+                // http://www.techsurvivors.net/forums/index.php?showtopic=22889
+                // https://discussions.apple.com/thread/2494867?tstart=0
+                //
+                
+                return 0;
+            }
+            
+            if (memSizeInt == 0 || memSizeInt == -1)
+            {
+                return memSizeInt;
+            }
+            
+            _computerGraphicCardMemorySizeInMegabytes = @(memSizeInt);
+            return _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue;
+        }
     }
-    
-    return memSizeInt;
 }
 
 
