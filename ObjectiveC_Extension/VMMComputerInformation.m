@@ -459,7 +459,7 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(BOOL)isVideoCardReal
 {
-    NSString* vendorID = self.videoCardType;
+    NSString* vendorID = self.videoCardVendorID;
     if (vendorID == nil) return false;
     
     return [@[VMMVideoCardVendorIDIntel, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA] containsObject:vendorID];
