@@ -36,7 +36,6 @@
     }
     @catch (NSException* exception)
     {
-        NSDebugLog(@"Failed to init image with data");
         return nil;
     }
     

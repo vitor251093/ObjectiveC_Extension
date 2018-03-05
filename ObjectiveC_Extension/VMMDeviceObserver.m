@@ -28,7 +28,7 @@ static VMMDeviceObserver *_sharedObserver;
     }
 }
 
--(void)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate
+-(BOOL)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate
 {
     actionDelegate.hidManager = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
     
@@ -49,10 +49,7 @@ static VMMDeviceObserver *_sharedObserver;
     
     IOHIDManagerRegisterInputValueCallback(actionDelegate.hidManager, Handle_DeviceEventCallback, (__bridge void*)actionDelegate);
     
-    if (IOReturn != kIOReturnSuccess)
-    {
-        NSDebugLog(@"Couldn't look for devices. IOHIDManagerOpen failed.");
-    }
+    return (IOReturn == kIOReturnSuccess);
 }
 -(void)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate
 {

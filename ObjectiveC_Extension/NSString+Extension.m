@@ -49,13 +49,6 @@
 }
 -(BOOL)containsAbbreviation:(NSString*)string
 {
-    if (string.length == 1)
-    {
-        // It will just a waste of time. Considering that 'contains' return true, that will be irrelevant;
-        // If it returns false, then that function will return false as well
-        return NO;
-    }
-    
     @autoreleasepool
     {
         NSString* abbreviation = string.lowercaseString;

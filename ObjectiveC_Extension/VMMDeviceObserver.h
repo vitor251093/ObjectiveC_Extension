@@ -25,6 +25,6 @@
 
 @interface VMMDeviceObserver : NSObject
 +(nonnull instancetype)sharedObserver;
--(void)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
+-(BOOL)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
 -(void)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
 @end
