@@ -13,17 +13,172 @@
 "Yes" = "Sim";
 "No" = "Não";
 
+// VMMUsageKeycode
+"Error Roll Over" = "Encerramento de Erro";
+"Post Fail" = "Pós-Falha";
+"Error Undefined" = "Erro Indefinido";
+"Return" = "Return";
+"Escape" = "Esc";
+"Delete" = "Delete";
+"Tab" = "Tab";
+"Space" = "Espaço";
+"Minus" = "Menos";
+"Equal" = "Igual";
+"Left Bracket" = "Colchete Esquerdo";
+"Right Bracket" = "Colchete Direito";
+"Backslash" = "Contra-Barra";
+"Pound" = "Libra";
+"Semicolon" = "Ponto e vírgula";
+"Quote" = "Aspas";
+"Grave" = "Crase";
+"Comma" = "Vírgula";
+"Period" = "Ponto";
+"Slash" = "Barra";
+"Caps Lock" = "Caps Lock";
+"Print Screen" = "Print Screen";
+"Scroll Lock" = "Scroll Lock";
+"Pause" = "Pause";
+"Insert" = "Insert";
+"Home" = "Home";
+"Page Up" = "Page Up";
+"Forward Delete" = "Forward Delete";
+"End" = "End";
+"Page Down" = "Page Down";
+"Right Arrow" = "Seta Direita";
+"Left Arrow" = "Seta Esquerda";
+"Down Arrow" = "Seta Baixo";
+"Up Arrow" = "Seta Cima";
+"Keypad Clear" = "";
+"Keypad Divide" = "";
+"Keypad Multiply" = "";
+"Keypad Minus" = "";
+"Keypad Plus" = "";
+"Keypad Enter" = "";
+"Keypad 1" = "";
+"Keypad 2" = "";
+"Keypad 3" = "";
+"Keypad 4" = "";
+"Keypad 5" = "";
+"Keypad 6" = "";
+"Keypad 7" = "";
+"Keypad 8" = "";
+"Keypad 9" = "";
+"Keypad 0" = "";
+"Keypad Decimal" = "";
+"Backslash" = "";
+"Application" = "";
+"Power" = "";
+"Keypad Equals" = "";
+"Execute" = "";
+"Help" = "";
+"Context Menu" = "";
+"Select" = "";
+"Stop" = "";
+"Again" = "";
+"Undo" = "";
+"Cut" = "";
+"Copy" = "";
+"Paste" = "";
+"Find" = "";
+"Mute" = "";
+"Volume Up" = "";
+"Volume Down" = "";
+"Locking Caps Lock" = "";
+"Locking Num Lock" = "";
+"Locking Scroll Lock" = "";
+"Keypad Comma" = "";
+"Keypad Equal" = "";
+"Hangul/English" = "";
+"Conversion Hanja" = "";
+"Zankaku or Hankaku" = "";
+"Alternate Erase" = "";
+"SysReq or Attention" = "";
+"Cancel" = "";
+"Clear" = "";
+"Prior" = "";
+"Return" = "";
+"Separator" = "";
+"Out" = "";
+"Oper" = "";
+"Clear or Again" = "";
+"CrSel or Props" = "";
+"ExSel" = "";
+"Keypad Zero Zero" = "";
+"Keypad Zero Zero Zero" = "";
+"Keypad Thousands Separator" = "";
+"Keypad Decimal Separator" = "";
+"Keypad Currency Unit" = "";
+"Keypad Currency Subunit" = "";
+"Keypad Left Parentheses" = "";
+"Keypad Right Parentheses" = "";
+"Keypad Left Braces" = "";
+"Keypad Right Braces" = "";
+"Keypad Tab" = "";
+"Keypad Backspace" = "";
+"Keypad A" = "";
+"Keypad B" = "";
+"Keypad C" = "";
+"Keypad D" = "";
+"Keypad E" = "";
+"Keypad F" = "";
+"Keypad XOR" = "";
+"Keypad Circumflex" = "";
+"Keypad Percent" = "";
+"Keypad Less Than" = "";
+"Keypad More Than" = "";
+"Keypad Ampersand" = "";
+"Keypad Ampersand Ampersand" = "";
+"Keypad Vertical Line" = "";
+"Keypad Two Vertical Lines" = "";
+"Keypad Colon" = "";
+"Keypad Number Sign" = "";
+"Keypad Space" = "";
+"Keypad Commercial At" = "";
+"Keypad Exclamation" = "";
+"Keypad Memory Store" = "";
+"Keypad Memory Recall" = "";
+"Keypad Memory Clear" = "";
+"Keypad Memory Add" = "";
+"Keypad Memory Substract" = "";
+"Keypad Memory Multiply" = "";
+"Keypad Memory Divide" = "";
+"Keypad Plus Minus" = "";
+"Keypad Clear" = "";
+"Keypad Clear Entry" = "";
+"Keypad Binary" = "";
+"Keypad Octal" = "";
+"Keypad Decimal" = "";
+"Keypad Hexadecimal" = "";
+"Left Control" = "";
+"Left Shift" = "";
+"Left Option" = "";
+"Left Command" = "";
+"Right Control" = "";
+"Right Shift" = "";
+"Right Option" = "";
+"Right Command" = "";
+"Play" = "";
+"Function" = "";
+"Next" = "";
+"Previous" = "";
+"Underscore" = "";
+"Video Mirror" = "";
+"Spotlight" = "";
+"Dashboard" = "";
+"Launchpad" = "";
+"Brightness Up" = "";
+"Brightness Down" = "";
+"Eject" = "";
+"Exposes All" = "";
+"Exposes Desktop" = "";
+ 
 // NSAlert Extension
 "Success" = "Sucesso";
 "Warning" = "Aviso";
 "Error" = "Erro";
 
 // NSData Extension
-"Error while reading file data: %@" = "Erro enquanto lia dados de arquivo: %@";
-
-// NSString Extension
-"Error while reading file: %@" = "Erro enquanto lia arquivo: %@";
-"Error while writting file: %@" = "Erro enquanto escrevia arquivo: %@";
+"Error while loading file data: %@" = "Erro enquanto carregava dados de arquivo: %@";
 
 // NSFileManager Extension
 "Error while creating symbolic link: %@" = "Erro enquanto criava link simbólico: %@";
@@ -31,10 +186,14 @@
 "Error while moving file: %@" = "Erro enquanto movia arquivo: %@";
 "Error while copying file: %@" = "Erro enquanto copiava arquivo: %@";
 "Error while removing file: %@" = "Erro enquanto removia arquivo: %@";
-"Error while listing folder contents: %@" = "Erro enquanto listava o conteúdo de pasta: %@";
 "Error while listing folder contents: %@ doesn't exist." = "Erro enquanto listava o conteúdo de pasta: %@ não existe.";
 "Error while listing folder contents: %@ is not a folder." = "Erro enquanto listava o conteúdo de pasta: %@ não é uma pasta.";
+"Error while listing folder contents: %@" = "Erro enquanto listava o conteúdo de pasta: %@";
 "Error while retrieving symbolic link destination: %@" = "Erro enquanto obtia destino de link simbólico: %@";
+
+// NSString Extension
+"Error while reading file: %@" = "Erro enquanto lia arquivo: %@";
+"Error while writting file: %@" = "Erro enquanto escrevia arquivo: %@";
 
 // NSTask Extension
 "Path for %@ not found." = "Caminho para %@ não encontrado.";
@@ -42,4 +201,11 @@
 "File %@ not runnable." = "Arquivo %@ não é executável.";
 "Directory %@ does not exists." = "Diretório %@ não existe.";
 
+// VMMWebView
+"You need Flash Player in order to watch YouTube videos in your macOS version" = "Você precisa do Flash Player para assistir vídeos do YouTube na sua versão do macOS";
+"Invalid URL provided" = "URL inválida provida";
+ 
+// VMMKeyCaptureField
+"Unknown Key (%d)" = "Tecla Desconhecida (%d)";
+ 
 */
