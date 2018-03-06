@@ -20,6 +20,7 @@
 
 @implementation VMMComputerInformation
 
+static unsigned int _computerGraphicCardDictionaryRequestTimeOut = 10;
 static NSMutableDictionary* _computerGraphicCardDictionary;
 
 static NSString* _computerGraphicCardDeviceID;
@@ -219,11 +220,13 @@ static NSMutableDictionary* _macOsCompatibility;
         {
             NSString* displayData;
             
-            displayData = [NSTask runCommand:@[@"system_profiler", @"SPDisplaysDataType"]];
+            displayData = [NSTask runProgram:@"system_profiler" withFlags:@[@"SPDisplaysDataType"]
+                                                   waitingForTimeInterval:_computerGraphicCardDictionaryRequestTimeOut];
             _computerGraphicCardDictionary = [self videoCardDictionaryFromSystemProfilerOutput:displayData];
             if (_computerGraphicCardDictionary.count == 0)
             {
-                displayData = [NSTask runCommand:@[@"/usr/sbin/system_profiler", @"SPDisplaysDataType"]];
+                displayData = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"SPDisplaysDataType"]
+                                                                 waitingForTimeInterval:_computerGraphicCardDictionaryRequestTimeOut];
                 _computerGraphicCardDictionary = [self videoCardDictionaryFromSystemProfilerOutput:displayData];
             }
             
