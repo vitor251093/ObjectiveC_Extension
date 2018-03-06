@@ -185,15 +185,15 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString * _Nonnull const VMMVideoCardNameKey =                @"Video card name";
-static NSString * _Nonnull const VMMVideoCardChipsetModelKey =        @"Chipset Model";
-static NSString * _Nonnull const VMMVideoCardTypeKey =                @"Type";
-static NSString * _Nonnull const VMMVideoCardBusKey =                 @"Bus";
-static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInKey =   @"VRAM (Dynamic, Max)";
-static NSString * _Nonnull const VMMVideoCardMemorySizePciOrPcieKey = @"VRAM (Total)";
-static NSString * _Nonnull const VMMVideoCardVendorKey =              @"Vendor";
-static NSString * _Nonnull const VMMVideoCardVendorIDKey =            @"Vendor ID";
-static NSString * _Nonnull const VMMVideoCardDeviceIDKey =            @"Device ID";
+static NSString * _Nonnull const VMMVideoCardNameKey =                       @"sppci_model";
+static NSString * _Nonnull const VMMVideoCardRawNameKey =                    @"_name";
+static NSString * _Nonnull const VMMVideoCardTypeKey =                       @"sppci_device_type";
+static NSString * _Nonnull const VMMVideoCardBusKey =                        @"sppci_bus";
+static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInAlternateKey = @"_spdisplays_vram";
+static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInKey =          @"spdisplays_vram_shared";
+static NSString * _Nonnull const VMMVideoCardMemorySizePciOrPcieKey =        @"spdisplays_vram";
+static NSString * _Nonnull const VMMVideoCardVendorKey =                     @"spdisplays_vendor";
+static NSString * _Nonnull const VMMVideoCardDeviceIDKey =                   @"spdisplays_device-id";
 
 static NSString * _Nonnull const VMMVideoCardTypeIntelHD =    @"Intel HD";
 static NSString * _Nonnull const VMMVideoCardTypeIntelUHD =   @"Intel UHD";
@@ -202,9 +202,9 @@ static NSString * _Nonnull const VMMVideoCardTypeIntelGMA =   @"Intel GMA";
 static NSString * _Nonnull const VMMVideoCardTypeATIAMD =     @"ATI/AMD";
 static NSString * _Nonnull const VMMVideoCardTypeNVIDIA =     @"NVIDIA";
 
-static NSString * _Nonnull const VMMVideoCardBusPCIe =        @"PCIe";
-static NSString * _Nonnull const VMMVideoCardBusPCI =         @"PCI";
-static NSString * _Nonnull const VMMVideoCardBusBuiltIn =     @"Built-In";
+static NSString * _Nonnull const VMMVideoCardBusPCIe =        @"spdisplays_pcie_device";
+static NSString * _Nonnull const VMMVideoCardBusPCI =         @"sppci_pci_device";
+static NSString * _Nonnull const VMMVideoCardBusBuiltIn =     @"spdisplays_builtin";
 
 static NSString * _Nonnull const VMMVideoCardVendorIDIntel =  @"0x8086";
 static NSString * _Nonnull const VMMVideoCardVendorIDNVIDIA = @"0x10de";
