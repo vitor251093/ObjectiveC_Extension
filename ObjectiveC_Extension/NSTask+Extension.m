@@ -154,7 +154,7 @@ static NSMutableDictionary* binaryPaths;
                     }
                 }];
                 
-                [NSThread dispatchQueueWithName:"wait-five-seconds-to-kill-task" priority:DISPATCH_QUEUE_PRIORITY_DEFAULT concurrent:NO withBlock:^
+                [NSThread dispatchQueueWithName:"wait-to-kill-task" priority:DISPATCH_QUEUE_PRIORITY_DEFAULT concurrent:NO withBlock:^
                 {
                     [NSThread sleepForTimeInterval:timeout];
                     
