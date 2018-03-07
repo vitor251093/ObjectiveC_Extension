@@ -61,7 +61,7 @@ static NSMutableDictionary* _macOsCompatibility;
         return [[NSMutableDictionary alloc] init];
     }
     
-    return [hardwareArray firstObject];
+    return [[hardwareArray firstObject] mutableCopy];
 }
 +(nullable NSDictionary*)hardwareDictionary
 {
@@ -97,13 +97,22 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(nullable NSString*)processorNameAndSpeed
 {
-    // TODO: That may be a better (more detailed) way of getting the processor:
-    // sysctl -n machdep.cpu.brand_string
-    
     NSString* processorName  = self.hardwareDictionary[@"cpu_type"];
-    NSString* processorSpeed = self.hardwareDictionary[@"current_processor_speed"];
-    NSString* processor = [NSString stringWithFormat:@"%@ %@",processorName,processorSpeed];
-    return processor;
+    if (processorName == nil || processorName.length == 0)
+    {
+        processorName = [NSTask runCommand:@[@"sysctl", @"-n", @"machdep.cpu.brand_string"]];
+        while ([processorName contains:@"  "])
+        {
+            processorName = [processorName stringByReplacingOccurrencesOfString:@"  " withString:@" "];
+        }
+    }
+    else
+    {
+        NSString* processorSpeed = self.hardwareDictionary[@"current_processor_speed"];
+        processorName = [NSString stringWithFormat:@"%@ %@",processorName,processorSpeed];
+    }
+    
+    return processorName;
 }
 +(nullable NSString*)macModel
 {
@@ -206,7 +215,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     NSArray* cards = [displayArray sortedDictionariesArrayWithKey:VMMVideoCardBusKey
                                             orderingByValuesOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
-    return [cards firstObject];
+    return [[cards firstObject] mutableCopy];
 }
 +(NSMutableDictionary*)videoCardDictionaryFromIOServiceMatch
 {
