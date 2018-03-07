@@ -237,7 +237,7 @@
         [msgBox addButtonWithTitle:VMMLocalizedString(@"OK")];
         [msgBox setInformativeText:message];
         
-        optionsForAlert(msgBox);
+        if (optionsForAlert != nil) optionsForAlert(msgBox);
         
         return msgBox;
     }];
