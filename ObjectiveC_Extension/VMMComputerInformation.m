@@ -119,7 +119,7 @@ static NSMutableDictionary* _macOsCompatibility;
                         vendorIDString = [vendorIDString substringWithRange:NSMakeRange(1, 4)];
                         vendorIDString = [NSString stringWithFormat:@"0x%@%@",[vendorIDString substringFromIndex:2],
                                           [vendorIDString substringToIndex:2]];
-                        graphicCardDict[VMMVideoCardVendorKey] = [NSString stringWithFormat:@"? (%@)",vendorIDString];
+                        graphicCardDict[VMMVideoCardVendorIDKey] = vendorIDString;
                     }
                 }
                 
@@ -246,6 +246,12 @@ static NSMutableDictionary* _macOsCompatibility;
 +(NSString*)videoCardVendorIDFromVendorAndVendorIDKeysOnly
 {
     NSDictionary* localVideoCard = self.videoCardDictionary;
+    
+    NSString* localVendorID = localVideoCard[VMMVideoCardVendorIDKey];
+    if (localVendorID != nil)
+    {
+        return localVendorID;
+    }
     
     NSString* localVendor = localVideoCard[VMMVideoCardVendorKey]; // eg. 'NVIDIA (0x10de)' or 'sppci_vendor_Nvidia'
     if (localVendor == nil)

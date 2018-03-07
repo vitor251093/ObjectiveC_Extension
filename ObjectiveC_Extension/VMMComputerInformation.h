@@ -192,6 +192,7 @@ static NSString * _Nonnull const VMMVideoCardBusKey =                        @"s
 static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInAlternateKey = @"_spdisplays_vram";
 static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInKey =          @"spdisplays_vram_shared";
 static NSString * _Nonnull const VMMVideoCardMemorySizePciOrPcieKey =        @"spdisplays_vram";
+static NSString * _Nonnull const VMMVideoCardVendorIDKey =                   @"spdisplays_vendor-id"
 static NSString * _Nonnull const VMMVideoCardVendorKey =                     @"spdisplays_vendor";
 static NSString * _Nonnull const VMMVideoCardDeviceIDKey =                   @"spdisplays_device-id";
 
