@@ -20,7 +20,7 @@
 
 @implementation VMMComputerInformation
 
-static unsigned int _computerGraphicCardDictionaryRequestTimeOut = 10;
+static unsigned int _computerGraphicCardDictionaryRequestTimeOut = 15;
 static NSMutableDictionary* _computerGraphicCardDictionary;
 
 static NSString* _computerGraphicCardDeviceID;
