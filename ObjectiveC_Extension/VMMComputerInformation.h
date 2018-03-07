@@ -249,6 +249,12 @@ typedef enum VMMUserGroup
 
 @interface VMMComputerInformation : NSObject
 
++(nullable NSDictionary*)hardwareDictionary;
+
++(nullable NSString*)ramMemory;
++(nullable NSString*)processorNameAndSpeed;
++(nullable NSString*)macModel;
+
 /*!
  * @discussion  Returns a dictionary with information related with the main video card.
  * @return      A Dictionary with the system_profiler information related with the main video card.

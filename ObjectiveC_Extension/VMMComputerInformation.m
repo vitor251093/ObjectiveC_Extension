@@ -17,11 +17,17 @@
 #import "NSTask+Extension.h"
 #import "NSArray+Extension.h"
 #import "NSString+Extension.h"
+#import "NSFileManager+Extension.h"
 
 @implementation VMMComputerInformation
 
-static unsigned int _computerGraphicCardDictionaryRequestTimeOut = 15;
+static unsigned int _systemProfilerRequestTimeOut = 15;
+static unsigned int _appleSupportMacModelRequestTimeOut = 5;
+
+static NSMutableDictionary* _hardwareDictionary;
 static NSMutableDictionary* _computerGraphicCardDictionary;
+
+static NSString* _macModel;
 
 static NSString* _computerGraphicCardDeviceID;
 static NSString* _computerGraphicCardName;
@@ -34,6 +40,149 @@ static NSString* _macOsBuildVersion;
 static NSArray* _userGroups;
 
 static NSMutableDictionary* _macOsCompatibility;
+
++(NSMutableDictionary*)hardwareDictionaryFromSystemProfilerOutput:(NSString*)hardwareOutput
+{
+    NSData* hardwareData = [hardwareOutput dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray* hardwareArray;
+    
+    NSError *error;
+    NSPropertyListFormat format;
+    hardwareArray = [NSPropertyListSerialization propertyListWithData:hardwareData options:NSPropertyListImmutable
+                                                              format:&format error:&error];
+    if (hardwareArray == nil || error != nil)
+    {
+        return [[NSMutableDictionary alloc] init];
+    }
+    
+    hardwareArray = hardwareArray[0][@"_items"];
+    if (hardwareArray == nil)
+    {
+        return [[NSMutableDictionary alloc] init];
+    }
+    
+    return [hardwareArray firstObject];
+}
++(nullable NSDictionary*)hardwareDictionary
+{
+    @synchronized(_hardwareDictionary)
+    {
+        if (_hardwareDictionary)
+        {
+            return _hardwareDictionary;
+        }
+        
+        @autoreleasepool
+        {
+            NSString* displayData;
+            
+            displayData = [NSTask runProgram:@"system_profiler" withFlags:@[@"-xml",@"SPHardwareDataType"]
+                      waitingForTimeInterval:_systemProfilerRequestTimeOut];
+            _hardwareDictionary = [self hardwareDictionaryFromSystemProfilerOutput:displayData];
+            if (_hardwareDictionary.count == 0)
+            {
+                displayData = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml",@"SPHardwareDataType"]
+                          waitingForTimeInterval:_systemProfilerRequestTimeOut];
+                _hardwareDictionary = [self hardwareDictionaryFromSystemProfilerOutput:displayData];
+            }
+        }
+        
+        return _hardwareDictionary;
+    }
+}
+
++(nullable NSString*)ramMemory
+{
+    return self.hardwareDictionary[@"physical_memory"];
+}
++(nullable NSString*)processorNameAndSpeed
+{
+    // TODO: That may be a better (more detailed) way of getting the processor:
+    // sysctl -n machdep.cpu.brand_string
+    
+    NSString* processorName  = self.hardwareDictionary[@"cpu_type"];
+    NSString* processorSpeed = self.hardwareDictionary[@"current_processor_speed"];
+    NSString* processor = [NSString stringWithFormat:@"%@ %@",processorName,processorSpeed];
+    return processor;
+}
++(nullable NSString*)macModel
+{
+    @synchronized(_macModel)
+    {
+        if (_macModel != nil)
+        {
+            return _macModel;
+        }
+        
+        @autoreleasepool
+        {
+            NSString* otherOption;
+            
+            NSString* sysProfFile = [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.SystemProfiler.plist",NSHomeDirectory()];
+            
+            if ([[NSFileManager defaultManager] regularFileExistsAtPath:sysProfFile])
+            {
+                NSDictionary* sysProf = [NSDictionary dictionaryWithContentsOfFile:sysProfFile];
+                
+                if (sysProf != nil)
+                {
+                    NSDictionary* cpuNames = sysProf[@"CPU Names"];
+                    
+                    if (cpuNames != nil && [cpuNames isKindOfClass:[NSDictionary class]] && cpuNames.allKeys.count >= 1)
+                    {
+                        otherOption = cpuNames[cpuNames.allKeys.lastObject];
+                        
+                        for (NSString* cpuName in cpuNames.allValues)
+                        {
+                            if ([cpuName contains:@"inch"])
+                            {
+                                _macModel = cpuName;
+                                return _macModel;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            NSString* macSerial = self.hardwareDictionary[@"serial_number"];
+            
+            if (macSerial != nil && macSerial.length >= 8)
+            {
+                // Depending on if your serial numer is 11 or 12 characters long; take the last 3 or 4 characters
+                macSerial = [macSerial substringFromIndex:8];
+                
+                NSString* macInfoURL = [NSString stringWithFormat:@"http://support-sp.apple.com/sp/product?cc=%@",macSerial];
+                NSString* macInfo = [NSString stringWithContentsOfURL:[NSURL URLWithString:macInfoURL] encoding:NSUTF8StringEncoding
+                                                      timeoutInterval:_appleSupportMacModelRequestTimeOut];
+                
+                if (macInfo != nil && macInfo.length > 0)
+                {
+                    _macModel = [macInfo getFragmentAfter:@"<configCode>" andBefore:@"</configCode>"];
+                    
+                    if (_macModel != nil && _macModel.length > 0)
+                    {
+                        return _macModel;
+                    }
+                    else
+                    {
+                        _macModel = nil;
+                    }
+                }
+            }
+            
+            if (otherOption != nil)
+            {
+                _macModel = otherOption;
+                return _macModel;
+            }
+            
+            _macModel = self.hardwareDictionary[@"machine_model"];
+            return _macModel;
+        }
+        
+        return nil;
+    }
+}
 
 +(NSMutableDictionary*)videoCardDictionaryFromSystemProfilerOutput:(NSString*)displayOutput
 {
@@ -197,12 +346,12 @@ static NSMutableDictionary* _macOsCompatibility;
             NSString* displayData;
             
             displayData = [NSTask runProgram:@"system_profiler" withFlags:@[@"-xml",@"SPDisplaysDataType"]
-                                                   waitingForTimeInterval:_computerGraphicCardDictionaryRequestTimeOut];
+                                                   waitingForTimeInterval:_systemProfilerRequestTimeOut];
             _computerGraphicCardDictionary = [self videoCardDictionaryFromSystemProfilerOutput:displayData];
             if (_computerGraphicCardDictionary.count == 0)
             {
                 displayData = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml",@"SPDisplaysDataType"]
-                                                                 waitingForTimeInterval:_computerGraphicCardDictionaryRequestTimeOut];
+                                                                 waitingForTimeInterval:_systemProfilerRequestTimeOut];
                 _computerGraphicCardDictionary = [self videoCardDictionaryFromSystemProfilerOutput:displayData];
             }
             
