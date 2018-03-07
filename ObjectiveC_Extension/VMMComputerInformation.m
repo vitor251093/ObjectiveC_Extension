@@ -28,6 +28,7 @@ static NSMutableDictionary* _hardwareDictionary;
 static NSMutableDictionary* _computerGraphicCardDictionary;
 
 static NSString* _macModel;
+static NSString* _processorNameAndSpeed;
 
 static NSString* _computerGraphicCardDeviceID;
 static NSString* _computerGraphicCardName;
@@ -97,22 +98,38 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(nullable NSString*)processorNameAndSpeed
 {
-    NSString* processorName  = self.hardwareDictionary[@"cpu_type"];
-    if (processorName == nil || processorName.length == 0)
+    @synchronized(_processorNameAndSpeed)
     {
-        processorName = [NSTask runCommand:@[@"sysctl", @"-n", @"machdep.cpu.brand_string"]];
-        while ([processorName contains:@"  "])
+        if (_processorNameAndSpeed != nil)
         {
-            processorName = [processorName stringByReplacingOccurrencesOfString:@"  " withString:@" "];
+            return _processorNameAndSpeed;
         }
-    }
-    else
-    {
+        
+        NSString* processorName  = self.hardwareDictionary[@"cpu_type"];
         NSString* processorSpeed = self.hardwareDictionary[@"current_processor_speed"];
-        processorName = [NSString stringWithFormat:@"%@ %@",processorName,processorSpeed];
+        
+        if (processorName != nil && processorName.length > 0)
+        {
+            _processorNameAndSpeed = [NSString stringWithFormat:@"%@ %@",processorName,processorSpeed];
+            return _processorNameAndSpeed;
+        }
+        
+        processorName = [NSTask runCommand:@[@"sysctl", @"-n", @"machdep.cpu.brand_string"]];
+        
+        if (processorName != nil && processorName.length > 0)
+        {
+            while ([processorName contains:@"  "])
+            {
+                processorName = [processorName stringByReplacingOccurrencesOfString:@"  " withString:@" "];
+            }
+            
+            _processorNameAndSpeed = processorName;
+            return _processorNameAndSpeed;
+        }
+        
+        _processorNameAndSpeed = processorSpeed;
+        return _processorNameAndSpeed;
     }
-    
-    return processorName;
 }
 +(nullable NSString*)macModel
 {
