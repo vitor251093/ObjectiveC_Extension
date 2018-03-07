@@ -692,7 +692,8 @@ static NSMutableDictionary* _macOsCompatibility;
 {
     @synchronized(_computerGraphicCardMemorySizeInMegabytes)
     {
-        if (_computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue != 0 &&
+        if (_computerGraphicCardMemorySizeInMegabytes != nil &&
+            _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue != 0 &&
             _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue != -1)
         {
             return _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue;
