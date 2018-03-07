@@ -323,7 +323,7 @@ static NSMutableDictionary* _macOsCompatibility;
             NSString* videoCardName = videoCardDictionary[VMMVideoCardNameKey];
             NSString* chipsetModel  = videoCardDictionary[VMMVideoCardRawNameKey];
             
-            NSArray* invalidVideoCardNames = @[@"Display", @"Apple WiFi card"];
+            NSArray* invalidVideoCardNames = @[@"Display", @"Apple WiFi card", @"spdisplays_display"];
             BOOL validVideoCardName = (videoCardName != nil && [invalidVideoCardNames containsObject:videoCardName] == false);
             BOOL validChipsetModel  = (chipsetModel  != nil && [invalidVideoCardNames containsObject:chipsetModel]  == false);
             
