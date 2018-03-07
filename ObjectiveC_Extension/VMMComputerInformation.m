@@ -27,6 +27,7 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 static NSMutableDictionary* _hardwareDictionary;
 static NSMutableDictionary* _computerGraphicCardDictionary;
 
+static NSString* _ramMemory;
 static NSString* _macModel;
 static NSString* _processorNameAndSpeed;
 
@@ -94,7 +95,16 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(nullable NSString*)ramMemory
 {
-    return self.hardwareDictionary[@"physical_memory"];
+    @synchronized(_ramMemory)
+    {
+        if (_ramMemory != nil)
+        {
+            return _ramMemory;
+        }
+        
+        _ramMemory = self.hardwareDictionary[@"physical_memory"];
+        return _ramMemory;
+    }
 }
 +(nullable NSString*)processorNameAndSpeed
 {
