@@ -10,8 +10,8 @@
 
 @interface VMMPropertyList : NSObject
 
-+(nullable id)propertyListWithUnarchivedString:(NSString*)string;
++(nullable id)propertyListWithUnarchivedString:(nonnull NSString*)string;
 
-+(nullable id)propertyListWithArchivedString:(NSString *)string;
++(nullable id)propertyListWithArchivedString:(nonnull NSString *)string;
 
 @end
