@@ -21,10 +21,15 @@
 -(void)observedConnectionOfDevice:(nonnull IOHIDDeviceRef)device;
 -(void)observedRemovalOfDevice:(nonnull IOHIDDeviceRef)device;
 -(void)observedEventWithName:(nullable CFStringRef)name cookie:(IOHIDElementCookie)cookie usage:(uint32_t)usage value:(CFIndex)value device:(nonnull IOHIDDeviceRef)device;
+-(void)observedReportWithID:(uint32_t)reportID data:(nonnull uint8_t*)report type:(IOHIDReportType)reportType length:(CFIndex)reportLength device:(nonnull IOHIDDeviceRef)device;
 @end
 
 @interface VMMDeviceObserver : NSObject
 +(nonnull instancetype)sharedObserver;
 -(BOOL)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
 -(void)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
+
+@property (nonatomic) CFIndex receivedPacketMaxSize;
+@property (nonatomic) uint8_t* _Nullable receivedReport;
+
 @end
