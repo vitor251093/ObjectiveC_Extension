@@ -46,7 +46,7 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(NSMutableDictionary*)hardwareDictionaryFromSystemProfilerOutput:(NSString*)hardwareOutput
 {
-    NSArray* hardwareArray = [VMMPropertyList propertyListWithString:hardwareOutput];
+    NSArray* hardwareArray = [VMMPropertyList propertyListWithUnarchivedString:hardwareOutput];
     if (hardwareArray == nil)
     {
         return [[NSMutableDictionary alloc] init];
@@ -217,7 +217,7 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(NSMutableDictionary*)videoCardDictionaryFromSystemProfilerOutput:(NSString*)displayOutput
 {
-    NSArray* displayArray = [VMMPropertyList propertyListWithString:displayOutput];
+    NSArray* displayArray = [VMMPropertyList propertyListWithUnarchivedString:displayOutput];
     if (displayArray == nil)
     {
         return [[NSMutableDictionary alloc] init];

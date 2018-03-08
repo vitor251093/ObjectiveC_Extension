@@ -10,7 +10,7 @@
 
 @implementation VMMPropertyList
 
-+(nullable id)propertyListWithString:(NSString*)string
++(nullable id)propertyListWithUnarchivedString:(NSString*)string
 {
     NSData* data = [string dataUsingEncoding:NSUTF8StringEncoding];
     id propertyList;
