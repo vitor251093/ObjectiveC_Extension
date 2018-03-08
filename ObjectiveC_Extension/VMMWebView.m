@@ -41,8 +41,8 @@
 {
     NSData* httpBody = request.HTTPBody;
     
-    self.lastAccessedUrl = actionInformation[WebActionOriginalURLKey];
-    if (![self shouldLoadUrl:_lastAccessedUrl withHttpBody:httpBody]) return;
+    NSURL* url = actionInformation[WebActionOriginalURLKey];
+    if (![self shouldLoadUrl:url withHttpBody:httpBody]) return;
     
     [listener use];
 }
