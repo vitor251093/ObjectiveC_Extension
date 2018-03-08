@@ -102,8 +102,6 @@ static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, vo
     uint32_t usage = IOHIDElementGetUsage(element);             // Usage of the pressed key
     CFStringRef name = IOHIDElementGetName(element);
     
-    //NSDebugLog(@"Device ID = %p; Cookie = %u; Usage = %u; Value = %ld", (void*)device, cookie, usage, elementValue);
-    
     NSObject<VMMDeviceObserverDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverDelegate>*)inContext;
     if (actionDelegate == nil) return;
     if (![actionDelegate respondsToSelector:@selector(observedEventWithName:cookie:usage:value:device:)]) return;
