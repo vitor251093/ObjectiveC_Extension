@@ -39,10 +39,10 @@
 -(void)webView:(WebView *)webView decidePolicyForNavigationAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request
          frame:(WebFrame *)frame decisionListener:(id<WebPolicyDecisionListener>)listener
 {
-    self.lastAccessedUrl = [(WebView*)self.webView mainFrame].dataSource.request.URL;
+    NSData* httpBody = request.HTTPBody;
     
-    NSURL *urlToOpenUrl = actionInformation[WebActionOriginalURLKey];
-    if (![self shouldLoadUrl:urlToOpenUrl withHttpBody:request.HTTPBody]) return;
+    self.lastAccessedUrl = actionInformation[WebActionOriginalURLKey];
+    if (![self shouldLoadUrl:_lastAccessedUrl withHttpBody:httpBody]) return;
     
     [listener use];
 }
@@ -50,16 +50,20 @@
 // WKWebView needed delegates
 - (id)webView:(id)webView createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)navigationAction windowFeatures:(id)windowFeatures
 {
+    NSData* httpBody = ((WKNavigationAction *)navigationAction).request.HTTPBody;
+    
     self.lastAccessedUrl = ((WKNavigationAction *)navigationAction).request.URL;
-    if (![self shouldLoadUrl:_lastAccessedUrl withHttpBody:((WKNavigationAction *)navigationAction).request.HTTPBody]) return nil;
+    if (![self shouldLoadUrl:_lastAccessedUrl withHttpBody:httpBody]) return nil;
     
     [self loadURL:_lastAccessedUrl];
     return nil;
 }
 - (void)webView:(id)webView decidePolicyForNavigationAction:(id)navigationAction decisionHandler:(void (^)(NSInteger))decisionHandler
 {
+    NSData* httpBody = ((WKNavigationAction *)navigationAction).request.HTTPBody;
+    
     NSURL *urlToOpenUrl = ((WKNavigationAction *)navigationAction).request.URL;
-    if (![self shouldLoadUrl:urlToOpenUrl withHttpBody:((WKNavigationAction *)navigationAction).request.HTTPBody])
+    if (![self shouldLoadUrl:urlToOpenUrl withHttpBody:httpBody])
     {
         decisionHandler(WKNavigationActionPolicyCancel);
     }
