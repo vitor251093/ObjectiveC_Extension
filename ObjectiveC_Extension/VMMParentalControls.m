@@ -8,6 +8,8 @@
 
 #import "VMMParentalControls.h"
 
+#import "VMMPropertyList.h"
+
 #import "NSBundle+Extension.h"
 #import "NSString+Extension.h"
 #import "NSTask+Extension.h"
@@ -49,19 +51,8 @@ static NSString* _Nonnull const VMMParentalControlsContentFilterWhiteListAddress
         NSString* dsclOutputString = [NSTask runProgram:@"dscl" withFlags:@[@".", @"mcxexport", NSHomeDirectory(), appDomain, keyName]];
         if (dsclOutputString == nil || dsclOutputString.length == 0) return nil;
         
-        NSData* dsclOutputData = [dsclOutputString dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary* dsclOutput;
-        
-        @try
-        {
-            dsclOutput = (NSDictionary*)[NSKeyedUnarchiver unarchiveObjectWithData:dsclOutputData];
-        }
-        @catch (NSException* exception)
-        {
-            return nil;
-        }
-        
-        if ([dsclOutput isKindOfClass:[NSDictionary class]] == FALSE) return nil;
+        NSDictionary* dsclOutput = [VMMPropertyList propertyListWithArchivedString:dsclOutputString];
+        if (dsclOutput == nil || [dsclOutput isKindOfClass:[NSDictionary class]] == FALSE) return nil;
         
         NSDictionary* dict = dsclOutput[appDomain][keyName];
         if (dict == nil) return nil;

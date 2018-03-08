@@ -14,6 +14,8 @@
 		4E231F931F8191DD00148A30 /* VMMDeviceSimulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E231F911F8191DD00148A30 /* VMMDeviceSimulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E231F941F8191DD00148A30 /* VMMDeviceSimulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E231F921F8191DD00148A30 /* VMMDeviceSimulator.m */; };
 		4E34B2F41FD879DE001F0B4F /* VMMLocalizationUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E0DD3B81FD878F90033AA72 /* VMMLocalizationUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E37704B20517EB300AADB8A /* VMMPropertyList.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E37704920517EB300AADB8A /* VMMPropertyList.h */; };
+		4E37704C20517EB300AADB8A /* VMMPropertyList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E37704A20517EB300AADB8A /* VMMPropertyList.m */; };
 		4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E3771041FA7A57C00E2F511 /* VMMWebView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E3771071FA7A57C00E2F511 /* VMMWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3771051FA7A57C00E2F511 /* VMMWebView.m */; };
 		4E3BD7031FAD2FCF00AF8418 /* VMMUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E3BD7011FAD2FCF00AF8418 /* VMMUUID.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -137,6 +139,8 @@
 		4E1181581FB200E800D8029F /* VMMView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMView.m; sourceTree = "<group>"; };
 		4E231F911F8191DD00148A30 /* VMMDeviceSimulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMDeviceSimulator.h; sourceTree = "<group>"; };
 		4E231F921F8191DD00148A30 /* VMMDeviceSimulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMDeviceSimulator.m; sourceTree = "<group>"; };
+		4E37704920517EB300AADB8A /* VMMPropertyList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMPropertyList.h; sourceTree = "<group>"; };
+		4E37704A20517EB300AADB8A /* VMMPropertyList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMPropertyList.m; sourceTree = "<group>"; };
 		4E3771041FA7A57C00E2F511 /* VMMWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMWebView.h; sourceTree = "<group>"; };
 		4E3771051FA7A57C00E2F511 /* VMMWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMWebView.m; sourceTree = "<group>"; };
 		4E3BD7011FAD2FCF00AF8418 /* VMMUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMUUID.h; sourceTree = "<group>"; };
@@ -423,6 +427,8 @@
 				4EF16B1E1F8E36A600A78DC0 /* VMMModals.m */,
 				4ECB93A420289E4B00F0A369 /* VMMParentalControls.h */,
 				4ECB93A520289E4B00F0A369 /* VMMParentalControls.m */,
+				4E37704920517EB300AADB8A /* VMMPropertyList.h */,
+				4E37704A20517EB300AADB8A /* VMMPropertyList.m */,
 				4E6C52641F7E953A00A187E9 /* VMMUserNotificationCenter.h */,
 				4E6C52651F7E953A00A187E9 /* VMMUserNotificationCenter.m */,
 				4E3BD7011FAD2FCF00AF8418 /* VMMUUID.h */,
@@ -504,6 +510,7 @@
 				4E6C526A1F7E953A00A187E9 /* VMMLogUtility.h in Headers */,
 				4E6C52311F7E911000A187E9 /* NSMenuItem+Extension.h in Headers */,
 				4E6C522B1F7E911000A187E9 /* NSFileManager+Extension.h in Headers */,
+				4E37704B20517EB300AADB8A /* VMMPropertyList.h in Headers */,
 				4E6C52371F7E911000A187E9 /* NSMutableDictionary+Extension.h in Headers */,
 				4E6C522D1F7E911000A187E9 /* NSImage+Extension.h in Headers */,
 				4E6C52351F7E911000A187E9 /* NSMutableAttributedString+Extension.h in Headers */,
@@ -685,6 +692,7 @@
 				4E6C526E1F7E953A00A187E9 /* VMMVersion.m in Sources */,
 				4E6C525E1F7E944F00A187E9 /* SZJsonParser.m in Sources */,
 				4E5A45DA1FC9FD7800FCEB42 /* VMMDockProgressIndicator.m in Sources */,
+				4E37704C20517EB300AADB8A /* VMMPropertyList.m in Sources */,
 				4E6C52301F7E911000A187E9 /* NSMenu+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -13,6 +13,7 @@
 #import "VMMComputerInformation.h"
 
 #import "VMMVersion.h"
+#import "VMMPropertyList.h"
 
 #import "NSTask+Extension.h"
 #import "NSArray+Extension.h"
@@ -45,14 +46,8 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(NSMutableDictionary*)hardwareDictionaryFromSystemProfilerOutput:(NSString*)hardwareOutput
 {
-    NSData* hardwareData = [hardwareOutput dataUsingEncoding:NSUTF8StringEncoding];
-    NSArray* hardwareArray;
-    
-    NSError *error;
-    NSPropertyListFormat format;
-    hardwareArray = [NSPropertyListSerialization propertyListWithData:hardwareData options:NSPropertyListImmutable
-                                                              format:&format error:&error];
-    if (hardwareArray == nil || error != nil)
+    NSArray* hardwareArray = [VMMPropertyList propertyListWithString:hardwareOutput];
+    if (hardwareArray == nil)
     {
         return [[NSMutableDictionary alloc] init];
     }
@@ -222,14 +217,8 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(NSMutableDictionary*)videoCardDictionaryFromSystemProfilerOutput:(NSString*)displayOutput
 {
-    NSData* displayData = [displayOutput dataUsingEncoding:NSUTF8StringEncoding];
-    NSArray* displayArray;
-    
-    NSError *error;
-    NSPropertyListFormat format;
-    displayArray = [NSPropertyListSerialization propertyListWithData:displayData options:NSPropertyListImmutable
-                                                              format:&format error:&error];
-    if (displayArray == nil || error != nil)
+    NSArray* displayArray = [VMMPropertyList propertyListWithString:displayOutput];
+    if (displayArray == nil)
     {
         return [[NSMutableDictionary alloc] init];
     }
