@@ -723,14 +723,11 @@ static NSMutableDictionary* _macOsCompatibility;
                 }
             }
             
-            if (memSizeInt == 0 || memSizeInt == -1)
+            NSUInteger apiResult = [self videoCardMemorySizeInMegabytesFromAPI];
+            if (apiResult != 0 && (memSizeInt == 0 || memSizeInt == -1 || apiResult > memSizeInt))
             {
-                NSUInteger apiResult = [self videoCardMemorySizeInMegabytesFromAPI];
-                if (apiResult != 0)
-                {
-                    _computerGraphicCardMemorySizeInMegabytes = @(apiResult);
-                    return _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue;
-                }
+                _computerGraphicCardMemorySizeInMegabytes = @(apiResult);
+                return _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue;
             }
             
             if (memSizeInt == 0 && [[self videoCardVendorID] isEqualToString:VMMVideoCardVendorIDNVIDIA])
