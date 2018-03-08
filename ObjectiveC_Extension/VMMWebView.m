@@ -119,19 +119,7 @@
         
         webView.shouldUpdateWhileOffscreen = false;
         
-        // TODO: Find out exactly what should be to change the opaque value
-        @try
-        {
-            [webView setValue:@FALSE forKey:@"opaque"];
-        }
-        @catch (NSException *exception)
-        {
-            @try
-            {
-                [webView setValue:@FALSE forKey:@"isOpaque"];
-            }
-            @catch (NSException *exception) {}
-        }
+        [webView setValue:@FALSE forKey:@"opaque"];
         
         [webView setValue:@FALSE forKey:@"drawsBackground"];
     }
