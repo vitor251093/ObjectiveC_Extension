@@ -390,14 +390,15 @@
 {
     _urlLoaded = false;
     [self reloadWebViewIfNeeded];
+    NSURL* url = [NSURL URLWithString:@"about:blank"];
     
     if (_usingWkWebView)
     {
-        [(WKWebView*)self.webView loadHTMLString:htmlPage baseURL:[NSURL URLWithString:@"about:blank"]];
+        [(WKWebView*)self.webView loadHTMLString:htmlPage baseURL:url];
     }
     else
     {
-        [((WebView*)self.webView).mainFrame loadHTMLString:htmlPage baseURL:[NSURL URLWithString:@"about:blank"]];
+        [((WebView*)self.webView).mainFrame loadHTMLString:htmlPage baseURL:url];
     }
 }
 -(void)showErrorMessage:(nonnull NSString*)errorMessage
