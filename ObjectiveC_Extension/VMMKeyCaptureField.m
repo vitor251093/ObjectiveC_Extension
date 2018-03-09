@@ -79,12 +79,15 @@ static VMMKeyCaptureField* _activeKeyCaptureField;
     if (usage == 128 && cookie == 243) return; // Logitech G600 Mouse Middle-button click
     if (usage == 128 && cookie == 244) return; // Logitech G600 Mouse Right-button click
     
-    [self setKeyUsageKeycode:usage];
-    
-    if (_keyCaptureDelegate)
+    dispatch_async(dispatch_get_main_queue(), ^
     {
-        [_keyCaptureDelegate keyCaptureField:self didChangedKeyUsageKeycode:usage];
-    }
+        [self setKeyUsageKeycode:usage];
+        
+        if (_keyCaptureDelegate)
+        {
+            [_keyCaptureDelegate keyCaptureField:self didChangedKeyUsageKeycode:usage];
+        }
+    });
 }
 
 -(void)setKeyUsageKeycode:(uint32_t)keyUsageKeycode
