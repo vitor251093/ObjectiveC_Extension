@@ -61,33 +61,27 @@ static void Handle_DeviceMatchingCallback(void *inContext, IOReturn inResult, vo
 {
     if (inIOHIDDeviceRef == NULL) return;
     
-    dispatch_async(dispatch_get_main_queue(),^
-    {
-        VMMDeviceObserver* sender = VMMDeviceObserver.sharedObserver;
-        
-        sender.receivedReport = (uint8_t *)calloc(sender.receivedPacketMaxSize, sizeof(uint8_t));
+    VMMDeviceObserver* sender = VMMDeviceObserver.sharedObserver;
+    
+    sender.receivedReport = (uint8_t *)calloc(sender.receivedPacketMaxSize, sizeof(uint8_t));
 
-        IOHIDDeviceScheduleWithRunLoop(inIOHIDDeviceRef, CFRunLoopGetMain(), kCFRunLoopCommonModes);
-        IOHIDDeviceRegisterInputReportCallback(inIOHIDDeviceRef, sender.receivedReport, sender.receivedPacketMaxSize,
-                                               Handle_DeviceReportCallback, inContext);
-        
-        NSObject<VMMDeviceObserverDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverDelegate>*)inContext;
-        if (![actionDelegate respondsToSelector:@selector(observedConnectionOfDevice:)]) return;
-        
-        [actionDelegate observedConnectionOfDevice:inIOHIDDeviceRef];
-    });
+    IOHIDDeviceScheduleWithRunLoop(inIOHIDDeviceRef, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+    IOHIDDeviceRegisterInputReportCallback(inIOHIDDeviceRef, sender.receivedReport, sender.receivedPacketMaxSize,
+                                           Handle_DeviceReportCallback, inContext);
+    
+    NSObject<VMMDeviceObserverDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverDelegate>*)inContext;
+    if (![actionDelegate respondsToSelector:@selector(observedConnectionOfDevice:)]) return;
+    
+    [actionDelegate observedConnectionOfDevice:inIOHIDDeviceRef];
 }
 static void Handle_DeviceRemovalCallback (void *inContext, IOReturn inResult, void *inSender, IOHIDDeviceRef inIOHIDDeviceRef)
 {
     if (inIOHIDDeviceRef == NULL) return;
     
-    dispatch_async(dispatch_get_main_queue(),^
-    {
-        NSObject<VMMDeviceObserverDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverDelegate>*)inContext;
-        if (![actionDelegate respondsToSelector:@selector(observedRemovalOfDevice:)]) return;
-        
-        [actionDelegate observedRemovalOfDevice:inIOHIDDeviceRef];
-    });
+    NSObject<VMMDeviceObserverDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverDelegate>*)inContext;
+    if (![actionDelegate respondsToSelector:@selector(observedRemovalOfDevice:)]) return;
+    
+    [actionDelegate observedRemovalOfDevice:inIOHIDDeviceRef];
 }
 static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, void *inSender, IOHIDValueRef value)
 {
@@ -106,10 +100,7 @@ static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, vo
     if (actionDelegate == nil) return;
     if (![actionDelegate respondsToSelector:@selector(observedEventWithName:cookie:usage:value:device:)]) return;
     
-    dispatch_async(dispatch_get_main_queue(),^
-    {
-        [actionDelegate observedEventWithName:name cookie:cookie usage:usage value:elementValue device:device];
-    });
+    [actionDelegate observedEventWithName:name cookie:cookie usage:usage value:elementValue device:device];
 }
 
 static void Handle_DeviceReportCallback   (void* context, IOReturn result, void* sender, IOHIDReportType type, uint32_t reportID, uint8_t*               report, CFIndex reportLength)
@@ -120,10 +111,7 @@ static void Handle_DeviceReportCallback   (void* context, IOReturn result, void*
     if (actionDelegate == nil) return;
     if (![actionDelegate respondsToSelector:@selector(observedReportWithID:data:type:length:device:)]) return;
     
-    dispatch_async(dispatch_get_main_queue(),^
-    {
-        [actionDelegate observedReportWithID:reportID data:report type:type length:reportLength device:device];
-    });
+    [actionDelegate observedReportWithID:reportID data:report type:type length:reportLength device:device];
 }
 
 @end
