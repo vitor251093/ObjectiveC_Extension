@@ -297,15 +297,8 @@ static NSMutableDictionary* _macOsCompatibility;
                         if ([vendorIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
                         {
                             graphicCardDict[VMMVideoCardVendorIDKey] = vendorIDString;
-                        }
-                        else
-                        {
                             vendorIDString = nil;
                         }
-                    }
-                    else
-                    {
-                        vendorIDString = nil;
                     }
                     
                     if (vendorIDString != nil)
