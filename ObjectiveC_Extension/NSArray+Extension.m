@@ -14,8 +14,8 @@
 {
     return [self sortedArrayUsingComparator:^NSComparisonResult(NSDictionary* obj1, NSDictionary* obj2)
     {
-        NSUInteger obj1ValueIndex = [value indexOfObject:obj1[key]];
-        NSUInteger obj2ValueIndex = [value indexOfObject:obj2[key]];
+        NSUInteger obj1ValueIndex = obj1[key] != nil ? [value indexOfObject:obj1[key]] : -1;
+        NSUInteger obj2ValueIndex = obj2[key] != nil ? [value indexOfObject:obj2[key]] : -1;
         
         if (obj1ValueIndex == -1 && obj2ValueIndex != -1) return NSOrderedDescending;
         if (obj1ValueIndex != -1 && obj2ValueIndex == -1) return NSOrderedAscending;
