@@ -279,7 +279,7 @@ static NSMutableDictionary* _macOsCompatibility;
                     if (deviceIDString.length == 4)
                     {
                         deviceIDString = [NSString stringWithFormat:@"0x%@%@",[deviceIDString substringFromIndex:2],
-                                          [deviceIDString substringToIndex:2]];
+                                                                              [deviceIDString substringToIndex:2]];
                         graphicCardDict[VMMVideoCardDeviceIDKey] = deviceIDString;
                     }
                 }
@@ -292,8 +292,25 @@ static NSMutableDictionary* _macOsCompatibility;
                     {
                         vendorIDString = [vendorIDString substringWithRange:NSMakeRange(1, 4)];
                         vendorIDString = [NSString stringWithFormat:@"0x%@%@",[vendorIDString substringFromIndex:2],
-                                          [vendorIDString substringToIndex:2]];
-                        graphicCardDict[VMMVideoCardVendorIDKey] = vendorIDString;
+                                                                              [vendorIDString substringToIndex:2]];
+                        vendorIDString = vendorIDString.lowercaseString;
+                        if ([vendorIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
+                        {
+                            graphicCardDict[VMMVideoCardVendorIDKey] = vendorIDString;
+                        }
+                        else
+                        {
+                            vendorIDString = nil;
+                        }
+                    }
+                    else
+                    {
+                        vendorIDString = nil;
+                    }
+                    
+                    if (vendorIDString != nil)
+                    {
+                        graphicCardDict[VMMVideoCardVendorKey] = vendorIDString;
                     }
                 }
                 
