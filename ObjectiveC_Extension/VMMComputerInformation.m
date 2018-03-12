@@ -19,6 +19,7 @@
 #import "NSArray+Extension.h"
 #import "NSString+Extension.h"
 #import "NSFileManager+Extension.h"
+#import "NSMutableArray+Extension.h"
 
 @implementation VMMComputerInformation
 
@@ -355,17 +356,38 @@ static NSMutableDictionary* _macOsCompatibility;
         IOObjectRelease(iterator);
     }
     
+    if (graphicCardDicts.count == 0) return [[NSMutableDictionary alloc] init];
     if (graphicCardDicts.count == 1) return graphicCardDicts.firstObject;
     
-    for (NSMutableDictionary* graphicCardDict in graphicCardDicts)
+    [graphicCardDicts replaceObjectsWithVariation:^NSDictionary* _Nullable(NSDictionary* _Nonnull object, NSUInteger index)
     {
-        if ([graphicCardDict[VMMVideoCardNameKey] hasPrefix:@"Intel"] == false)
+        NSMutableDictionary* newDict = [object mutableCopy];
+        if (newDict[VMMVideoCardVendorIDKey] == nil)
         {
-            return graphicCardDict;
+            NSString* videoCardType = [self videoCardTypeFromVideoCardName:object[VMMVideoCardNameKey]];
+            
+            if ([@[VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelUHD,
+                   VMMVideoCardTypeIntelHD,   VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
+            {
+                newDict[VMMVideoCardVendorIDKey] = VMMVideoCardVendorIDIntel;
+            }
+            
+            if ([VMMVideoCardTypeATIAMD isEqualToString:videoCardType])
+            {
+                newDict[VMMVideoCardVendorIDKey] = VMMVideoCardVendorIDATIAMD;
+            }
+            
+            if ([VMMVideoCardTypeNVIDIA isEqualToString:videoCardType])
+            {
+                newDict[VMMVideoCardVendorIDKey] = VMMVideoCardVendorIDNVIDIA;
+            }
         }
-    }
+        return newDict;
+    }];
     
-    return [[NSMutableDictionary alloc] init];
+    NSArray* orderedGraphicCardDicts = [graphicCardDicts sortedDictionariesArrayWithKey:VMMVideoCardVendorIDKey orderingByValuesOrder:@[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel]];
+    
+    return orderedGraphicCardDicts.firstObject;
 }
 +(nullable NSDictionary*)videoCardDictionary
 {
@@ -426,6 +448,38 @@ static NSMutableDictionary* _macOsCompatibility;
     CGLDestroyRendererInfo(rend);
     return videoMemorySize;
 }
++(nullable NSString*)videoCardTypeFromVideoCardName:(NSString*)videoCardName
+{
+    NSString* graphicCardName = [videoCardName uppercaseString];
+    if (graphicCardName == nil) return nil;
+    
+    NSArray* graphicCardNameComponents = [graphicCardName componentsSeparatedByString:@" "];
+    
+    if ([graphicCardNameComponents containsObject:@"INTEL"])
+    {
+        if ([graphicCardNameComponents containsObject:@"HD"])   return VMMVideoCardTypeIntelHD;
+        if ([graphicCardNameComponents containsObject:@"UHD"])  return VMMVideoCardTypeIntelUHD;
+        if ([graphicCardNameComponents containsObject:@"IRIS"]) return VMMVideoCardTypeIntelIris;
+    }
+    
+    for (NSString* model in @[@"GMA"])
+    {
+        if ([graphicCardNameComponents containsObject:model]) return VMMVideoCardTypeIntelGMA;
+    }
+    
+    for (NSString* model in @[@"AMD",@"ATI",@"RADEON"])
+    {
+        if ([graphicCardNameComponents containsObject:model]) return VMMVideoCardTypeATIAMD;
+    }
+    
+    for (NSString* model in @[@"NVIDIA",@"GEFORCE",@"NVS",@"QUADRO"])
+    {
+        if ([graphicCardNameComponents containsObject:model]) return VMMVideoCardTypeNVIDIA;
+    }
+    
+    return nil;
+}
+
 
 +(NSString*)videoCardVendorIDFromVendorAndVendorIDKeysOnly
 {
@@ -589,48 +643,24 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            NSString* graphicCardName = [self.videoCardName uppercaseString];
+            NSString* graphicCardName = [self videoCardTypeFromVideoCardName:self.videoCardName];
             if (graphicCardName != nil)
             {
-                NSArray* graphicCardNameComponents = [graphicCardName componentsSeparatedByString:@" "];
-                
-                if ([graphicCardNameComponents containsObject:@"INTEL"])
-                {
-                    if ([graphicCardNameComponents containsObject:@"HD"])   _computerGraphicCardType = VMMVideoCardTypeIntelHD;
-                    if ([graphicCardNameComponents containsObject:@"UHD"])  _computerGraphicCardType = VMMVideoCardTypeIntelUHD;
-                    if ([graphicCardNameComponents containsObject:@"IRIS"]) _computerGraphicCardType = VMMVideoCardTypeIntelIris;
-                }
-                
-                for (NSString* model in @[@"GMA"])
-                {
-                    if ([graphicCardNameComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeIntelGMA;
-                }
-                
-                for (NSString* model in @[@"AMD",@"ATI",@"RADEON"])
-                {
-                    if ([graphicCardNameComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeATIAMD;
-                }
-                
-                for (NSString* model in @[@"NVIDIA",@"GEFORCE",@"NVS",@"QUADRO"])
-                {
-                    if ([graphicCardNameComponents containsObject:model]) _computerGraphicCardType = VMMVideoCardTypeNVIDIA;
-                }
+                _computerGraphicCardType = graphicCardName;
+                return _computerGraphicCardType;
             }
             
-            if (_computerGraphicCardType == nil)
-            {
-                NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
-                
-                NSDictionary* vendorIDType = @{VMMVideoCardVendorIDATIAMD:                 VMMVideoCardTypeATIAMD,
-                                               VMMVideoCardVendorIDNVIDIA:                 VMMVideoCardTypeNVIDIA,
-                                               VMMVideoCardVendorIDVirtualBox:             VMMVideoCardTypeVirtualBox,
-                                               VMMVideoCardVendorIDVMware:                 VMMVideoCardTypeVMware,
-                                               VMMVideoCardVendorIDParallelsDesktop:       VMMVideoCardTypeParallelsDesktop,
-                                               VMMVideoCardVendorIDMicrosoftRemoteDesktop: VMMVideoCardTypeMicrosoftRemoteDesktop,
-                                               VMMVideoCardVendorIDQemu:                   VMMVideoCardTypeQemu };
-                
-                _computerGraphicCardType = vendorIDType[localVendorID];
-            }
+            NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
+            
+            NSDictionary* vendorIDType = @{VMMVideoCardVendorIDATIAMD:                 VMMVideoCardTypeATIAMD,
+                                           VMMVideoCardVendorIDNVIDIA:                 VMMVideoCardTypeNVIDIA,
+                                           VMMVideoCardVendorIDVirtualBox:             VMMVideoCardTypeVirtualBox,
+                                           VMMVideoCardVendorIDVMware:                 VMMVideoCardTypeVMware,
+                                           VMMVideoCardVendorIDParallelsDesktop:       VMMVideoCardTypeParallelsDesktop,
+                                           VMMVideoCardVendorIDMicrosoftRemoteDesktop: VMMVideoCardTypeMicrosoftRemoteDesktop,
+                                           VMMVideoCardVendorIDQemu:                   VMMVideoCardTypeQemu };
+            
+            _computerGraphicCardType = vendorIDType[localVendorID];
         }
         
         return _computerGraphicCardType;
