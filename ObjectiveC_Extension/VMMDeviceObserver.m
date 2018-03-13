@@ -83,13 +83,14 @@ static VMMDeviceObserver *_sharedObserver;
     
     return (IOReturn == kIOReturnSuccess);
 }
--(void)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate
+-(BOOL)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate
 {
-    if (actionDelegate.hidManager != NULL)
-    {
-        IOHIDManagerClose(actionDelegate.hidManager, kIOHIDOptionsTypeNone);
-        actionDelegate.hidManager = NULL;
-    }
+    if (actionDelegate.hidManager == NULL) return true;
+    
+    IOReturn IOReturn = IOHIDManagerClose(actionDelegate.hidManager, kIOHIDOptionsTypeNone);
+    actionDelegate.hidManager = NULL;
+    
+    return (IOReturn == kIOReturnSuccess);
 }
 
 static void Handle_DeviceMatchingCallback(void *inContext, IOReturn inResult, void *inSender, IOHIDDeviceRef inIOHIDDeviceRef)

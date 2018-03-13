@@ -32,7 +32,7 @@ long IOHIDDeviceGetVendorID(IOHIDDeviceRef _Nullable device);
 @interface VMMDeviceObserver : NSObject
 +(nonnull instancetype)sharedObserver;
 -(BOOL)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
--(void)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
+-(BOOL)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
 
 @property (nonatomic) uint8_t* _Nullable receivedReport;
 
