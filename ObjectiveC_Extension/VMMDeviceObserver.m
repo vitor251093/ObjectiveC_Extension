@@ -34,7 +34,7 @@ BOOL IOHIDDeviceGetLongProperty(IOHIDDeviceRef _Nullable inIOHIDDeviceRef, CFStr
 long IOHIDDeviceGetUsage(IOHIDDeviceRef _Nullable device)
 {
     long result = 0;
-    IOHIDDeviceGetLongProperty(device, CFSTR(kIOHIDDeviceUsageKey), &result);
+    IOHIDDeviceGetLongProperty(device, CFSTR(kIOHIDPrimaryUsageKey), &result);
     return result;
 }
 long IOHIDDeviceGetVendorID(IOHIDDeviceRef _Nullable device)
