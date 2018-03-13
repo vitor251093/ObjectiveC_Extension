@@ -13,11 +13,6 @@
 
 NSDictionary* _usageNamesByKeycode;
 
-+(nonnull NSArray<NSString*>*)allUsageNames
-{
-    return self.usageNamesByKeycode.allValues;
-}
-
 +(nonnull NSDictionary*)usageNamesByKeycode
 {
     if (!_usageNamesByKeycode)
