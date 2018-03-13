@@ -85,7 +85,11 @@ static VMMDeviceObserver *_sharedObserver;
 }
 -(void)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate
 {
-    actionDelegate.hidManager = NULL;
+    if (actionDelegate.hidManager != NULL)
+    {
+        IOHIDManagerClose(actionDelegate.hidManager, kIOHIDOptionsTypeNone);
+        actionDelegate.hidManager = NULL;
+    }
 }
 
 static void Handle_DeviceMatchingCallback(void *inContext, IOReturn inResult, void *inSender, IOHIDDeviceRef inIOHIDDeviceRef)
