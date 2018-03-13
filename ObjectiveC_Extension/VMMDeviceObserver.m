@@ -12,6 +12,38 @@
 
 #import "VMMLogUtility.h"
 
+BOOL IOHIDDeviceGetLongProperty(IOHIDDeviceRef _Nullable inIOHIDDeviceRef, CFStringRef _Nonnull inKey, long * _Nonnull outValue)
+{
+    BOOL result = FALSE;
+    if (inIOHIDDeviceRef)
+    {
+        assert(IOHIDDeviceGetTypeID() == CFGetTypeID(inIOHIDDeviceRef));
+        
+        CFTypeRef tCFTypeRef = IOHIDDeviceGetProperty(inIOHIDDeviceRef, inKey);
+        if (tCFTypeRef)
+        {
+            if (CFNumberGetTypeID() == CFGetTypeID(tCFTypeRef))
+            {
+                result = CFNumberGetValue((CFNumberRef)tCFTypeRef, kCFNumberSInt32Type, outValue);
+            }
+        }
+    }
+    
+    return result;
+}
+long IOHIDDeviceGetUsage(IOHIDDeviceRef _Nullable device)
+{
+    long result = 0;
+    IOHIDDeviceGetLongProperty(device, CFSTR(kIOHIDDeviceUsageKey), &result);
+    return result;
+}
+long IOHIDDeviceGetVendorID(IOHIDDeviceRef _Nullable device)
+{
+    long vendorID = 0;
+    IOHIDDeviceGetLongProperty(device, CFSTR(kIOHIDVendorIDKey), &vendorID);
+    return vendorID;
+}
+
 @implementation VMMDeviceObserver
 
 static VMMDeviceObserver *_sharedObserver;
