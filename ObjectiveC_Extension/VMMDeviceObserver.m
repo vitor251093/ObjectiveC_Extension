@@ -23,7 +23,6 @@ static VMMDeviceObserver *_sharedObserver;
         if (!_sharedObserver)
         {
             _sharedObserver = [[VMMDeviceObserver alloc] init];
-            _sharedObserver.receivedPacketMaxSize = 552;
         }
         return _sharedObserver;
     }
@@ -63,14 +62,14 @@ static void Handle_DeviceMatchingCallback(void *inContext, IOReturn inResult, vo
     
     VMMDeviceObserver* sender = VMMDeviceObserver.sharedObserver;
     
-    sender.receivedReport = (uint8_t *)calloc(sender.receivedPacketMaxSize, sizeof(uint8_t));
-
-    IOHIDDeviceScheduleWithRunLoop(inIOHIDDeviceRef, CFRunLoopGetMain(), kCFRunLoopCommonModes);
-    IOHIDDeviceRegisterInputReportCallback(inIOHIDDeviceRef, sender.receivedReport, sender.receivedPacketMaxSize,
-                                           Handle_DeviceReportCallback, inContext);
-    
     NSObject<VMMDeviceObserverDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverDelegate>*)inContext;
     if (![actionDelegate respondsToSelector:@selector(observedConnectionOfDevice:)]) return;
+    
+    sender.receivedReport = (uint8_t *)calloc(actionDelegate.receivedPacketMaxSize, sizeof(uint8_t));
+
+    IOHIDDeviceScheduleWithRunLoop(inIOHIDDeviceRef, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+    IOHIDDeviceRegisterInputReportCallback(inIOHIDDeviceRef, sender.receivedReport, actionDelegate.receivedPacketMaxSize,
+                                           Handle_DeviceReportCallback, inContext);
     
     [actionDelegate observedConnectionOfDevice:inIOHIDDeviceRef];
 }

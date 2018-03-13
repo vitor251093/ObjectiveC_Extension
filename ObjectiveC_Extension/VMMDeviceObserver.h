@@ -17,6 +17,7 @@
 
 @protocol VMMDeviceObserverDelegate
 @property (nonatomic, nullable) IOHIDManagerRef hidManager;
+@property (nonatomic) CFIndex receivedPacketMaxSize;
 @optional
 -(void)observedConnectionOfDevice:(nonnull IOHIDDeviceRef)device;
 -(void)observedRemovalOfDevice:(nonnull IOHIDDeviceRef)device;
@@ -29,7 +30,6 @@
 -(BOOL)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
 -(void)stopObservingForDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate;
 
-@property (nonatomic) CFIndex receivedPacketMaxSize;
 @property (nonatomic) uint8_t* _Nullable receivedReport;
 
 @end
