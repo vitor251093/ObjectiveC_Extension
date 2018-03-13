@@ -65,11 +65,14 @@ static void Handle_DeviceMatchingCallback(void *inContext, IOReturn inResult, vo
     NSObject<VMMDeviceObserverDelegate>* actionDelegate = (__bridge NSObject<VMMDeviceObserverDelegate>*)inContext;
     if (![actionDelegate respondsToSelector:@selector(observedConnectionOfDevice:)]) return;
     
-    sender.receivedReport = (uint8_t *)calloc(actionDelegate.receivedPacketMaxSize, sizeof(uint8_t));
+    if ([actionDelegate respondsToSelector:@selector(receivedPacketMaxSize)])
+    {
+        sender.receivedReport = (uint8_t *)calloc(actionDelegate.receivedPacketMaxSize, sizeof(uint8_t));
 
-    IOHIDDeviceScheduleWithRunLoop(inIOHIDDeviceRef, CFRunLoopGetMain(), kCFRunLoopCommonModes);
-    IOHIDDeviceRegisterInputReportCallback(inIOHIDDeviceRef, sender.receivedReport, actionDelegate.receivedPacketMaxSize,
-                                           Handle_DeviceReportCallback, inContext);
+        IOHIDDeviceScheduleWithRunLoop(inIOHIDDeviceRef, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+        IOHIDDeviceRegisterInputReportCallback(inIOHIDDeviceRef, sender.receivedReport, actionDelegate.receivedPacketMaxSize,
+                                               Handle_DeviceReportCallback, inContext);
+    }
     
     [actionDelegate observedConnectionOfDevice:inIOHIDDeviceRef];
 }

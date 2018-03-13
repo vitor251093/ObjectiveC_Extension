@@ -17,12 +17,12 @@
 
 @protocol VMMDeviceObserverDelegate
 @property (nonatomic, nullable) IOHIDManagerRef hidManager;
-@property (nonatomic) CFIndex receivedPacketMaxSize;
 @optional
 -(void)observedConnectionOfDevice:(nonnull IOHIDDeviceRef)device;
 -(void)observedRemovalOfDevice:(nonnull IOHIDDeviceRef)device;
 -(void)observedEventWithName:(nullable CFStringRef)name cookie:(IOHIDElementCookie)cookie usage:(uint32_t)usage value:(CFIndex)value device:(nonnull IOHIDDeviceRef)device;
 -(void)observedReportWithID:(uint32_t)reportID data:(nonnull uint8_t*)report type:(IOHIDReportType)reportType length:(CFIndex)reportLength device:(nonnull IOHIDDeviceRef)device;
+-(CFIndex)receivedPacketMaxSize;
 @end
 
 @interface VMMDeviceObserver : NSObject
