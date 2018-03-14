@@ -162,7 +162,7 @@ static VMMUserNotificationCenter *_sharedInstance;
     BOOL preferGrowl = (options | VMMUserNotificationPreferGrowl);
     
     // Growl (preference)
-    if (hasGrowl && preferGrowl)
+    if (hasGrowl && preferGrowl && !(options | VMMUserNotificationOnlyWithAction))
     {
         BOOL success = [self deliverGrowlNotificationWithTitle:title message:message icon:icon];
         if (success) return TRUE;
@@ -176,7 +176,7 @@ static VMMUserNotificationCenter *_sharedInstance;
     }
     
     // Growl (not preference)
-    if (hasGrowl && !preferGrowl)
+    if (hasGrowl && !preferGrowl && !(options | VMMUserNotificationOnlyWithAction))
     {
         BOOL success = [self deliverGrowlNotificationWithTitle:title message:message icon:icon];
         if (success) return TRUE;
