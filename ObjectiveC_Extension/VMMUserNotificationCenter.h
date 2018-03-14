@@ -10,9 +10,9 @@
 
 typedef enum {
     VMMUserNotificationNormal                = 0,
-    VMMUserNotificationOnlyWithAction        = 1,
-    VMMUserNotificationPreferGrowl           = 2,
-    VMMUserNotificationNoAlert               = 4
+    VMMUserNotificationOnlyWithAction        = 1 << 0,
+    VMMUserNotificationPreferGrowl           = 1 << 1,
+    VMMUserNotificationNoAlert               = 1 << 2
     
 } VMMUserNotificationCenterOptions;
 
