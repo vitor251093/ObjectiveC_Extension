@@ -29,7 +29,6 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 static NSMutableDictionary* _hardwareDictionary;
 static NSMutableDictionary* _computerGraphicCardDictionary;
 
-static NSString* _ramMemory;
 static NSString* _macModel;
 static NSString* _processorNameAndSpeed;
 
@@ -89,18 +88,50 @@ static NSMutableDictionary* _macOsCompatibility;
     }
 }
 
-+(nullable NSString*)ramMemory
++(NSString*)stringByRemovingSpacesInBegginingOfString:(NSString*)string
 {
-    @synchronized(_ramMemory)
-    {
-        if (_ramMemory != nil)
-        {
-            return _ramMemory;
-        }
-        
-        _ramMemory = self.hardwareDictionary[@"physical_memory"];
-        return _ramMemory;
-    }
+    while ([string hasPrefix:@" "]) string = [string substringFromIndex:1];
+    return string;
+}
+
++(long long int)hardDiskSize
+{
+    NSDictionary *hdAttributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:@"/" error:nil];
+    long long int fileSystemSize = [[hdAttributes objectForKey:NSFileSystemSize] longLongValue];
+    return fileSystemSize;
+}
++(long long int)hardDiskFreeSize
+{
+    NSDictionary *hdAttributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:@"/" error:nil];
+    long long int fileSystemFreeSize = [[hdAttributes objectForKey:NSFileSystemFreeSize] longLongValue];
+    return fileSystemFreeSize;
+}
++(long long int)ramMemorySize
+{
+    return [[NSProcessInfo processInfo] physicalMemory];
+}
++(long long int)ramMemoryUsedSize
+{
+    NSString* vm_stat = [NSTask runCommand:@[@"vm_stat"]];
+    
+    int pageSize = getpagesize();
+    NSString* activeSizeWithSpaces     = [vm_stat getFragmentAfter:@"Pages active:"                 andBefore:@"."];
+    NSString* wiredSizeWithSpaces      = [vm_stat getFragmentAfter:@"Pages wired down:"             andBefore:@"."];
+    NSString* purgeableSizeWithSpaces  = [vm_stat getFragmentAfter:@"Pages purgeable:"              andBefore:@"."];
+    NSString* compressedSizeWithSpaces = [vm_stat getFragmentAfter:@"Pages occupied by compressor:" andBefore:@"."];
+    
+    if (activeSizeWithSpaces == nil)     activeSizeWithSpaces     = @"0";
+    if (wiredSizeWithSpaces == nil)      wiredSizeWithSpaces      = @"0";
+    if (purgeableSizeWithSpaces == nil)  purgeableSizeWithSpaces  = @"0";
+    if (compressedSizeWithSpaces == nil) compressedSizeWithSpaces = @"0";
+    
+    activeSizeWithSpaces     = [self stringByRemovingSpacesInBegginingOfString:activeSizeWithSpaces];
+    wiredSizeWithSpaces      = [self stringByRemovingSpacesInBegginingOfString:wiredSizeWithSpaces];
+    purgeableSizeWithSpaces  = [self stringByRemovingSpacesInBegginingOfString:purgeableSizeWithSpaces];
+    compressedSizeWithSpaces = [self stringByRemovingSpacesInBegginingOfString:compressedSizeWithSpaces];
+    
+    return ([activeSizeWithSpaces longLongValue]    + [wiredSizeWithSpaces longLongValue] +
+            [purgeableSizeWithSpaces longLongValue] + [compressedSizeWithSpaces longLongValue])*pageSize;
 }
 +(nullable NSString*)processorNameAndSpeed
 {
