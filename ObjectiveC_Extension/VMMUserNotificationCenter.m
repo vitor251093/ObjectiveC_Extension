@@ -38,7 +38,6 @@ static NSString* const NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY = @"info";
 @implementation VMMUserNotificationCenter
 
 static VMMUserNotificationCenter *_sharedInstance;
-static BOOL _isGrowlEnabled;
 
 +(nonnull instancetype)defaultUserNotificationCenter
 {
@@ -47,20 +46,26 @@ static BOOL _isGrowlEnabled;
         if (!_sharedInstance)
         {
             _sharedInstance = [[VMMUserNotificationCenter alloc] init];
-            _isGrowlEnabled = [self isGrowlAvailable] && !IsClassNSUserNotificationCenterAvailable;
         }
         return _sharedInstance;
     }
 }
 
-+(BOOL)isGrowlEnabled
+-(BOOL)userNotificationCenter:(id)center shouldPresentNotification:(id)notification
 {
-    return _isGrowlEnabled;
+    return YES;
 }
-+(void)setGrowlEnabled:(BOOL)enabled
+-(void)userNotificationCenter:(id)center didActivateNotification:(id)notification
 {
-    _isGrowlEnabled = enabled;
+    if (self.delegate != nil)
+    {
+        NSDictionary* userInfoDict = ((NSUserNotification *)notification).userInfo;
+        NSObject* userInfo = userInfoDict[NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY];
+        [self.delegate actionButtonPressedForNotificationWithUserInfo:userInfo];
+    }
 }
+
+
 +(BOOL)isGrowlAvailable
 {
     NSArray* scriptToCheckIfGrowlExists = @[@"tell application \"System Events\"",
@@ -72,6 +77,11 @@ static BOOL _isGrowlEnabled;
     
     return growlExists.booleanValue;
 }
++(BOOL)isNSUserNotificationCenterAvailable
+{
+    return IsClassNSUserNotificationCenterAvailable;
+}
+
 
 -(BOOL)deliverGrowlNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message icon:(nullable NSImage*)icon
 {
@@ -106,94 +116,109 @@ static BOOL _isGrowlEnabled;
     NSAppleEventDescriptor* notificationSent = [notification executeAndReturnError:nil];
     return (notificationSent != nil);
 }
-
--(void)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton
+-(void)deliverNativeNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton
 {
-    BOOL useUserNotificationCenter = IsClassNSUserNotificationCenterAvailable;
-    BOOL useGrowl = [VMMUserNotificationCenter isGrowlEnabled] && [VMMUserNotificationCenter isGrowlAvailable];
+    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:(id<NSUserNotificationCenterDelegate>)self];
     
-    // Growl
-    if (useGrowl)
+    NSUserNotification *notification = [[NSUserNotification alloc] init];
+    notification.title = title;
+    notification.informativeText = message;
+    notification.soundName = NSUserNotificationDefaultSoundName;
+    notification.userInfo = info ? @{NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY:info} : @{};
+    
+    if (icon != nil)
+    {
+        @try
+        {
+            [notification setValue:icon   forKey:@"_identityImage"];
+            [notification setValue:@FALSE forKey:@"_identityImageHasBorder"];
+        }
+        @catch (NSException* exception)
+        {
+            // Avoiding API exception in case something changes in the future
+            
+            // That feature is only available from macOS 10.9 and beyond
+            if ([notification respondsToSelector:@selector(setContentImage:)])
+            {
+                notification.contentImage = icon;
+            }
+        }
+    }
+    
+    if (actionButton != nil)
+    {
+        [notification setHasActionButton:YES];
+        [notification setActionButtonTitle:actionButton];
+    }
+    
+    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+}
+
+
+-(BOOL)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton options:(VMMUserNotificationCenterOptions)options
+{
+    BOOL hasUserNotificationCenter = [VMMUserNotificationCenter isNSUserNotificationCenterAvailable];
+    BOOL hasGrowl = [VMMUserNotificationCenter isGrowlAvailable];
+    BOOL preferGrowl = (options | VMMUserNotificationPreferGrowl);
+    
+    // Growl (preference)
+    if (hasGrowl && preferGrowl)
     {
         BOOL success = [self deliverGrowlNotificationWithTitle:title message:message icon:icon];
-        if (success) return;
+        if (success) return TRUE;
     }
     
     // NSUserNotificationCenter
-    if (useUserNotificationCenter)
+    if (hasUserNotificationCenter)
     {
-        [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:(id<NSUserNotificationCenterDelegate>)self];
-        
-        NSUserNotification *notification = [[NSUserNotification alloc] init];
-        notification.title = title;
-        notification.informativeText = message;
-        notification.soundName = NSUserNotificationDefaultSoundName;
-        notification.userInfo = info ? @{NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY:info} : @{};
-        
-        if (icon != nil)
-        {
-            @try
-            {
-                [notification setValue:icon   forKey:@"_identityImage"];
-                [notification setValue:@FALSE forKey:@"_identityImageHasBorder"];
-            }
-            @catch (NSException* exception)
-            {
-                // Avoiding API exception in case something changes in the future
-                
-                // That feature is only available from macOS 10.9 and beyond
-                if ([notification respondsToSelector:@selector(setContentImage:)])
-                {
-                    notification.contentImage = icon;
-                }
-            }
-        }
-        
-        if (actionButton != nil)
-        {
-            [notification setHasActionButton:YES];
-            [notification setActionButtonTitle:actionButton];
-        }
-        
-        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
-        return;
+        [self deliverNativeNotificationWithTitle:title message:message userInfo:info icon:icon actionButtonText:actionButton];
+        return TRUE;
     }
     
-    // NSAlert
-    if (actionButton != nil && self.delegate != nil)
+    // Growl (not preference)
+    if (hasGrowl && !preferGrowl)
     {
-        BOOL runAction = [NSAlert confirmationDialogWithTitle:title message:message andSettings:^(NSAlert *alert)
+        BOOL success = [self deliverGrowlNotificationWithTitle:title message:message icon:icon];
+        if (success) return TRUE;
+    }
+    
+    if (!(options | VMMUserNotificationNoAlert))
+    {
+        // NSAlert (with action)
+        if (actionButton != nil && self.delegate != nil)
         {
-            [alert.buttons.firstObject setTitle:actionButton];
-            [alert setIcon:icon];
-        }];
+            BOOL runAction = [NSAlert confirmationDialogWithTitle:title message:message andSettings:^(NSAlert *alert)
+            {
+                [alert.buttons.firstObject setTitle:actionButton];
+                [alert setIcon:icon];
+            }];
+            
+            if (runAction)
+            {
+                [self.delegate actionButtonPressedForNotificationWithUserInfo:info];
+            }
+            
+            return TRUE;
+        }
         
-        if (runAction)
+        // NSAlert (with no action)
+        if (!(options | VMMUserNotificationOnlyWithAction))
         {
-            [self.delegate actionButtonPressedForNotificationWithUserInfo:info];
+            [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
+            {
+                [alert setIcon:icon];
+            }];
+            
+            return TRUE;
         }
     }
-    else
-    {
-        [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
-        {
-            [alert setIcon:icon];
-        }];
-    }
+    
+    return FALSE;
 }
 
--(BOOL)userNotificationCenter:(id)center shouldPresentNotification:(id)notification
+-(BOOL)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message icon:(nullable NSImage*)icon options:(VMMUserNotificationCenterOptions)options
 {
-    return YES;
-}
--(void)userNotificationCenter:(id)center didActivateNotification:(id)notification
-{
-    if (self.delegate != nil)
-    {
-        NSDictionary* userInfoDict = ((NSUserNotification *)notification).userInfo;
-        NSObject* userInfo = userInfoDict[NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY];
-        [self.delegate actionButtonPressedForNotificationWithUserInfo:userInfo];
-    }
+    return [self deliverNotificationWithTitle:title message:message userInfo:nil icon:icon actionButtonText:nil options:options];
 }
 
 @end

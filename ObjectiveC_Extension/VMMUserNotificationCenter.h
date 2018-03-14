@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    VMMUserNotificationNormal                = 0,
+    VMMUserNotificationOnlyWithAction        = 1,
+    VMMUserNotificationPreferGrowl           = 2,
+    VMMUserNotificationNoAlert               = 4,
+    VMMUserNotificationNoAlertOnlyWithAction = 5,
+    VMMUserNotificationNoAlertPreferGrowl    = 6
+    
+} VMMUserNotificationCenterOptions;
+
 @protocol VMMUserNotificationCenterDelegate
 -(void)actionButtonPressedForNotificationWithUserInfo:(nullable NSObject*)userInfo;
 @end
@@ -18,12 +28,11 @@
 
 +(nonnull instancetype)defaultUserNotificationCenter;
 
-+(BOOL)isGrowlEnabled;
-+(void)setGrowlEnabled:(BOOL)enabled;
 +(BOOL)isGrowlAvailable;
++(BOOL)isNSUserNotificationCenterAvailable;
 
--(BOOL)deliverGrowlNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message icon:(nullable NSImage*)icon;
+-(BOOL)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton options:(VMMUserNotificationCenterOptions)options;
 
--(void)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton;
+-(BOOL)deliverNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message icon:(nullable NSImage*)icon options:(VMMUserNotificationCenterOptions)options;
 
 @end
