@@ -159,10 +159,12 @@ static VMMUserNotificationCenter *_sharedInstance;
 {
     BOOL hasUserNotificationCenter = [VMMUserNotificationCenter isNSUserNotificationCenterAvailable];
     BOOL hasGrowl = [VMMUserNotificationCenter isGrowlAvailable];
+    BOOL allowAlert = !(options | VMMUserNotificationNoAlert);
     BOOL preferGrowl = (options | VMMUserNotificationPreferGrowl);
+    BOOL allowNotificationWithNoAction = !(options | VMMUserNotificationOnlyWithAction);
     
     // Growl (preference)
-    if (hasGrowl && preferGrowl && !(options | VMMUserNotificationOnlyWithAction))
+    if (hasGrowl && preferGrowl && allowNotificationWithNoAction)
     {
         BOOL success = [self deliverGrowlNotificationWithTitle:title message:message icon:icon];
         if (success) return TRUE;
@@ -176,13 +178,14 @@ static VMMUserNotificationCenter *_sharedInstance;
     }
     
     // Growl (not preference)
-    if (hasGrowl && !preferGrowl && !(options | VMMUserNotificationOnlyWithAction))
+    if (hasGrowl && !preferGrowl && allowNotificationWithNoAction)
     {
         BOOL success = [self deliverGrowlNotificationWithTitle:title message:message icon:icon];
         if (success) return TRUE;
     }
     
-    if (!(options | VMMUserNotificationNoAlert))
+    // NSAlert
+    if (allowAlert)
     {
         // NSAlert (with action)
         if (actionButton != nil && self.delegate != nil)
@@ -202,7 +205,7 @@ static VMMUserNotificationCenter *_sharedInstance;
         }
         
         // NSAlert (with no action)
-        if (!(options | VMMUserNotificationOnlyWithAction))
+        if (allowNotificationWithNoAction)
         {
             [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
             {
