@@ -176,6 +176,24 @@ static NSMutableDictionary* _macOsCompatibility;
         return _processorNameAndSpeed;
     }
 }
++(double)processorUsage
+{
+    NSString* ps = [NSTask runCommand:@[@"ps", @"-A", @"-o" ,@"%cpu"]];
+    ps = [ps stringByReplacingOccurrencesOfString:@"," withString:@"."];
+    
+    double cpuUsageSum = 0.0;
+    for (NSString* process in [ps componentsSeparatedByString:@"\n"])
+    {
+        cpuUsageSum += [[self stringByRemovingSpacesInBegginingOfString:process] doubleValue];
+    }
+    
+    NSString* numberOfCpus = [NSTask runCommand:@[@"sysctl", @"hw.physicalcpu"]];
+    numberOfCpus = [numberOfCpus getFragmentAfter:@" " andBefore:nil];
+    if (!numberOfCpus || numberOfCpus.intValue == 0) return -1;
+    
+    cpuUsageSum = cpuUsageSum/numberOfCpus.intValue;
+    return cpuUsageSum / 100;
+}
 +(nullable NSString*)macModel
 {
     @synchronized(_macModel)
