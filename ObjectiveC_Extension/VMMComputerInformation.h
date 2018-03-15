@@ -253,7 +253,9 @@ typedef enum VMMUserGroup
 
 +(long long int)hardDiskSize;
 +(long long int)hardDiskFreeSize;
++(long long int)hardDiskUsedSize;
 +(long long int)ramMemorySize;
++(long long int)ramMemoryFreeSize;
 +(long long int)ramMemoryUsedSize;
 +(nullable NSString*)processorNameAndSpeed;
 +(nullable NSString*)macModel;

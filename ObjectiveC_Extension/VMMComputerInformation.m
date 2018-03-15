@@ -106,9 +106,17 @@ static NSMutableDictionary* _macOsCompatibility;
     long long int fileSystemFreeSize = [[hdAttributes objectForKey:NSFileSystemFreeSize] longLongValue];
     return fileSystemFreeSize;
 }
++(long long int)hardDiskUsedSize
+{
+    return self.hardDiskSize - self.hardDiskFreeSize;
+}
 +(long long int)ramMemorySize
 {
     return [[NSProcessInfo processInfo] physicalMemory];
+}
++(long long int)ramMemoryFreeSize
+{
+    return self.ramMemorySize - self.ramMemoryUsedSize;
 }
 +(long long int)ramMemoryUsedSize
 {
