@@ -120,6 +120,8 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(long long int)ramMemoryUsedSize
 {
+    // TODO: Not confirmed to be accurate yet
+    
     NSString* vm_stat = [NSTask runCommand:@[@"vm_stat"]];
     
     int pageSize = getpagesize();
@@ -178,6 +180,8 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(double)processorUsage
 {
+    // TODO: Not confirmed to be accurate yet
+    
     NSString* ps = [NSTask runCommand:@[@"ps", @"-A", @"-o" ,@"%cpu"]];
     ps = [ps stringByReplacingOccurrencesOfString:@"," withString:@"."];
     
