@@ -338,6 +338,8 @@ static NSMutableDictionary* _macOsCompatibility;
                 if (deviceID != nil && [deviceID isKindOfClass:[NSData class]])
                 {
                     NSString *deviceIDString = [[NSString alloc] initWithData:deviceID encoding:NSASCIIStringEncoding];
+                    graphicCardDict[@"RawDeviceID"] = deviceIDString;
+                    
                     deviceIDString = [deviceIDString hexadecimalUTF8String];
                     
                     if (deviceIDString.length == 4)
