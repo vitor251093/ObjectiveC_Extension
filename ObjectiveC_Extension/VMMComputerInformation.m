@@ -428,7 +428,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return graphicCardDicts;
 }
-+(nullable NSMutableArray<VMMVideoCard*>*)videoCards
++(nonnull NSMutableArray<VMMVideoCard*>*)videoCards
 {
     @synchronized(_videoCards)
     {

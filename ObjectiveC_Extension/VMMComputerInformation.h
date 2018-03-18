@@ -213,7 +213,7 @@ typedef enum VMMUserGroup
 +(double)processorUsage;
 +(nullable NSString*)macModel;
 
-+(nullable NSMutableArray<VMMVideoCard*>*)videoCards;
++(nonnull NSMutableArray<VMMVideoCard*>*)videoCards;
 
 /*!
  * @discussion  Returns a dictionary with information related with the main video card.
