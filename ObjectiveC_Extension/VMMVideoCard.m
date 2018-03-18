@@ -147,15 +147,8 @@
         
         @autoreleasepool
         {
-            NSDictionary* videoCardDictionary = _dictionary;
-            
-            if (videoCardDictionary == nil)
-            {
-                return nil;
-            }
-            
-            NSString* videoCardName = videoCardDictionary[VMMVideoCardNameKey];
-            NSString* chipsetModel  = videoCardDictionary[VMMVideoCardRawNameKey];
+            NSString* videoCardName = _dictionary[VMMVideoCardNameKey];
+            NSString* chipsetModel  = _dictionary[VMMVideoCardRawNameKey];
             
             NSArray* invalidVideoCardNames = @[@"Display", @"Apple WiFi card", @"spdisplays_display"];
             BOOL validVideoCardName = (videoCardName != nil && [invalidVideoCardNames containsObject:videoCardName] == false);
@@ -319,30 +312,18 @@
         {
             int memSizeInt = -1;
             
-            NSDictionary* gcDict = [self dictionary];
-            if (gcDict != nil && gcDict.count > 0)
-            {
-                NSString* memSize = [gcDict[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
-                if (memSize == nil) memSize = [gcDict[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
-                if (memSize == nil) memSize = [gcDict[VMMVideoCardMemorySizeBuiltInAlternateKey] uppercaseString];
-                
-                if ([memSize contains:@" MB"])
-                {
-                    memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" MB"] intValue];
-                }
-                else if ([memSize contains:@" GB"])
-                {
-                    memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
-                }
-            }
+            NSString* memSize = [_dictionary[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
+            if (memSize == nil) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
+            if (memSize == nil) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInAlternateKey] uppercaseString];
             
-            // TODO: Reimplement API use to get video card memory size
-//            NSUInteger apiResult = [self videoCardMemorySizeInMegabytesFromAPI];
-//            if (apiResult != 0 && (memSizeInt == 0 || memSizeInt == -1 || apiResult > memSizeInt))
-//            {
-//                _memorySizeInMegabytes = @(apiResult);
-//                return _memorySizeInMegabytes;
-//            }
+            if ([memSize contains:@" MB"])
+            {
+                memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" MB"] intValue];
+            }
+            else if ([memSize contains:@" GB"])
+            {
+                memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
+            }
             
             if (memSizeInt == 0 && [self.vendorID isEqualToString:VMMVideoCardVendorIDNVIDIA])
             {
@@ -393,19 +374,17 @@
     
     return [@[VMMVideoCardVendorIDIntel, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA] containsObject:vendorID];
 }
+
 -(BOOL)hasNameAndDeviceID
 {
     if (self.name == nil) return false;
-    
     if (_dictionary[VMMVideoCardDeviceIDKey] == nil) return false;
-    
     return true;
 }
 -(BOOL)hasMemorySize
 {
-    return !(_dictionary[VMMVideoCardMemorySizePciOrPcieKey]        == nil &&
-             _dictionary[VMMVideoCardMemorySizeBuiltInKey]          == nil &&
-             _dictionary[VMMVideoCardMemorySizeBuiltInAlternateKey] == nil);
+    NSNumber* memorySize = self.memorySizeInMegabytes;
+    return memorySize != nil && memorySize.unsignedIntegerValue != 0;
 }
 -(BOOL)isComplete
 {

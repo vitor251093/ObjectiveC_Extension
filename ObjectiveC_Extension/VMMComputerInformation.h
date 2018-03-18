@@ -213,7 +213,6 @@ typedef enum VMMUserGroup
 +(double)processorUsage;
 +(nullable NSString*)macModel;
 
-
 +(nullable NSMutableArray<VMMVideoCard*>*)videoCards;
 
 /*!

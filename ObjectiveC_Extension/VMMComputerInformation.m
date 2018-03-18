@@ -27,7 +27,7 @@ static unsigned int _systemProfilerRequestTimeOut = 15;
 static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 
 static NSMutableDictionary* _hardwareDictionary;
-static NSMutableArray<VMMVideoCard*>* _computerGraphicCardDictionaries;
+static NSMutableArray<VMMVideoCard*>* _videoCards;
 
 static NSString* _macModel;
 static NSString* _processorNameAndSpeed;
@@ -272,7 +272,7 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 
 
-+(NSMutableArray<VMMVideoCard*>*)videoCardsDictionariesFromSystemProfilerOutput:(NSString*)displayOutput
++(NSMutableArray<VMMVideoCard*>*)videoCardsFromSystemProfilerOutput:(NSString*)displayOutput
 {
     NSArray* displayArray = [VMMPropertyList propertyListWithUnarchivedString:displayOutput];
     if (displayArray == nil)
@@ -286,8 +286,7 @@ static NSMutableDictionary* _macOsCompatibility;
         return [[NSMutableArray alloc] init];
     }
     
-    NSMutableArray* cards = [[displayArray sortedDictionariesArrayWithKey:VMMVideoCardBusKey
-                                orderingByValuesOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]] mutableCopy];
+    NSMutableArray* cards = [displayArray mutableCopy];
     
     [cards replaceObjectsWithVariation:^id _Nullable(NSDictionary*  _Nonnull object, NSUInteger index)
     {
@@ -298,7 +297,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return cards;
 }
-+(NSMutableArray<VMMVideoCard*>*)videoCardsDictionariesFromIOServiceMatch
++(NSMutableArray<VMMVideoCard*>*)videoCardsFromIOServiceMatch
 {
     NSMutableArray* graphicCardDicts = [[NSMutableArray alloc] init];
     
@@ -427,30 +426,15 @@ static NSMutableDictionary* _macOsCompatibility;
     
     [graphicCardDicts removeObject:[NSNull null]];
     
-    NSArray* vendorIDOrder = @[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel];
-    [graphicCardDicts sortUsingComparator:^NSComparisonResult(VMMVideoCard*  _Nonnull obj1, VMMVideoCard*  _Nonnull obj2)
-    {
-        NSUInteger obj1ValueIndex = obj1.vendorID != nil ? [vendorIDOrder indexOfObject:obj1.vendorID] : -1;
-        NSUInteger obj2ValueIndex = obj2.vendorID != nil ? [vendorIDOrder indexOfObject:obj2.vendorID] : -1;
-        
-        if (obj1ValueIndex == -1 && obj2ValueIndex != -1) return NSOrderedDescending;
-        if (obj1ValueIndex != -1 && obj2ValueIndex == -1) return NSOrderedAscending;
-        if (obj1ValueIndex == -1 && obj2ValueIndex == -1) return NSOrderedSame;
-        
-        if (obj1ValueIndex > obj2ValueIndex) return NSOrderedDescending;
-        if (obj1ValueIndex < obj2ValueIndex) return NSOrderedAscending;
-        return NSOrderedSame;
-    }];
-    
     return graphicCardDicts;
 }
 +(nullable NSMutableArray<VMMVideoCard*>*)videoCards
 {
-    @synchronized(_computerGraphicCardDictionaries)
+    @synchronized(_videoCards)
     {
-        if (_computerGraphicCardDictionaries)
+        if (_videoCards)
         {
-            return _computerGraphicCardDictionaries;
+            return _videoCards;
         }
         
         @autoreleasepool
@@ -459,23 +443,54 @@ static NSMutableDictionary* _macOsCompatibility;
             
             displayData = [NSTask runProgram:@"system_profiler" withFlags:@[@"-xml",@"SPDisplaysDataType"]
                       waitingForTimeInterval:_systemProfilerRequestTimeOut];
-            _computerGraphicCardDictionaries = [self videoCardsDictionariesFromSystemProfilerOutput:displayData];
-            if (_computerGraphicCardDictionaries.count == 0)
+            _videoCards = [self videoCardsFromSystemProfilerOutput:displayData];
+            if (_videoCards.count == 0)
             {
                 displayData = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml",@"SPDisplaysDataType"]
                           waitingForTimeInterval:_systemProfilerRequestTimeOut];
-                _computerGraphicCardDictionaries = [self videoCardsDictionariesFromSystemProfilerOutput:displayData];
+                _videoCards = [self videoCardsFromSystemProfilerOutput:displayData];
             }
             
-            if (_computerGraphicCardDictionaries.count == 0 || [self anyVideoCardDictionaryIsComplete] == false)
+            if (_videoCards.count == 0 || [self anyVideoCardDictionaryIsComplete] == false)
             {
-                NSMutableArray* computerGraphicCardDictionary = [[self videoCardsDictionariesFromIOServiceMatch] mutableCopy];
-                [computerGraphicCardDictionary addObjectsFromArray:_computerGraphicCardDictionaries];
-                _computerGraphicCardDictionaries = computerGraphicCardDictionary;
+                NSMutableArray* computerGraphicCardDictionary = [[self videoCardsFromIOServiceMatch] mutableCopy];
+                [computerGraphicCardDictionary addObjectsFromArray:_videoCards];
+                _videoCards = computerGraphicCardDictionary;
             }
+            
+            
+            NSArray* vendorIDOrder = @[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel];
+            [_videoCards sortUsingComparator:^NSComparisonResult(VMMVideoCard*  _Nonnull obj1, VMMVideoCard*  _Nonnull obj2)
+            {
+                NSUInteger obj1ValueIndex = obj1.vendorID != nil ? [vendorIDOrder indexOfObject:obj1.vendorID] : -1;
+                NSUInteger obj2ValueIndex = obj2.vendorID != nil ? [vendorIDOrder indexOfObject:obj2.vendorID] : -1;
+                 
+                if (obj1ValueIndex == -1 && obj2ValueIndex != -1) return NSOrderedDescending;
+                if (obj1ValueIndex != -1 && obj2ValueIndex == -1) return NSOrderedAscending;
+                if (obj1ValueIndex == -1 && obj2ValueIndex == -1) return NSOrderedSame;
+                 
+                if (obj1ValueIndex > obj2ValueIndex) return NSOrderedDescending;
+                if (obj1ValueIndex < obj2ValueIndex) return NSOrderedAscending;
+                return NSOrderedSame;
+            }];
+            
+            NSArray* busOrder = @[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn];
+            [_videoCards sortUsingComparator:^NSComparisonResult(VMMVideoCard*  _Nonnull obj1, VMMVideoCard*  _Nonnull obj2)
+            {
+                NSUInteger obj1ValueIndex = obj1.bus != nil ? [busOrder indexOfObject:obj1.bus] : -1;
+                NSUInteger obj2ValueIndex = obj2.bus != nil ? [busOrder indexOfObject:obj2.bus] : -1;
+                 
+                if (obj1ValueIndex == -1 && obj2ValueIndex != -1) return NSOrderedDescending;
+                if (obj1ValueIndex != -1 && obj2ValueIndex == -1) return NSOrderedAscending;
+                if (obj1ValueIndex == -1 && obj2ValueIndex == -1) return NSOrderedSame;
+                 
+                if (obj1ValueIndex > obj2ValueIndex) return NSOrderedDescending;
+                if (obj1ValueIndex < obj2ValueIndex) return NSOrderedAscending;
+                return NSOrderedSame;
+            }];
         }
         
-        return _computerGraphicCardDictionaries;
+        return _videoCards;
     }
 }
 +(nullable VMMVideoCard*)mainVideoCard
@@ -485,7 +500,7 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(BOOL)anyVideoCardDictionaryIsComplete
 {
-    for (VMMVideoCard* vc in _computerGraphicCardDictionaries)
+    for (VMMVideoCard* vc in _videoCards)
     {
         if (vc.isComplete) return true;
     }
