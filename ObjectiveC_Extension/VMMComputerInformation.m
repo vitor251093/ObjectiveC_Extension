@@ -27,16 +27,10 @@ static unsigned int _systemProfilerRequestTimeOut = 15;
 static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 
 static NSMutableDictionary* _hardwareDictionary;
-static NSMutableDictionary* _computerGraphicCardDictionary;
+static NSMutableArray<VMMVideoCard*>* _computerGraphicCardDictionaries;
 
 static NSString* _macModel;
 static NSString* _processorNameAndSpeed;
-
-static NSString* _computerGraphicCardDeviceID;
-static NSString* _computerGraphicCardName;
-static NSString* _computerGraphicCardType;
-static NSString* _computerGraphicCardVendorID;
-static NSNumber* _computerGraphicCardMemorySizeInMegabytes;
 
 static NSString* _macOsVersion;
 static NSString* _macOsBuildVersion;
@@ -277,25 +271,34 @@ static NSMutableDictionary* _macOsCompatibility;
     }
 }
 
-+(NSMutableDictionary*)videoCardDictionaryFromSystemProfilerOutput:(NSString*)displayOutput
+
++(NSMutableArray<VMMVideoCard*>*)videoCardsDictionariesFromSystemProfilerOutput:(NSString*)displayOutput
 {
     NSArray* displayArray = [VMMPropertyList propertyListWithUnarchivedString:displayOutput];
     if (displayArray == nil)
     {
-        return [[NSMutableDictionary alloc] init];
+        return [[NSMutableArray alloc] init];
     }
     
     displayArray = displayArray[0][@"_items"];
     if (displayArray == nil)
     {
-        return [[NSMutableDictionary alloc] init];
+        return [[NSMutableArray alloc] init];
     }
     
-    NSArray* cards = [displayArray sortedDictionariesArrayWithKey:VMMVideoCardBusKey
-                                            orderingByValuesOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
-    return [[cards firstObject] mutableCopy];
+    NSMutableArray* cards = [[displayArray sortedDictionariesArrayWithKey:VMMVideoCardBusKey
+                                orderingByValuesOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]] mutableCopy];
+    
+    [cards replaceObjectsWithVariation:^id _Nullable(NSDictionary*  _Nonnull object, NSUInteger index)
+    {
+        return [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
+    }];
+    
+    [cards removeObject:[NSNull null]];
+    
+    return cards;
 }
-+(NSMutableDictionary*)videoCardDictionaryFromIOServiceMatch
++(NSMutableArray<VMMVideoCard*>*)videoCardsDictionariesFromIOServiceMatch
 {
     NSMutableArray* graphicCardDicts = [[NSMutableArray alloc] init];
     
@@ -417,46 +420,37 @@ static NSMutableDictionary* _macOsCompatibility;
         IOObjectRelease(iterator);
     }
     
-    if (graphicCardDicts.count == 0) return [[NSMutableDictionary alloc] init];
-    if (graphicCardDicts.count == 1) return graphicCardDicts.firstObject;
-    
-    [graphicCardDicts replaceObjectsWithVariation:^NSDictionary* _Nullable(NSDictionary* _Nonnull object, NSUInteger index)
+    [graphicCardDicts replaceObjectsWithVariation:^VMMVideoCard* _Nonnull(NSDictionary* _Nonnull object, NSUInteger index)
     {
-        NSMutableDictionary* newDict = [object mutableCopy];
-        if (newDict[VMMVideoCardVendorIDKey] == nil)
-        {
-            NSString* videoCardType = [self videoCardTypeFromVideoCardName:object[VMMVideoCardNameKey]];
-            
-            if ([@[VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelUHD,
-                   VMMVideoCardTypeIntelHD,   VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
-            {
-                newDict[VMMVideoCardVendorIDKey] = VMMVideoCardVendorIDIntel;
-            }
-            
-            if ([VMMVideoCardTypeATIAMD isEqualToString:videoCardType])
-            {
-                newDict[VMMVideoCardVendorIDKey] = VMMVideoCardVendorIDATIAMD;
-            }
-            
-            if ([VMMVideoCardTypeNVIDIA isEqualToString:videoCardType])
-            {
-                newDict[VMMVideoCardVendorIDKey] = VMMVideoCardVendorIDNVIDIA;
-            }
-        }
-        return newDict;
+        return [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
     }];
     
-    NSArray* orderedGraphicCardDicts = [graphicCardDicts sortedDictionariesArrayWithKey:VMMVideoCardVendorIDKey orderingByValuesOrder:@[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel]];
+    [graphicCardDicts removeObject:[NSNull null]];
     
-    return orderedGraphicCardDicts.firstObject;
-}
-+(nullable NSDictionary*)videoCardDictionary
-{
-    @synchronized(_computerGraphicCardDictionary)
+    NSArray* vendorIDOrder = @[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel];
+    [graphicCardDicts sortUsingComparator:^NSComparisonResult(VMMVideoCard*  _Nonnull obj1, VMMVideoCard*  _Nonnull obj2)
     {
-        if (_computerGraphicCardDictionary)
+        NSUInteger obj1ValueIndex = obj1.vendorID != nil ? [vendorIDOrder indexOfObject:obj1.vendorID] : -1;
+        NSUInteger obj2ValueIndex = obj2.vendorID != nil ? [vendorIDOrder indexOfObject:obj2.vendorID] : -1;
+        
+        if (obj1ValueIndex == -1 && obj2ValueIndex != -1) return NSOrderedDescending;
+        if (obj1ValueIndex != -1 && obj2ValueIndex == -1) return NSOrderedAscending;
+        if (obj1ValueIndex == -1 && obj2ValueIndex == -1) return NSOrderedSame;
+        
+        if (obj1ValueIndex > obj2ValueIndex) return NSOrderedDescending;
+        if (obj1ValueIndex < obj2ValueIndex) return NSOrderedAscending;
+        return NSOrderedSame;
+    }];
+    
+    return graphicCardDicts;
+}
++(nullable NSMutableArray<VMMVideoCard*>*)videoCards
+{
+    @synchronized(_computerGraphicCardDictionaries)
+    {
+        if (_computerGraphicCardDictionaries)
         {
-            return _computerGraphicCardDictionary;
+            return _computerGraphicCardDictionaries;
         }
         
         @autoreleasepool
@@ -464,27 +458,40 @@ static NSMutableDictionary* _macOsCompatibility;
             NSString* displayData;
             
             displayData = [NSTask runProgram:@"system_profiler" withFlags:@[@"-xml",@"SPDisplaysDataType"]
-                                                   waitingForTimeInterval:_systemProfilerRequestTimeOut];
-            _computerGraphicCardDictionary = [self videoCardDictionaryFromSystemProfilerOutput:displayData];
-            if (_computerGraphicCardDictionary.count == 0)
+                      waitingForTimeInterval:_systemProfilerRequestTimeOut];
+            _computerGraphicCardDictionaries = [self videoCardsDictionariesFromSystemProfilerOutput:displayData];
+            if (_computerGraphicCardDictionaries.count == 0)
             {
                 displayData = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml",@"SPDisplaysDataType"]
-                                                                 waitingForTimeInterval:_systemProfilerRequestTimeOut];
-                _computerGraphicCardDictionary = [self videoCardDictionaryFromSystemProfilerOutput:displayData];
+                          waitingForTimeInterval:_systemProfilerRequestTimeOut];
+                _computerGraphicCardDictionaries = [self videoCardsDictionariesFromSystemProfilerOutput:displayData];
             }
             
-            if (_computerGraphicCardDictionary.count == 0 || [self isGraphicCardDictionaryCompleteWithMemorySize:false] == false)
+            if (_computerGraphicCardDictionaries.count == 0 || [self anyVideoCardDictionaryIsComplete] == false)
             {
-                NSMutableDictionary* computerGraphicCardDictionary = [[self videoCardDictionaryFromIOServiceMatch] mutableCopy];
-                [computerGraphicCardDictionary addEntriesFromDictionary:_computerGraphicCardDictionary];
-                _computerGraphicCardDictionary = computerGraphicCardDictionary;
+                NSMutableArray* computerGraphicCardDictionary = [[self videoCardsDictionariesFromIOServiceMatch] mutableCopy];
+                [computerGraphicCardDictionary addObjectsFromArray:_computerGraphicCardDictionaries];
+                _computerGraphicCardDictionaries = computerGraphicCardDictionary;
             }
         }
         
-        return _computerGraphicCardDictionary;
+        return _computerGraphicCardDictionaries;
     }
 }
-
++(nullable VMMVideoCard*)mainVideoCard
+{
+    NSArray* videoCards = self.videoCards;
+    return (videoCards != nil && videoCards.count > 0) ? videoCards.firstObject : nil;
+}
++(BOOL)anyVideoCardDictionaryIsComplete
+{
+    for (VMMVideoCard* vc in _computerGraphicCardDictionaries)
+    {
+        if (vc.isComplete) return true;
+    }
+    
+    return false;
+}
 
 
 +(NSUInteger)videoCardMemorySizeInMegabytesFromAPI
@@ -508,364 +515,6 @@ static NSMutableDictionary* _macOsCompatibility;
     
     CGLDestroyRendererInfo(rend);
     return videoMemorySize;
-}
-+(nullable NSString*)videoCardTypeFromVideoCardName:(NSString*)videoCardName
-{
-    NSString* graphicCardName = [videoCardName uppercaseString];
-    if (graphicCardName == nil) return nil;
-    
-    NSArray* graphicCardNameComponents = [graphicCardName componentsSeparatedByString:@" "];
-    
-    if ([graphicCardNameComponents containsObject:@"INTEL"])
-    {
-        if ([graphicCardNameComponents containsObject:@"HD"])   return VMMVideoCardTypeIntelHD;
-        if ([graphicCardNameComponents containsObject:@"UHD"])  return VMMVideoCardTypeIntelUHD;
-        if ([graphicCardNameComponents containsObject:@"IRIS"]) return VMMVideoCardTypeIntelIris;
-    }
-    
-    for (NSString* model in @[@"GMA"])
-    {
-        if ([graphicCardNameComponents containsObject:model]) return VMMVideoCardTypeIntelGMA;
-    }
-    
-    for (NSString* model in @[@"AMD",@"ATI",@"RADEON"])
-    {
-        if ([graphicCardNameComponents containsObject:model]) return VMMVideoCardTypeATIAMD;
-    }
-    
-    for (NSString* model in @[@"NVIDIA",@"GEFORCE",@"NVS",@"QUADRO"])
-    {
-        if ([graphicCardNameComponents containsObject:model]) return VMMVideoCardTypeNVIDIA;
-    }
-    
-    return nil;
-}
-
-
-+(NSString*)videoCardVendorIDFromVendorAndVendorIDKeysOnly
-{
-    NSDictionary* localVideoCard = self.videoCardDictionary;
-    
-    NSString* localVendorID = localVideoCard[VMMVideoCardVendorIDKey];
-    if (localVendorID != nil)
-    {
-        return localVendorID;
-    }
-    
-    NSString* localVendor = localVideoCard[VMMVideoCardVendorKey]; // eg. 'NVIDIA (0x10de)' or 'sppci_vendor_Nvidia'
-    if (localVendor == nil)
-    {
-        return nil;
-    }
-    
-    if ([localVendor contains:@"("])
-    {
-        return [localVendor getFragmentAfter:@"(" andBefore:@")"];
-    }
-    
-    if ([localVendor hasPrefix:@"sppci_vendor_"])
-    {
-        localVendor = [localVendor stringByReplacingOccurrencesOfString:@"sppci_vendor_" withString:@""];
-        localVendor = localVendor.uppercaseString;
-        
-        if ([localVendor contains:@"NVIDIA"])
-        {
-            return VMMVideoCardVendorIDNVIDIA;
-        }
-        if ([localVendor contains:@"ATI"] || [localVendor contains:@"AMD"])
-        {
-            return VMMVideoCardVendorIDATIAMD;
-        }
-        if ([localVendor contains:@"INTEL"])
-        {
-            return VMMVideoCardVendorIDIntel;
-        }
-    }
-    
-    return nil;
-}
-+(nullable NSString*)videoCardDeviceID
-{
-    @synchronized(_computerGraphicCardDeviceID)
-    {
-        if (_computerGraphicCardDeviceID != nil)
-        {
-            return _computerGraphicCardDeviceID;
-        }
-        
-        @autoreleasepool
-        {
-            _computerGraphicCardDeviceID = [self.videoCardDictionary[VMMVideoCardDeviceIDKey] lowercaseString];
-            return _computerGraphicCardDeviceID;
-        }
-    }
-}
-
-+(nullable NSString*)videoCardName
-{
-    @synchronized(_computerGraphicCardName)
-    {
-        if (_computerGraphicCardName != nil)
-        {
-            return _computerGraphicCardName;
-        }
-        
-        @autoreleasepool
-        {
-            NSDictionary* videoCardDictionary = self.videoCardDictionary;
-            
-            if (videoCardDictionary == nil)
-            {
-                return nil;
-            }
-            
-            NSString* videoCardName = videoCardDictionary[VMMVideoCardNameKey];
-            NSString* chipsetModel  = videoCardDictionary[VMMVideoCardRawNameKey];
-            
-            NSArray* invalidVideoCardNames = @[@"Display", @"Apple WiFi card", @"spdisplays_display"];
-            BOOL validVideoCardName = (videoCardName != nil && [invalidVideoCardNames containsObject:videoCardName] == false);
-            BOOL validChipsetModel  = (chipsetModel  != nil && [invalidVideoCardNames containsObject:chipsetModel]  == false);
-            
-            if (validVideoCardName == false)
-            {
-                videoCardName = nil;
-            }
-            
-            if (validChipsetModel == true && validVideoCardName == false)
-            {
-                videoCardName = chipsetModel;
-            }
-            
-            if (videoCardName == nil)
-            {
-                NSString* vendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
-                NSString* deviceID = [self videoCardDeviceID];
-                
-                if (vendorID != nil)
-                {
-                    if ([vendorID isEqualToString:VMMVideoCardVendorIDVirtualBox] &&
-                        [deviceID isEqualToString:VMMVideoCardDeviceIDVirtualBox])
-                    {
-                        videoCardName = VMMVideoCardNameVirtualBox;
-                    }
-                    
-                    if ([vendorID isEqualToString:VMMVideoCardVendorIDVMware])
-                    {
-                        videoCardName = VMMVideoCardNameVMware;
-                    }
-                    
-                    if ([vendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
-                    {
-                        videoCardName = VMMVideoCardNameParallelsDesktop;
-                    }
-                    
-                    if ([vendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
-                    {
-                        videoCardName = VMMVideoCardNameMicrosoftRemoteDesktop;
-                    }
-                    
-                    if ([vendorID isEqualToString:VMMVideoCardVendorIDQemu] &&
-                        [deviceID isEqualToString:VMMVideoCardDeviceIDQemu])
-                    {
-                        videoCardName = VMMVideoCardNameQemu;
-                    }
-                }
-            }
-            
-            _computerGraphicCardName = videoCardName;
-            return _computerGraphicCardName;
-        }
-    }
-}
-
-+(BOOL)isGraphicCardDictionaryCompleteWithMemorySize:(BOOL)haveMemorySize
-{
-    if (self.videoCardName == nil) return false;
-    
-    if (_computerGraphicCardDictionary[VMMVideoCardDeviceIDKey] == nil) return false;
-    
-    if (haveMemorySize)
-    {
-        if (_computerGraphicCardDictionary[VMMVideoCardMemorySizePciOrPcieKey]        == nil &&
-            _computerGraphicCardDictionary[VMMVideoCardMemorySizeBuiltInKey]          == nil &&
-            _computerGraphicCardDictionary[VMMVideoCardMemorySizeBuiltInAlternateKey] == nil) return false;
-    }
-    
-    return true;
-}
-+(nullable NSString*)videoCardType
-{
-    @synchronized(_computerGraphicCardType)
-    {
-        if (_computerGraphicCardType != nil)
-        {
-            return _computerGraphicCardType;
-        }
-        
-        @autoreleasepool
-        {
-            NSString* graphicCardName = [self videoCardTypeFromVideoCardName:self.videoCardName];
-            if (graphicCardName != nil)
-            {
-                _computerGraphicCardType = graphicCardName;
-                return _computerGraphicCardType;
-            }
-            
-            NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
-            
-            NSDictionary* vendorIDType = @{VMMVideoCardVendorIDATIAMD:                 VMMVideoCardTypeATIAMD,
-                                           VMMVideoCardVendorIDNVIDIA:                 VMMVideoCardTypeNVIDIA,
-                                           VMMVideoCardVendorIDVirtualBox:             VMMVideoCardTypeVirtualBox,
-                                           VMMVideoCardVendorIDVMware:                 VMMVideoCardTypeVMware,
-                                           VMMVideoCardVendorIDParallelsDesktop:       VMMVideoCardTypeParallelsDesktop,
-                                           VMMVideoCardVendorIDMicrosoftRemoteDesktop: VMMVideoCardTypeMicrosoftRemoteDesktop,
-                                           VMMVideoCardVendorIDQemu:                   VMMVideoCardTypeQemu };
-            
-            _computerGraphicCardType = vendorIDType[localVendorID];
-        }
-        
-        return _computerGraphicCardType;
-    }
-    
-    return nil;
-}
-
-+(nullable NSString*)videoCardVendorID
-{
-    @synchronized(_computerGraphicCardVendorID)
-    {
-        if (_computerGraphicCardVendorID != nil)
-        {
-            return _computerGraphicCardVendorID;
-        }
-        
-        @autoreleasepool
-        {
-            NSString* localVendorID = [self videoCardVendorIDFromVendorAndVendorIDKeysOnly];
-            if (localVendorID != nil)
-            {
-                if ([@[VMMVideoCardVendorIDIntel,      VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA,
-                       VMMVideoCardVendorIDVirtualBox, VMMVideoCardVendorIDVMware, VMMVideoCardVendorIDParallelsDesktop,
-                       VMMVideoCardVendorIDQemu,       VMMVideoCardVendorIDMicrosoftRemoteDesktop] containsObject:localVendorID])
-                {
-                    _computerGraphicCardVendorID = localVendorID;
-                    return _computerGraphicCardVendorID;
-                }
-                
-                // If the Vendor ID doesn't match with any of the above, it's a Hackintosh, using a fake video card vendor ID
-                // https://www.tonymacx86.com/threads/problem-with-hd4000-graphics-only-3mb-ram-showing.242113/
-                
-                return nil;
-            }
-            
-            NSString* videoCardType = [self videoCardType];
-            if (videoCardType != nil)
-            {
-                if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelUHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
-                {
-                    _computerGraphicCardVendorID = VMMVideoCardVendorIDIntel; // Intel Vendor ID
-                    return _computerGraphicCardVendorID;
-                }
-                
-                if ([@[VMMVideoCardTypeATIAMD] containsObject:videoCardType])
-                {
-                    _computerGraphicCardVendorID = VMMVideoCardVendorIDATIAMD; // ATI/AMD Vendor ID
-                    return _computerGraphicCardVendorID;
-                }
-                
-                if ([@[VMMVideoCardTypeNVIDIA] containsObject:videoCardType])
-                {
-                    _computerGraphicCardVendorID = VMMVideoCardVendorIDNVIDIA; // NVIDIA Vendor ID
-                    return _computerGraphicCardVendorID;
-                }
-            }
-            
-            return nil;
-        }
-    }
-}
-
-+(BOOL)isVideoCardReal
-{
-    NSString* vendorID = self.videoCardVendorID;
-    if (vendorID == nil) return false;
-    
-    return [@[VMMVideoCardVendorIDIntel, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA] containsObject:vendorID];
-}
-+(NSUInteger)videoCardMemorySizeInMegabytes
-{
-    @synchronized(_computerGraphicCardMemorySizeInMegabytes)
-    {
-        if (_computerGraphicCardMemorySizeInMegabytes != nil &&
-            _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue != 0 &&
-            _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue != -1)
-        {
-            return _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue;
-        }
-        
-        @autoreleasepool
-        {
-            int memSizeInt = -1;
-            
-            NSDictionary* gcDict = [self videoCardDictionary];
-            if (gcDict != nil && gcDict.count > 0)
-            {
-                NSString* memSize = [gcDict[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
-                if (memSize == nil) memSize = [gcDict[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
-                if (memSize == nil) memSize = [gcDict[VMMVideoCardMemorySizeBuiltInAlternateKey] uppercaseString];
-                
-                if ([memSize contains:@" MB"])
-                {
-                    memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" MB"] intValue];
-                }
-                else if ([memSize contains:@" GB"])
-                {
-                    memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
-                }
-            }
-            
-            NSUInteger apiResult = [self videoCardMemorySizeInMegabytesFromAPI];
-            if (apiResult != 0 && (memSizeInt == 0 || memSizeInt == -1 || apiResult > memSizeInt))
-            {
-                _computerGraphicCardMemorySizeInMegabytes = @(apiResult);
-                return _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue;
-            }
-            
-            if (memSizeInt == 0 && [[self videoCardVendorID] isEqualToString:VMMVideoCardVendorIDNVIDIA])
-            {
-                //
-                // Apparently, this is a common bug that happens with Hackintoshes that
-                // use NVIDIA video cards that were badly configured. Considering that,
-                // there is no use in fixing that manually, since it would require a manual
-                // fix for every known NVIDIA video card that may have the issue.
-                //
-                // We can't detect the real video memory size with system_profiler or
-                // IOServiceMatching("IOPCIDevice"), but we just implemented the API method,
-                // which may detect the size correctly even on those cases (hopefully).
-                //
-                // The same bug may also happen in old legitimate Apple computers, and
-                // it also seems to happen only with NVIDIA video cards.
-                //
-                // References:
-                // https://www.tonymacx86.com/threads/graphics-card-0mb.138428/
-                // https://www.tonymacx86.com/threads/gtx-770-show-vram-of-0-mb.138629/
-                // https://www.reddit.com/r/hackintosh/comments/3e5bi1/gtx_970_vram_0_mb_help/
-                // http://www.techsurvivors.net/forums/index.php?showtopic=22889
-                // https://discussions.apple.com/thread/2494867?tstart=0
-                //
-                
-                return 0;
-            }
-            
-            if (memSizeInt == 0 || memSizeInt == -1)
-            {
-                return memSizeInt;
-            }
-            
-            _computerGraphicCardMemorySizeInMegabytes = @(memSizeInt);
-            return _computerGraphicCardMemorySizeInMegabytes.unsignedIntegerValue;
-        }
-    }
 }
 
 

@@ -57,11 +57,13 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 // Utilities
 #import <ObjectiveC_Extension/NKFTPManager.h>
 #import <ObjectiveC_Extension/VMMComputerInformation.h>
+#import <ObjectiveC_Extension/VMMVideoCard.h>
 #import <ObjectiveC_Extension/VMMDockProgressIndicator.h>
 #import <ObjectiveC_Extension/VMMLocalizationUtility.h>
 #import <ObjectiveC_Extension/VMMLogUtility.h>
 #import <ObjectiveC_Extension/VMMModals.h>
 #import <ObjectiveC_Extension/VMMParentalControls.h>
+#import <ObjectiveC_Extension/VMMPropertyList.h>
 #import <ObjectiveC_Extension/VMMUserNotificationCenter.h>
 #import <ObjectiveC_Extension/VMMVersion.h>
 #import <ObjectiveC_Extension/VMMUUID.h>

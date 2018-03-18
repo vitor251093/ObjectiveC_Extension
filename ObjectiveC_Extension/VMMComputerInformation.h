@@ -184,55 +184,7 @@
 
 
 #import <Foundation/Foundation.h>
-
-static NSString * _Nonnull const VMMVideoCardNameKey =                       @"sppci_model";
-static NSString * _Nonnull const VMMVideoCardRawNameKey =                    @"_name";
-static NSString * _Nonnull const VMMVideoCardTypeKey =                       @"sppci_device_type";
-static NSString * _Nonnull const VMMVideoCardBusKey =                        @"sppci_bus";
-static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInAlternateKey = @"_spdisplays_vram";
-static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInKey =          @"spdisplays_vram_shared";
-static NSString * _Nonnull const VMMVideoCardMemorySizePciOrPcieKey =        @"spdisplays_vram";
-static NSString * _Nonnull const VMMVideoCardVendorIDKey =                   @"spdisplays_vendor-id";
-static NSString * _Nonnull const VMMVideoCardVendorKey =                     @"spdisplays_vendor";
-static NSString * _Nonnull const VMMVideoCardDeviceIDKey =                   @"spdisplays_device-id";
-
-static NSString * _Nonnull const VMMVideoCardTypeIntelHD =    @"Intel HD";
-static NSString * _Nonnull const VMMVideoCardTypeIntelUHD =   @"Intel UHD";
-static NSString * _Nonnull const VMMVideoCardTypeIntelIris =  @"Intel Iris";
-static NSString * _Nonnull const VMMVideoCardTypeIntelGMA =   @"Intel GMA";
-static NSString * _Nonnull const VMMVideoCardTypeATIAMD =     @"ATI/AMD";
-static NSString * _Nonnull const VMMVideoCardTypeNVIDIA =     @"NVIDIA";
-
-static NSString * _Nonnull const VMMVideoCardBusPCIe =        @"spdisplays_pcie_device";
-static NSString * _Nonnull const VMMVideoCardBusPCI =         @"sppci_pci_device";
-static NSString * _Nonnull const VMMVideoCardBusBuiltIn =     @"spdisplays_builtin";
-
-static NSString * _Nonnull const VMMVideoCardVendorIDIntel =  @"0x8086";
-static NSString * _Nonnull const VMMVideoCardVendorIDNVIDIA = @"0x10de";
-static NSString * _Nonnull const VMMVideoCardVendorIDATIAMD = @"0x1002";
-
-static NSString * _Nonnull const VMMVideoCardNameVirtualBox =           @"VirtualBox VM";
-static NSString * _Nonnull const VMMVideoCardTypeVirtualBox =           @"VirtualBox";
-static NSString * _Nonnull const VMMVideoCardVendorIDVirtualBox =       @"0x80ee";
-static NSString * _Nonnull const VMMVideoCardDeviceIDVirtualBox =       @"0xbeef";
-
-static NSString * _Nonnull const VMMVideoCardNameVMware =               @"VMware VM";
-static NSString * _Nonnull const VMMVideoCardTypeVMware =               @"VMware";
-static NSString * _Nonnull const VMMVideoCardVendorIDVMware =           @"0x15ad";
-
-static NSString * _Nonnull const VMMVideoCardNameParallelsDesktop =     @"Parallels Desktop VM";
-static NSString * _Nonnull const VMMVideoCardTypeParallelsDesktop =     @"Parallels Desktop";
-static NSString * _Nonnull const VMMVideoCardVendorIDParallelsDesktop = @"0x1ab8";
-
-static NSString * _Nonnull const VMMVideoCardNameMicrosoftRemoteDesktop =     @"Microsoft Remote Desktop";
-static NSString * _Nonnull const VMMVideoCardTypeMicrosoftRemoteDesktop =     @"Microsoft Remote Desktop";
-static NSString * _Nonnull const VMMVideoCardVendorIDMicrosoftRemoteDesktop = @"0xbaad";
-
-// https://lists.denx.de/pipermail/u-boot/2015-May/215147.html
-static NSString * _Nonnull const VMMVideoCardNameQemu =     @"QEMU Emulated Graphic Card";
-static NSString * _Nonnull const VMMVideoCardTypeQemu =     @"QEMU";
-static NSString * _Nonnull const VMMVideoCardVendorIDQemu = @"0x1234";
-static NSString * _Nonnull const VMMVideoCardDeviceIDQemu = @"0x1111";
+#import "VMMVideoCard.h"
 
 typedef enum VMMUserGroup
 {
@@ -261,48 +213,16 @@ typedef enum VMMUserGroup
 +(double)processorUsage;
 +(nullable NSString*)macModel;
 
+
++(nullable NSMutableArray<VMMVideoCard*>*)videoCards;
+
 /*!
  * @discussion  Returns a dictionary with information related with the main video card.
  * @return      A Dictionary with the system_profiler information related with the main video card.
  */
-+(nullable NSDictionary*)videoCardDictionary;
++(nullable VMMVideoCard*)mainVideoCard;
 
-
-/*!
- * @discussion  Returns the Device ID (eg. 0x1234) of the main video card.
- * @return      The Device ID (eg. 0x1234) of the main video card.
- */
-+(nullable NSString*)videoCardDeviceID;
-
-/*!
- * @discussion  Returns the name of the main video card.
- * @return      The name of the main video card.
- */
-+(nullable NSString*)videoCardName;
-
-/*!
- * @discussion  Returns the type (eg. Intel Iris) of the main video card.
- * @return      The type (eg. Intel Iris) of the main video card.
- */
-+(nullable NSString*)videoCardType;
-
-/*!
- * @discussion  Returns the Vendor ID (eg. 0x8086) of the main video card.
- * @return      The Vendor ID (eg. 0x8086) of the main video card.
- */
-+(nullable NSString*)videoCardVendorID;
-
-/*!
- * @discussion  Returns true if the main video card is Intel, NVIDIA or ATI/AMD.
- * @return      True if the main video card seems legitimate.
- */
-+(BOOL)isVideoCardReal;
-
-/*!
- * @discussion  Returns the VRAM size of the main video card in Megabytes.
- * @return      The VRAM size of the main video card in Megabytes.
- */
-+(NSUInteger)videoCardMemorySizeInMegabytes;
++(NSUInteger)videoCardMemorySizeInMegabytesFromAPI;
 
 +(nullable NSString*)macOsVersion;
 +(nullable NSString*)completeMacOsVersion;
