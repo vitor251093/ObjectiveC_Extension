@@ -272,18 +272,18 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 
 
-+(NSMutableArray<VMMVideoCard*>*)videoCardsFromSystemProfilerOutput:(NSString*)displayOutput
++(NSArray<VMMVideoCard*>* _Nullable)videoCardsFromSystemProfilerOutput:(NSString* _Nonnull)displayOutput
 {
     NSArray* displayArray = [VMMPropertyList propertyListWithUnarchivedString:displayOutput];
     if (displayArray == nil)
     {
-        return [[NSMutableArray alloc] init];
+        return nil;
     }
     
     displayArray = displayArray[0][@"_items"];
     if (displayArray == nil)
     {
-        return [[NSMutableArray alloc] init];
+        return nil;
     }
     
     NSMutableArray* cards = [displayArray mutableCopy];
@@ -297,7 +297,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return cards;
 }
-+(NSMutableArray<VMMVideoCard*>*)videoCardsFromIOServiceMatch
++(NSArray<VMMVideoCard*>*)videoCardsFromIOServiceMatch
 {
     NSMutableArray* graphicCardDicts = [[NSMutableArray alloc] init];
     
@@ -430,7 +430,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return graphicCardDicts;
 }
-+(nonnull NSMutableArray<VMMVideoCard*>*)videoCards
++(nonnull NSArray<VMMVideoCard*>*)videoCards
 {
     @synchronized(_videoCards)
     {
@@ -445,18 +445,18 @@ static NSMutableDictionary* _macOsCompatibility;
             
             displayData = [NSTask runProgram:@"system_profiler" withFlags:@[@"-xml",@"SPDisplaysDataType"]
                       waitingForTimeInterval:_systemProfilerRequestTimeOut];
-            _videoCards = [self videoCardsFromSystemProfilerOutput:displayData];
-            if (_videoCards.count == 0)
+            _videoCards = [[self videoCardsFromSystemProfilerOutput:displayData] mutableCopy];
+            if (_videoCards == nil || _videoCards.count == 0)
             {
                 displayData = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml",@"SPDisplaysDataType"]
                           waitingForTimeInterval:_systemProfilerRequestTimeOut];
-                _videoCards = [self videoCardsFromSystemProfilerOutput:displayData];
+                _videoCards = [[self videoCardsFromSystemProfilerOutput:displayData] mutableCopy];
             }
             
-            if (_videoCards.count == 0 || [self anyVideoCardDictionaryIsComplete] == false)
+            if (_videoCards == nil || _videoCards.count == 0 || [self anyVideoCardDictionaryIsComplete] == false)
             {
                 NSMutableArray* computerGraphicCardDictionary = [[self videoCardsFromIOServiceMatch] mutableCopy];
-                [computerGraphicCardDictionary addObjectsFromArray:_videoCards];
+                if (_videoCards != nil) [computerGraphicCardDictionary addObjectsFromArray:_videoCards];
                 _videoCards = computerGraphicCardDictionary;
             }
             
@@ -495,6 +495,7 @@ static NSMutableDictionary* _macOsCompatibility;
         return _videoCards;
     }
 }
+
 +(nullable VMMVideoCard*)mainVideoCard
 {
     NSArray* videoCards = self.videoCards;
@@ -509,7 +510,6 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return false;
 }
-
 
 +(NSUInteger)videoCardMemorySizeInMegabytesFromAPI
 {
