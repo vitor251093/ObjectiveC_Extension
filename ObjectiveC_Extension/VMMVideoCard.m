@@ -200,6 +200,9 @@
                 }
             }
             
+            // TODO: Maybe this link can be used in the future to improve detection of the name
+            // http://pci-ids.ucw.cz/
+            
             _name = videoCardName;
             return _name;
         }

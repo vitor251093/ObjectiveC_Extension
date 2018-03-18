@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+// TODO: Support eGPUs
+// https://github.com/goalque/automate-eGPU
+
 static NSString * _Nonnull const VMMVideoCardNameKey =                       @"sppci_model";
 static NSString * _Nonnull const VMMVideoCardRawNameKey =                    @"_name";
 static NSString * _Nonnull const VMMVideoCardTypeKey =                       @"sppci_device_type";

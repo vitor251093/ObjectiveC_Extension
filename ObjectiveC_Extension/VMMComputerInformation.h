@@ -214,19 +214,23 @@ typedef enum VMMUserGroup
 +(nullable NSString*)macModel;
 
 
+/*!
+ * @discussion  Returns every available information about the video cards mentioned in the system_profiler XML string.
+ * @return      A VMMVideoCard array with the system_profiler information related with the string video cards.
+ */
 +(NSArray<VMMVideoCard*>* _Nullable)videoCardsFromSystemProfilerOutput:(NSString* _Nonnull)displayOutput;
 
 /*!
  * @discussion  Returns every available information about every available video card.
  * @return      A VMMVideoCard array with the system_profiler information related with every available video card.
  */
-+(nonnull NSArray<VMMVideoCard*>*)videoCards;
++(NSArray<VMMVideoCard*>* _Nonnull)videoCards;
 
 /*!
  * @discussion  Returns every available information about the main video card.
  * @return      A VMMVideoCard with the system_profiler information related with the main video card.
  */
-+(nullable VMMVideoCard*)mainVideoCard;
++(VMMVideoCard* _Nullable)mainVideoCard;
 
 +(NSUInteger)videoCardMemorySizeInMegabytesFromAPI;
 
