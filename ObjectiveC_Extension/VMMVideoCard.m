@@ -370,6 +370,15 @@
     }
 }
 
+-(NSString* _Nonnull)descriptorName
+{
+    NSString* graphicCard = self.name;
+    NSNumber* graphicCardSizeNumber = self.memorySizeInMegabytes;
+    NSUInteger graphicCardSize = graphicCardSizeNumber != nil ? graphicCardSizeNumber.unsignedIntegerValue : 0;
+    NSString* videoCard = [NSString stringWithFormat:@"%@ (%lu MB)",graphicCard,graphicCardSize];
+    return videoCard;
+}
+
 -(BOOL)isReal
 {
     NSString* vendorID = self.vendorID;
@@ -395,6 +404,10 @@
     if (self.hasMemorySize      == false) return false;
     return true;
 }
-
+-(BOOL)isVirtualMachineVideoCard
+{
+    NSArray* vms = @[VMMVideoCardTypeVirtualBox, VMMVideoCardTypeVMware, VMMVideoCardTypeParallelsDesktop, VMMVideoCardTypeQemu];
+    return [vms containsObject:self.type];
+}
 
 @end

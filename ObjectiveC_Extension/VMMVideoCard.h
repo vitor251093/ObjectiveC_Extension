@@ -73,7 +73,10 @@ static NSString * _Nonnull const VMMVideoCardDeviceIDQemu = @"0x1111";
 @property (nonatomic, strong, readonly) NSString* _Nullable vendorID;
 @property (nonatomic, strong, readonly) NSNumber* _Nullable memorySizeInMegabytes;
 
+-(NSString* _Nonnull)descriptorName;
+
 -(BOOL)isReal;
 -(BOOL)isComplete;
+-(BOOL)isVirtualMachineVideoCard;
 
 @end
