@@ -397,7 +397,8 @@
     NSString* vendorID = self.vendorID;
     if (vendorID == nil) return false;
     
-    return [@[VMMVideoCardVendorIDIntel, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA] containsObject:vendorID];
+    NSArray* validVendorIDs = @[VMMVideoCardVendorIDIntel, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA];
+    return [validVendorIDs containsObject:vendorID];
 }
 
 -(BOOL)hasNameAndDeviceID
@@ -419,8 +420,11 @@
 }
 -(BOOL)isVirtualMachineVideoCard
 {
+    NSString* type = self.type;
+    if (type == nil) return false;
+    
     NSArray* vms = @[VMMVideoCardTypeVirtualBox, VMMVideoCardTypeVMware, VMMVideoCardTypeParallelsDesktop, VMMVideoCardTypeQemu];
-    return [vms containsObject:self.type];
+    return [vms containsObject:type];
 }
 
 @end
