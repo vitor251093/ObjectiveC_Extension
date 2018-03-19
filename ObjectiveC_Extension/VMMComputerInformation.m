@@ -21,6 +21,50 @@
 #import "NSFileManager+Extension.h"
 #import "NSMutableArray+Extension.h"
 
+@interface NSMutableArray (PKMutableArray_VMMVideoCard)
+-(void)reorderVideoCardsByVendorID;
+-(void)reorderVideoCardsByBus;
+@end
+
+@implementation NSMutableArray (PKMutableArray_VMMVideoCard)
+
+-(void)reorderVideoCardsByVendorID
+{
+    NSArray* vendorIDOrder = @[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel];
+    [self sortUsingComparator:^NSComparisonResult(VMMVideoCard*  _Nonnull obj1, VMMVideoCard*  _Nonnull obj2)
+     {
+         NSUInteger obj1ValueIndex = obj1.vendorID != nil ? [vendorIDOrder indexOfObject:obj1.vendorID] : -1;
+         NSUInteger obj2ValueIndex = obj2.vendorID != nil ? [vendorIDOrder indexOfObject:obj2.vendorID] : -1;
+         
+         if (obj1ValueIndex == -1 && obj2ValueIndex != -1) return NSOrderedDescending;
+         if (obj1ValueIndex != -1 && obj2ValueIndex == -1) return NSOrderedAscending;
+         if (obj1ValueIndex == -1 && obj2ValueIndex == -1) return NSOrderedSame;
+         
+         if (obj1ValueIndex > obj2ValueIndex) return NSOrderedDescending;
+         if (obj1ValueIndex < obj2ValueIndex) return NSOrderedAscending;
+         return NSOrderedSame;
+     }];
+}
+-(void)reorderVideoCardsByBus
+{
+    NSArray* busOrder = @[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn];
+    [self sortUsingComparator:^NSComparisonResult(VMMVideoCard*  _Nonnull obj1, VMMVideoCard*  _Nonnull obj2)
+     {
+         NSUInteger obj1ValueIndex = obj1.bus != nil ? [busOrder indexOfObject:obj1.bus] : -1;
+         NSUInteger obj2ValueIndex = obj2.bus != nil ? [busOrder indexOfObject:obj2.bus] : -1;
+         
+         if (obj1ValueIndex == -1 && obj2ValueIndex != -1) return NSOrderedDescending;
+         if (obj1ValueIndex != -1 && obj2ValueIndex == -1) return NSOrderedAscending;
+         if (obj1ValueIndex == -1 && obj2ValueIndex == -1) return NSOrderedSame;
+         
+         if (obj1ValueIndex > obj2ValueIndex) return NSOrderedDescending;
+         if (obj1ValueIndex < obj2ValueIndex) return NSOrderedAscending;
+         return NSOrderedSame;
+     }];
+}
+
+@end
+
 @implementation VMMComputerInformation
 
 static unsigned int _systemProfilerRequestTimeOut = 15;
@@ -633,36 +677,8 @@ static NSMutableDictionary* _macOsCompatibility;
                 _videoCards = computerGraphicCardDictionary;
             }
             
-            
-            NSArray* vendorIDOrder = @[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel];
-            [_videoCards sortUsingComparator:^NSComparisonResult(VMMVideoCard*  _Nonnull obj1, VMMVideoCard*  _Nonnull obj2)
-            {
-                NSUInteger obj1ValueIndex = obj1.vendorID != nil ? [vendorIDOrder indexOfObject:obj1.vendorID] : -1;
-                NSUInteger obj2ValueIndex = obj2.vendorID != nil ? [vendorIDOrder indexOfObject:obj2.vendorID] : -1;
-                 
-                if (obj1ValueIndex == -1 && obj2ValueIndex != -1) return NSOrderedDescending;
-                if (obj1ValueIndex != -1 && obj2ValueIndex == -1) return NSOrderedAscending;
-                if (obj1ValueIndex == -1 && obj2ValueIndex == -1) return NSOrderedSame;
-                 
-                if (obj1ValueIndex > obj2ValueIndex) return NSOrderedDescending;
-                if (obj1ValueIndex < obj2ValueIndex) return NSOrderedAscending;
-                return NSOrderedSame;
-            }];
-            
-            NSArray* busOrder = @[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn];
-            [_videoCards sortUsingComparator:^NSComparisonResult(VMMVideoCard*  _Nonnull obj1, VMMVideoCard*  _Nonnull obj2)
-            {
-                NSUInteger obj1ValueIndex = obj1.bus != nil ? [busOrder indexOfObject:obj1.bus] : -1;
-                NSUInteger obj2ValueIndex = obj2.bus != nil ? [busOrder indexOfObject:obj2.bus] : -1;
-                 
-                if (obj1ValueIndex == -1 && obj2ValueIndex != -1) return NSOrderedDescending;
-                if (obj1ValueIndex != -1 && obj2ValueIndex == -1) return NSOrderedAscending;
-                if (obj1ValueIndex == -1 && obj2ValueIndex == -1) return NSOrderedSame;
-                 
-                if (obj1ValueIndex > obj2ValueIndex) return NSOrderedDescending;
-                if (obj1ValueIndex < obj2ValueIndex) return NSOrderedAscending;
-                return NSOrderedSame;
-            }];
+            [_videoCards reorderVideoCardsByVendorID];
+            [_videoCards reorderVideoCardsByBus];
         }
         
         return _videoCards;
