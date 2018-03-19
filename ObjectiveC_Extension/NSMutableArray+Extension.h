@@ -12,6 +12,7 @@
 
 -(void)sortAlphabeticallyByKey:(nonnull NSString*)key ascending:(BOOL)ascending;
 -(void)sortAlphabeticallyAscending:(BOOL)ascending;
+-(void)sortDictionariesWithKey:(nonnull NSString *)key orderingByValuesOrder:(nonnull NSArray*)value;
 
 -(void)replaceObjectsWithVariation:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject;
 

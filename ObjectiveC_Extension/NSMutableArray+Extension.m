@@ -20,6 +20,22 @@
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:nil ascending:ascending selector:@selector(caseInsensitiveCompare:)];
     [self sortUsingDescriptors:@[sort]];
 }
+-(void)sortDictionariesWithKey:(nonnull NSString *)key orderingByValuesOrder:(nonnull NSArray*)value
+{
+    [self sortUsingComparator:^NSComparisonResult(NSDictionary* obj1, NSDictionary* obj2)
+    {
+        NSUInteger obj1ValueIndex = obj1[key] != nil ? [value indexOfObject:obj1[key]] : -1;
+        NSUInteger obj2ValueIndex = obj2[key] != nil ? [value indexOfObject:obj2[key]] : -1;
+         
+        if (obj1ValueIndex == -1 && obj2ValueIndex != -1) return NSOrderedDescending;
+        if (obj1ValueIndex != -1 && obj2ValueIndex == -1) return NSOrderedAscending;
+        if (obj1ValueIndex == -1 && obj2ValueIndex == -1) return NSOrderedSame;
+         
+        if (obj1ValueIndex > obj2ValueIndex) return NSOrderedDescending;
+        if (obj1ValueIndex < obj2ValueIndex) return NSOrderedAscending;
+        return NSOrderedSame;
+    }];
+}
 
 -(void)replaceObjectsWithVariation:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
 {

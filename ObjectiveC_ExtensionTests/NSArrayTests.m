@@ -20,10 +20,11 @@
     NSString* key   = @"Bus";
     NSArray* order  = @[@"PCIe", @"PCI", @"Built-In"];
     
-    NSArray* input  = @[@{key: @"PCIe"}, @{key: @"Built-In"}, @{key: @"PCI"}];
-    NSArray* output = @[@{key: @"PCIe"}, @{key: @"PCI"}, @{key: @"Built-In"}];
+    NSMutableArray* input = [@[@{key: @"PCIe"}, @{key: @"Built-In"}, @{key: @"PCI"}] mutableCopy];
+    NSArray* output       =  @[@{key: @"PCIe"}, @{key: @"PCI"}, @{key: @"Built-In"}];
     
-    XCTAssert([[input sortedDictionariesArrayWithKey:key orderingByValuesOrder:order] isEqualToArray:output]);
+    [input sortDictionariesWithKey:key orderingByValuesOrder:order];
+    XCTAssert([input isEqualToArray:output]);
 }
 
 - (void)testArrayByRemovingRepetitions_noChange
