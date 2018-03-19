@@ -30,7 +30,7 @@
     }
 }
 
--(void)reorderObjectsBySelector:(SEL _Nonnull)selector inOrder:(NSArray* _Nonnull)order
+-(void)sortBySelector:(SEL _Nonnull)selector inOrder:(NSArray* _Nonnull)order
 {
     [self sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2)
      {

@@ -15,6 +15,6 @@
 
 -(void)replaceObjectsWithVariation:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject;
 
--(void)reorderObjectsBySelector:(SEL _Nonnull)selector inOrder:(NSArray* _Nonnull)order;
+-(void)sortBySelector:(SEL _Nonnull)selector inOrder:(NSArray* _Nonnull)order;
 
 @end

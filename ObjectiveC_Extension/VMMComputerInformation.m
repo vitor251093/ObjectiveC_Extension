@@ -633,9 +633,9 @@ static NSMutableDictionary* _macOsCompatibility;
                 _videoCards = computerGraphicCardDictionary;
             }
             
-            [_videoCards reorderObjectsBySelector:@selector(vendorID)
+            [_videoCards sortBySelector:@selector(vendorID)
                                           inOrder:@[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel]];
-            [_videoCards reorderObjectsBySelector:@selector(bus)
+            [_videoCards sortBySelector:@selector(bus)
                                           inOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
         }
         
