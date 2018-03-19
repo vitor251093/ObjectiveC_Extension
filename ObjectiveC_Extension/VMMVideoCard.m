@@ -373,10 +373,23 @@
 -(NSString* _Nonnull)descriptorName
 {
     NSString* graphicCard = self.name;
+    if (graphicCard == nil)
+    {
+        NSString* type = self.type;
+        if (type == nil)
+        {
+            graphicCard = [NSString stringWithFormat:@"%@ %@",self.vendorID,self.deviceID];
+        }
+        else
+        {
+            graphicCard = [NSString stringWithFormat:@"%@ %@",type,self.deviceID];
+        }
+    }
+    
     NSNumber* graphicCardSizeNumber = self.memorySizeInMegabytes;
     NSUInteger graphicCardSize = graphicCardSizeNumber != nil ? graphicCardSizeNumber.unsignedIntegerValue : 0;
-    NSString* videoCard = [NSString stringWithFormat:@"%@ (%lu MB)",graphicCard,graphicCardSize];
-    return videoCard;
+    
+    return [NSString stringWithFormat:@"%@ (%lu MB)",graphicCard,graphicCardSize];
 }
 
 -(BOOL)isReal
