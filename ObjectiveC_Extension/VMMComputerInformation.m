@@ -623,7 +623,7 @@ static NSMutableDictionary* _macOsCompatibility;
 +(VMMVideoCard* _Nullable)mainVideoCard
 {
     NSArray* videoCards = [self videoCards];
-    if (videoCards == nil || videoCards.count == 0) return nil;
+    if (videoCards.count == 0) return nil;
     return videoCards.firstObject;
 }
 +(BOOL)anyVideoCardDictionaryIsComplete
