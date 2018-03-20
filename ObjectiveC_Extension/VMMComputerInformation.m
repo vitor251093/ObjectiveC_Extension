@@ -422,29 +422,6 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 
 
-+(NSUInteger)videoCardMemorySizeInMegabytesFromAPI
-{
-    // Reference:
-    // https://developer.apple.com/library/content/qa/qa1168/_index.html
-    
-    NSUInteger videoMemorySize = 0;
-    
-    GLint i, nrend = 0;
-    CGLRendererInfoObj rend;
-    const GLint displayMask = 0xFFFFFFFF;
-    CGLQueryRendererInfo((GLuint)displayMask, &rend, &nrend);
-    
-    for (i = 0; i < nrend; i++)
-    {
-        GLint videoMemory = 0;
-        CGLDescribeRenderer(rend, i, (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR ? kCGLRPVideoMemoryMegabytes : kCGLRPVideoMemory), &videoMemory);
-        if (videoMemory > videoMemorySize) videoMemorySize = videoMemory;
-    }
-    
-    CGLDestroyRendererInfo(rend);
-    return videoMemorySize;
-}
-
 +(NSArray<VMMVideoCard*>* _Nullable)videoCardsFromSystemProfilerOutput:(NSString* _Nonnull)displayOutput
 {
     NSArray* displayArray = [VMMPropertyList propertyListWithUnarchivedString:displayOutput];

@@ -221,8 +221,6 @@ typedef enum VMMUserGroup
 +(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup;
 
 
-+(NSUInteger)videoCardMemorySizeInMegabytesFromAPI;
-
 /*!
  * @discussion  Returns every available information about the video cards mentioned in the system_profiler XML string.
  * @return      A VMMVideoCard array with the system_profiler information related with the string video cards.
