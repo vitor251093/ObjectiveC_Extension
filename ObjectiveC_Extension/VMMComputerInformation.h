@@ -180,6 +180,7 @@
 #define IsClassPHProjectChangeRequestAvailable          IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR
 #define IsClassPHProjectInfoAvailable                   IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR
 
+#define IsClassNSTouchBarAvailable                      [VMMComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.12.2"]
 #define IsClassAVRouteDetectorAvailable                 [VMMComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.13.2"]
 
 

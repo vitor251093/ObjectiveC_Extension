@@ -472,14 +472,14 @@
 			children = (
 				4E5A45D71FC9FD7800FCEB42 /* VMMDockProgressIndicator.h */,
 				4E5A45D81FC9FD7800FCEB42 /* VMMDockProgressIndicator.m */,
+				4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */,
+				4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */,
+				4EB392DF1FC479060098F987 /* VMMTextFileView.h */,
+				4EB392E01FC479060098F987 /* VMMTextFileView.m */,
 				4E1181571FB200E800D8029F /* VMMView.h */,
 				4E1181581FB200E800D8029F /* VMMView.m */,
 				4E3771041FA7A57C00E2F511 /* VMMWebView.h */,
 				4E3771051FA7A57C00E2F511 /* VMMWebView.m */,
-				4EB392DF1FC479060098F987 /* VMMTextFileView.h */,
-				4EB392E01FC479060098F987 /* VMMTextFileView.m */,
-				4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */,
-				4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
