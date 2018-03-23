@@ -29,6 +29,12 @@
         [_navigationBar.addressBarField setStringValue:_lastAccessedUrl.absoluteString];
     }
 }
+-(void)setHideNavigationBar:(BOOL)hideNavigationBar
+{
+    _hideNavigationBar = hideNavigationBar;
+    
+    [self reloadWebViewIfNeeded];
+}
 
 // WebView needed delegates
 -(WebView *)webView:(WebView *)sender createWebViewWithRequest:(NSURLRequest *)request
@@ -297,7 +303,7 @@
 // Private functions that may be overrided
 -(BOOL)hasNavigationBar
 {
-    return _urlLoaded;
+    return _urlLoaded && !_hideNavigationBar;
 }
 -(CGFloat)navigationBarLeftMargin
 {

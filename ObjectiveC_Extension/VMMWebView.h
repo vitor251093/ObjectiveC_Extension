@@ -21,6 +21,7 @@
 
 @interface VMMWebView : VMMView
 
+@property (nonatomic) BOOL hideNavigationBar;
 @property (nonatomic) BOOL urlLoaded;
 @property (nonatomic) BOOL usingWkWebView;
 @property (nonatomic, strong, nullable) NSView* webView;
