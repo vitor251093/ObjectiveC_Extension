@@ -38,15 +38,30 @@ static NSArray* _userGroups;
 
 static NSMutableDictionary* _macOsCompatibility;
 
-+(NSMutableDictionary*)hardwareDictionaryFromSystemProfilerOutput:(NSString*)hardwareOutput
++(NSArray*)systemProfilerItemsForDataType:(NSString*)dataType
 {
-    NSArray* hardwareArray = [VMMPropertyList propertyListWithUnarchivedString:hardwareOutput];
-    if (hardwareArray == nil)
+    NSString* displayOutput = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml",dataType]
+                          waitingForTimeInterval:_systemProfilerRequestTimeOut];
+    
+    NSArray* displayArray = [VMMPropertyList propertyListWithUnarchivedString:displayOutput];
+    if (displayArray == nil)
     {
-        return [[NSMutableDictionary alloc] init];
+        return nil;
     }
     
-    hardwareArray = hardwareArray[0][@"_items"];
+    displayArray = displayArray[0][@"_items"];
+    if (displayArray == nil)
+    {
+        return nil;
+    }
+    
+    return displayArray;
+}
+    
++(NSMutableDictionary*)systemProfilerHardwareDictionary
+{
+    NSArray* hardwareArray = [self systemProfilerItemsForDataType:@"SPHardwareDataType"];
+    
     if (hardwareArray == nil)
     {
         return [[NSMutableDictionary alloc] init];
@@ -65,17 +80,7 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            NSString* displayData;
-            
-            displayData = [NSTask runProgram:@"system_profiler" withFlags:@[@"-xml",@"SPHardwareDataType"]
-                      waitingForTimeInterval:_systemProfilerRequestTimeOut];
-            _hardwareDictionary = [self hardwareDictionaryFromSystemProfilerOutput:displayData];
-            if (_hardwareDictionary.count == 0)
-            {
-                displayData = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml",@"SPHardwareDataType"]
-                          waitingForTimeInterval:_systemProfilerRequestTimeOut];
-                _hardwareDictionary = [self hardwareDictionaryFromSystemProfilerOutput:displayData];
-            }
+            _hardwareDictionary = [self systemProfilerHardwareDictionary];
         }
         
         return _hardwareDictionary;
@@ -422,21 +427,16 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 
 
-+(NSArray<VMMVideoCard*>* _Nullable)videoCardsFromSystemProfilerOutput:(NSString* _Nonnull)displayOutput
++(NSMutableArray<VMMVideoCard*>* _Nullable)systemProfilerVideoCards
 {
-    NSArray* displayArray = [VMMPropertyList propertyListWithUnarchivedString:displayOutput];
-    if (displayArray == nil)
+    NSArray* displayOutput = [self systemProfilerItemsForDataType:@"SPDisplaysDataType"];
+    
+    if (displayOutput == nil)
     {
         return nil;
     }
     
-    displayArray = displayArray[0][@"_items"];
-    if (displayArray == nil)
-    {
-        return nil;
-    }
-    
-    NSMutableArray* cards = [displayArray mutableCopy];
+    NSMutableArray* cards = [displayOutput mutableCopy];
     
     [cards replaceObjectsWithVariation:^id _Nullable(NSDictionary*  _Nonnull object, NSUInteger index)
     {
@@ -447,7 +447,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return cards;
 }
-+(NSArray<VMMVideoCard*>* _Nonnull)videoCardsFromIOServiceMatch
++(NSMutableArray<VMMVideoCard*>* _Nonnull)videoCardsFromIOServiceMatch
 {
     NSMutableArray* graphicCardDicts = [[NSMutableArray alloc] init];
     
@@ -602,21 +602,11 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            NSString* displayData;
-            
-            displayData = [NSTask runProgram:@"system_profiler" withFlags:@[@"-xml",@"SPDisplaysDataType"]
-                      waitingForTimeInterval:_systemProfilerRequestTimeOut];
-            _videoCards = [[self videoCardsFromSystemProfilerOutput:displayData] mutableCopy];
-            if (_videoCards == nil || _videoCards.count == 0)
-            {
-                displayData = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml",@"SPDisplaysDataType"]
-                          waitingForTimeInterval:_systemProfilerRequestTimeOut];
-                _videoCards = [[self videoCardsFromSystemProfilerOutput:displayData] mutableCopy];
-            }
+            _videoCards = [self systemProfilerVideoCards];
             
             if (_videoCards == nil || _videoCards.count == 0 || [self anyVideoCardDictionaryIsComplete] == false)
             {
-                NSMutableArray* computerGraphicCardDictionary = [[self videoCardsFromIOServiceMatch] mutableCopy];
+                NSMutableArray* computerGraphicCardDictionary = [self videoCardsFromIOServiceMatch];
                 if (_videoCards != nil) [computerGraphicCardDictionary addObjectsFromArray:_videoCards];
                 _videoCards = computerGraphicCardDictionary;
             }

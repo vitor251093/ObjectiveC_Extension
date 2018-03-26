@@ -202,6 +202,8 @@ typedef enum VMMUserGroup
 
 @interface VMMComputerInformation : NSObject
 
++(nullable NSArray*)systemProfilerItemsForDataType:(nonnull NSString*)dataType;
+    
 +(long long int)hardDiskSize;
 +(long long int)hardDiskFreeSize;
 +(long long int)hardDiskUsedSize;
@@ -224,7 +226,7 @@ typedef enum VMMUserGroup
  * @discussion  Returns every available information about the video cards mentioned in the system_profiler XML string.
  * @return      A VMMVideoCard array with the system_profiler information related with the string video cards.
  */
-+(NSArray<VMMVideoCard*>* _Nullable)videoCardsFromSystemProfilerOutput:(NSString* _Nonnull)displayOutput;
++(NSMutableArray<VMMVideoCard*>* _Nullable)systemProfilerVideoCards;
 
 /*!
  * @discussion  Returns every available information about every available video card.
