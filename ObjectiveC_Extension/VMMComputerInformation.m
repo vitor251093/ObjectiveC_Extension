@@ -488,15 +488,15 @@ static NSMutableDictionary* _macOsCompatibility;
                 if (deviceID != nil && [deviceID isKindOfClass:[NSData class]])
                 {
                     NSString *deviceIDString = [[NSString alloc] initWithData:deviceID encoding:NSASCIIStringEncoding];
-                    graphicCardDict[@"RawDeviceID"] = deviceIDString;
+                    NSString* hexDeviceIDString = [deviceIDString hexadecimalUTF8String];
                     
-                    deviceIDString = [deviceIDString hexadecimalUTF8String];
+                    graphicCardDict[@"RawDeviceID"] = [NSString stringWithFormat:@"%@ (HEX: %@)",deviceIDString,hexDeviceIDString];
                     
-                    if (deviceIDString.length == 4)
+                    if (hexDeviceIDString.length == 4)
                     {
-                        deviceIDString = [NSString stringWithFormat:@"0x%@%@",[deviceIDString substringFromIndex:2],
-                                                                              [deviceIDString substringToIndex:2]];
-                        graphicCardDict[VMMVideoCardDeviceIDKey] = deviceIDString;
+                        hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",[hexDeviceIDString substringFromIndex:2],
+                                                                                 [hexDeviceIDString substringToIndex:2]];
+                        graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
                     }
                 }
                 
@@ -524,7 +524,18 @@ static NSMutableDictionary* _macOsCompatibility;
                 }
                 
                 graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusBuiltIn;
-                
+                NSData* builtIn = service[@"built-in"];
+                if (builtIn != nil && [builtIn isKindOfClass:[NSData class]])
+                {
+                    if (((int*)[builtIn bytes])[0] == false)
+                    {
+                        graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusPCI;
+                    }
+                    else
+                    {
+                        graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusBuiltIn;
+                    }
+                }
                 
                 _Bool vramValueInBytes = TRUE;
                 CFTypeRef vramSize = IORegistryEntrySearchCFProperty(regEntry, kIOServicePlane, CFSTR("VRAM,totalsize"),
