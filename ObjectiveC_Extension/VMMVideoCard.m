@@ -17,6 +17,7 @@
 @synthesize bus = _bus;
 @synthesize deviceID = _deviceID;
 @synthesize vendorID = _vendorID;
+@synthesize vendor = _vendor;
 @synthesize memorySizeInMegabytes = _memorySizeInMegabytes;
 
 -(instancetype)initVideoCardWithDictionary:(NSDictionary*)dict
@@ -300,6 +301,71 @@
         }
     }
 }
+-(NSString*)vendor
+{
+    @synchronized(_vendor)
+    {
+        if (_vendor != nil)
+        {
+            return _vendor;
+        }
+        
+        @autoreleasepool
+        {
+            NSString* vendorID = self.vendorID;
+            
+            if ([vendorID isEqualToString:VMMVideoCardVendorIDIntel])
+            {
+                _vendor = VMMVideoCardVendorIntel;
+                return _vendor;
+            }
+            
+            if ([vendorID isEqualToString:VMMVideoCardVendorIDNVIDIA])
+            {
+                _vendor = VMMVideoCardVendorNVIDIA;
+                return _vendor;
+            }
+            
+            if ([vendorID isEqualToString:VMMVideoCardVendorIDATIAMD])
+            {
+                _vendor = VMMVideoCardVendorATIAMD;
+                return _vendor;
+            }
+            
+            if ([vendorID isEqualToString:VMMVideoCardVendorIDVirtualBox])
+            {
+                _vendor = VMMVideoCardVendorVirtualBox;
+                return _vendor;
+            }
+            
+            if ([vendorID isEqualToString:VMMVideoCardVendorIDVMware])
+            {
+                _vendor = VMMVideoCardVendorVMware;
+                return _vendor;
+            }
+            
+            if ([vendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
+            {
+                _vendor = VMMVideoCardVendorParallelsDesktop;
+                return _vendor;
+            }
+            
+            if ([vendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
+            {
+                _vendor = VMMVideoCardVendorMicrosoftRemoteDesktop;
+                return _vendor;
+            }
+            
+            if ([vendorID isEqualToString:VMMVideoCardVendorIDQemu])
+            {
+                _vendor = VMMVideoCardVendorQemu;
+                return _vendor;
+            }
+            
+            return nil;
+        }
+    }
+}
 
 -(NSNumber*)memorySizeInMegabytes
 {
@@ -401,12 +467,6 @@
     return [validVendorIDs containsObject:vendorID];
 }
 
--(BOOL)hasNameAndDeviceID
-{
-    if (self.name == nil) return false;
-    if (_dictionary[VMMVideoCardDeviceIDKey] == nil) return false;
-    return true;
-}
 -(BOOL)hasMemorySize
 {
     NSNumber* memorySize = self.memorySizeInMegabytes;
@@ -414,8 +474,9 @@
 }
 -(BOOL)isComplete
 {
-    if (self.hasNameAndDeviceID == false) return false;
-    if (self.hasMemorySize      == false) return false;
+    if (self.name          == nil)   return false;
+    if (self.deviceID      == nil)   return false;
+    if (self.hasMemorySize == false) return false;
     return true;
 }
 -(BOOL)isVirtualMachineVideoCard
