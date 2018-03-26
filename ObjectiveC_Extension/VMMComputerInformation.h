@@ -221,13 +221,6 @@ typedef enum VMMUserGroup
 
 +(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup;
 
-
-/*!
- * @discussion  Returns every available information about the video cards mentioned in the system_profiler XML string.
- * @return      A VMMVideoCard array with the system_profiler information related with the string video cards.
- */
-+(NSMutableArray<VMMVideoCard*>* _Nullable)systemProfilerVideoCards;
-
 /*!
  * @discussion  Returns every available information about every available video card.
  * @return      A VMMVideoCard array with the system_profiler information related with every available video card.
