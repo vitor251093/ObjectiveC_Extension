@@ -202,8 +202,6 @@ typedef enum VMMUserGroup
 
 @interface VMMComputerInformation : NSObject
 
-+(nullable NSDictionary*)hardwareDictionary;
-
 +(long long int)hardDiskSize;
 +(long long int)hardDiskFreeSize;
 +(long long int)hardDiskUsedSize;
