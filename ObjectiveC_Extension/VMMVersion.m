@@ -12,28 +12,49 @@
 
 @implementation VMMVersion
 
-+(VMMVersionCompare)compareVersionString:(nonnull NSString*)PK1 withVersionString:(nonnull NSString*)PK2
+-(nonnull instancetype)initWithString:(nonnull NSString*)string
+{
+    self = [super init];
+    if (self)
+    {
+        self.components = [string componentsSeparatedByString:@"."];
+    }
+    return self;
+}
+-(VMMVersionCompare)compareWithVersion:(nonnull VMMVersion*)version
 {
     @autoreleasepool
     {
-        NSArray* PKArray1 = [PK1 componentsSeparatedByString:@"."];
-        NSArray* PKArray2 = [PK2 componentsSeparatedByString:@"."];
+        NSArray<NSString*>* PKArray1 = self.components;
+        NSArray<NSString*>* PKArray2 = version.components;
         
         for (int x = 0; x < PKArray1.count && x < PKArray2.count; x++)
         {
             if ([PKArray1[x] initialIntegerValue].intValue < [PKArray2[x] initialIntegerValue].intValue)
                 return VMMVersionCompareSecondIsNewest;
+            
             if ([PKArray1[x] initialIntegerValue].intValue > [PKArray2[x] initialIntegerValue].intValue)
                 return VMMVersionCompareFirstIsNewest;
+            
+            if (PKArray1[x].length > PKArray2[x].length) return VMMVersionCompareFirstIsNewest;
+            if (PKArray1[x].length < PKArray2[x].length) return VMMVersionCompareSecondIsNewest;
         }
         
         if (PKArray1.count < PKArray2.count) return VMMVersionCompareSecondIsNewest;
         if (PKArray1.count > PKArray2.count) return VMMVersionCompareFirstIsNewest;
         
-        if (PK1.length > PK2.length) return VMMVersionCompareFirstIsNewest;
-        if (PK1.length < PK2.length) return VMMVersionCompareSecondIsNewest;
-        
         return VMMVersionCompareSame;
+    }
+}
+
++(VMMVersionCompare)compareVersionString:(nonnull NSString*)PK1 withVersionString:(nonnull NSString*)PK2
+{
+    @autoreleasepool
+    {
+        VMMVersion* version1 = [[VMMVersion alloc] initWithString:PK1];
+        VMMVersion* version2 = [[VMMVersion alloc] initWithString:PK2];
+        
+        return [version1 compareWithVersion:version2];
     }
 }
 

@@ -17,6 +17,11 @@ typedef enum VMMVersionCompare
 
 @interface VMMVersion : NSObject
 
+@property (nonatomic, strong) NSArray<NSString*>* _Nonnull components;
+
+-(nonnull instancetype)initWithString:(nonnull NSString*)string;
+-(VMMVersionCompare)compareWithVersion:(nonnull VMMVersion*)version;
+
 +(VMMVersionCompare)compareVersionString:(nonnull NSString*)PK1 withVersionString:(nonnull NSString*)PK2;
 
 @end
