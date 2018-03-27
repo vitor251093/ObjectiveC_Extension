@@ -453,20 +453,19 @@
     if (graphicCard == nil)
     {
         NSString* type = self.type;
-        if (type == nil)
-        {
-            graphicCard = [NSString stringWithFormat:@"%@ %@",self.vendorID,self.deviceID];
-        }
-        else
-        {
-            graphicCard = [NSString stringWithFormat:@"%@ %@",type,self.deviceID];
-        }
+        if (type == nil) type = self.vendor;
+        if (type == nil) type = self.vendorID;
+        graphicCard = [NSString stringWithFormat:@"%@ %@",type,self.deviceID];
     }
     
     NSNumber* graphicCardSizeNumber = self.memorySizeInMegabytes;
-    NSUInteger graphicCardSize = graphicCardSizeNumber != nil ? graphicCardSizeNumber.unsignedIntegerValue : 0;
+    if (graphicCardSizeNumber != nil)
+    {
+        NSUInteger graphicCardSize = graphicCardSizeNumber.unsignedIntegerValue;
+        graphicCard = [NSString stringWithFormat:@"%@ (%lu MB)",graphicCard,graphicCardSize];
+    }
     
-    return [NSString stringWithFormat:@"%@ (%lu MB)",graphicCard,graphicCardSize];
+    return graphicCard;
 }
 
 -(BOOL)isReal
