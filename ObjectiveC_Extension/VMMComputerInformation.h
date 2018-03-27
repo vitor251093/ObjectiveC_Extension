@@ -187,6 +187,61 @@
 #import <Foundation/Foundation.h>
 #import "VMMVideoCard.h"
 
+static NSString* _Nonnull const SPAirPortDataType              = @"SPAirPortDataType";
+static NSString* _Nonnull const SPApplicationsDataType         = @"SPApplicationsDataType";
+static NSString* _Nonnull const SPAudioDataType                = @"SPAudioDataType";
+static NSString* _Nonnull const SPBluetoothDataType            = @"SPBluetoothDataType";
+static NSString* _Nonnull const SPCameraDataType               = @"SPCameraDataType";
+static NSString* _Nonnull const SPCardReaderDataType           = @"SPCardReaderDataType";
+static NSString* _Nonnull const SPComponentDataType            = @"SPComponentDataType";
+static NSString* _Nonnull const SPConfigurationProfileDataType = @"SPConfigurationProfileDataType";
+static NSString* _Nonnull const SPDeveloperToolsDataType       = @"SPDeveloperToolsDataType";
+static NSString* _Nonnull const SPDiagnosticsDataType          = @"SPDiagnosticsDataType";
+static NSString* _Nonnull const SPDisabledSoftwareDataType     = @"SPDisabledSoftwareDataType";
+static NSString* _Nonnull const SPDiscBurningDataType          = @"SPDiscBurningDataType";
+static NSString* _Nonnull const SPDisplaysDataType             = @"SPDisplaysDataType";
+static NSString* _Nonnull const SPEthernetDataType             = @"SPEthernetDataType";
+static NSString* _Nonnull const SPExtensionsDataType           = @"SPExtensionsDataType";
+static NSString* _Nonnull const SPFibreChannelDataType         = @"SPFibreChannelDataType";
+static NSString* _Nonnull const SPFirewallDataType             = @"SPFirewallDataType";
+static NSString* _Nonnull const SPFireWireDataType             = @"SPFireWireDataType";
+static NSString* _Nonnull const SPFontsDataType                = @"SPFontsDataType";
+static NSString* _Nonnull const SPFrameworksDataType           = @"SPFrameworksDataType";
+static NSString* _Nonnull const SPHardwareDataType             = @"SPHardwareDataType";
+static NSString* _Nonnull const SPHardwareRAIDDataType         = @"SPHardwareRAIDDataType";
+static NSString* _Nonnull const SPiBridgeDataType              = @"SPiBridgeDataType";
+static NSString* _Nonnull const SPInstallHistoryDataType       = @"SPInstallHistoryDataType";
+static NSString* _Nonnull const SPLogsDataType                 = @"SPLogsDataType";
+static NSString* _Nonnull const SPManagedClientDataType        = @"SPManagedClientDataType";
+static NSString* _Nonnull const SPMemoryDataType               = @"SPMemoryDataType";
+static NSString* _Nonnull const SPModemDataType                = @"SPModemDataType";
+static NSString* _Nonnull const SPNetworkDataType              = @"SPNetworkDataType";
+static NSString* _Nonnull const SPNetworkLocationDataType      = @"SPNetworkLocationDataType";
+static NSString* _Nonnull const SPNetworkVolumeDataType        = @"SPNetworkVolumeDataType";
+static NSString* _Nonnull const SPNVMeDataType                 = @"SPNVMeDataType";
+static NSString* _Nonnull const SPParallelATADataType          = @"SPParallelATADataType";
+static NSString* _Nonnull const SPParallelSCSIDataType         = @"SPParallelSCSIDataType";
+static NSString* _Nonnull const SPPCCardDataType               = @"SPPCCardDataType";
+static NSString* _Nonnull const SPPCIDataType                  = @"SPPCIDataType";
+static NSString* _Nonnull const SPPowerDataType                = @"SPPowerDataType";
+static NSString* _Nonnull const SPPrefPaneDataType             = @"SPPrefPaneDataType";
+static NSString* _Nonnull const SPPrintersDataType             = @"SPPrintersDataType";
+static NSString* _Nonnull const SPPrintersSoftwareDataType     = @"SPPrintersSoftwareDataType";
+static NSString* _Nonnull const SPRawCameraDataType            = @"SPRawCameraDataType";
+static NSString* _Nonnull const SPSASDataType                  = @"SPSASDataType";
+static NSString* _Nonnull const SPSerialATADataType            = @"SPSerialATADataType";
+static NSString* _Nonnull const SPSmartCardsDataType           = @"SPSmartCardsDataType";
+static NSString* _Nonnull const SPSoftwareDataType             = @"SPSoftwareDataType";
+static NSString* _Nonnull const SPSPIDataType                  = @"SPSPIDataType";
+static NSString* _Nonnull const SPStartupItemDataType          = @"SPStartupItemDataType";
+static NSString* _Nonnull const SPStorageDataType              = @"SPStorageDataType";
+static NSString* _Nonnull const SPSyncServicesDataType         = @"SPSyncServicesDataType";
+static NSString* _Nonnull const SPThunderboltDataType          = @"SPThunderboltDataType";
+static NSString* _Nonnull const SPUniversalAccessDataType      = @"SPUniversalAccessDataType";
+static NSString* _Nonnull const SPUSBDataType                  = @"SPUSBDataType";
+static NSString* _Nonnull const SPWWANDataType                 = @"SPWWANDataType";
+
+
 typedef enum VMMUserGroup
 {
     VMMUserGroupEveryone      = 12,
@@ -202,7 +257,7 @@ typedef enum VMMUserGroup
 
 @interface VMMComputerInformation : NSObject
 
-+(nullable NSArray*)systemProfilerItemsForDataType:(nonnull NSString*)dataType;
++(nullable NSArray<NSDictionary*>*)systemProfilerItemsForDataType:(nonnull NSString*)dataType;
     
 +(long long int)hardDiskSize;
 +(long long int)hardDiskFreeSize;

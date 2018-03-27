@@ -38,7 +38,7 @@ static NSArray* _userGroups;
 
 static NSMutableDictionary* _macOsCompatibility;
 
-+(NSArray*)systemProfilerItemsForDataType:(NSString*)dataType
++(nullable NSArray<NSDictionary*>*)systemProfilerItemsForDataType:(nonnull NSString*)dataType
 {
     NSString* displayOutput = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml",dataType]
                           waitingForTimeInterval:_systemProfilerRequestTimeOut];
@@ -60,7 +60,7 @@ static NSMutableDictionary* _macOsCompatibility;
     
 +(NSMutableDictionary*)systemProfilerHardwareDictionary
 {
-    NSArray* hardwareArray = [self systemProfilerItemsForDataType:@"SPHardwareDataType"];
+    NSArray* hardwareArray = [self systemProfilerItemsForDataType:SPHardwareDataType];
     
     if (hardwareArray == nil)
     {
@@ -429,7 +429,7 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(NSMutableArray<VMMVideoCard*>* _Nullable)systemProfilerVideoCards
 {
-    NSArray* displayOutput = [self systemProfilerItemsForDataType:@"SPDisplaysDataType"];
+    NSArray* displayOutput = [self systemProfilerItemsForDataType:SPDisplaysDataType];
     
     if (displayOutput == nil)
     {
