@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSMutableArray (VMMMutableArray)
+@interface NSMutableArray<ObjectType> (VMMMutableArray)
 
 -(void)sortAlphabeticallyByKey:(nonnull NSString*)key ascending:(BOOL)ascending;
 -(void)sortAlphabeticallyAscending:(BOOL)ascending;
 -(void)sortDictionariesWithKey:(nonnull NSString *)key orderingByValuesOrder:(nonnull NSArray*)value;
 
--(void)replaceObjectsWithVariation:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject;
+-(void)replaceObjectsWithVariation:(_Nullable id (^_Nonnull)(ObjectType _Nonnull object, NSUInteger index))newObjectForObject;
 
 -(void)sortBySelector:(SEL _Nonnull)selector inOrder:(NSArray* _Nonnull)order;
 
