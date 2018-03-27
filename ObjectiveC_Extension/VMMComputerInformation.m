@@ -26,7 +26,7 @@
 static unsigned int _systemProfilerRequestTimeOut = 15;
 static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 
-static NSMutableDictionary* _hardwareDictionary;
+static NSDictionary* _hardwareDictionary;
 static NSMutableArray<VMMVideoCard*>* _videoCards;
 
 static NSString* _macModel;
@@ -58,16 +58,16 @@ static NSMutableDictionary* _macOsCompatibility;
     return displayArray;
 }
     
-+(NSMutableDictionary*)systemProfilerHardwareDictionary
++(NSDictionary*)systemProfilerHardwareDictionary
 {
     NSArray* hardwareArray = [self systemProfilerItemsForDataType:SPHardwareDataType];
     
     if (hardwareArray == nil)
     {
-        return [[NSMutableDictionary alloc] init];
+        return @{};
     }
     
-    return [[hardwareArray firstObject] mutableCopy];
+    return [hardwareArray firstObject];
 }
 +(nullable NSDictionary*)hardwareDictionary
 {
@@ -427,7 +427,7 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 
 
-+(NSMutableArray<VMMVideoCard*>* _Nullable)systemProfilerVideoCards
++(NSArray<VMMVideoCard*>* _Nullable)systemProfilerVideoCards
 {
     NSArray* displayOutput = [self systemProfilerItemsForDataType:SPDisplaysDataType];
     
@@ -599,13 +599,17 @@ static NSMutableDictionary* _macOsCompatibility;
         
         @autoreleasepool
         {
-            _videoCards = [self systemProfilerVideoCards];
+            NSArray<VMMVideoCard*>* videoCards = [self systemProfilerVideoCards];
             
-            if (_videoCards == nil || _videoCards.count == 0 || [self anyVideoCardDictionaryIsComplete] == false)
+            if (videoCards == nil || videoCards.count == 0 || [self anyVideoCardDictionaryIsCompleteInArray:videoCards] == false)
             {
-                NSMutableArray* computerGraphicCardDictionary = [self videoCardsFromIOServiceMatch];
-                if (_videoCards != nil) [computerGraphicCardDictionary addObjectsFromArray:_videoCards];
+                NSMutableArray<VMMVideoCard*>* computerGraphicCardDictionary = [self videoCardsFromIOServiceMatch];
+                if (videoCards != nil) [computerGraphicCardDictionary addObjectsFromArray:videoCards];
                 _videoCards = computerGraphicCardDictionary;
+            }
+            else
+            {
+                _videoCards = [videoCards mutableCopy];
             }
             
             [_videoCards sortBySelector:@selector(vendorID)
@@ -624,9 +628,9 @@ static NSMutableDictionary* _macOsCompatibility;
     if (videoCards.count == 0) return nil;
     return videoCards.firstObject;
 }
-+(BOOL)anyVideoCardDictionaryIsComplete
++(BOOL)anyVideoCardDictionaryIsCompleteInArray:(NSArray<VMMVideoCard*>*)videoCards
 {
-    for (VMMVideoCard* vc in _videoCards)
+    for (VMMVideoCard* vc in videoCards)
     {
         if (vc.isComplete) return true;
     }
