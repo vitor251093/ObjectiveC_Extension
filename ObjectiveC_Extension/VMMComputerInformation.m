@@ -487,7 +487,7 @@ static NSMutableDictionary* _macOsCompatibility;
                 NSData* deviceID = service[@"device-id"];
                 if (deviceID != nil && [deviceID isKindOfClass:[NSData class]])
                 {
-                    NSString *deviceIDString = [[NSString alloc] initWithData:deviceID encoding:NSASCIIStringEncoding];
+                    NSString* deviceIDString = [[NSString alloc] initWithData:deviceID encoding:NSASCIIStringEncoding];
                     NSString* hexDeviceIDString = [deviceIDString hexadecimalUTF8String];
                     
                     graphicCardDict[@"RawDeviceID"] = [NSString stringWithFormat:@"%@ (HEX: %@)",deviceIDString,hexDeviceIDString];
@@ -503,7 +503,7 @@ static NSMutableDictionary* _macOsCompatibility;
                 NSData* vendorID = service[@"vendor-id"];
                 if (vendorID != nil && [vendorID isKindOfClass:[NSData class]])
                 {
-                    NSString *vendorIDString = [NSString stringWithFormat:@"%@",vendorID];
+                    NSString* vendorIDString = [NSString stringWithFormat:@"%@",vendorID];
                     if (vendorIDString.length > 5)
                     {
                         vendorIDString = [vendorIDString substringWithRange:NSMakeRange(1, 4)];
@@ -523,15 +523,12 @@ static NSMutableDictionary* _macOsCompatibility;
                     }
                 }
                 
-                graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusBuiltIn;
-                NSData* builtIn = service[@"built-in"];
-                if (builtIn != nil && [builtIn isKindOfClass:[NSData class]])
+                graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusPCI;
+                NSData* hdaGfx = service[@"hda-gfx"];
+                if (hdaGfx != nil && [hdaGfx isKindOfClass:[NSData class]])
                 {
-                    if (((int*)[builtIn bytes])[0] == false)
-                    {
-                        graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusPCI;
-                    }
-                    else
+                    NSString* hdaGfxString = [[NSString alloc] initWithData:hdaGfx encoding:NSASCIIStringEncoding];
+                    if (hdaGfxString != nil && [hdaGfxString isEqualToString:@"onboard-1"])
                     {
                         graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusBuiltIn;
                     }
