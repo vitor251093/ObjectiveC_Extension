@@ -13,6 +13,11 @@
 +(nullable id)propertyListWithUnarchivedString:(nonnull NSString*)string
 {
     NSData* data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    return [self propertyListWithUnarchivedData:data];
+    
+}
++(nullable id)propertyListWithUnarchivedData:(nonnull NSData*)data
+{
     id propertyList;
     
     NSError *error;
@@ -30,6 +35,10 @@
 +(nullable id)propertyListWithArchivedString:(nonnull NSString *)string
 {
     NSData* data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    return [self propertyListWithArchivedData:data];
+}
++(nullable id)propertyListWithArchivedData:(nonnull NSData *)data
+{
     id propertyList;
     
     @try
