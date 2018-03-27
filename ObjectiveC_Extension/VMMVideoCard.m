@@ -436,6 +436,17 @@
     }
 }
 
+-(NSString* _Nullable)metalSupport
+{
+    NSString* metalSupport = self.dictionary[@"spdisplays_metal"];
+    if (metalSupport == nil) return nil;
+    
+    return metalSupport;
+    
+    // spdisplays_supported
+    // spdisplays_metalfeaturesetfamily12
+    // spdisplays_metalfeaturesetfamily13
+}
 -(NSString* _Nonnull)descriptorName
 {
     NSString* graphicCard = self.name;

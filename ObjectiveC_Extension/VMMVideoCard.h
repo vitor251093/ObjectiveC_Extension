@@ -85,6 +85,7 @@ static NSString * _Nonnull const VMMVideoCardDeviceIDQemu =                   @"
 @property (nonatomic, strong, readonly) NSString* _Nullable vendor;
 @property (nonatomic, strong, readonly) NSNumber* _Nullable memorySizeInMegabytes;
 
+-(NSString* _Nullable)metalSupport;
 -(NSString* _Nonnull)descriptorName;
 
 -(BOOL)isReal;
