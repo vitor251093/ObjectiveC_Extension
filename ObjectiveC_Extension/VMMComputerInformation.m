@@ -40,7 +40,7 @@ static NSMutableDictionary* _macOsCompatibility;
 
 +(nullable NSArray<NSDictionary*>*)systemProfilerItemsForDataType:(nonnull NSString*)dataType
 {
-    NSString* displayOutput = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml",dataType]
+    NSString* displayOutput = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml", @"-detailLevel", @"full", dataType]
                           waitingForTimeInterval:_systemProfilerRequestTimeOut];
     
     NSArray* displayArray = [VMMPropertyList propertyListWithUnarchivedString:displayOutput];
