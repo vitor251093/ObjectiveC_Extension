@@ -484,42 +484,6 @@ Equivalent to `alloc` + `initWithTitle:action:keyEquivalent:` + `setTarget:`, wi
 Used to retrieve informations about the computer hardware and software.
 
 ```objectivec
-+(nullable NSDictionary*)videoCardDictionary;
-```
-
-Dictionary with the informations available with the command `system_profiler SPDisplaysDataType` about the computer main graphic card. 
-
-```objectivec
-+(nullable NSString*)videoCardName;
-```
-
-Model name of the computer main graphic card.
-
-```objectivec
-+(nullable NSString*)videoCardType;
-```
-
-Type of the computer main graphic card (Intel HD, Intel Iris, Intel GMA, NVIDIA or ATi/AMD). 
-
-```objectivec
-+(nullable NSString*)videoCardDeviceID;
-```
-
-Device ID of the computer main graphic card.
-
-```objectivec
-+(nullable NSString*)videoCardVendorID;
-```
-
-Vendor ID of the computer main graphic card.
-
-```objectivec
-+(NSUInteger)videoCardMemorySizeInMegabytes;
-```
-
-Memory size of the computer main graphic card.
-
-```objectivec
 +(NSString*)macOsVersion;
 ```
 
@@ -554,6 +518,85 @@ Defines that use `isSystemMacOsEqualOrSuperiorTo:`. Requires non-sandboxed appli
 ```
 
 Returns true if the user is member of a specific user group in his computer.
+
+### VMMVideoCard
+Model that stores information about a specific video card.
+
+```objectivec
+-(nonnull NSDictionary*)dictionary;
+```
+
+Dictionary with the informations about the video card.
+
+```objectivec
+-(nullable NSString*)name;
+```
+
+Name (model) of the video card.
+
+```objectivec
+-(nullable NSString*)type;
+```
+
+Type of the video card (Intel HD, Intel Iris, Intel GMA, NVIDIA, ATI/AMD, etc).
+
+```objectivec
+-(nullable NSString*)bus;
+```
+
+Bus of the video card (Built-In, PCI or PCIe).
+
+```objectivec
+-(nullable NSString*)deviceID;
+```
+
+Device ID of the video card.
+
+```objectivec
+-(nullable NSString*)vendorID;
+```
+
+Vendor ID of the video card.
+
+```objectivec
+-(nullable NSString*)vendor;
+```
+
+Vendor of the video card (NVIDIA, ATI/AMD, Intel, etc).
+
+```objectivec
+-(nullable NSNumber*)memorySizeInMegabytes;
+```
+
+Memory size of the video card.
+
+```objectivec
+-(nullable NSString*)metalSupport;
+```
+
+Description of the video card metal support (if nil, there is no support).
+
+```objectivec
+-(nonnull NSString*)descriptorName;
+```
+
+Identifier of the video card. It contains the model, type, vendor or vendor ID (depending of which ones is available) and the memory size, if available.
+
+```objectivec
+-(BOOL)isReal;
+```
+
+Returns true if the video card vendor is Intel, ATI/AMD or NVIDIA.
+
+```objectivec
+-(BOOL)isComplete;
+```
+Returns true if it was possible to retrieve the most relevant informations about the video card (name, device ID and memory size).
+
+```objectivec
+-(BOOL)isVirtualMachineVideoCard;
+```
+Returns true if the video card is a mock created by a virtual machine, like VirtualBox, VMware, Parallels Desktop or Qemu.
 
 ### VMMParentalControls
 Used to check if there is any Parental Control restrictions to the actual user.
