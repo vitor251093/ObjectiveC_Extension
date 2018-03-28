@@ -484,10 +484,70 @@ Equivalent to `alloc` + `initWithTitle:action:keyEquivalent:` + `setTarget:`, wi
 Used to retrieve informations about the computer hardware and software.
 
 ```objectivec
++(long long int)hardDiskSize;
+```
+
+Hard disk size in bytes. Requires non-sandboxed application.
+
+```objectivec
++(long long int)hardDiskFreeSize;
+```
+
+Hard disk free size (available space) in bytes. Requires non-sandboxed application.
+
+```objectivec
++(long long int)hardDiskUsedSize;
+```
+
+Hard disk used size (non-available space) in bytes. Requires non-sandboxed application.
+
+```objectivec
++(long long int)ramMemorySize;
+```
+
+RAM memory size in bytes.
+
+```objectivec
++(long long int)ramMemoryFreeSize
+```
+
+RAM memory free size (available space) in bytes. Requires non-sandboxed application.
+
+```objectivec
++(long long int)ramMemoryUsedSize
+```
+
+RAM memory used size (non-available space) in bytes. Requires non-sandboxed application.
+
+```objectivec
++(nullable NSString*)processorNameAndSpeed;
+```
+
+Processor name and speed. Requires non-sandboxed application.
+
+```objectivec
++(double)processorUsage;
+```
+
+Processor usage percentage (from 0.0 to 1.0). Requires non-sandboxed application.
+
+```objectivec
++(nullable NSString*)macModel;
+```
+
+Mac model. Requires non-sandboxed application.
+
+```objectivec
 +(NSString*)macOsVersion;
 ```
 
-macOS version. Example: "10.13.1". Requires non-sandboxed application.
+macOS version. Example: "10.13". Requires non-sandboxed application.
+
+```objectivec
++(nullable NSString*)completeMacOsVersion;
+```
+
+macOS complete version. Example: "10.13.1". Requires non-sandboxed application.
 
 ```objectivec
 +(NSString*)macOsBuildVersion;
@@ -499,7 +559,7 @@ macOS build version. Example: "17C60c". Requires non-sandboxed application.
 +(BOOL)isSystemMacOsEqualOrSuperiorTo:(NSString*)version;
 ```
 
-Returns true if the user macOS version is equal or superior to the specified version. Requires non-sandboxed application.
+True if the user macOS version is equal or superior to the specified version. Requires non-sandboxed application.
 
 ```objectivec
 IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR
@@ -517,7 +577,19 @@ Defines that use `isSystemMacOsEqualOrSuperiorTo:`. Requires non-sandboxed appli
 +(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup;
 ```
 
-Returns true if the user is member of a specific user group in his computer.
+True if the user is member of a specific user group in his computer.
+
+```objectivec
++(NSArray<VMMVideoCard*>* _Nonnull)videoCards;
+```
+
+List of the computer video cards. Possibly requires non-sandboxed application.
+
+```objectivec
++(VMMVideoCard* _Nullable)mainVideoCard;
+```
+
+Most powerful video card of the computer. Possibly requires non-sandboxed application.
 
 ### VMMVideoCard
 Model that stores information about a specific video card.
