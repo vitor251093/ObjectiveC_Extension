@@ -91,8 +91,9 @@ typedef enum NSAlertType
  * @param title           The title that will be shown in the alert.
  * @param subtitle        The subtitle (aka. informative text) that will be shown in the alert.
  * @param message         The message (aka. attributed informative text) that will be shown in the alert.
+ * @param fixedWidth      The width of the message area that will be shown in the alert (0 to use the real message width).
  */
-+(void)showAlertWithTitle:(NSString*)title subtitle:(NSString*)subtitle andAttributedMessage:(NSAttributedString*)message;
++(void)showAlertWithTitle:(NSString*)title subtitle:(NSString*)subtitle andAttributedMessage:(NSAttributedString*)message withWidth:(CGFloat)fixedWidth;
 
 /*!
  * @discussion  Shows a NSAlert with a title, an informative text and Yes/No buttons.

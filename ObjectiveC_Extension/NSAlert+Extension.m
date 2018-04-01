@@ -235,7 +235,7 @@
         NSAlert* msgBox = [[NSAlert alloc] init];
         [msgBox setMessageText:title];
         [msgBox addButtonWithTitle:VMMLocalizedString(@"OK")];
-        [msgBox setInformativeText:message];
+        if (message != nil) [msgBox setInformativeText:message];
         
         if (optionsForAlert != nil) optionsForAlert(msgBox);
         
@@ -243,7 +243,7 @@
     }];
 }
 
-+(void)showAlertWithTitle:(NSString*)title subtitle:(NSString*)subtitle andAttributedMessage:(NSAttributedString*)message
++(void)showAlertWithTitle:(NSString*)title subtitle:(NSString*)subtitle andAttributedMessage:(NSAttributedString*)message withWidth:(CGFloat)fixedWidth
 {
     __block NSTextView* informativeText = [[NSTextView alloc] init];
     [informativeText setBackgroundColor:[NSColor clearColor]];
@@ -254,7 +254,11 @@
     [paragrapStyle setParagraphSpacing:ALERT_WITH_ATTRIBUTED_MESSAGE_PARAGRAPH_SPACING];
     [informativeText.textStorage addAttribute:NSParagraphStyleAttributeName value:paragrapStyle];
     
-    CGFloat width = informativeText.textStorage.size.width + ALERT_WITH_ATTRIBUTED_MESSAGE_WIDTH_MARGIN;
+    CGFloat width = fixedWidth;
+    if (width < 0.01) {
+        width = informativeText.textStorage.size.width + ALERT_WITH_ATTRIBUTED_MESSAGE_WIDTH_MARGIN;
+    }
+    
     CGFloat screenLimit = [[NSScreen mainScreen] visibleFrame].size.width - ALERT_WITH_ATTRIBUTED_MESSAGE_WIDTH_LIMIT_MARGIN;
     if (width > screenLimit) width = screenLimit;
     [informativeText setFrame:NSMakeRect(0, 0, width, informativeText.textStorage.size.height)];
