@@ -5,6 +5,9 @@
 //  Created by Vitor Marques de Miranda on 18/03/18.
 //  Copyright © 2018 VitorMM. All rights reserved.
 //
+//  TODO: May be a good adition in the future:
+//  https://github.com/codykrieger/gfxCardStatus
+//
 
 #import "VMMVideoCard.h"
 #import "NSString+Extension.h"
@@ -385,17 +388,31 @@
             if (memSize == nil) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
             if (memSize == nil) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInAlternateKey] uppercaseString];
             
-            if ([memSize contains:@" MB"])
+            if (memSize != nil && [memSize contains:@" MB"])
             {
                 memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" MB"] intValue];
             }
-            else if ([memSize contains:@" GB"])
+            else if (memSize != nil && [memSize contains:@" GB"])
             {
                 memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
             }
             
-            if (memSizeInt == 0 && [self.vendorID isEqualToString:VMMVideoCardVendorIDNVIDIA])
+            if (memSizeInt < 64)
             {
+                //
+                // TODO: Fix video cards with no video memory size, or unrealistic memory size.
+                //
+                // This is common issue with Hackintoshes, but it may happen with
+                // old computers as well, like you gonna see below. The following link
+                // may be a good reference to add manual support to Intel video cards,
+                // although this bug haven't been seen in non-Hackintosh computer with
+                // Intel video cards.
+                //
+                // Link: https://support.apple.com/pt-br/HT204349
+                //
+                //
+                //  Specific case:
+                //  -> memSizeInt == 0 AND vendor == NVIDIA
                 //
                 // Apparently, this is a common bug that happens with Hackintoshes that
                 // use NVIDIA video cards that were badly configured. Considering that,
@@ -403,8 +420,7 @@
                 // fix for every known NVIDIA video card that may have the issue.
                 //
                 // We can't detect the real video memory size with system_profiler or
-                // IOServiceMatching("IOPCIDevice"), but we just implemented the API method,
-                // which may detect the size correctly even on those cases (hopefully).
+                // IOServiceMatching("IOPCIDevice"), and the API method wasn't perfect.
                 //
                 // The same bug may also happen in old legitimate Apple computers, and
                 // it also seems to happen only with NVIDIA video cards.
@@ -417,17 +433,14 @@
                 // https://discussions.apple.com/thread/2494867?tstart=0
                 //
                 
-                return @(0);
-            }
-            
-            if (memSizeInt == 0)
-            {
-                return @(memSizeInt);
-            }
-            
-            if (memSizeInt == -1)
-            {
-                return nil;
+                if (memSizeInt == -1)
+                {
+                    return nil;
+                }
+                else
+                {
+                    return @(0);
+                }
             }
             
             _memorySizeInMegabytes = @(memSizeInt);
