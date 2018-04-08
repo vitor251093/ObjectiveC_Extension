@@ -24,6 +24,7 @@ static NSString * _Nonnull const VMMVideoCardMemorySizePciOrPcieKey =        @"s
 static NSString * _Nonnull const VMMVideoCardVendorIDKey =                   @"spdisplays_vendor-id";
 static NSString * _Nonnull const VMMVideoCardVendorKey =                     @"spdisplays_vendor";
 static NSString * _Nonnull const VMMVideoCardDeviceIDKey =                   @"spdisplays_device-id";
+static NSString * _Nonnull const VMMVideoCardMetalSupportKey =               @"spdisplays_metal";
 
 static NSString * _Nonnull const VMMVideoCardTypeIntelHD =    @"Intel HD";
 static NSString * _Nonnull const VMMVideoCardTypeIntelUHD =   @"Intel UHD";

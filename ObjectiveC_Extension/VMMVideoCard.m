@@ -451,7 +451,7 @@
 
 -(NSString* _Nullable)metalSupport
 {
-    NSString* metalSupport = self.dictionary[@"spdisplays_metal"];
+    NSString* metalSupport = self.dictionary[VMMVideoCardMetalSupportKey];
     if (metalSupport == nil) return nil;
     
     return metalSupport;
