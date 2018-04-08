@@ -131,7 +131,7 @@ static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, vo
     if (device == NULL) return;
     
     CFIndex elementValue = -1;
-    if (IOHIDValueGetLength(value) <= IOHIDMaxIntegerValue)
+    if (IOHIDValueGetLength(value) <= IOHIDMaxIntegerValueBytes)
     {
         //
         // If the size of the package is bigger than 4 bytes, IOHIDValueGetIntegerValue() will cause

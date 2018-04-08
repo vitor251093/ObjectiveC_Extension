@@ -15,7 +15,7 @@
 #define VMMDeviceObserverTypesKeyboard  @[@(kHIDUsage_GD_Keyboard), @(kHIDUsage_GD_Keypad)]
 #define VMMDeviceObserverTypesJoystick  @[@(kHIDUsage_GD_Joystick), @(kHIDUsage_GD_GamePad), @(kHIDUsage_GD_MultiAxisController)]
 
-static int const IOHIDMaxIntegerValue = 4;
+static int const IOHIDMaxIntegerValueBytes = 4;
 
 BOOL IOHIDDeviceGetLongProperty(IOHIDDeviceRef _Nullable inIOHIDDeviceRef, CFStringRef _Nonnull inKey, long * _Nonnull outValue);
 long IOHIDDeviceGetUsage(IOHIDDeviceRef _Nullable device);
