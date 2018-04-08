@@ -405,7 +405,7 @@
                 // This is common issue with Hackintoshes, but it may happen with
                 // old computers as well, like you gonna see below. The following link
                 // may be a good reference to add manual support to Intel video cards,
-                // although this bug haven't been seen in non-Hackintosh computer with
+                // although this bug haven't been seen in non-Hackintosh computers with
                 // Intel video cards.
                 //
                 // Link: https://support.apple.com/pt-br/HT204349
