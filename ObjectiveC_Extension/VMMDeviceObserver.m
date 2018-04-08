@@ -130,7 +130,21 @@ static void Handle_DeviceEventCallback   (void *inContext, IOReturn inResult, vo
     IOHIDDeviceRef device = IOHIDElementGetDevice(element);     // Device
     if (device == NULL) return;
     
-    CFIndex elementValue = IOHIDValueGetIntegerValue(value);    // Actual state of the pressed key
+    CFIndex elementValue = -1;
+    if (IOHIDValueGetLength(value) <= 4)
+    {
+        //
+        // If the size of the package is bigger than 4 bytes, IOHIDValueGetIntegerValue() will cause
+        // a SEGFAULT exception. That should solve the crash caused by that exception, since that
+        // kind of exception can't be caught by a try/catch.
+        //
+        // https://github.com/nagyistoce/macifom/issues/3
+        // https://groups.google.com/forum/#!topic/pyglet-users/O3RuDqmYr5Y
+        //
+        
+        elementValue = IOHIDValueGetIntegerValue(value);    // Actual state of the pressed key
+    }
+    
     IOHIDElementCookie cookie = IOHIDElementGetCookie(element); // Cookie of the pressed key
     uint32_t usage = IOHIDElementGetUsage(element);             // Usage of the pressed key
     CFStringRef name = IOHIDElementGetName(element);
