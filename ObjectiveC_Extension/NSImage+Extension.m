@@ -24,6 +24,14 @@
 #define TIFF2ICNS_ICON_SIZE 512
 #define QLMANAGE_ICON_SIZE  512
 
+@implementation NSBitmapImageRep (VMMBitmapImageRep)
+-(BOOL)isTransparentAtX:(int)x andY:(int)y
+{
+    CGFloat alpha = [[self colorAtX:x y:y] alphaComponent];
+    return (alpha < 1.0/255);
+}
+@end
+
 @implementation NSImage (VMMImage)
 
 +(NSImage*)imageWithData:(NSData*)data
@@ -89,6 +97,26 @@
     [clearImage unlockFocus];
     
     return clearImage;
+}
+
+-(BOOL)isTransparent
+{
+    NSData *tempData = [[NSData alloc] initWithData:[self TIFFRepresentation]];
+    NSBitmapImageRep *repIcon = [[NSBitmapImageRep alloc] initWithData:tempData];
+    int x, y;
+    
+    for (y=0; y<self.size.height; y++)
+    {
+        for (x=0; x<self.size.width; x++)
+        {
+            if ([repIcon isTransparentAtX:x andY:y] == false)
+            {
+                return false;
+            }
+        }
+    }
+    
+    return true;
 }
 
 -(BOOL)saveAsPngImageWithSize:(int)size atPath:(NSString*)pngPath
