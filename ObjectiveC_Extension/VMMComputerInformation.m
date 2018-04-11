@@ -490,7 +490,7 @@ static NSMutableDictionary* _macOsCompatibility;
                     NSString* deviceIDString = [[NSString alloc] initWithData:deviceID encoding:NSASCIIStringEncoding];
                     NSString* hexDeviceIDString = [deviceIDString hexadecimalUTF8String];
                     
-                    graphicCardDict[@"RawDeviceID"] = [NSString stringWithFormat:@"%@ (HEX: %@)",deviceIDString,hexDeviceIDString];
+                    graphicCardDict[@"RawDeviceIDHEX"] = hexDeviceIDString;
                     
                     if (hexDeviceIDString.length == 4)
                     {
