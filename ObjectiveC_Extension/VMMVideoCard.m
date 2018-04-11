@@ -224,10 +224,10 @@
         
         @autoreleasepool
         {
-            NSString* graphicCardName = [VMMVideoCard typeForVideoCardWithName:self.name];
-            if (graphicCardName != nil)
+            NSString* videoCardType = [VMMVideoCard typeForVideoCardWithName:self.name];
+            if (videoCardType != nil)
             {
-                _type = graphicCardName;
+                _type = videoCardType;
                 return _type;
             }
             
