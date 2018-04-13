@@ -409,15 +409,16 @@
                 // Reference: https://support.apple.com/en-us/HT204349
                 //
                 
+                NSString* type = self.type ? self.type : @"";
                 NSString* deviceID = self.deviceID ? self.deviceID : @"";
                 long long int ramMemoryGbSize = ((([VMMComputerInformation ramMemorySize]/1024)/1024)/1024);
                 
-                if ([self.type isEqualToString:VMMVideoCardTypeIntelIris])
+                if ([type isEqualToString:VMMVideoCardTypeIntelIris])
                 {
                     memSizeInt = 1536;
                 }
                 
-                if ([self.type isEqualToString:VMMVideoCardTypeIntelHD])
+                if ([type isEqualToString:VMMVideoCardTypeIntelHD])
                 {
                     memSizeInt = 1536;
                     
@@ -450,7 +451,7 @@
                     }
                 }
                 
-                if ([self.type isEqualToString:VMMVideoCardTypeNVIDIA])
+                if ([type isEqualToString:VMMVideoCardTypeNVIDIA])
                 {
                     if ([@[VMMVideoCardDeviceIDNVIDIAGeForce320M_1,
                            VMMVideoCardDeviceIDNVIDIAGeForce320M_2,
