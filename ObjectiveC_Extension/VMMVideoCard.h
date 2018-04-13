@@ -72,6 +72,18 @@ static NSString * _Nonnull const VMMVideoCardVendorQemu =                     @"
 static NSString * _Nonnull const VMMVideoCardVendorIDQemu =                   @"0x1234";
 static NSString * _Nonnull const VMMVideoCardDeviceIDQemu =                   @"0x1111";
 
+
+static NSString * _Nonnull const VMMVideoCardDeviceIDIntelHDGraphics =     @"0x0046";
+static NSString * _Nonnull const VMMVideoCardDeviceIDIntelHDGraphics3000 = @"0x0116";
+static NSString * _Nonnull const VMMVideoCardDeviceIDIntelHDGraphics4000 = @"0x0166";
+static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce9400M =  @"0x0863";
+
+static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_1 = @"0x08a0";
+static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_2 = @"0x08a2";
+static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_3 = @"0x08a3";
+static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_4 = @"0x08a4";
+static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_5 = @"0x08a5";
+
 @interface VMMVideoCard : NSObject
 
 -(instancetype _Nullable )initVideoCardWithDictionary:(NSDictionary* _Nonnull)dict;

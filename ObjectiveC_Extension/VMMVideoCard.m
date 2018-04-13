@@ -421,8 +421,7 @@
                 {
                     memSizeInt = 1536;
                     
-                    // Intel HD Graphics 4000
-                    if ([deviceID isEqualToString:@"0x0166"])
+                    if ([deviceID isEqualToString:VMMVideoCardDeviceIDIntelHDGraphics4000])
                     {
                         NSInteger numberOfVideoCards = [VMMComputerInformation videoCards].count;
                         if (numberOfVideoCards > 1) memSizeInt = 1024;
@@ -432,8 +431,7 @@
                         //  or secondary GPU reserve 384MB–1024MB of system memory."
                     }
                     
-                    // Intel HD Graphics 3000
-                    if ([deviceID isEqualToString:@"0x0116"])
+                    if ([deviceID isEqualToString:VMMVideoCardDeviceIDIntelHDGraphics3000])
                     {
                         if (ramMemoryGbSize == 2) memSizeInt = 256;
                         if (ramMemoryGbSize == 4) memSizeInt = 384;
@@ -446,8 +444,7 @@
                         // MacBook Pro (17-inch, Early 2011)
                     }
                     
-                    // Intel HD Graphics
-                    if ([deviceID isEqualToString:@"0x0046"])
+                    if ([deviceID isEqualToString:VMMVideoCardDeviceIDIntelHDGraphics])
                     {
                         memSizeInt = 256;
                     }
@@ -455,14 +452,16 @@
                 
                 if ([self.type isEqualToString:VMMVideoCardTypeNVIDIA])
                 {
-                    // NVIDIA GeForce 320M
-                    if ([@[@"0x08a0",@"0x08a2",@"0x08a3",@"0x08a4",@"0x08a5"] containsObject:deviceID])
+                    if ([@[VMMVideoCardDeviceIDNVIDIAGeForce320M_1,
+                           VMMVideoCardDeviceIDNVIDIAGeForce320M_2,
+                           VMMVideoCardDeviceIDNVIDIAGeForce320M_3,
+                           VMMVideoCardDeviceIDNVIDIAGeForce320M_4,
+                           VMMVideoCardDeviceIDNVIDIAGeForce320M_5] containsObject:deviceID])
                     {
                         memSizeInt = 256;
                     }
                     
-                    // NVIDIA GeForce 9400M
-                    if ([deviceID isEqualToString:@"0x0863"])
+                    if ([deviceID isEqualToString:VMMVideoCardDeviceIDNVIDIAGeForce9400M])
                     {
                         memSizeInt = 256;
                         if (ramMemoryGbSize == 1) memSizeInt = 128;
