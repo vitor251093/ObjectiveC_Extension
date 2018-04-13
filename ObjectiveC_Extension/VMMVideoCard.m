@@ -11,6 +11,7 @@
 
 #import "VMMVideoCard.h"
 #import "NSString+Extension.h"
+#import "VMMComputerInformation.h"
 
 @implementation VMMVideoCard
 
@@ -400,15 +401,80 @@
             if (memSizeInt < 64)
             {
                 //
+                // Intel video cards (and some old NVIDIAs) are integrated, and their
+                // video memory size can be calculated, or even determined by their type.
+                // Some computers reported a failure in detecting the video memory size
+                // for those video cards, so this part is a manual fix.
+                //
+                // Reference: https://support.apple.com/en-us/HT204349
+                //
+                
+                NSString* deviceID = self.deviceID ? self.deviceID : @"";
+                long long int ramMemoryGbSize = ((([VMMComputerInformation ramMemorySize]/1024)/1024)/1024);
+                
+                if ([self.type isEqualToString:VMMVideoCardTypeIntelIris])
+                {
+                    memSizeInt = 1536;
+                }
+                
+                if ([self.type isEqualToString:VMMVideoCardTypeIntelHD])
+                {
+                    memSizeInt = 1536;
+                    
+                    // Intel HD Graphics 4000
+                    if ([deviceID isEqualToString:@"0x0166"])
+                    {
+                        NSInteger numberOfVideoCards = [VMMComputerInformation videoCards].count;
+                        if (numberOfVideoCards > 1) memSizeInt = 1024;
+                        
+                        // TODO: Check the details about the afirmation below.
+                        // "Mac computers using the Intel HD Graphics 4000 as the primary
+                        //  or secondary GPU reserve 384MB–1024MB of system memory."
+                    }
+                    
+                    // Intel HD Graphics 3000
+                    if ([deviceID isEqualToString:@"0x0116"])
+                    {
+                        if (ramMemoryGbSize == 2) memSizeInt = 256;
+                        if (ramMemoryGbSize == 4) memSizeInt = 384;
+                        if (ramMemoryGbSize == 8) memSizeInt = 512;
+                        
+                        // TODO: Exception: In the computers below, the video memory size is 384 even with 8Gb of RAM.
+                        // MacBook Pro (15-inch, Late 2011)
+                        // MacBook Pro (17-inch, Late 2011)
+                        // MacBook Pro (15-inch, Early 2011)
+                        // MacBook Pro (17-inch, Early 2011)
+                    }
+                    
+                    // Intel HD Graphics
+                    if ([deviceID isEqualToString:@"0x0046"])
+                    {
+                        memSizeInt = 256;
+                    }
+                }
+                
+                if ([self.type isEqualToString:VMMVideoCardTypeNVIDIA])
+                {
+                    // NVIDIA GeForce 320M
+                    if ([@[@"0x08a0",@"0x08a2",@"0x08a3",@"0x08a4",@"0x08a5"] containsObject:deviceID])
+                    {
+                        memSizeInt = 256;
+                    }
+                    
+                    // NVIDIA GeForce 9400M
+                    if ([deviceID isEqualToString:@"0x0863"])
+                    {
+                        memSizeInt = 256;
+                        if (ramMemoryGbSize == 1) memSizeInt = 128;
+                    }
+                }
+                
+                
+                //
                 // TODO: Fix video cards with no video memory size, or unrealistic memory size.
                 //
                 // This is common issue with Hackintoshes, but it may happen with
-                // old computers as well, like you gonna see below. The following link
-                // may be a good reference to add manual support to Intel video cards,
-                // although this bug haven't been seen in non-Hackintosh computers with
-                // Intel video cards.
-                //
-                // Link: https://support.apple.com/pt-br/HT204349
+                // old computers as well.
                 //
                 //
                 //  Specific case:
@@ -437,7 +503,7 @@
                 {
                     return nil;
                 }
-                else
+                if (memSizeInt < 64)
                 {
                     return @(0);
                 }
