@@ -494,8 +494,14 @@ static NSMutableDictionary* _macOsCompatibility;
                     
                     if (hexDeviceIDString.length == 4)
                     {
-                        hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",[hexDeviceIDString substringFromIndex:2],
-                                                                                 [hexDeviceIDString substringToIndex:2]];
+                        hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",[hexDeviceIDString substringWithRange:NSMakeRange(2, 2)],
+                                                                                 [hexDeviceIDString substringWithRange:NSMakeRange(0, 2)]];
+                        graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
+                    }
+                    else if (hexDeviceIDString.length == 8)
+                    {
+                        hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",[hexDeviceIDString substringWithRange:NSMakeRange(6, 2)],
+                                                                                 [hexDeviceIDString substringWithRange:NSMakeRange(2, 2)]];
                         graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
                     }
                 }
