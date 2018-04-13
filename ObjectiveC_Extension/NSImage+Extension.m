@@ -22,7 +22,6 @@
 #define BIGGEST_ICONSET_NEEDED_SIZE 1024
 
 #define TIFF2ICNS_ICON_SIZE 512
-#define QLMANAGE_ICON_SIZE  512
 
 @implementation NSBitmapImageRep (VMMBitmapImageRep)
 -(BOOL)isTransparentAtX:(int)x andY:(int)y
@@ -50,11 +49,11 @@
     return image;
 }
 
-+(NSImage*)quickLookImageFromFileAtPath:(NSString*)arquivo
++(NSImage*)quickLookImageWithMaximumSize:(int)size forFileAtPath:(NSString*)arquivo
 {
     NSImage* img = [[NSWorkspace sharedWorkspace] iconForFile:arquivo];
     
-    [NSTask runCommand:@[@"qlmanage", @"-t", @"-s",[NSString stringWithFormat:@"%d",QLMANAGE_ICON_SIZE], @"-o.", arquivo]
+    [NSTask runCommand:@[@"qlmanage", @"-t", @"-s",[NSString stringWithFormat:@"%d",size], @"-o.", arquivo]
              atRunPath:[arquivo stringByDeletingLastPathComponent]];
     
     NSString* newFile = [NSString stringWithFormat:@"%@.png",arquivo];
@@ -77,7 +76,9 @@
     
     if (img == nil)
     {
-        img = [self quickLookImageFromFileAtPath:arquivo];
+        // 100000 is an arbitrary number, choosen for been a size bigger enought to
+        // take the maximum quality of every possible image or icon.
+        img = [self quickLookImageWithMaximumSize:100000 forFileAtPath:arquivo];
     }
     
     if (img == nil)

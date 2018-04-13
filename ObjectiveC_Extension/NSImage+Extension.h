@@ -22,7 +22,7 @@
 
 +(NSImage*)imageWithData:(NSData*)data;
 
-+(NSImage*)quickLookImageFromFileAtPath:(NSString*)arquivo;
++(NSImage*)quickLookImageWithMaximumSize:(int)size forFileAtPath:(NSString*)arquivo;
 +(NSImage*)imageFromFileAtPath:(NSString*)arquivo;
 
 +(NSImage*)transparentImageWithSize:(NSSize)size;

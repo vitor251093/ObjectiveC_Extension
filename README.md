@@ -425,10 +425,10 @@ Returns the checksum of the specified file. There are 14 possible cryptographies
 Init a `NSImage` with the contents of the `NSData` object.
 
 ```objectivec
-+(NSImage*)quickLookImageFromFileAtPath:(NSString*)arquivo;
++(NSImage*)quickLookImageWithMaximumSize:(int)size forFileAtPath:(NSString*)arquivo
 ```
 
-Init a `NSImage` with the QuickLook image of the file at the specified path.
+Init a `NSImage` with the QuickLook image of the file at the specified path with the specified size (or smaller).
 
 ```objectivec
 +(NSImage*)imageFromFileAtPath:(NSString*)arquivo;
