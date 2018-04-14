@@ -491,6 +491,7 @@ static NSMutableDictionary* _macOsCompatibility;
                     NSString* hexDeviceIDString = [deviceIDString hexadecimalUTF8String];
                     
                     graphicCardDict[@"RawDeviceIDHEX"] = hexDeviceIDString;
+                    graphicCardDict[@"RawDeviceIDAddress"] = [NSString stringWithFormat:@"%@",deviceID];
                     
                     if (hexDeviceIDString.length == 4)
                     {
