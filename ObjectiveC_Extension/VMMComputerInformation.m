@@ -506,25 +506,22 @@ static NSMutableDictionary* _macOsCompatibility;
                     }
                     else if (hexDeviceIDString.length == 6)
                     {
-                        // TODO: Be sure of what I should do here.
-                        // 'NVIDIA GeForce GT 750M' has a value of 'c3a90f', which should lead to '0x0fe4'.
-                        // What you see below is just a theory of how to solve the problem.
+                        // 'NVIDIA GeForce GT 750M' => 'c3a90f' => '0x0fe9'
+                        // 'Intel GMA 950'          => 'c2a227' => '0x27a2'
                         
-                        //unichar firstChar  = [deviceIDString characterAtIndex:0];
-                        //unichar secondChar = [deviceIDString characterAtIndex:1];
-                        //unichar thirdChar  = [deviceIDString characterAtIndex:2];
+                        NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(4, 2)];
+                        NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(2, 2)];
+                        hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
                         
-                        //unsigned int firstPart  = thirdChar;
-                        //unsigned int secondPart = 0xFE - firstChar + secondChar;
-                        //hexDeviceIDString = [[NSString stringWithFormat:@"0x%02x%02x",firstPart,secondPart] lowercaseString];
-                        
-                        //if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
-                        //{
-                        //    graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
-                        //}
+                        if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
+                        {
+                            graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
+                        }
                     }
                     else if (hexDeviceIDString.length == 8)
                     {
+                        // 'ATI Radeon HD 2600' => 'c283c295' => '0x9583'
+                        
                         NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(6, 2)];
                         NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(2, 2)];
                         hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
