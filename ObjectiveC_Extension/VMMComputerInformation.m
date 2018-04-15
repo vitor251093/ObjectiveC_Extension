@@ -447,6 +447,39 @@ static NSMutableDictionary* _macOsCompatibility;
     
     return cards;
 }
+
++(NSString*)stringWithCFString:(CFStringRef)cf_string {
+    char * buffer;
+    CFIndex len = CFStringGetLength(cf_string);
+    buffer = (char *) malloc(sizeof(char) * len + 1);
+    CFStringGetCString(cf_string, buffer, len + 1,
+                       CFStringGetSystemEncoding());
+    NSString* string = [NSString stringWithUTF8String:buffer];
+    free(buffer);
+    return string;
+}
++(NSString*)stringWithCFNumber:(CFNumberRef)cf_number {
+    int number;
+    CFNumberGetValue(cf_number, kCFNumberIntType, &number);
+    return [NSString stringWithFormat:@"%d",number];
+}
++(NSString*)stringWithCFType:(CFTypeRef)cf_type {
+    CFTypeID type_id;
+    
+    type_id = (CFTypeID) CFGetTypeID(cf_type);
+    if (type_id == CFStringGetTypeID())
+    {
+        return [self stringWithCFString:cf_type];
+    }
+    else if (type_id == CFNumberGetTypeID())
+    {
+        return [self stringWithCFNumber:cf_type];
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"<%@>",[self stringWithCFString:CFCopyTypeIDDescription(type_id)]];
+    }
+}
 +(NSMutableArray<VMMVideoCard*>* _Nonnull)videoCardsFromIOServiceMatch
 {
     NSMutableArray* graphicCardDicts = [[NSMutableArray alloc] init];
@@ -592,11 +625,43 @@ static NSMutableDictionary* _macOsCompatibility;
                             size = *(const uint64_t*)CFDataGetBytePtr(vramSize);
                         }
                     }
-                    else if (type == CFNumberGetTypeID()) CFNumberGetValue(vramSize, kCFNumberSInt64Type, &size);
+                    else
+                    {
+                        if (type == CFNumberGetTypeID())
+                        {
+                            CFNumberGetValue(vramSize, kCFNumberSInt64Type, &size);
+                        }
+                    }
                     
                     if (vramValueInBytes) size >>= 20;
                     
                     graphicCardDict[VMMVideoCardMemorySizeBuiltInKey] = [NSString stringWithFormat:@"%llu MB", size];
+                }
+                else
+                {
+                    // Reference:
+                    // https://gist.github.com/JonnyJD/6126680
+                    
+                    NSMutableArray* regEntryKeys = [[NSMutableArray alloc] init];
+                    CFMutableDictionaryRef properties;
+                    CFIndex count;
+                    CFTypeRef *keys;
+                    CFTypeRef *values;
+                    int i;
+                    
+                    IORegistryEntryCreateCFProperties(regEntry, &properties, kCFAllocatorDefault, kNilOptions);
+                    count = CFDictionaryGetCount(properties);
+                    keys = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
+                    values = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
+                    CFDictionaryGetKeysAndValues(properties, (const void **) keys, (const void **) values);
+                    for (i = 0; i < count; i++)
+                    {
+                        CFTypeRef cf_type = keys[i];
+                        NSString* key = [self stringWithCFType:cf_type];
+                        [regEntryKeys addObject:key];
+                    }
+                    
+                    graphicCardDict[@"RawRegEntryKeys"] = [regEntryKeys componentsJoinedByString:@", "];
                 }
                 
                 if (vramSize != NULL) CFRelease(vramSize);
