@@ -539,8 +539,9 @@ static NSMutableDictionary* _macOsCompatibility;
                     }
                     else if (hexDeviceIDString.length == 6)
                     {
-                        // 'NVIDIA GeForce GT 750M' => 'c3a90f' => '0x0fe9'
                         // 'Intel GMA 950'          => 'c2a227' => '0x27a2'
+                        // 'NVIDIA GeForce GT 650M' => 'c3950f' => '0x0fd5' (?)
+                        // 'NVIDIA GeForce GT 750M' => 'c3a90f' => '0x0fe9'
                         
                         NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(4, 2)];
                         NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(2, 2)];
