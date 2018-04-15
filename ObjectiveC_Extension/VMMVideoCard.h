@@ -16,14 +16,14 @@
 
 static NSString * _Nonnull const VMMVideoCardNameKey =                       @"sppci_model";
 static NSString * _Nonnull const VMMVideoCardRawNameKey =                    @"_name";
-static NSString * _Nonnull const VMMVideoCardTypeKey =                       @"sppci_device_type";
-static NSString * _Nonnull const VMMVideoCardBusKey =                        @"sppci_bus";
-static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInAlternateKey = @"_spdisplays_vram";
-static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInKey =          @"spdisplays_vram_shared";
-static NSString * _Nonnull const VMMVideoCardMemorySizePciOrPcieKey =        @"spdisplays_vram";
-static NSString * _Nonnull const VMMVideoCardVendorIDKey =                   @"spdisplays_vendor-id";
+static NSString * _Nonnull const VMMVideoCardTypeKey =                       @"sppci_device_type";      // eg. 'GPU'
+static NSString * _Nonnull const VMMVideoCardBusKey =                        @"sppci_bus";              // eg. VMMVideoCardBusPCIe
+static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInAlternateKey = @"_spdisplays_vram";       // eg. '1536 MB'
+static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInKey =          @"spdisplays_vram_shared"; // eg. '1536 MB'
+static NSString * _Nonnull const VMMVideoCardMemorySizePciOrPcieKey =        @"spdisplays_vram";        // eg. '1536 MB'
+static NSString * _Nonnull const VMMVideoCardVendorIDKey =                   @"spdisplays_vendor-id";   // eg. '0x8086'
 static NSString * _Nonnull const VMMVideoCardVendorKey =                     @"spdisplays_vendor";
-static NSString * _Nonnull const VMMVideoCardDeviceIDKey =                   @"spdisplays_device-id";
+static NSString * _Nonnull const VMMVideoCardDeviceIDKey =                   @"spdisplays_device-id";   // eg. '0x0046'
 static NSString * _Nonnull const VMMVideoCardMetalSupportKey =               @"spdisplays_metal";
 
 static NSString * _Nonnull const VMMVideoCardTypeIntelHD =    @"Intel HD";
