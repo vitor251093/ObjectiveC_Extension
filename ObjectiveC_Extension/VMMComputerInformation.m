@@ -540,16 +540,33 @@ static NSMutableDictionary* _macOsCompatibility;
                     else if (hexDeviceIDString.length == 6)
                     {
                         // 'Intel GMA 950'          => 'c2a227' => '0x27a2'
-                        // 'NVIDIA GeForce GT 650M' => 'c3950f' => '0x0fd5' (?)
+                        // 'NVIDIA GeForce GT 650M' => 'c3950f' => '0x0fd5'
                         // 'NVIDIA GeForce GT 750M' => 'c3a90f' => '0x0fe9'
                         
+                        NSString* prefix     = [hexDeviceIDString substringWithRange:NSMakeRange(0, 2)];
                         NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(4, 2)];
                         NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(2, 2)];
-                        hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
                         
-                        if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
+                        BOOL valid = false;
+                        if ([prefix isEqualToString:@"c2"]) valid = true;
+                        if ([prefix isEqualToString:@"c3"])
                         {
-                            graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
+                            unsigned secondPartChar = 0;
+                            NSScanner *scanner = [NSScanner scannerWithString:secondPart];
+                            [scanner scanHexInt:&secondPartChar];
+                            secondPartChar = (secondPartChar + 64) % 256;
+                            secondPart = [NSString stringWithFormat:@"%02x",secondPartChar];
+                            valid = true;
+                        }
+                        
+                        if (valid)
+                        {
+                            hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
+                            
+                            if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
+                            {
+                                graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
+                            }
                         }
                     }
                     else if (hexDeviceIDString.length == 8)
