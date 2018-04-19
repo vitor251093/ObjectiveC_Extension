@@ -41,13 +41,18 @@
     NSString* graphicCardName = [videoCardName uppercaseString];
     if (graphicCardName == nil) return nil;
     
-    NSArray* graphicCardNameComponents = [graphicCardName componentsSeparatedByString:@" "];
+    NSArray<NSString*>* graphicCardNameComponents = [graphicCardName componentsSeparatedByString:@" "];
     
     if ([graphicCardNameComponents containsObject:@"INTEL"])
     {
         if ([graphicCardNameComponents containsObject:@"HD"])   return VMMVideoCardTypeIntelHD;
         if ([graphicCardNameComponents containsObject:@"UHD"])  return VMMVideoCardTypeIntelUHD;
         if ([graphicCardNameComponents containsObject:@"IRIS"]) return VMMVideoCardTypeIntelIris;
+        
+        for (NSString* component in graphicCardNameComponents)
+        {
+            if ([component hasPrefix:@"GM"] && [[component substringFromIndex:2] intValue] != 0) return VMMVideoCardTypeIntelGMA;
+        }
     }
     
     for (NSString* model in @[@"GMA"])
