@@ -9,6 +9,8 @@
 //  https://github.com/codykrieger/gfxCardStatus
 //
 
+#import <OpenGL/OpenGL.h>
+
 #import "VMMVideoCard.h"
 #import "NSString+Extension.h"
 #import "VMMComputerInformation.h"
@@ -72,7 +74,35 @@
     
     return nil;
 }
++(NSArray*)videoCardMemorySizesInMegabytesFromAPI
+{
+    // Reference:
+    // https://developer.apple.com/library/content/qa/qa1168/_index.html
 
+    GLint i, nrend = 0;
+    CGLRendererInfoObj rend;
+    const GLint displayMask = 0xFFFFFFFF;
+    CGLQueryRendererInfo((GLuint)displayMask, &rend, &nrend);
+
+    NSMutableArray<NSNumber*>* list = [[NSMutableArray alloc] init];
+    for (i = 0; i < nrend; i++)
+    {
+        GLint videoMemory = 0;
+        CGLDescribeRenderer(rend, i, (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR ? kCGLRPVideoMemoryMegabytes : kCGLRPVideoMemory), &videoMemory);
+        [list addObject:@(videoMemory)];
+    }
+    
+    CGLDestroyRendererInfo(rend);
+    
+    [list sortUsingComparator:^NSComparisonResult(NSNumber*  _Nonnull obj1, NSNumber*  _Nonnull obj2) {
+        NSInteger value1 = obj1.integerValue;
+        NSInteger value2 = obj2.integerValue;
+        if (value1 > value2) return NSOrderedAscending;
+        if (value1 < value2) return NSOrderedDescending;
+        return NSOrderedSame;
+    }];
+    return list;
+}
 
 -(NSString*)vendorIDFromVendorAndVendorIDKeysOnly
 {
@@ -414,63 +444,75 @@
                 // Reference: https://support.apple.com/en-us/HT204349
                 //
                 
-                NSString* type = self.type ? self.type : @"";
-                NSString* deviceID = self.deviceID ? self.deviceID : @"";
-                long long int ramMemoryGbSize = ((([VMMComputerInformation ramMemorySize]/1024)/1024)/1024);
-                
-                if ([type isEqualToString:VMMVideoCardTypeIntelIris])
+                NSInteger numberOfVideoCards = [VMMComputerInformation videoCards].count;
+                if (numberOfVideoCards == 1)
                 {
-                    memSizeInt = 1536;
-                }
-                
-                if ([type isEqualToString:VMMVideoCardTypeIntelHD])
-                {
-                    memSizeInt = 1536;
-                    
-                    if ([deviceID isEqualToString:VMMVideoCardDeviceIDIntelHDGraphics4000])
+                    NSArray* apiValues = [VMMVideoCard videoCardMemorySizesInMegabytesFromAPI];
+                    if (apiValues.count > 0 && [[apiValues firstObject] intValue] >= 64)
                     {
-                        NSInteger numberOfVideoCards = [VMMComputerInformation videoCards].count;
-                        if (numberOfVideoCards > 1) memSizeInt = 1024;
-                        
-                        // TODO: Check the details about the afirmation below.
-                        // "Mac computers using the Intel HD Graphics 4000 as the primary
-                        //  or secondary GPU reserve 384MB–1024MB of system memory."
-                    }
-                    
-                    if ([deviceID isEqualToString:VMMVideoCardDeviceIDIntelHDGraphics3000])
-                    {
-                        if (ramMemoryGbSize == 2) memSizeInt = 256;
-                        if (ramMemoryGbSize == 4) memSizeInt = 384;
-                        if (ramMemoryGbSize == 8) memSizeInt = 512;
-                        
-                        // TODO: Exception: In the computers below, the video memory size is 384 even with 8Gb of RAM.
-                        // MacBook Pro (15-inch, Late 2011)
-                        // MacBook Pro (17-inch, Late 2011)
-                        // MacBook Pro (15-inch, Early 2011)
-                        // MacBook Pro (17-inch, Early 2011)
-                    }
-                    
-                    if ([deviceID isEqualToString:VMMVideoCardDeviceIDIntelHDGraphics])
-                    {
-                        memSizeInt = 256;
+                        memSizeInt = [[apiValues firstObject] intValue];
                     }
                 }
                 
-                if ([type isEqualToString:VMMVideoCardTypeNVIDIA])
+                if (memSizeInt < 64)
                 {
-                    if ([@[VMMVideoCardDeviceIDNVIDIAGeForce320M_1,
-                           VMMVideoCardDeviceIDNVIDIAGeForce320M_2,
-                           VMMVideoCardDeviceIDNVIDIAGeForce320M_3,
-                           VMMVideoCardDeviceIDNVIDIAGeForce320M_4,
-                           VMMVideoCardDeviceIDNVIDIAGeForce320M_5] containsObject:deviceID])
+                    NSString* type = self.type ? self.type : @"";
+                    NSString* deviceID = self.deviceID ? self.deviceID : @"";
+                    long long int ramMemoryGbSize = ((([VMMComputerInformation ramMemorySize]/1024)/1024)/1024);
+                    
+                    if ([type isEqualToString:VMMVideoCardTypeIntelIris])
                     {
-                        memSizeInt = 256;
+                        memSizeInt = 1536;
                     }
                     
-                    if ([deviceID isEqualToString:VMMVideoCardDeviceIDNVIDIAGeForce9400M])
+                    if ([type isEqualToString:VMMVideoCardTypeIntelHD])
                     {
-                        memSizeInt = 256;
-                        if (ramMemoryGbSize == 1) memSizeInt = 128;
+                        memSizeInt = 1536;
+                        
+                        if ([deviceID isEqualToString:VMMVideoCardDeviceIDIntelHDGraphics4000])
+                        {
+                            if (numberOfVideoCards > 1) memSizeInt = 1024;
+                            
+                            // TODO: Check the details about the afirmation below.
+                            // "Mac computers using the Intel HD Graphics 4000 as the primary
+                            //  or secondary GPU reserve 384MB–1024MB of system memory."
+                        }
+                        
+                        if ([deviceID isEqualToString:VMMVideoCardDeviceIDIntelHDGraphics3000])
+                        {
+                            if (ramMemoryGbSize == 2) memSizeInt = 256;
+                            if (ramMemoryGbSize == 4) memSizeInt = 384;
+                            if (ramMemoryGbSize == 8) memSizeInt = 512;
+                            
+                            // TODO: Exception: In the computers below, the video memory size is 384 even with 8Gb of RAM.
+                            // MacBook Pro (15-inch, Late 2011)
+                            // MacBook Pro (17-inch, Late 2011)
+                            // MacBook Pro (15-inch, Early 2011)
+                            // MacBook Pro (17-inch, Early 2011)
+                        }
+                        
+                        if ([deviceID isEqualToString:VMMVideoCardDeviceIDIntelHDGraphics])
+                        {
+                            memSizeInt = 256;
+                        }
+                    }
+                    
+                    if ([type isEqualToString:VMMVideoCardTypeNVIDIA])
+                    {
+                        if ([@[VMMVideoCardDeviceIDNVIDIAGeForce320M_1,
+                               VMMVideoCardDeviceIDNVIDIAGeForce320M_2,
+                               VMMVideoCardDeviceIDNVIDIAGeForce320M_3,
+                               VMMVideoCardDeviceIDNVIDIAGeForce320M_4,
+                               VMMVideoCardDeviceIDNVIDIAGeForce320M_5] containsObject:deviceID])
+                        {
+                            memSizeInt = 256;
+                        }
+                        
+                        if ([deviceID isEqualToString:VMMVideoCardDeviceIDNVIDIAGeForce9400M])
+                        {
+                            memSizeInt = 256;
+                            if (ramMemoryGbSize == 1) memSizeInt = 128;
+                        }
                     }
                 }
                 

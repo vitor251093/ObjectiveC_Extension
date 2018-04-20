@@ -20,6 +20,7 @@
 		4E3771071FA7A57C00E2F511 /* VMMWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3771051FA7A57C00E2F511 /* VMMWebView.m */; };
 		4E3BD7031FAD2FCF00AF8418 /* VMMUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E3BD7011FAD2FCF00AF8418 /* VMMUUID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E3BD7041FAD2FCF00AF8418 /* VMMUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E3BD7021FAD2FCF00AF8418 /* VMMUUID.m */; };
+		4E4CD93820897CF5008CF4F7 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E4CD93720897CF5008CF4F7 /* OpenGL.framework */; };
 		4E53A8A61F8587D90038BDFE /* NSScreen+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E53A8A41F8587D90038BDFE /* NSScreen+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E53A8A71F8587D90038BDFE /* NSScreen+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */; };
 		4E5A45D91FC9FD7800FCEB42 /* VMMDockProgressIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E5A45D71FC9FD7800FCEB42 /* VMMDockProgressIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -147,6 +148,7 @@
 		4E3BD7011FAD2FCF00AF8418 /* VMMUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMUUID.h; sourceTree = "<group>"; };
 		4E3BD7021FAD2FCF00AF8418 /* VMMUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMMUUID.m; sourceTree = "<group>"; };
 		4E3EE4641F82BF42008A5CC3 /* CREDITS */ = {isa = PBXFileReference; lastKnownFileType = text; path = CREDITS; sourceTree = "<group>"; };
+		4E4CD93720897CF5008CF4F7 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		4E53A8A41F8587D90038BDFE /* NSScreen+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Extension.h"; sourceTree = "<group>"; };
 		4E53A8A51F8587D90038BDFE /* NSScreen+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Extension.m"; sourceTree = "<group>"; };
 		4E5A45D71FC9FD7800FCEB42 /* VMMDockProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMMDockProgressIndicator.h; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E4CD93820897CF5008CF4F7 /* OpenGL.framework in Frameworks */,
 				4E6C527D1F7E9E4C00A187E9 /* Carbon.framework in Frameworks */,
 				4E6C527B1F7E9E4000A187E9 /* CoreImage.framework in Frameworks */,
 				4E6C52791F7E9E1400A187E9 /* IOKit.framework in Frameworks */,
@@ -449,6 +452,7 @@
 		4E6C52731F7E9D6400A187E9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4E4CD93720897CF5008CF4F7 /* OpenGL.framework */,
 				4E6C527C1F7E9E4C00A187E9 /* Carbon.framework */,
 				4E6C527A1F7E9E4000A187E9 /* CoreImage.framework */,
 				4E6C52781F7E9E1400A187E9 /* IOKit.framework */,
