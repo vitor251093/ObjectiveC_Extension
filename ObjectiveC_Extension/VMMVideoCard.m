@@ -435,15 +435,6 @@
             
             if (memSizeInt < 64)
             {
-                //
-                // Intel video cards (and some old NVIDIAs) are integrated, and their
-                // video memory size can be calculated, or even determined by their type.
-                // Some computers reported a failure in detecting the video memory size
-                // for those video cards, so this part is a manual fix.
-                //
-                // Reference: https://support.apple.com/en-us/HT204349
-                //
-                
                 NSInteger numberOfVideoCards = [VMMComputerInformation videoCards].count;
                 if (numberOfVideoCards == 1)
                 {
@@ -453,6 +444,15 @@
                         memSizeInt = [[apiValues firstObject] intValue];
                     }
                 }
+                
+                //
+                // Intel video cards (and some old NVIDIAs) are integrated, and their
+                // video memory size can be calculated, or even determined by their type.
+                // Some computers reported a failure in detecting the video memory size
+                // for those video cards, so the part below is a manual fix.
+                //
+                // Reference: https://support.apple.com/en-us/HT204349
+                //
                 
                 if (memSizeInt < 64)
                 {
@@ -533,7 +533,8 @@
                 // fix for every known NVIDIA video card that may have the issue.
                 //
                 // We can't detect the real video memory size with system_profiler or
-                // IOServiceMatching("IOPCIDevice"), and the API method wasn't perfect.
+                // IOServiceMatching("IOPCIDevice"), and the API method may fail if there
+                // are two video cards or more.
                 //
                 // The same bug may also happen in old legitimate Apple computers, and
                 // it also seems to happen only with NVIDIA video cards.
