@@ -720,7 +720,7 @@ static NSMutableDictionary* _macOsCompatibility;
 {
     @synchronized(_videoCards)
     {
-        if (_videoCards)
+        if (_videoCards != nil)
         {
             return _videoCards;
         }
