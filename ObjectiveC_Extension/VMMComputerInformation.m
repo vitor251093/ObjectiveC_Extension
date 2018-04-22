@@ -539,9 +539,11 @@ static NSMutableDictionary* _macOsCompatibility;
                     }
                     else if (hexDeviceIDString.length == 6)
                     {
-                        // 'Intel GMA 950'          => 'c2a227' => '0x27a2'
-                        // 'NVIDIA GeForce GT 650M' => 'c3950f' => '0x0fd5'
-                        // 'NVIDIA GeForce GT 750M' => 'c3a90f' => '0x0fe9'
+                        // 'Intel GMA 950'           => 'c2a227' => '0x27a2'
+                        // 'NVIDIA GeForce GT 640M'  => 'c3980f' => '0x0fd8'
+                        // 'NVIDIA GeForce GT 650M'  => 'c3950f' => '0x0fd5'
+                        // 'NVIDIA GeForce GT 750M'  => 'c3a90f' => '0x0fe9'
+                        // 'NVIDIA GeForce GTX 775M' => 'c29d11' => '0x119d'
                         
                         NSString* prefix     = [hexDeviceIDString substringWithRange:NSMakeRange(0, 2)];
                         NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(4, 2)];
