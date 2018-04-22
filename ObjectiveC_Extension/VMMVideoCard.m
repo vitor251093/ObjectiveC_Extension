@@ -34,6 +34,14 @@
     if (self)
     {
         _dictionary = dict;
+        
+        nameLock     = [[NSLock alloc] init];
+        typeLock     = [[NSLock alloc] init];
+        busLock      = [[NSLock alloc] init];
+        deviceIDLock = [[NSLock alloc] init];
+        vendorIDLock = [[NSLock alloc] init];
+        vendorLock   = [[NSLock alloc] init];
+        memorySizeInMegabytesLock = [[NSLock alloc] init];
     }
     return self;
 }
@@ -148,7 +156,7 @@
 }
 -(nullable NSString*)deviceID
 {
-    @synchronized(_deviceID)
+    @synchronized(deviceIDLock)
     {
         if (_deviceID != nil)
         {
@@ -164,7 +172,7 @@
 }
 -(nullable NSString*)bus
 {
-    @synchronized(_bus)
+    @synchronized(busLock)
     {
         if (_bus != nil)
         {
@@ -178,7 +186,7 @@
 
 -(nullable NSString*)name
 {
-    @synchronized(_name)
+    @synchronized(nameLock)
     {
         if (_name != nil)
         {
@@ -251,7 +259,7 @@
 
 -(nullable NSString*)type
 {
-    @synchronized(_type)
+    @synchronized(typeLock)
     {
         if (_type != nil)
         {
@@ -288,7 +296,7 @@
 
 -(nullable NSString*)vendorID
 {
-    @synchronized(_vendorID)
+    @synchronized(vendorIDLock)
     {
         if (_vendorID != nil)
         {
@@ -342,7 +350,7 @@
 }
 -(NSString*)vendor
 {
-    @synchronized(_vendor)
+    @synchronized(vendorLock)
     {
         if (_vendor != nil)
         {
@@ -408,7 +416,7 @@
 
 -(NSNumber*)memorySizeInMegabytes
 {
-    @synchronized(_memorySizeInMegabytes)
+    @synchronized(memorySizeInMegabytesLock)
     {
         if (_memorySizeInMegabytes != nil &&
             _memorySizeInMegabytes.unsignedIntegerValue != 0)

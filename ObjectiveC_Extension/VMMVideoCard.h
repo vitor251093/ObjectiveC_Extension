@@ -85,6 +85,15 @@ static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_4 = @"0x0
 static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_5 = @"0x08a5";
 
 @interface VMMVideoCard : NSObject
+{
+    NSLock* _Nullable nameLock;
+    NSLock* _Nullable typeLock;
+    NSLock* _Nullable busLock;
+    NSLock* _Nullable deviceIDLock;
+    NSLock* _Nullable vendorIDLock;
+    NSLock* _Nullable vendorLock;
+    NSLock* _Nullable memorySizeInMegabytesLock;
+}
 
 -(instancetype _Nullable )initVideoCardWithDictionary:(NSDictionary* _Nonnull)dict;
 

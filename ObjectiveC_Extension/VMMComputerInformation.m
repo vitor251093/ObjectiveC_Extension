@@ -26,18 +26,6 @@
 static unsigned int _systemProfilerRequestTimeOut = 15;
 static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 
-static NSDictionary* _hardwareDictionary;
-static NSMutableArray<VMMVideoCard*>* _videoCards;
-
-static NSString* _macModel;
-static NSString* _processorNameAndSpeed;
-
-static NSString* _macOsVersion;
-static NSString* _macOsBuildVersion;
-static NSArray* _userGroups;
-
-static NSMutableDictionary* _macOsCompatibility;
-
 +(nullable NSArray<NSDictionary*>*)systemProfilerItemsForDataType:(nonnull NSString*)dataType
 {
     NSString* displayOutput = [NSTask runProgram:@"/usr/sbin/system_profiler" withFlags:@[@"-xml", @"-detailLevel", @"full", dataType]
@@ -71,20 +59,14 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(nullable NSDictionary*)hardwareDictionary
 {
-    @synchronized(_hardwareDictionary)
-    {
-        if (_hardwareDictionary)
-        {
-            return _hardwareDictionary;
-        }
-        
-        @autoreleasepool
-        {
-            _hardwareDictionary = [self systemProfilerHardwareDictionary];
-        }
-        
-        return _hardwareDictionary;
-    }
+    static NSDictionary* hardwareDictionary = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        hardwareDictionary = [self systemProfilerHardwareDictionary];
+    });
+    
+    return hardwareDictionary;
 }
 
 +(NSString*)stringByRemovingSpacesInBegginingOfString:(NSString*)string
@@ -144,38 +126,38 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(nullable NSString*)processorNameAndSpeed
 {
-    @synchronized(_processorNameAndSpeed)
-    {
-        if (_processorNameAndSpeed != nil)
-        {
-            return _processorNameAndSpeed;
-        }
-        
+    static NSString *processorNameAndSpeed = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
         NSString* processorName  = self.hardwareDictionary[@"cpu_type"];
         NSString* processorSpeed = self.hardwareDictionary[@"current_processor_speed"];
         
         if (processorName != nil && processorName.length > 0)
         {
-            _processorNameAndSpeed = [NSString stringWithFormat:@"%@ %@",processorName,processorSpeed];
-            return _processorNameAndSpeed;
+            processorNameAndSpeed = [NSString stringWithFormat:@"%@ %@",processorName,processorSpeed];
         }
-        
-        processorName = [NSTask runCommand:@[@"sysctl", @"-n", @"machdep.cpu.brand_string"]];
-        
-        if (processorName != nil && processorName.length > 0)
+        else
         {
-            while ([processorName contains:@"  "])
-            {
-                processorName = [processorName stringByReplacingOccurrencesOfString:@"  " withString:@" "];
-            }
+            processorName = [NSTask runCommand:@[@"sysctl", @"-n", @"machdep.cpu.brand_string"]];
             
-            _processorNameAndSpeed = processorName;
-            return _processorNameAndSpeed;
+            if (processorName != nil && processorName.length > 0)
+            {
+                while ([processorName contains:@"  "])
+                {
+                    processorName = [processorName stringByReplacingOccurrencesOfString:@"  " withString:@" "];
+                }
+                
+                processorNameAndSpeed = processorName;
+            }
+            else
+            {
+                processorNameAndSpeed = processorSpeed;
+            }
         }
-        
-        _processorNameAndSpeed = processorSpeed;
-        return _processorNameAndSpeed;
-    }
+    });
+    
+    return processorNameAndSpeed;
 }
 +(double)processorUsage
 {
@@ -199,13 +181,10 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(nullable NSString*)macModel
 {
-    @synchronized(_macModel)
-    {
-        if (_macModel != nil)
-        {
-            return _macModel;
-        }
-        
+    static NSString *macModel = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
         @autoreleasepool
         {
             NSString* otherOption;
@@ -228,52 +207,54 @@ static NSMutableDictionary* _macOsCompatibility;
                         {
                             if ([cpuName contains:@"inch"])
                             {
-                                _macModel = cpuName;
-                                return _macModel;
+                                macModel = cpuName;
+                                break;
                             }
                         }
                     }
                 }
             }
             
-            NSString* macSerial = self.hardwareDictionary[@"serial_number"];
-            
-            if (macSerial != nil && macSerial.length >= 8)
+            if (macModel == nil)
             {
-                // Depending on if your serial numer is 11 or 12 characters long; take the last 3 or 4 characters
-                macSerial = [macSerial substringFromIndex:8];
+                NSString* macSerial = self.hardwareDictionary[@"serial_number"];
                 
-                NSString* macInfoURL = [NSString stringWithFormat:@"http://support-sp.apple.com/sp/product?cc=%@",macSerial];
-                NSString* macInfo = [NSString stringWithContentsOfURL:[NSURL URLWithString:macInfoURL] encoding:NSUTF8StringEncoding
-                                                      timeoutInterval:_appleSupportMacModelRequestTimeOut];
-                
-                if (macInfo != nil && macInfo.length > 0)
+                if (macSerial != nil && macSerial.length >= 8)
                 {
-                    _macModel = [macInfo getFragmentAfter:@"<configCode>" andBefore:@"</configCode>"];
+                    // Depending on if your serial numer is 11 or 12 characters long; take the last 3 or 4 characters
+                    macSerial = [macSerial substringFromIndex:8];
                     
-                    if (_macModel != nil && _macModel.length > 0)
+                    NSString* macInfoURL = [NSString stringWithFormat:@"http://support-sp.apple.com/sp/product?cc=%@",macSerial];
+                    NSString* macInfo = [NSString stringWithContentsOfURL:[NSURL URLWithString:macInfoURL] encoding:NSUTF8StringEncoding
+                                                          timeoutInterval:_appleSupportMacModelRequestTimeOut];
+                    
+                    if (macInfo != nil && macInfo.length > 0)
                     {
-                        return _macModel;
-                    }
-                    else
-                    {
-                        _macModel = nil;
+                        macModel = [macInfo getFragmentAfter:@"<configCode>" andBefore:@"</configCode>"];
+                        
+                        if (macModel.length == 0)
+                        {
+                            macModel = nil;
+                        }
                     }
                 }
             }
-            
-            if (otherOption != nil)
+                
+            if (macModel == nil)
             {
-                _macModel = otherOption;
-                return _macModel;
+                if (otherOption != nil)
+                {
+                    macModel = otherOption;
+                }
+                else
+                {
+                    macModel = self.hardwareDictionary[@"machine_model"];
+                }
             }
-            
-            _macModel = self.hardwareDictionary[@"machine_model"];
-            return _macModel;
         }
-        
-        return nil;
-    }
+    });
+    
+    return macModel;
 }
 
 +(nullable NSString*)macOsVersion
@@ -288,17 +269,12 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(nullable NSString*)completeMacOsVersion
 {
-    @synchronized(_macOsVersion)
-    {
-        if (_macOsVersion)
-        {
-            return _macOsVersion;
-        }
-        
+    static NSString *macOsVersion = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
         @autoreleasepool
         {
-            NSString* macOsVersion;
-            
             if ([[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)])
             {
                 NSOperatingSystemVersion version = [[NSProcessInfo processInfo] operatingSystemVersion];
@@ -340,49 +316,39 @@ static NSMutableDictionary* _macOsCompatibility;
             {
                 macOsVersion = @"";
             }
-            
-            _macOsVersion = macOsVersion;
         }
-        
-        return _macOsVersion;
-    }
+    });
     
-    return nil;
+    return macOsVersion;
 }
 +(BOOL)isSystemMacOsEqualOrSuperiorTo:(nonnull NSString*)version
 {
-    @synchronized (_macOsCompatibility)
+    static NSMutableDictionary *macOsCompatibility = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        macOsCompatibility = [[NSMutableDictionary alloc] init];
+    });
+    
+    if (macOsCompatibility[version] != nil)
     {
-        if (_macOsCompatibility == nil)
-        {
-            _macOsCompatibility = [[NSMutableDictionary alloc] init];
-        }
-        
-        if (_macOsCompatibility[version] != nil)
-        {
-            return [_macOsCompatibility[version] boolValue];
-        }
-        
-        BOOL compatible = [VMMVersion compareVersionString:version withVersionString:self.macOsVersion] != VMMVersionCompareFirstIsNewest;
-        _macOsCompatibility[version] = @(compatible);
-        return compatible;
+        return [macOsCompatibility[version] boolValue];
     }
     
-    return false;
+    BOOL compatible = [VMMVersion compareVersionString:version withVersionString:self.macOsVersion] != VMMVersionCompareFirstIsNewest;
+    macOsCompatibility[version] = @(compatible);
+    return compatible;
 }
 
 +(nullable NSString*)macOsBuildVersion
 {
-    @synchronized(_macOsBuildVersion)
-    {
-        if (_macOsBuildVersion)
-        {
-            return _macOsBuildVersion;
-        }
-        
+    static NSString *macOsBuildVersion = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
         @autoreleasepool
         {
-            NSString* macOsBuildVersion = [NSTask runCommand:@[@"sw_vers", @"-buildVersion"]];
+            macOsBuildVersion = [NSTask runCommand:@[@"sw_vers", @"-buildVersion"]];
             
             if (macOsBuildVersion == nil)
             {
@@ -395,35 +361,24 @@ static NSMutableDictionary* _macOsCompatibility;
             {
                 macOsBuildVersion = @"";
             }
-            
-            _macOsBuildVersion = macOsBuildVersion;
         }
-        
-        return _macOsBuildVersion;
-    }
+    });
     
-    return nil;
+    return macOsBuildVersion;
 }
 
 +(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup
 {
-    @synchronized(_userGroups)
-    {
-        @autoreleasepool
-        {
-            if (_userGroups == nil)
-            {
-                // Obtaining a string with the usergroups of the current user
-                NSString* usergroupsString = [NSTask runCommand:@[@"id", @"-G"]];
-                
-                _userGroups = [usergroupsString componentsSeparatedByString:@" "];
-            }
-            
-            return [_userGroups containsObject:[NSString stringWithFormat:@"%d",userGroup]];
-        }
-    }
+    static NSArray *userGroups = nil;
+    static dispatch_once_t onceToken;
     
-    return NO;
+    dispatch_once(&onceToken, ^{
+        // Obtaining a string with the usergroups of the current user
+        NSString* usergroupsString = [NSTask runCommand:@[@"id", @"-G"]];
+        userGroups = [usergroupsString componentsSeparatedByString:@" "];
+    });
+    
+    return [userGroups containsObject:[NSString stringWithFormat:@"%d",userGroup]];
 }
 
 
@@ -718,36 +673,34 @@ static NSMutableDictionary* _macOsCompatibility;
 }
 +(NSArray<VMMVideoCard*>* _Nonnull)videoCards
 {
-    @synchronized(_videoCards)
-    {
-        if (_videoCards != nil)
-        {
-            return _videoCards;
-        }
-        
+    static NSMutableArray<VMMVideoCard*>* videoCards = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
         @autoreleasepool
         {
-            NSArray<VMMVideoCard*>* videoCards = [self systemProfilerVideoCards];
+            NSArray<VMMVideoCard*>* systemProfilerVideoCards = [self systemProfilerVideoCards];
             
-            if (videoCards == nil || videoCards.count == 0 || [self anyVideoCardDictionaryIsCompleteInArray:videoCards] == false)
+            if (systemProfilerVideoCards == nil || systemProfilerVideoCards.count == 0 ||
+                [self anyVideoCardDictionaryIsCompleteInArray:systemProfilerVideoCards] == false)
             {
                 NSMutableArray<VMMVideoCard*>* computerGraphicCardDictionary = [self videoCardsFromIOServiceMatch];
-                if (videoCards != nil) [computerGraphicCardDictionary addObjectsFromArray:videoCards];
-                _videoCards = computerGraphicCardDictionary;
+                if (systemProfilerVideoCards != nil) [computerGraphicCardDictionary addObjectsFromArray:systemProfilerVideoCards];
+                videoCards = computerGraphicCardDictionary;
             }
             else
             {
-                _videoCards = [videoCards mutableCopy];
+                videoCards = [systemProfilerVideoCards mutableCopy];
             }
             
-            [_videoCards sortBySelector:@selector(vendorID)
-                                          inOrder:@[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel]];
-            [_videoCards sortBySelector:@selector(bus)
-                                          inOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
+            [videoCards sortBySelector:@selector(vendorID)
+                                inOrder:@[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel]];
+            [videoCards sortBySelector:@selector(bus)
+                                inOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
         }
-        
-        return _videoCards;
-    }
+    });
+    
+    return videoCards;
 }
 
 +(VMMVideoCard* _Nullable)mainVideoCard

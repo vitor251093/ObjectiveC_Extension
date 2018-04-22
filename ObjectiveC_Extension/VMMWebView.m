@@ -237,7 +237,7 @@
 }
 -(void)reloadWebViewIfNeeded
 {
-    @synchronized(_webView)
+    @synchronized(self)
     {
         BOOL loadingForTheFirstTime = (_webView == nil);
         

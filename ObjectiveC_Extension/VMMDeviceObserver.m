@@ -46,18 +46,16 @@ long IOHIDDeviceGetVendorID(IOHIDDeviceRef _Nullable device)
 
 @implementation VMMDeviceObserver
 
-static VMMDeviceObserver *_sharedObserver;
-
 +(nonnull instancetype)sharedObserver
 {
-    @synchronized([self class])
-    {
-        if (!_sharedObserver)
-        {
-            _sharedObserver = [[VMMDeviceObserver alloc] init];
-        }
-        return _sharedObserver;
-    }
+    static VMMDeviceObserver* sharedObserver = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        sharedObserver = [[VMMDeviceObserver alloc] init];
+    });
+    
+    return sharedObserver;
 }
 
 -(BOOL)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate

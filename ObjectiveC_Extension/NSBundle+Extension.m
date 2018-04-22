@@ -23,7 +23,7 @@ NSBundle* _originalMainBundle;
 
 -(nonnull NSString*)bundleName
 {
-    @synchronized (self)
+    @synchronized(self)
     {
         NSString* bundleName = [self objectForInfoDictionaryKey:@"CFBundleDisplayName"];
         
@@ -82,7 +82,7 @@ NSBundle* _originalMainBundle;
 }
 -(NSString*)bundlePathBeforeAppTranslocation
 {
-    @synchronized (self)
+    @synchronized(self)
     {
         NSString* bundlePathBeforeAppTranslocation;
         
