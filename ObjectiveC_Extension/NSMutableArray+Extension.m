@@ -49,28 +49,22 @@
 -(void)sortBySelector:(SEL _Nonnull)selector inOrder:(NSArray* _Nonnull)order
 {
     [self sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2)
-     {
-         NSUInteger obj1ValueIndex;
-         NSUInteger obj2ValueIndex;
+    {
+         NSUInteger obj1ValueIndex = -1;
+         NSUInteger obj2ValueIndex = -1;
          
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
          if ([obj1 respondsToSelector:selector])
          {
-             obj1ValueIndex = [obj1 performSelector:selector] != nil ? [order indexOfObject:[obj1 performSelector:selector]] : -1;
-         }
-         else
-         {
-             obj1ValueIndex = -1;
+             id obj1ReturnedValue = [obj1 performSelector:selector];
+             if (obj1ReturnedValue != nil) obj1ValueIndex = [order indexOfObject:obj1ReturnedValue];
          }
          
          if ([obj2 respondsToSelector:selector])
          {
-             obj2ValueIndex = [obj2 performSelector:selector] != nil ? [order indexOfObject:[obj2 performSelector:selector]] : -1;
-         }
-         else
-         {
-             obj2ValueIndex = -1;
+             id obj2ReturnedValue = [obj2 performSelector:selector];
+             if (obj2ReturnedValue != nil) obj2ValueIndex = [order indexOfObject:obj2ReturnedValue];
          }
 #pragma clang diagnostic pop
          
@@ -81,7 +75,7 @@
          if (obj1ValueIndex > obj2ValueIndex) return NSOrderedDescending;
          if (obj1ValueIndex < obj2ValueIndex) return NSOrderedAscending;
          return NSOrderedSame;
-     }];
+    }];
 }
 
 
