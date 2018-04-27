@@ -528,25 +528,17 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                     }
                     else if (hexDeviceIDString.length == 8)
                     {
-                        // 'ATI Radeon HD 2600' => 'c283c295' => '0x9583'
+                        // 'ATI Radeon HD 2400' => '<c8940000>' => '0x94c8'
                         
-                        NSString* firstPrefix  = [hexDeviceIDString substringWithRange:NSMakeRange(0, 2)];
-                        NSString* secondPrefix = [hexDeviceIDString substringWithRange:NSMakeRange(4, 2)];
+                        hexDeviceIDString = [NSString stringWithFormat:@"%@",deviceID];
                         
-                        NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(6, 2)];
-                        NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(2, 2)];
+                        NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(3, 2)];
+                        NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(1, 2)];
+                        hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
                         
-                        BOOL valid = false;
-                        if ([firstPrefix isEqualToString:@"c2"] && [secondPrefix isEqualToString:@"c2"]) valid = true;
-                        
-                        if (valid)
+                        if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
                         {
-                            hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
-                            
-                            if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
-                            {
-                                graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
-                            }
+                            graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
                         }
                     }
                 }
