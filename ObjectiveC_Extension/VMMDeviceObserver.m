@@ -60,6 +60,10 @@ long IOHIDDeviceGetVendorID(IOHIDDeviceRef _Nullable device)
 
 -(BOOL)observeDevicesOfTypes:(nonnull NSArray<NSNumber*>*)types forDelegate:(nonnull id<VMMDeviceObserverDelegate>)actionDelegate
 {
+    if (actionDelegate.hidManager != NULL) {
+        [self stopObservingForDelegate:actionDelegate];
+    }
+    
     actionDelegate.hidManager = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
     
     NSMutableArray* deviceTypes = [types mutableCopy];
