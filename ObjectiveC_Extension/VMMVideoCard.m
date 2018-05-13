@@ -33,14 +33,16 @@
     self = [super init];
     if (self)
     {
-        _dictionary = dict;
+        NSMutableDictionary* newDict = [dict mutableCopy];
+        newDict[@"temp_memory_size_api_values"] = [VMMVideoCard videoCardMemorySizesInMegabytesFromAPI];
+        _dictionary = newDict;
         
-        nameLock     = [[NSLock alloc] init];
-        typeLock     = [[NSLock alloc] init];
-        busLock      = [[NSLock alloc] init];
-        deviceIDLock = [[NSLock alloc] init];
-        vendorIDLock = [[NSLock alloc] init];
-        vendorLock   = [[NSLock alloc] init];
+        nameLock                  = [[NSLock alloc] init];
+        typeLock                  = [[NSLock alloc] init];
+        busLock                   = [[NSLock alloc] init];
+        deviceIDLock              = [[NSLock alloc] init];
+        vendorIDLock              = [[NSLock alloc] init];
+        vendorLock                = [[NSLock alloc] init];
         memorySizeInMegabytesLock = [[NSLock alloc] init];
     }
     return self;
