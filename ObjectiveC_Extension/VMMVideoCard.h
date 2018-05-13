@@ -84,6 +84,8 @@ static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_3 = @"0x0
 static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_4 = @"0x08a4";
 static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_5 = @"0x08a5";
 
+static NSInteger const VMMVideoCardMemoryMinimumSize = 64;
+
 @interface VMMVideoCard : NSObject
 {
     NSLock* _Nullable nameLock;

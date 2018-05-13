@@ -419,7 +419,7 @@
     @synchronized(memorySizeInMegabytesLock)
     {
         if (_memorySizeInMegabytes != nil &&
-            _memorySizeInMegabytes.unsignedIntegerValue != 0)
+            _memorySizeInMegabytes.unsignedIntegerValue >= VMMVideoCardMemoryMinimumSize)
         {
             return _memorySizeInMegabytes;
         }
@@ -441,13 +441,13 @@
                 memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
             }
             
-            if (memSizeInt < 64)
+            if (memSizeInt < VMMVideoCardMemoryMinimumSize)
             {
                 NSInteger numberOfVideoCards = [VMMComputerInformation videoCards].count;
                 if (numberOfVideoCards == 1)
                 {
                     NSArray* apiValues = [VMMVideoCard videoCardMemorySizesInMegabytesFromAPI];
-                    if (apiValues.count > 0 && [[apiValues firstObject] intValue] >= 64)
+                    if (apiValues.count > 0 && [[apiValues firstObject] intValue] >= VMMVideoCardMemoryMinimumSize)
                     {
                         memSizeInt = [[apiValues firstObject] intValue];
                     }
@@ -462,7 +462,7 @@
                 // Reference: https://support.apple.com/en-us/HT204349
                 //
                 
-                if (memSizeInt < 64)
+                if (memSizeInt < VMMVideoCardMemoryMinimumSize)
                 {
                     NSString* type = self.type ? self.type : @"";
                     NSString* deviceID = self.deviceID ? self.deviceID : @"";
@@ -559,9 +559,9 @@
                 {
                     return nil;
                 }
-                if (memSizeInt < 64)
+                if (memSizeInt < VMMVideoCardMemoryMinimumSize)
                 {
-                    return @(0);
+                    return @(memSizeInt);
                 }
             }
             
@@ -615,7 +615,7 @@
 -(BOOL)hasMemorySize
 {
     NSNumber* memorySize = self.memorySizeInMegabytes;
-    return memorySize != nil && memorySize.unsignedIntegerValue != 0;
+    return memorySize != nil && memorySize.unsignedIntegerValue < VMMVideoCardMemoryMinimumSize;
 }
 -(BOOL)isComplete
 {
