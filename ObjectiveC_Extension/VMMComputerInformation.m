@@ -478,8 +478,8 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                     NSString* deviceIDString = [[NSString alloc] initWithData:deviceID encoding:NSASCIIStringEncoding];
                     NSString* hexDeviceIDString = [deviceIDString hexadecimalUTF8String];
                     
-                    graphicCardDict[@"RawDeviceIDHEX"] = hexDeviceIDString;
-                    graphicCardDict[@"RawDeviceIDAddress"] = [NSString stringWithFormat:@"%@",deviceID];
+                    graphicCardDict[VMMVideoCardTemporaryKeyRawDeviceIdHex] = hexDeviceIDString;
+                    graphicCardDict[VMMVideoCardTemporaryKeyRawDeviceIdAddress] = [NSString stringWithFormat:@"%@",deviceID];
                     
                     if (hexDeviceIDString.length == 4)
                     {
@@ -638,7 +638,7 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                         [regEntryKeys addObject:key];
                     }
                     
-                    graphicCardDict[@"RawRegEntryKeys"] = [regEntryKeys componentsJoinedByString:@", "];
+                    graphicCardDict[VMMVideoCardTemporaryKeyRegKeys] = [regEntryKeys componentsJoinedByString:@", "];
                 }
                 
                 if (vramSize != NULL) CFRelease(vramSize);

@@ -34,7 +34,7 @@
     if (self)
     {
         NSMutableDictionary* newDict = [dict mutableCopy];
-        newDict[@"temp_memory_size_api_values"] = [VMMVideoCard videoCardMemorySizesInMegabytesFromAPI];
+        newDict[VMMVideoCardTemporaryKeyApiMemorySizes] = [VMMVideoCard videoCardMemorySizesInMegabytesFromAPI];
         _dictionary = newDict;
         
         nameLock                  = [[NSLock alloc] init];
