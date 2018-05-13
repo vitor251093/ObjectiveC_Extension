@@ -467,8 +467,9 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                     NSString *gpuModelString = [[NSString alloc] initWithData:gpuModel encoding:NSASCIIStringEncoding];
                     if (gpuModelString != nil)
                     {
-                        graphicCardDict[VMMVideoCardNameKey] = [gpuModelString stringByReplacingOccurrencesOfString:@"\0"
-                                                                                                         withString:@""];
+                        gpuModelString = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@" "];
+                        gpuModelString = [gpuModelString stringByReplacingOccurrencesOfString:@"  " withString:@" "];
+                        graphicCardDict[VMMVideoCardNameKey] = gpuModelString;
                     }
                 }
                 
