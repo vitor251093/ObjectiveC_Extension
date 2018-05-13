@@ -504,13 +504,7 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                         if ([vendorIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
                         {
                             graphicCardDict[VMMVideoCardVendorIDKey] = vendorIDString;
-                            vendorIDString = nil;
                         }
-                    }
-                    
-                    if (vendorIDString != nil)
-                    {
-                        graphicCardDict[VMMVideoCardVendorKey] = vendorIDString;
                     }
                 }
                 
