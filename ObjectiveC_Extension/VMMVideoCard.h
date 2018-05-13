@@ -88,8 +88,6 @@ static NSInteger const VMMVideoCardMemoryMinimumSize = 64;
 
 static NSString * _Nonnull const VMMVideoCardTemporaryKeyRegKeys            = @"RawRegEntryKeys";
 static NSString * _Nonnull const VMMVideoCardTemporaryKeyApiMemorySizes     = @"temp_memory_size_api_values";
-static NSString * _Nonnull const VMMVideoCardTemporaryKeyRawDeviceIdHex     = @"RawDeviceIDHEX";
-static NSString * _Nonnull const VMMVideoCardTemporaryKeyRawDeviceIdAddress = @"RawDeviceIDAddress";
 
 @interface VMMVideoCard : NSObject
 {

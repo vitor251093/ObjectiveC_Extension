@@ -475,66 +475,13 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                 NSData* deviceID = service[@"device-id"];
                 if (deviceID != nil && [deviceID isKindOfClass:[NSData class]])
                 {
-                    NSString* deviceIDString = [[NSString alloc] initWithData:deviceID encoding:NSASCIIStringEncoding];
-                    NSString* hexDeviceIDString = [deviceIDString hexadecimalUTF8String];
-                    
-                    graphicCardDict[VMMVideoCardTemporaryKeyRawDeviceIdHex] = hexDeviceIDString;
-                    graphicCardDict[VMMVideoCardTemporaryKeyRawDeviceIdAddress] = [NSString stringWithFormat:@"%@",deviceID];
-                    
-                    if (hexDeviceIDString.length == 4)
+                    NSString* hexDeviceIDString = [NSString stringWithFormat:@"%@",deviceID];
+                    if (hexDeviceIDString.length > 5)
                     {
-                        NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(2, 2)];
-                        NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(0, 2)];
-                        hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
-                        
-                        if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
-                        {
-                            graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
-                        }
-                    }
-                    else if (hexDeviceIDString.length == 6)
-                    {
-                        // 'Intel GMA 950'           => 'c2a227' => '0x27a2'
-                        // 'NVIDIA GeForce GT 640M'  => 'c3980f' => '0x0fd8'
-                        // 'NVIDIA GeForce GT 650M'  => 'c3950f' => '0x0fd5'
-                        // 'NVIDIA GeForce GT 750M'  => 'c3a90f' => '0x0fe9'
-                        // 'NVIDIA GeForce GTX 775M' => 'c29d11' => '0x119d'
-                        
-                        NSString* prefix     = [hexDeviceIDString substringWithRange:NSMakeRange(0, 2)];
-                        NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(4, 2)];
-                        NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(2, 2)];
-                        
-                        BOOL valid = false;
-                        if ([prefix isEqualToString:@"c2"]) valid = true;
-                        if ([prefix isEqualToString:@"c3"])
-                        {
-                            unsigned secondPartChar = 0;
-                            NSScanner *scanner = [NSScanner scannerWithString:secondPart];
-                            [scanner scanHexInt:&secondPartChar];
-                            secondPartChar = (secondPartChar + 64) % 256;
-                            secondPart = [NSString stringWithFormat:@"%02x",secondPartChar];
-                            valid = true;
-                        }
-                        
-                        if (valid)
-                        {
-                            hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
-                            
-                            if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
-                            {
-                                graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
-                            }
-                        }
-                    }
-                    else if (hexDeviceIDString.length == 8)
-                    {
-                        // 'ATI Radeon HD 2400' => '<c8940000>' => '0x94c8'
-                        
-                        hexDeviceIDString = [NSString stringWithFormat:@"%@",deviceID];
-                        
                         NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(3, 2)];
                         NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(1, 2)];
                         hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
+                        hexDeviceIDString = hexDeviceIDString.lowercaseString;
                         
                         if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
                         {
@@ -549,10 +496,11 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                     NSString* vendorIDString = [NSString stringWithFormat:@"%@",vendorID];
                     if (vendorIDString.length > 5)
                     {
-                        vendorIDString = [vendorIDString substringWithRange:NSMakeRange(1, 4)];
-                        vendorIDString = [NSString stringWithFormat:@"0x%@%@",[vendorIDString substringFromIndex:2],
-                                                                              [vendorIDString substringToIndex:2]];
+                        NSString* firstPart  = [vendorIDString substringWithRange:NSMakeRange(3, 2)];
+                        NSString* secondPart = [vendorIDString substringWithRange:NSMakeRange(1, 2)];
+                        vendorIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
                         vendorIDString = vendorIDString.lowercaseString;
+                        
                         if ([vendorIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
                         {
                             graphicCardDict[VMMVideoCardVendorIDKey] = vendorIDString;
