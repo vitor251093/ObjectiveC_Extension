@@ -99,7 +99,7 @@
     {
         GLint videoMemory = 0;
         CGLDescribeRenderer(rend, i, (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR ? kCGLRPVideoMemoryMegabytes : kCGLRPVideoMemory), &videoMemory);
-        [list addObject:@(videoMemory)];
+        if (videoMemory != 0) [list addObject:@(videoMemory)];
     }
     
     CGLDestroyRendererInfo(rend);
