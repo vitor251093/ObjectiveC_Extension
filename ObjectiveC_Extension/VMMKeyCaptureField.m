@@ -83,9 +83,9 @@ static VMMKeyCaptureField* _activeKeyCaptureField;
     {
         [self setKeyUsageKeycode:usage];
         
-        if (_keyCaptureDelegate)
+        if (self->_keyCaptureDelegate)
         {
-            [_keyCaptureDelegate keyCaptureField:self didChangedKeyUsageKeycode:usage];
+            [self->_keyCaptureDelegate keyCaptureField:self didChangedKeyUsageKeycode:usage];
         }
     });
 }
