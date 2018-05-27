@@ -617,7 +617,7 @@
 -(BOOL)hasMemorySize
 {
     NSNumber* memorySize = self.memorySizeInMegabytes;
-    return memorySize != nil && memorySize.unsignedIntegerValue < VMMVideoCardMemoryMinimumSize;
+    return memorySize != nil && memorySize.unsignedIntegerValue > VMMVideoCardMemoryMinimumSize;
 }
 -(BOOL)isComplete
 {
@@ -633,6 +633,20 @@
     
     NSArray* vms = @[VMMVideoCardTypeVirtualBox, VMMVideoCardTypeVMware, VMMVideoCardTypeParallelsDesktop, VMMVideoCardTypeQemu];
     return [vms containsObject:type];
+}
+
+-(NSString*)description
+{
+    NSMutableArray* data = [[NSMutableArray alloc] init];
+    [data addObject:[NSString stringWithFormat:@"Name: %@",self.name]];
+    [data addObject:[NSString stringWithFormat:@"Type: %@",self.type]];
+    [data addObject:[NSString stringWithFormat:@"Bus: %@",self.bus]];
+    [data addObject:[NSString stringWithFormat:@"Device ID: %@",self.deviceID]];
+    [data addObject:[NSString stringWithFormat:@"Vendor ID: %@",self.vendorID]];
+    [data addObject:[NSString stringWithFormat:@"Vendor: %@",self.vendor]];
+    [data addObject:[NSString stringWithFormat:@"Memory size: %@",self.memorySizeInMegabytes]];
+    NSString* string = [data componentsJoinedByString:@", "];
+    return [NSString stringWithFormat:@"{%@}",string];
 }
 
 @end
