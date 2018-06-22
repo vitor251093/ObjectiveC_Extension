@@ -315,6 +315,9 @@
 }
 -(NSColor*)navigationBarColor
 {
+    if (IS_SYSTEM_MAC_OS_10_14_OR_SUPERIOR) {
+        return [NSColor windowBackgroundColor];
+    }
     return RGB(209, 207, 209);
 }
 -(NSFont*)navigationBarAddressFieldTextFont
