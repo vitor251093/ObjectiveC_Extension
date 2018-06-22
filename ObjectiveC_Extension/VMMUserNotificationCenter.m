@@ -68,14 +68,11 @@ static VMMUserNotificationCenter *_sharedInstance;
 
 +(BOOL)isGrowlAvailable
 {
-    NSArray* scriptToCheckIfGrowlExists = @[@"tell application \"System Events\"",
-                                            @"\tset isRunning to ¬",
-                                            @"\t\t(count of (every process whose bundle identifier is \"com.Growl.GrowlHelperApp\")) > 0",
-                                            @"end tell"];
-    NSAppleScript* growlExistsScript = [[NSAppleScript alloc] initWithSource:[scriptToCheckIfGrowlExists componentsJoinedByString:@"\n"]];
-    NSAppleEventDescriptor* growlExists = [growlExistsScript executeAndReturnError:nil];
-    
-    return growlExists.booleanValue;
+    NSArray<NSRunningApplication*>* apps = [[NSWorkspace sharedWorkspace] runningApplications];
+    for (NSRunningApplication* app in apps) {
+        if ([app.bundleIdentifier isEqualToString:@"com.Growl.GrowlHelperApp"]) return true;
+    }
+    return false;
 }
 +(BOOL)isNSUserNotificationCenterAvailable
 {
