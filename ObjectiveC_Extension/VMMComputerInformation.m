@@ -285,20 +285,8 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                 }
             }
             
-            if (macOsVersion == nil)
-            {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                SInt32 versMaj, versMin, versBugFix;
-                Gestalt(gestaltSystemVersionMajor, &versMaj);
-                Gestalt(gestaltSystemVersionMinor, &versMin);
-                Gestalt(gestaltSystemVersionBugFix, &versBugFix);
-                if (versMaj >= 10)
-                {
-                    macOsVersion = [NSString stringWithFormat:@"%d.%d.%d", versMaj, versMin, versBugFix];
-                }
-#pragma clang diagnostic pop
-            }
+            // Gestalt shouldn't be used, even in older systems. It may bring the wrong value.
+            // Reference: https://discussions.apple.com/thread/6686435
             
             if (macOsVersion == nil)
             {
