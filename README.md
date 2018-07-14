@@ -646,10 +646,16 @@ Vendor of the video card (NVIDIA, ATI/AMD, Intel, etc).
 Memory size of the video card.
 
 ```objectivec
--(nullable NSString*)metalSupport;
+-(BOOL)supportsMetal;
 ```
 
-Description of the video card metal support (if nil, there is no support).
+Returns true if the video card supports Metal.
+
+```objectivec
+-(NSUInteger)metalFeatureSet;
+```
+
+Returns the MTLFeatureSet value of the video card, without using the Metal framework.
 
 ```objectivec
 -(nonnull NSString*)descriptorName;

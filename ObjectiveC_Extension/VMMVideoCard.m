@@ -573,17 +573,46 @@
     }
 }
 
--(NSString* _Nullable)metalSupport
+-(BOOL)supportsMetal
+{
+    // TODO: Metal is only supported in macOS 10.11+. This should be added here?
+    // Reference:
+    // https://support.apple.com/en-us/HT205073
+    
+    NSString* metalSupport = self.dictionary[VMMVideoCardMetalSupportKey];
+    if (metalSupport == nil) return false;
+    
+    return true;
+}
+-(NSUInteger)metalFeatureSet
 {
     NSString* metalSupport = self.dictionary[VMMVideoCardMetalSupportKey];
-    if (metalSupport == nil) return nil;
+    if (metalSupport == nil) return 0;
     
-    return metalSupport;
+    if ([metalSupport isEqualToString:@"spdisplays_supported"]) { // macOS 10.11
+        return 10000;
+    }
+    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily12"]) { // macOS 10.12
+        return 10001;
+    }
+    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily13"]) { // macOS 10.13
+        return 10003;
+    }
+    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily14"]) { // macOS 10.14
+        return 10004;
+    }
+    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily21"]) { // macOS 10.14
+        return 10005;
+    }
     
-    // spdisplays_supported
-    // spdisplays_metalfeaturesetfamily12
-    // spdisplays_metalfeaturesetfamily13
+    // The first number defines the GPU family. The second one defines the macOS support version.
+    // References:
+    // https://developer.apple.com/documentation/metal/mtlfeatureset?language=objc
+    // https://developer.apple.com/metal/Metal-Feature-Set-Tables.pdf
+    
+    return 0;
 }
+
 -(NSString* _Nonnull)descriptorName
 {
     NSString* graphicCard = self.name;

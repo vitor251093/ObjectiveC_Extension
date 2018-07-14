@@ -112,7 +112,9 @@ static NSString * _Nonnull const VMMVideoCardTemporaryKeyApiMemorySizes     = @"
 @property (nonatomic, strong, readonly) NSString* _Nullable vendor;
 @property (nonatomic, strong, readonly) NSNumber* _Nullable memorySizeInMegabytes;
 
--(NSString* _Nullable)metalSupport;
+-(BOOL)supportsMetal;
+-(NSUInteger)metalFeatureSet;
+
 -(NSString* _Nonnull)descriptorName;
 
 -(BOOL)isReal;
