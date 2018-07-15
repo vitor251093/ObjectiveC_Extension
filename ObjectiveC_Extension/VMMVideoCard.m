@@ -584,25 +584,25 @@
     
     return true;
 }
--(NSUInteger)metalFeatureSet
+-(VMMVideoCardMetalFeatureSet)metalFeatureSet
 {
     NSString* metalSupport = self.dictionary[VMMVideoCardMetalSupportKey];
     if (metalSupport == nil) return 0;
     
     if ([metalSupport isEqualToString:@"spdisplays_supported"]) { 
-        return VMMVideoCardFeatureSet_macOS_GPUFamily1_v1;
+        return VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v1;
     }
     if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily12"]) {
-        return VMMVideoCardFeatureSet_macOS_GPUFamily1_v2;
+        return VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v2;
     }
     if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily13"]) {
-        return VMMVideoCardFeatureSet_macOS_GPUFamily1_v3;
+        return VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v3;
     }
     if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily14"]) {
-        return VMMVideoCardFeatureSet_macOS_GPUFamily1_v4;
+        return VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v4;
     }
     if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily21"]) {
-        return VMMVideoCardFeatureSet_macOS_GPUFamily2_v1;
+        return VMMVideoCardMetalFeatureSet_macOS_GPUFamily2_v1;
     }
     
     return 0;

@@ -91,12 +91,14 @@ static NSString * _Nonnull const VMMVideoCardTemporaryKeyApiMemorySizes     = @"
 
 
 // Equivalents to their MTLFeatureSet_macOS_GPUFamily*_v* counterparts
-static NSUInteger const VMMVideoCardFeatureSet_macOS_GPUFamily1_v1 = 1000; // Introduced in macOS 10.11
-static NSUInteger const VMMVideoCardFeatureSet_macOS_GPUFamily1_v2 = 1001; // Introduced in macOS 10.12
-static NSUInteger const VMMVideoCardFeatureSet_macOS_GPUFamily1_v3 = 1003; // Introduced in macOS 10.13
-static NSUInteger const VMMVideoCardFeatureSet_macOS_GPUFamily1_v4 = 1004; // Introduced in macOS 10.14
-static NSUInteger const VMMVideoCardFeatureSet_macOS_GPUFamily2_v1 = 1005; // Introduced in macOS 10.14
-
+typedef NS_ENUM(NSUInteger, VMMVideoCardMetalFeatureSet)
+{
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v1 = 1000, // Introduced in macOS 10.11
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v2 = 1001, // Introduced in macOS 10.12
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v3 = 1003, // Introduced in macOS 10.13
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v4 = 1004, // Introduced in macOS 10.14
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamily2_v1 = 1005  // Introduced in macOS 10.14
+};
 // The first number defines the GPU family. The second one defines the macOS support version.
 // References:
 // https://developer.apple.com/documentation/metal/mtlfeatureset?language=objc
@@ -127,7 +129,7 @@ static NSUInteger const VMMVideoCardFeatureSet_macOS_GPUFamily2_v1 = 1005; // In
 @property (nonatomic, strong, readonly) NSNumber* _Nullable memorySizeInMegabytes;
 
 -(BOOL)supportsMetal;
--(NSUInteger)metalFeatureSet;
+-(VMMVideoCardMetalFeatureSet)metalFeatureSet;
 
 -(NSString* _Nonnull)descriptorName;
 
