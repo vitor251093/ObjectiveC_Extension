@@ -589,26 +589,21 @@
     NSString* metalSupport = self.dictionary[VMMVideoCardMetalSupportKey];
     if (metalSupport == nil) return 0;
     
-    if ([metalSupport isEqualToString:@"spdisplays_supported"]) { // macOS 10.11
-        return 10000;
+    if ([metalSupport isEqualToString:@"spdisplays_supported"]) { 
+        return VMMVideoCardFeatureSet_macOS_GPUFamily1_v1;
     }
-    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily12"]) { // macOS 10.12
-        return 10001;
+    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily12"]) {
+        return VMMVideoCardFeatureSet_macOS_GPUFamily1_v2;
     }
-    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily13"]) { // macOS 10.13
-        return 10003;
+    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily13"]) {
+        return VMMVideoCardFeatureSet_macOS_GPUFamily1_v3;
     }
-    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily14"]) { // macOS 10.14
-        return 10004;
+    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily14"]) {
+        return VMMVideoCardFeatureSet_macOS_GPUFamily1_v4;
     }
-    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily21"]) { // macOS 10.14
-        return 10005;
+    if ([metalSupport isEqualToString:@"spdisplays_metalfeaturesetfamily21"]) {
+        return VMMVideoCardFeatureSet_macOS_GPUFamily2_v1;
     }
-    
-    // The first number defines the GPU family. The second one defines the macOS support version.
-    // References:
-    // https://developer.apple.com/documentation/metal/mtlfeatureset?language=objc
-    // https://developer.apple.com/metal/Metal-Feature-Set-Tables.pdf
     
     return 0;
 }
