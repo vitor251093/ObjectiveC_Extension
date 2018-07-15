@@ -587,7 +587,7 @@
 -(VMMVideoCardMetalFeatureSet)metalFeatureSet
 {
     NSString* metalSupport = self.dictionary[VMMVideoCardMetalSupportKey];
-    if (metalSupport == nil) return 0;
+    if (metalSupport == nil) return VMMVideoCardMetalFeatureSet_macOS_GPUFamilyNone;
     
     if ([metalSupport isEqualToString:@"spdisplays_supported"]) { 
         return VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v1;
