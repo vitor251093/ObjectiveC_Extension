@@ -93,6 +93,7 @@ static NSString * _Nonnull const VMMVideoCardTemporaryKeyApiMemorySizes     = @"
 // Equivalents to their MTLFeatureSet_macOS_GPUFamily*_v* counterparts
 typedef NS_ENUM(NSUInteger, VMMVideoCardMetalFeatureSet)
 {
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamilyUnknown = 999, // In case it can't be deduced
     VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v1 = 1000, // Introduced in macOS 10.11
     VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v2 = 1001, // Introduced in macOS 10.12
     VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v3 = 1003, // Introduced in macOS 10.13

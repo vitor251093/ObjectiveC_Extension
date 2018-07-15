@@ -605,7 +605,7 @@
         return VMMVideoCardMetalFeatureSet_macOS_GPUFamily2_v1;
     }
     
-    return 0;
+    return VMMVideoCardMetalFeatureSet_macOS_GPUFamilyUnknown;
 }
 
 -(NSString* _Nonnull)descriptorName
