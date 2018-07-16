@@ -96,6 +96,12 @@ Notify an object that a HID device has been disconnected.
 
 Notify an object that a HID device has performed an event.
 
+```objectivec
+-(void)observedReportWithID:(uint32_t)reportID data:(nonnull uint8_t*)report type:(IOHIDReportType)reportType length:(CFIndex)reportLength device:(nonnull IOHIDDeviceRef)device;
+````
+
+Notify an object that a HID device has reported something.
+
 ### VMMUsageKeycode
 
 ```objectivec
