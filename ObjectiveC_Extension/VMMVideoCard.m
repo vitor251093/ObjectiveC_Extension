@@ -84,7 +84,7 @@
     
     return nil;
 }
-+(NSArray*)videoCardMemorySizesInMegabytesFromAPI
++(NSArray<NSNumber*>*)videoCardMemorySizesInMegabytesFromAPI
 {
     // Reference:
     // https://developer.apple.com/library/content/qa/qa1168/_index.html
@@ -448,7 +448,7 @@
                 NSInteger numberOfVideoCards = [VMMComputerInformation videoCards].count;
                 if (numberOfVideoCards == 1)
                 {
-                    NSArray* apiValues = [VMMVideoCard videoCardMemorySizesInMegabytesFromAPI];
+                    NSArray<NSNumber*>* apiValues = _dictionary[VMMVideoCardTemporaryKeyApiMemorySizes];
                     if (apiValues.count > 0 && [[apiValues firstObject] intValue] >= VMMVideoCardMemoryMinimumSize)
                     {
                         memSizeInt = [[apiValues firstObject] intValue];
@@ -641,7 +641,7 @@
 -(BOOL)hasMemorySize
 {
     NSNumber* memorySize = self.memorySizeInMegabytes;
-    return memorySize != nil && memorySize.unsignedIntegerValue > VMMVideoCardMemoryMinimumSize;
+    return memorySize != nil && memorySize.unsignedIntegerValue >= VMMVideoCardMemoryMinimumSize;
 }
 -(BOOL)isComplete
 {
