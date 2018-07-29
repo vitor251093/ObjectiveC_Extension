@@ -341,7 +341,7 @@
             [alert addButtonWithTitle:VMMLocalizedString(@"OK")];
             [alert addButtonWithTitle:VMMLocalizedString(@"Cancel")];
             [alert setInformativeText:message];
-            optionsForAlert(alert);
+            if (optionsForAlert != nil) optionsForAlert(alert);
             return alert;
         }];
     }
