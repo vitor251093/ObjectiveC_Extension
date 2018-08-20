@@ -617,7 +617,7 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
             }
             
             [videoCards sortBySelector:@selector(vendorID)
-                                inOrder:@[VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDIntel]];
+                                inOrder:@[VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDIntel]];
             [videoCards sortBySelector:@selector(bus)
                                 inOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
         }
