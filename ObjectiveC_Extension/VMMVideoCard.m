@@ -10,10 +10,13 @@
 //
 
 #import <OpenGL/OpenGL.h>
+#import <dlfcn.h>
 
 #import "VMMVideoCard.h"
+#import "ObjCExtensionConfig.h"
 #import "NSString+Extension.h"
 #import "VMMComputerInformation.h"
+#import "VMMLogUtility.h"
 
 @implementation VMMVideoCard
 
@@ -433,8 +436,8 @@
             int memSizeInt = -1;
             
             NSString* memSize = [_dictionary[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
-            if (memSize == nil && memSize.length > 0) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
-            if (memSize == nil && memSize.length > 0) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInAlternateKey] uppercaseString];
+            if (memSize == nil || memSize.length == 0) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
+            if (memSize == nil || memSize.length == 0) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInAlternateKey] uppercaseString];
             
             if (memSize != nil && [memSize contains:@" MB"])
             {
