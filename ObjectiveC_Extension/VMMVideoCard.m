@@ -38,7 +38,7 @@
     {
         NSMutableDictionary* newDict = [dict mutableCopy];
         newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = [VMMVideoCard videoCardMemorySizesInMegabytesFromOpenGLAPI];
-        newDict[VMMVideoCardTemporaryKeyMetalApiMemorySizes]  = [VMMVideoCard videoCardMemorySizesInMegabytesFromMetalAPI];
+        //newDict[VMMVideoCardTemporaryKeyMetalApiMemorySizes]  = [VMMVideoCard videoCardMemorySizesInMegabytesFromMetalAPI];
         _dictionary = newDict;
         
         nameLock                  = [[NSLock alloc] init];
@@ -117,6 +117,57 @@
         return NSOrderedSame;
     }];
     return list;
+}
++(NSDictionary*)videoCardMemorySizesInMegabytesFromMetalAPI
+{
+    NSDictionary* noResults = @{};
+    
+    // MTLCopyAllDevicesWithObserver only exists in macOS 10.13+
+    if (!IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR) return noResults;
+    
+#if I_WANT_TO_BE_RELEASED_IN_APPLE_STORE == FALSE
+    
+    // Loading a framework dinamically is not trivial...
+    
+    // References:
+    // https://stackoverflow.com/a/24266440/4370893
+    // https://stackoverflow.com/a/21375580/4370893
+    // https://stackoverflow.com/a/1354569/4370893
+    // https://developer.apple.com/documentation/metal/fundamental_components/macos_devices/getting_different_types_of_gpus?language=objc
+    // https://developer.apple.com/documentation/metal/1433367-mtlcopyalldevices?language=objc
+    
+    void *metalFramework = dlopen("System/Library/Frameworks/Metal.framework/Metal", RTLD_NOW);
+    if (!metalFramework) return noResults;
+    
+    NSArray<id>* (*metalCopyAllDevicesWithObserver)(void) = dlsym(metalFramework, "MTLCopyAllDevices");
+    NSArray<id>* deviceList = metalCopyAllDevicesWithObserver();
+    
+    NSMutableDictionary* results = [[NSMutableDictionary alloc] init];
+    for (id device in deviceList) {
+        NSString* deviceName = [device performSelector:@selector(name)];
+        
+//        SEL maxBufferLengthSelector = NSSelectorFromString(@"maxBufferLength");
+//        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:
+//                                    [[device class] instanceMethodSignatureForSelector:maxBufferLengthSelector]];
+//        [invocation setSelector:maxBufferLengthSelector];
+//        [invocation setTarget:device];
+//        [invocation invoke];
+//        NSInteger deviceSize;
+//        [invocation getReturnValue:&deviceSize];
+//
+//        results[deviceName] = @(deviceSize);
+        
+        results[deviceName] = @(0);
+    }
+    
+    if (0 != dlclose(metalFramework)) {
+        NSDebugLog(@"dlclose failed! %s\n", dlerror());
+    }
+    
+    return results;
+#else
+    return noResults;
+#endif
 }
 
 -(NSString*)vendorIDFromVendorAndVendorIDKeysOnly
