@@ -179,6 +179,8 @@
     NSMutableDictionary* results = [[NSMutableDictionary alloc] init];
     
     NSArray<id<VMMVideoCardMetalDevice>>* deviceList = self.metalDevices;
+    if (deviceList.count == 0) return noResults;
+    
     for (id<VMMVideoCardMetalDevice> device in deviceList)
     {
         NSString* deviceName = device.name;
