@@ -23,6 +23,8 @@
 #import "NSImage+Extension.h"
 #import "VMMUUID.h"
 
+#import "ObjCExtensionConfig.h"
+
 static NSString* const NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY = @"info";
 
 @interface NSUserNotification (NSUserNotificationPrivate)
@@ -123,6 +125,7 @@ static VMMUserNotificationCenter *_sharedInstance;
     notification.soundName = NSUserNotificationDefaultSoundName;
     notification.userInfo = info ? @{NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY:info} : @{};
     
+#if I_WANT_TO_BE_RELEASED_IN_APPLE_STORE == FALSE
     if (icon != nil)
     {
         @try
@@ -141,6 +144,7 @@ static VMMUserNotificationCenter *_sharedInstance;
             }
         }
     }
+#endif
     
     if (actionButton != nil)
     {

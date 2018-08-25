@@ -242,6 +242,7 @@
 		4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMKeyCaptureField.m; sourceTree = "<group>"; };
 		4EA69BD21FC8DDEA00C70100 /* NSWorkspace+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWorkspace+Extension.h"; sourceTree = "<group>"; };
 		4EA69BD31FC8DDEA00C70100 /* NSWorkspace+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWorkspace+Extension.m"; sourceTree = "<group>"; };
+		4EAA1FB9212D8A27006F1445 /* ObjCExtensionConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjCExtensionConfig.h; sourceTree = "<group>"; };
 		4EAD49241FBBB5AE008B562F /* NSColorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSColorTests.m; sourceTree = "<group>"; };
 		4EB392DF1FC479060098F987 /* VMMTextFileView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMTextFileView.h; sourceTree = "<group>"; };
 		4EB392E01FC479060098F987 /* VMMTextFileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMTextFileView.m; sourceTree = "<group>"; };
@@ -313,6 +314,7 @@
 				4E6C52601F7E950900A187E9 /* Utilities */,
 				4EA035A51F9532C80059C2C5 /* Views */,
 				4E6C52961F7EB50300A187E9 /* Localizable.strings */,
+				4EAA1FB9212D8A27006F1445 /* ObjCExtensionConfig.h */,
 				4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */,
 				4E6C510B1F7E8EB700A187E9 /* Info.plist */,
 				4E3EE4641F82BF42008A5CC3 /* CREDITS */,

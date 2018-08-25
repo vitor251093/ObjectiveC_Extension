@@ -34,7 +34,8 @@
     if (self)
     {
         NSMutableDictionary* newDict = [dict mutableCopy];
-        newDict[VMMVideoCardTemporaryKeyApiMemorySizes] = [VMMVideoCard videoCardMemorySizesInMegabytesFromAPI];
+        newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = [VMMVideoCard videoCardMemorySizesInMegabytesFromOpenGLAPI];
+        newDict[VMMVideoCardTemporaryKeyMetalApiMemorySizes]  = [VMMVideoCard videoCardMemorySizesInMegabytesFromMetalAPI];
         _dictionary = newDict;
         
         nameLock                  = [[NSLock alloc] init];
@@ -84,7 +85,8 @@
     
     return nil;
 }
-+(NSArray<NSNumber*>*)videoCardMemorySizesInMegabytesFromAPI
+
++(NSArray<NSNumber*>*)videoCardMemorySizesInMegabytesFromOpenGLAPI
 {
     // Reference:
     // https://developer.apple.com/library/content/qa/qa1168/_index.html
@@ -431,8 +433,8 @@
             int memSizeInt = -1;
             
             NSString* memSize = [_dictionary[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
-            if (memSize == nil) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
-            if (memSize == nil) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInAlternateKey] uppercaseString];
+            if (memSize == nil && memSize.length > 0) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
+            if (memSize == nil && memSize.length > 0) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInAlternateKey] uppercaseString];
             
             if (memSize != nil && [memSize contains:@" MB"])
             {
@@ -448,7 +450,7 @@
                 NSInteger numberOfVideoCards = [VMMComputerInformation videoCards].count;
                 if (numberOfVideoCards == 1)
                 {
-                    NSArray<NSNumber*>* apiValues = _dictionary[VMMVideoCardTemporaryKeyApiMemorySizes];
+                    NSArray<NSNumber*>* apiValues = _dictionary[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes];
                     if (apiValues.count > 0 && [[apiValues firstObject] intValue] >= VMMVideoCardMemoryMinimumSize)
                     {
                         memSizeInt = [[apiValues firstObject] intValue];
@@ -669,6 +671,7 @@
     [data addObject:[NSString stringWithFormat:@"Vendor ID: %@",self.vendorID]];
     [data addObject:[NSString stringWithFormat:@"Vendor: %@",self.vendor]];
     [data addObject:[NSString stringWithFormat:@"Memory size: %@",self.memorySizeInMegabytes]];
+    [data addObject:[NSString stringWithFormat:@"Data: %@",self.dictionary]];
     NSString* string = [data componentsJoinedByString:@", "];
     return [NSString stringWithFormat:@"{%@}",string];
 }
