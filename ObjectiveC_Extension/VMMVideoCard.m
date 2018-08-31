@@ -83,7 +83,11 @@
     {
         if ([graphicCardNameComponents containsObject:@"HD"])   return VMMVideoCardTypeIntelHD;
         if ([graphicCardNameComponents containsObject:@"UHD"])  return VMMVideoCardTypeIntelUHD;
-        if ([graphicCardNameComponents containsObject:@"IRIS"]) return VMMVideoCardTypeIntelIris;
+        if ([graphicCardNameComponents containsObject:@"IRIS"]) {
+            if ([graphicCardNameComponents containsObject:@"PRO"])  return VMMVideoCardTypeIntelIrisPro;
+            if ([graphicCardNameComponents containsObject:@"PLUS"]) return VMMVideoCardTypeIntelIrisPlus;
+            return VMMVideoCardTypeIntelIris;
+        }
         
         for (NSString* component in graphicCardNameComponents)
         {
@@ -403,7 +407,8 @@
             NSString* videoCardType = self.type;
             if (videoCardType != nil)
             {
-                if ([@[VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelUHD, VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
+                if ([@[VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelIrisPro, VMMVideoCardTypeIntelIrisPlus,
+                       VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelUHD, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
                 {
                     _vendorID = VMMVideoCardVendorIDIntel; // Intel Vendor ID
                     return _vendorID;
@@ -546,7 +551,9 @@
                     NSString* deviceID = self.deviceID ? self.deviceID : @"";
                     long long int ramMemoryGbSize = ((([VMMComputerInformation ramMemorySize]/1024)/1024)/1024);
                     
-                    if ([type isEqualToString:VMMVideoCardTypeIntelIris])
+                    if ([type isEqualToString:VMMVideoCardTypeIntelIris] ||
+                        [type isEqualToString:VMMVideoCardTypeIntelIrisPro] ||
+                        [type isEqualToString:VMMVideoCardTypeIntelIrisPlus])
                     {
                         memSizeInt = 1536;
                     }

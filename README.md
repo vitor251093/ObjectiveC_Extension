@@ -619,7 +619,7 @@ Name (model) of the video card.
 -(nullable NSString*)type;
 ```
 
-Type of the video card (Intel HD, Intel Iris, Intel GMA, NVIDIA, ATI/AMD, etc).
+Type of the video card (Intel HD, Intel Iris, Intel Iris Pro, Intel Iris Plus, Intel GMA, NVIDIA or ATI/AMD).
 
 ```objectivec
 -(nullable NSString*)bus;

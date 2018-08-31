@@ -26,12 +26,14 @@ static NSString * _Nonnull const VMMVideoCardVendorKey =                     @"s
 static NSString * _Nonnull const VMMVideoCardDeviceIDKey =                   @"spdisplays_device-id";   // eg. '0x0046'
 static NSString * _Nonnull const VMMVideoCardMetalSupportKey =               @"spdisplays_metal";
 
-static NSString * _Nonnull const VMMVideoCardTypeIntelHD =    @"Intel HD";
-static NSString * _Nonnull const VMMVideoCardTypeIntelUHD =   @"Intel UHD";
-static NSString * _Nonnull const VMMVideoCardTypeIntelIris =  @"Intel Iris";
-static NSString * _Nonnull const VMMVideoCardTypeIntelGMA =   @"Intel GMA";
-static NSString * _Nonnull const VMMVideoCardTypeATIAMD =     @"ATI/AMD";
-static NSString * _Nonnull const VMMVideoCardTypeNVIDIA =     @"NVIDIA";
+static NSString * _Nonnull const VMMVideoCardTypeIntelHD =        @"Intel HD";
+static NSString * _Nonnull const VMMVideoCardTypeIntelUHD =       @"Intel UHD";
+static NSString * _Nonnull const VMMVideoCardTypeIntelIris =      @"Intel Iris";
+static NSString * _Nonnull const VMMVideoCardTypeIntelIrisPro =   @"Intel Iris Pro";
+static NSString * _Nonnull const VMMVideoCardTypeIntelIrisPlus =  @"Intel Iris Plus";
+static NSString * _Nonnull const VMMVideoCardTypeIntelGMA =       @"Intel GMA";
+static NSString * _Nonnull const VMMVideoCardTypeATIAMD =         @"ATI/AMD";
+static NSString * _Nonnull const VMMVideoCardTypeNVIDIA =         @"NVIDIA";
 
 static NSString * _Nonnull const VMMVideoCardBusPCIe =        @"spdisplays_pcie_device";
 static NSString * _Nonnull const VMMVideoCardBusPCI =         @"sppci_pci_device";
