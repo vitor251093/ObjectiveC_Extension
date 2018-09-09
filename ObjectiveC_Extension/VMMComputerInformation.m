@@ -420,7 +420,10 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     }
     else
     {
-        return [NSString stringWithFormat:@"<%@>",[self stringWithCFString:CFCopyTypeIDDescription(type_id)]];
+        CFStringRef typeIdDescription = CFCopyTypeIDDescription(type_id);
+        NSString* string = [self stringWithCFString:typeIdDescription];
+        CFRelease(typeIdDescription);
+        return [NSString stringWithFormat:@"<%@>",string];
     }
 }
 +(NSMutableArray<VMMVideoCard*>* _Nonnull)videoCardsFromIOServiceMatch
@@ -445,6 +448,7 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                 if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess)
                 {
                     IOObjectRelease(regEntry);
+                    CFRelease(gpuName);
                     continue;
                 }
                 NSMutableDictionary* service = (__bridge NSMutableDictionary*)serviceDictionary;
@@ -562,12 +566,14 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                     keys = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
                     values = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
                     CFDictionaryGetKeysAndValues(properties, (const void **) keys, (const void **) values);
+                    free(values);
                     for (i = 0; i < count; i++)
                     {
                         CFTypeRef cf_type = keys[i];
                         NSString* key = [self stringWithCFType:cf_type];
                         [regEntryKeys addObject:key];
                     }
+                    free(keys);
                     
                     graphicCardDict[VMMVideoCardTemporaryKeyRegKeys] = [regEntryKeys componentsJoinedByString:@", "];
                 }
