@@ -593,7 +593,19 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     
     [graphicCardDicts replaceObjectsWithVariation:^VMMVideoCard* _Nonnull(NSDictionary* _Nonnull object, NSUInteger index)
     {
-        return [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
+        VMMVideoCard* vc = [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
+        if (vc != nil && [vc.vendorID isEqualToString:VMMVideoCardVendorIDIntel] && [vc.deviceID isEqualToString:@"0x27a6"])
+        {
+            // This video card should be ignored:
+            // Intel Corporation Mobile 945GM/GMS/GME, 943/940GML Express Integrated Graphics Controller
+            // https://steamcommunity.com/app/259680/discussions/1/405692224243163860/
+            // https://www.overclockers.com/forums/showthread.php/656895-can-this-intel-core-2-duo-processor-be-oc
+            // https://ubuntuforums.org/archive/index.php/t-1287852.html
+            // https://lists.opensuse.org/opensuse/2009-06/msg00099.html
+            
+            return nil;
+        }
+        return vc;
     }];
     
     [graphicCardDicts removeObject:[NSNull null]];
