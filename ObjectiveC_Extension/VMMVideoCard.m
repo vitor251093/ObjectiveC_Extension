@@ -9,6 +9,10 @@
 //  https://github.com/codykrieger/gfxCardStatus
 //
 
+#if IM_IMPORTING_THE_METAL_FRAMEWORK == true
+#import <Metal/Metal.h>
+#endif
+
 #import <OpenGL/OpenGL.h>
 #import <dlfcn.h>
 
@@ -17,8 +21,6 @@
 #import "NSString+Extension.h"
 #import "VMMComputerInformation.h"
 #import "VMMLogUtility.h"
-
-#if I_WANT_TO_BE_RELEASED_IN_APPLE_STORE == FALSE
 
 @protocol VMMVideoCardMetalDevice
 
@@ -34,8 +36,6 @@
 -(BOOL)supportsFeatureSet:(VMMVideoCardMetalFeatureSet)featureSet;
 
 @end
-
-#endif
 
 
 @implementation VMMVideoCard
@@ -145,7 +145,12 @@
 
 +(NSArray<id<VMMVideoCardMetalDevice>>*)metalDevices
 {
+#if IM_IMPORTING_THE_METAL_FRAMEWORK == TRUE
+    return MTLCopyAllDevices();
+#else
 #if I_WANT_TO_BE_RELEASED_IN_APPLE_STORE == FALSE
+    if (!IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR) return @[];
+    
     @autoreleasepool
     {
         // Loading a framework dinamically is not trivial...
@@ -172,19 +177,14 @@
 #else
     return @[];
 #endif
+#endif
 }
 +(NSDictionary*)videoCardMemorySizesInMegabytesFromMetalAPI
 {
-    NSDictionary* noResults = @{};
-    
-    // MTLCopyAllDevicesWithObserver only exists in macOS 10.13+
-    if (!IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR) return noResults;
+    NSArray<id<VMMVideoCardMetalDevice>>* deviceList = self.metalDevices;
+    if (deviceList.count == 0) return @{};
     
     NSMutableDictionary* results = [[NSMutableDictionary alloc] init];
-    
-    NSArray<id<VMMVideoCardMetalDevice>>* deviceList = self.metalDevices;
-    if (deviceList.count == 0) return noResults;
-    
     for (id<VMMVideoCardMetalDevice> device in deviceList)
     {
         NSString* deviceName = device.name;
