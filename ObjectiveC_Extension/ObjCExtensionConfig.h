@@ -20,6 +20,7 @@
 
 
 #define USER_NOTIFICATIONS_SHOULD_SHOW_A_BIGGER_ICON  true
+//
 // User notifications have two different icons. A big one with the app icon
 // in the left, and a squared smaller one in the right with a thumbnail.
 //
@@ -34,6 +35,7 @@
 //
 // WARNING: Setting this to TRUE will make your app be rejected
 // in the Apple Store.
+//
 
 
 
@@ -47,6 +49,7 @@
 //
 // WARNING: Setting this to TRUE will make your app be rejected
 // in the Apple Store.
+//
 
 
 
@@ -59,6 +62,7 @@
 // released in the Apple Store, set this to TRUE and add the Metal Framework to this project.
 // Otherwise, you can safely set this function to FALSE. If this and USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE
 // are set to FALSE, the metalDevices function won't be available.
+//
 
 
 
