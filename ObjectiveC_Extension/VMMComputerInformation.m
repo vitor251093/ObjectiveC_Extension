@@ -386,7 +386,7 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 #if USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE == true
 +(NSArray<id<VMMVideoCardMetalDevice>>*)metalDevices
 {
-    if (!IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR) return @[];
+    if (!IsFrameworkMetalAvailable) return @[];
 
     @autoreleasepool
     {

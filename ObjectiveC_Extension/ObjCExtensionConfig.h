@@ -18,6 +18,7 @@
 //
 
 
+
 #define USER_NOTIFICATIONS_SHOULD_SHOW_A_BIGGER_ICON  true
 // User notifications have two different icons. A big one with the app icon
 // in the left, and a squared smaller one in the right with a thumbnail.
