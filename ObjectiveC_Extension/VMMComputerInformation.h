@@ -275,7 +275,7 @@ typedef enum VMMUserGroup
 //@property (readonly) MTLReadWriteTextureTier readWriteTextureSupport API_AVAILABLE(macos(10.13));
 //@property (readonly) MTLArgumentBuffersTier argumentBuffersSupport API_AVAILABLE(macos(10.13));
 @property (readonly, getter=areRasterOrderGroupsSupported) BOOL rasterOrderGroupsSupported API_AVAILABLE(macos(10.13));
-@property (readonly) NSUInteger currentAllocatedSize API_AVAILABLE(macos(10.13), ios(11.0));
+@property (readonly) NSUInteger currentAllocatedSize API_AVAILABLE(macos(10.13));
 
 ///// MTLCommandQueue related
 //- (nullable id <MTLCommandQueue>)newCommandQueue;
@@ -335,28 +335,28 @@ typedef enum VMMUserGroup
 - (BOOL)supportsTextureSampleCount:(NSUInteger)sampleCount;
 
 ///// MTLPixelFormat related
-//- (NSUInteger)minimumLinearTextureAlignmentForPixelFormat:(MTLPixelFormat)format API_AVAILABLE(macos(10.13), ios(11.0));
-//- (NSUInteger)minimumTextureBufferAlignmentForPixelFormat:(MTLPixelFormat)format API_AVAILABLE(macos(10.14), ios(12.0));
+//- (NSUInteger)minimumLinearTextureAlignmentForPixelFormat:(MTLPixelFormat)format API_AVAILABLE(macos(10.13));
+//- (NSUInteger)minimumTextureBufferAlignmentForPixelFormat:(MTLPixelFormat)format API_AVAILABLE(macos(10.14));
 
 @property (readonly) NSUInteger maxThreadgroupMemoryLength API_AVAILABLE(macos(10.13));
 @property (readonly) NSUInteger maxArgumentBufferSamplerCount API_AVAILABLE(macos(10.14));
 @property (readonly, getter=areProgrammableSamplePositionsSupported) BOOL programmableSamplePositionsSupported API_AVAILABLE(macos(10.13));
 
 ///// MTLSamplePosition related
-//- (void)getDefaultSamplePositions:(MTLSamplePosition *)positions count:(NSUInteger)count API_AVAILABLE(macos(10.13), ios(11.0));
+//- (void)getDefaultSamplePositions:(MTLSamplePosition *)positions count:(NSUInteger)count API_AVAILABLE(macos(10.13));
 
 ///// MTLArgumentEncoder related
-//- (nullable id <MTLArgumentEncoder>)newArgumentEncoderWithArguments:(NSArray <MTLArgumentDescriptor *> *)arguments API_AVAILABLE(macos(10.13), ios(11.0));
+//- (nullable id <MTLArgumentEncoder>)newArgumentEncoderWithArguments:(NSArray <MTLArgumentDescriptor *> *)arguments API_AVAILABLE(macos(10.13));
 
 ///// MTLIndirectCommandBuffer related
-//- (nullable id <MTLIndirectCommandBuffer>)newIndirectCommandBufferWithDescriptor:(MTLIndirectCommandBufferDescriptor*)descriptor maxCommandCount:(NSUInteger)maxCount options:(MTLResourceOptions)options API_AVAILABLE(macos(10.14), ios(12.0));
+//- (nullable id <MTLIndirectCommandBuffer>)newIndirectCommandBufferWithDescriptor:(MTLIndirectCommandBufferDescriptor*)descriptor maxCommandCount:(NSUInteger)maxCount options:(MTLResourceOptions)options API_AVAILABLE(macos(10.14));
 
 ///// MTLEvent related
-//- (nullable id <MTLEvent>)newEvent API_AVAILABLE(macos(10.14), ios(12.0));
+//- (nullable id <MTLEvent>)newEvent API_AVAILABLE(macos(10.14));
 
 ///// MTLSharedEvent related
-//- (nullable id <MTLSharedEvent>)newSharedEvent API_AVAILABLE(macos(10.14), ios(12.0));
-//- (nullable id <MTLSharedEvent>)newSharedEventWithHandle:(MTLSharedEventHandle *)sharedEventHandle API_AVAILABLE(macos(10.14), ios(12.0));
+//- (nullable id <MTLSharedEvent>)newSharedEvent API_AVAILABLE(macos(10.14));
+//- (nullable id <MTLSharedEvent>)newSharedEventWithHandle:(MTLSharedEventHandle *)sharedEventHandle API_AVAILABLE(macos(10.14));
 
 @property (readonly) NSUInteger maxBufferLength;
 
