@@ -9,34 +9,12 @@
 //  https://github.com/codykrieger/gfxCardStatus
 //
 
-#if IM_IMPORTING_THE_METAL_FRAMEWORK == true
-#import <Metal/Metal.h>
-#endif
-
 #import <OpenGL/OpenGL.h>
-#import <dlfcn.h>
 
 #import "VMMVideoCard.h"
 #import "ObjCExtensionConfig.h"
 #import "NSString+Extension.h"
 #import "VMMComputerInformation.h"
-#import "VMMLogUtility.h"
-
-@protocol VMMVideoCardMetalDevice
-
-// Equivalent to MTLDevice created to support it in macOS 10.6+
-// https://developer.apple.com/documentation/metal/mtldevice?language=objc
-
-@property(readonly, getter=isHeadless)  BOOL headless;
-@property(readonly, getter=isLowPower)  BOOL lowPower;
-@property(readonly, getter=isRemovable) BOOL removable;
-@property(readonly) uint64_t registryID;
-@property(readonly) NSString *name;
-
--(BOOL)supportsFeatureSet:(VMMVideoCardMetalFeatureSet)featureSet;
-
-@end
-
 
 @implementation VMMVideoCard
 
@@ -58,7 +36,6 @@
     {
         NSMutableDictionary* newDict = [dict mutableCopy];
         newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = [VMMVideoCard videoCardMemorySizesInMegabytesFromOpenGLAPI];
-        //newDict[VMMVideoCardTemporaryKeyMetalApiMemorySizes]  = [VMMVideoCard videoCardMemorySizesInMegabytesFromMetalAPI];
         _dictionary = newDict;
         
         nameLock                  = [[NSLock alloc] init];
@@ -141,57 +118,6 @@
         return NSOrderedSame;
     }];
     return list;
-}
-
-+(NSArray<id<VMMVideoCardMetalDevice>>*)metalDevices
-{
-#if IM_IMPORTING_THE_METAL_FRAMEWORK == TRUE
-    return MTLCopyAllDevices();
-#else
-#if I_WANT_TO_BE_RELEASED_IN_APPLE_STORE == FALSE
-    if (!IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR) return @[];
-    
-    @autoreleasepool
-    {
-        // Loading a framework dinamically is not trivial...
-        
-        // References:
-        // https://stackoverflow.com/a/24266440/4370893
-        // https://stackoverflow.com/a/21375580/4370893
-        // https://stackoverflow.com/a/1354569/4370893
-        // https://developer.apple.com/documentation/metal/fundamental_components/macos_devices/getting_different_types_of_gpus?language=objc
-        // https://developer.apple.com/documentation/metal/1433367-mtlcopyalldevices?language=objc
-        
-        void *metalFramework = dlopen("System/Library/Frameworks/Metal.framework/Metal", RTLD_NOW);
-        if (!metalFramework) return @[];
-        
-        NSArray<id>* (*metalCopyAllDevicesWithObserver)(void) = dlsym(metalFramework, "MTLCopyAllDevices");
-        NSArray<id>* deviceList = metalCopyAllDevicesWithObserver();
-        
-        if (0 != dlclose(metalFramework)) {
-            NSDebugLog(@"dlclose failed! %s\n", dlerror());
-        }
-        
-        return deviceList;
-    }
-#else
-    return @[];
-#endif
-#endif
-}
-+(NSDictionary*)videoCardMemorySizesInMegabytesFromMetalAPI
-{
-    NSArray<id<VMMVideoCardMetalDevice>>* deviceList = self.metalDevices;
-    if (deviceList.count == 0) return @{};
-    
-    NSMutableDictionary* results = [[NSMutableDictionary alloc] init];
-    for (id<VMMVideoCardMetalDevice> device in deviceList)
-    {
-        NSString* deviceName = device.name;
-        results[deviceName] = @(0);
-    }
-    
-    return results;
 }
 
 -(NSString*)vendorIDFromVendorAndVendorIDKeysOnly

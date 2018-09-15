@@ -256,6 +256,23 @@ typedef enum VMMUserGroup
     VMMUserGroupAccessibility = 90,
 } VMMUserGroup;
 
+
+@protocol VMMVideoCardMetalDevice
+
+// Equivalent to MTLDevice created to support it in macOS 10.6+
+// https://developer.apple.com/documentation/metal/mtldevice?language=objc
+
+@property(readonly, getter=isHeadless)  BOOL headless;
+@property(readonly, getter=isLowPower)  BOOL lowPower;
+@property(readonly, getter=isRemovable) BOOL removable;
+@property(readonly) uint64_t registryID;
+@property(readonly) NSString *name;
+
+-(BOOL)supportsFeatureSet:(VMMVideoCardMetalFeatureSet)featureSet;
+
+@end
+
+
 @interface VMMComputerInformation : NSObject
 
 +(nullable NSArray<NSDictionary*>*)systemProfilerItemsForDataType:(nonnull NSString*)dataType;
@@ -276,6 +293,9 @@ typedef enum VMMUserGroup
 +(nullable NSString*)macOsBuildVersion;
 
 +(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup;
+
+
++(NSArray<id<VMMVideoCardMetalDevice>>*)metalDevices;
 
 /*!
  * @discussion  Returns every available information about every available video card.

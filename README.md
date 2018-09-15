@@ -6,6 +6,8 @@ Once I started developing my skills in Objective-C, I've noticed that while many
 
 In order to improve that, I've decided to create a framework with those classes and extensions, in order to optimize my work. It should be useful for a large range of projects, so feel free to use it, and enjoy :)
 
+**IMPORTANT WARNING:** When using this project, configure the `ObjCExtensionConfig.h` file according to your needs. Don't worry, it takes just some seconds.
+
 ## Compatibility
 This is the best part of that framework. ObjectiveC_Extension is compatible with every version of macOS still compatible with Xcode 9, so it is compatible with macOS 10.6+. Obviously, that requires some workarounds and *hacks*. They will be listed in the end of that document.
 
