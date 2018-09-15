@@ -187,6 +187,7 @@
 
 #import <Foundation/Foundation.h>
 #import "VMMVideoCard.h"
+#import "ObjCExtensionConfig.h"
 
 static NSString* _Nonnull const SPAirPortDataType              = @"SPAirPortDataType";
 static NSString* _Nonnull const SPApplicationsDataType         = @"SPApplicationsDataType";
@@ -257,20 +258,110 @@ typedef enum VMMUserGroup
 } VMMUserGroup;
 
 
+#if IM_IMPORTING_THE_METAL_FRAMEWORK == false
 @protocol VMMVideoCardMetalDevice
 
 // Equivalent to MTLDevice created to support it in macOS 10.6+
 // https://developer.apple.com/documentation/metal/mtldevice?language=objc
 
-@property(readonly, getter=isHeadless)  BOOL headless;
-@property(readonly, getter=isLowPower)  BOOL lowPower;
-@property(readonly, getter=isRemovable) BOOL removable;
-@property(readonly) uint64_t registryID;
-@property(readonly) NSString *name;
+@property (nonnull, readonly) NSString *name;
+@property (readonly) uint64_t registryID API_AVAILABLE(macos(10.13)) ;
+//@property (readonly) MTLSize maxThreadsPerThreadgroup API_AVAILABLE(macos(10.11), ios(9.0));
+@property (readonly, getter=isLowPower) BOOL lowPower;
+@property (readonly, getter=isHeadless) BOOL headless;
+@property (readonly, getter=isRemovable) BOOL removable API_AVAILABLE(macos(10.13));
+@property (readonly) uint64_t recommendedMaxWorkingSetSize API_AVAILABLE(macos(10.12));
+@property (readonly, getter=isDepth24Stencil8PixelFormatSupported) BOOL depth24Stencil8PixelFormatSupported;
+//@property (readonly) MTLReadWriteTextureTier readWriteTextureSupport API_AVAILABLE(macos(10.13));
+//@property (readonly) MTLArgumentBuffersTier argumentBuffersSupport API_AVAILABLE(macos(10.13));
+@property (readonly, getter=areRasterOrderGroupsSupported) BOOL rasterOrderGroupsSupported API_AVAILABLE(macos(10.13));
+@property (readonly) NSUInteger currentAllocatedSize API_AVAILABLE(macos(10.13), ios(11.0));
 
--(BOOL)supportsFeatureSet:(VMMVideoCardMetalFeatureSet)featureSet;
+///// MTLCommandQueue related
+//- (nullable id <MTLCommandQueue>)newCommandQueue;
+//- (nullable id <MTLCommandQueue>)newCommandQueueWithMaxCommandBufferCount:(NSUInteger)maxCommandBufferCount;
+
+///// MTLSizeAndAlign related
+//- (MTLSizeAndAlign)heapTextureSizeAndAlignWithDescriptor:(MTLTextureDescriptor *)desc API_AVAILABLE(macos(10.13), ios(10.0));
+//- (MTLSizeAndAlign)heapBufferSizeAndAlignWithLength:(NSUInteger)length options:(MTLResourceOptions)options API_AVAILABLE(macos(10.13), ios(10.0));
+
+///// MTLHeap related
+//- (nullable id <MTLHeap>)newHeapWithDescriptor:(MTLHeapDescriptor *)descriptor API_AVAILABLE(macos(10.13), ios(10.0));
+
+///// MTLBuffer related
+//- (nullable id <MTLBuffer>)newBufferWithLength:(NSUInteger)length options:(MTLResourceOptions)options;
+//- (nullable id <MTLBuffer>)newBufferWithBytes:(const void *)pointer length:(NSUInteger)length options:(MTLResourceOptions)options;
+//- (nullable id <MTLBuffer>)newBufferWithBytesNoCopy:(void *)pointer length:(NSUInteger)length options:(MTLResourceOptions)options deallocator:(void (^ __nullable)(void *pointer, NSUInteger length))deallocator;
+
+///// MTLDepthStencilState related
+//- (nullable id <MTLDepthStencilState>)newDepthStencilStateWithDescriptor:(MTLDepthStencilDescriptor *)descriptor;
+
+///// MTLTexture related
+//- (nullable id <MTLTexture>)newTextureWithDescriptor:(MTLTextureDescriptor *)descriptor;
+//- (nullable id <MTLTexture>)newTextureWithDescriptor:(MTLTextureDescriptor *)descriptor iosurface:(IOSurfaceRef)iosurface plane:(NSUInteger)plane API_AVAILABLE(macos(10.11), ios(11.0));
+//- (nullable id <MTLTexture>)newSharedTextureWithDescriptor:(MTLTextureDescriptor *)descriptor API_AVAILABLE(macos(10.14)) API_UNAVAILABLE(ios);
+//- (nullable id <MTLTexture>)newSharedTextureWithHandle:(MTLSharedTextureHandle *)sharedHandle API_AVAILABLE(macos(10.14)) API_UNAVAILABLE(ios);
+
+///// MTLSamplerState related
+//- (nullable id <MTLSamplerState>)newSamplerStateWithDescriptor:(MTLSamplerDescriptor *)descriptor;
+
+///// MTLLibrary related
+//- (nullable id <MTLLibrary>)newDefaultLibrary;
+//- (nullable id <MTLLibrary>)newDefaultLibraryWithBundle:(NSBundle *)bundle error:(__autoreleasing NSError **)error API_AVAILABLE(macos(10.12), ios(10.0));
+//- (nullable id <MTLLibrary>)newLibraryWithFile:(NSString *)filepath error:(__autoreleasing NSError **)error;
+//- (nullable id <MTLLibrary>)newLibraryWithURL:(NSURL *)url error:(__autoreleasing NSError **)error API_AVAILABLE(macos(10.13), ios(11.0));
+//- (nullable id <MTLLibrary>)newLibraryWithData:(dispatch_data_t)data error:(__autoreleasing NSError **)error;
+//- (nullable id <MTLLibrary>)newLibraryWithSource:(NSString *)source options:(nullable MTLCompileOptions *)options error:(__autoreleasing NSError **)error;
+//- (void)newLibraryWithSource:(NSString *)source options:(nullable MTLCompileOptions *)options completionHandler:(MTLNewLibraryCompletionHandler)completionHandler;
+
+///// MTLRenderPipelineState related
+//- (nullable id <MTLRenderPipelineState>)newRenderPipelineStateWithDescriptor:(MTLRenderPipelineDescriptor *)descriptor error:(__autoreleasing NSError **)error;
+//- (nullable id <MTLRenderPipelineState>)newRenderPipelineStateWithDescriptor:(MTLRenderPipelineDescriptor *)descriptor options:(MTLPipelineOption)options reflection:(MTLAutoreleasedRenderPipelineReflection * __nullable)reflection error:(__autoreleasing NSError **)error;
+//- (void)newRenderPipelineStateWithDescriptor:(MTLRenderPipelineDescriptor *)descriptor completionHandler:(MTLNewRenderPipelineStateCompletionHandler)completionHandler;
+//- (void)newRenderPipelineStateWithDescriptor:(MTLRenderPipelineDescriptor *)descriptor options:(MTLPipelineOption)options completionHandler:(MTLNewRenderPipelineStateWithReflectionCompletionHandler)completionHandler;
+
+///// MTLComputePipelineState related
+//- (nullable id <MTLComputePipelineState>)newComputePipelineStateWithFunction:(id <MTLFunction>)computeFunction error:(__autoreleasing NSError **)error;
+//- (nullable id <MTLComputePipelineState>)newComputePipelineStateWithFunction:(id <MTLFunction>)computeFunction options:(MTLPipelineOption)options reflection:(MTLAutoreleasedComputePipelineReflection * __nullable)reflection error:(__autoreleasing NSError **)error;
+//- (void)newComputePipelineStateWithFunction:(id <MTLFunction>)computeFunction completionHandler:(MTLNewComputePipelineStateCompletionHandler)completionHandler;
+//- (void)newComputePipelineStateWithFunction:(id <MTLFunction>)computeFunction options:(MTLPipelineOption)options completionHandler:(MTLNewComputePipelineStateWithReflectionCompletionHandler)completionHandler;
+//- (nullable id <MTLComputePipelineState>)newComputePipelineStateWithDescriptor:(MTLComputePipelineDescriptor *)descriptor options:(MTLPipelineOption)options reflection:(MTLAutoreleasedComputePipelineReflection * __nullable)reflection error:(__autoreleasing NSError **)error API_AVAILABLE(macos(10.11), ios(9.0));
+//- (void)newComputePipelineStateWithDescriptor:(MTLComputePipelineDescriptor *)descriptor options:(MTLPipelineOption)options completionHandler:(MTLNewComputePipelineStateWithReflectionCompletionHandler)completionHandler API_AVAILABLE(macos(10.11), ios(9.0));
+
+///// MTLFence related
+//- (nullable id <MTLFence>)newFence API_AVAILABLE(macos(10.13), ios(10.0));
+
+- (BOOL)supportsFeatureSet:(VMMVideoCardMetalFeatureSet)featureSet;
+- (BOOL)supportsTextureSampleCount:(NSUInteger)sampleCount;
+
+///// MTLPixelFormat related
+//- (NSUInteger)minimumLinearTextureAlignmentForPixelFormat:(MTLPixelFormat)format API_AVAILABLE(macos(10.13), ios(11.0));
+//- (NSUInteger)minimumTextureBufferAlignmentForPixelFormat:(MTLPixelFormat)format API_AVAILABLE(macos(10.14), ios(12.0));
+
+@property (readonly) NSUInteger maxThreadgroupMemoryLength API_AVAILABLE(macos(10.13));
+@property (readonly) NSUInteger maxArgumentBufferSamplerCount API_AVAILABLE(macos(10.14));
+@property (readonly, getter=areProgrammableSamplePositionsSupported) BOOL programmableSamplePositionsSupported API_AVAILABLE(macos(10.13));
+
+///// MTLSamplePosition related
+//- (void)getDefaultSamplePositions:(MTLSamplePosition *)positions count:(NSUInteger)count API_AVAILABLE(macos(10.13), ios(11.0));
+
+///// MTLArgumentEncoder related
+//- (nullable id <MTLArgumentEncoder>)newArgumentEncoderWithArguments:(NSArray <MTLArgumentDescriptor *> *)arguments API_AVAILABLE(macos(10.13), ios(11.0));
+
+///// MTLIndirectCommandBuffer related
+//- (nullable id <MTLIndirectCommandBuffer>)newIndirectCommandBufferWithDescriptor:(MTLIndirectCommandBufferDescriptor*)descriptor maxCommandCount:(NSUInteger)maxCount options:(MTLResourceOptions)options API_AVAILABLE(macos(10.14), ios(12.0));
+
+///// MTLEvent related
+//- (nullable id <MTLEvent>)newEvent API_AVAILABLE(macos(10.14), ios(12.0));
+
+///// MTLSharedEvent related
+//- (nullable id <MTLSharedEvent>)newSharedEvent API_AVAILABLE(macos(10.14), ios(12.0));
+//- (nullable id <MTLSharedEvent>)newSharedEventWithHandle:(MTLSharedEventHandle *)sharedEventHandle API_AVAILABLE(macos(10.14), ios(12.0));
+
+@property (readonly) NSUInteger maxBufferLength;
 
 @end
+#endif
 
 
 @interface VMMComputerInformation : NSObject
@@ -295,7 +386,11 @@ typedef enum VMMUserGroup
 +(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup;
 
 
+#if IM_IMPORTING_THE_METAL_FRAMEWORK == true
++(NSArray<id<MTLDevice>>*)metalDevices;
+#else
 +(NSArray<id<VMMVideoCardMetalDevice>>*)metalDevices;
+#endif
 
 /*!
  * @discussion  Returns every available information about every available video card.

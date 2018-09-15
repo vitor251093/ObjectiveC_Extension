@@ -27,6 +27,7 @@
 		4E5A45DA1FC9FD7800FCEB42 /* VMMDockProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5A45D81FC9FD7800FCEB42 /* VMMDockProgressIndicator.m */; };
 		4E5A45DD1FCA103800FCEB42 /* NSBundle+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E5A45DB1FCA103800FCEB42 /* NSBundle+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E5A45DE1FCA103800FCEB42 /* NSBundle+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5A45DC1FCA103800FCEB42 /* NSBundle+Extension.m */; };
+		4E66CA72214D54CF004293A5 /* ObjCExtensionConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EAA1FB9212D8A27006F1445 /* ObjCExtensionConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E6C51111F7E8EB700A187E9 /* ObjectiveC_Extension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6C51071F7E8EB700A187E9 /* ObjectiveC_Extension.framework */; };
 		4E6C51161F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C51151F7E8EB700A187E9 /* ObjectiveC_ExtensionTests.m */; };
 		4E6C51181F7E8EB700A187E9 /* ObjectiveC_Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E6C510A1F7E8EB700A187E9 /* ObjectiveC_Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -498,6 +499,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E66CA72214D54CF004293A5 /* ObjCExtensionConfig.h in Headers */,
 				4E6C521F1F7E911000A187E9 /* NSAlert+Extension.h in Headers */,
 				4E9986701FEEC85600E434E4 /* NSApplication+Extension.h in Headers */,
 				4E6C52211F7E911000A187E9 /* NSArray+Extension.h in Headers */,

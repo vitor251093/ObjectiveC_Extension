@@ -16,6 +16,8 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <ObjectiveC_Extension/PublicHeader.h>
 
+#import <ObjectiveC_Extension/ObjCExtensionConfig.h>
+
 // Devices
 #import <ObjectiveC_Extension/VMMVirtualKeycode.h>
 #import <ObjectiveC_Extension/VMMDeviceObserver.h>
