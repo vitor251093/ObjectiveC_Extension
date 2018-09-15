@@ -258,7 +258,7 @@ typedef enum VMMUserGroup
 } VMMUserGroup;
 
 
-#if IM_IMPORTING_THE_METAL_FRAMEWORK == false
+#if USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE == true
 @protocol VMMVideoCardMetalDevice
 
 // Equivalent to MTLDevice created to support it in macOS 10.6+
@@ -389,7 +389,9 @@ typedef enum VMMUserGroup
 #if IM_IMPORTING_THE_METAL_FRAMEWORK == true
 +(NSArray<id<MTLDevice>>*)metalDevices;
 #else
+#if USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE == true
 +(NSArray<id<VMMVideoCardMetalDevice>>*)metalDevices;
+#endif
 #endif
 
 /*!

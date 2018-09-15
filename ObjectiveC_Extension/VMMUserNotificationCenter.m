@@ -124,27 +124,33 @@ static VMMUserNotificationCenter *_sharedInstance;
     notification.informativeText = message;
     notification.soundName = NSUserNotificationDefaultSoundName;
     notification.userInfo = info ? @{NOTIFICATION_UTILITY_SHARED_DICTIONARY_KEY:info} : @{};
-    
-#if I_WANT_TO_BE_RELEASED_IN_APPLE_STORE == FALSE
+
     if (icon != nil)
     {
-        @try
-        {
-            [notification setValue:icon   forKey:@"_identityImage"];
-            [notification setValue:@FALSE forKey:@"_identityImageHasBorder"];
-        }
-        @catch (NSException* exception)
-        {
-            // Avoiding API exception in case something changes in the future
-            
+        #if USER_NOTIFICATIONS_SHOULD_SHOW_A_BIGGER_ICON == TRUE
+            @try
+            {
+                [notification setValue:icon   forKey:@"_identityImage"];
+                [notification setValue:@FALSE forKey:@"_identityImageHasBorder"];
+            }
+            @catch (NSException* exception)
+            {
+                // Avoiding API exception in case something changes in the future
+                
+                // That feature is only available from macOS 10.9 and beyond
+                if ([notification respondsToSelector:@selector(setContentImage:)])
+                {
+                    notification.contentImage = icon;
+                }
+            }
+        #else
             // That feature is only available from macOS 10.9 and beyond
             if ([notification respondsToSelector:@selector(setContentImage:)])
             {
                 notification.contentImage = icon;
             }
-        }
+        #endif
     }
-#endif
     
     if (actionButton != nil)
     {

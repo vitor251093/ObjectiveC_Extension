@@ -383,38 +383,38 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     return MTLCopyAllDevices();
 }
 #else
+#if USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE == true
 +(NSArray<id<VMMVideoCardMetalDevice>>*)metalDevices
 {
-    #if I_WANT_TO_BE_RELEASED_IN_APPLE_STORE == false
-        if (!IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR) return @[];
-    
-        @autoreleasepool
-        {
-            // Loading a framework dinamically is not trivial...
-            
-            // References:
-            // https://stackoverflow.com/a/24266440/4370893
-            // https://stackoverflow.com/a/21375580/4370893
-            // https://stackoverflow.com/a/1354569/4370893
-            // https://developer.apple.com/documentation/metal/fundamental_components/macos_devices/getting_different_types_of_gpus?language=objc
-            // https://developer.apple.com/documentation/metal/1433367-mtlcopyalldevices?language=objc
-            
-            void *metalFramework = dlopen("System/Library/Frameworks/Metal.framework/Metal", RTLD_NOW);
-            if (!metalFramework) return @[];
-            
-            NSArray<id>* (*metalCopyAllDevicesWithObserver)(void) = dlsym(metalFramework, "MTLCopyAllDevices");
-            NSArray<id>* deviceList = metalCopyAllDevicesWithObserver();
-            
-            if (0 != dlclose(metalFramework)) {
-                NSDebugLog(@"dlclose failed! %s\n", dlerror());
-            }
-            
-            return deviceList;
+    if (!IS_SYSTEM_MAC_OS_10_11_OR_SUPERIOR) return @[];
+
+    @autoreleasepool
+    {
+        // Loading a framework dinamically is not trivial...
+        
+        // References:
+        // https://stackoverflow.com/a/24266440/4370893
+        // https://stackoverflow.com/a/21375580/4370893
+        // https://stackoverflow.com/a/1354569/4370893
+        // https://developer.apple.com/documentation/metal/fundamental_components/macos_devices/getting_different_types_of_gpus?language=objc
+        // https://developer.apple.com/documentation/metal/1433367-mtlcopyalldevices?language=objc
+        
+        void *metalFramework = dlopen("System/Library/Frameworks/Metal.framework/Metal", RTLD_NOW);
+        if (!metalFramework) return @[];
+        
+        NSArray<id>* (*metalCopyAllDevicesWithObserver)(void) = dlsym(metalFramework, "MTLCopyAllDevices");
+        NSArray<id>* deviceList = metalCopyAllDevicesWithObserver();
+        
+        if (0 != dlclose(metalFramework)) {
+            NSDebugLog(@"dlclose failed! %s\n", dlerror());
         }
-    #else
-        return @[];
-    #endif
+        
+        return deviceList;
+    }
+
+    return @[];
 }
+#endif
 #endif
 
 
