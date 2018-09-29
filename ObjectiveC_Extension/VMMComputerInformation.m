@@ -687,6 +687,8 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                                 inOrder:@[VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDIntel]];
             [videoCards sortBySelector:@selector(bus)
                                 inOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
+            
+            [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"kextLoaded" ascending:NO]]];
         }
     });
     
@@ -698,6 +700,14 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     NSArray* videoCards = [self videoCards];
     if (videoCards == nil || videoCards.count == 0) return nil;
     return videoCards.firstObject;
+}
++(NSArray<VMMVideoCard*>*)videoCardsWithMissingKext {
+    NSMutableArray<VMMVideoCard*>* vcs = [[NSMutableArray alloc] init];
+    NSArray<VMMVideoCard*>* videoCards = [self videoCards];
+    for (VMMVideoCard* vc in videoCards) {
+        if (!vc.kextLoaded) [vcs addObject:vc];
+    }
+    return vcs;
 }
 +(BOOL)anyVideoCardDictionaryIsCompleteInArray:(NSArray<VMMVideoCard*>* _Nonnull)videoCards
 {

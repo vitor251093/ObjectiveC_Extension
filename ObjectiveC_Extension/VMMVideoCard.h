@@ -25,6 +25,9 @@ static NSString * _Nonnull const VMMVideoCardVendorIDKey =                   @"s
 static NSString * _Nonnull const VMMVideoCardVendorKey =                     @"spdisplays_vendor";
 static NSString * _Nonnull const VMMVideoCardDeviceIDKey =                   @"spdisplays_device-id";   // eg. '0x0046'
 static NSString * _Nonnull const VMMVideoCardMetalSupportKey =               @"spdisplays_metal";
+static NSString * _Nonnull const VMMVideoCardKextInfoKey =                   @"sppci_kextinfo"; // eg. 'sppci_kextnotloaded'
+
+static NSString * _Nonnull const VMMVideoCardKextInfoNotLoaded =  @"sppci_kextnotloaded";
 
 static NSString * _Nonnull const VMMVideoCardTypeIntelHD =        @"Intel HD";
 static NSString * _Nonnull const VMMVideoCardTypeIntelUHD =       @"Intel UHD";
@@ -133,6 +136,8 @@ typedef NS_ENUM(NSUInteger, VMMVideoCardMetalFeatureSet)
 @property (nonatomic, strong, readonly) NSString* _Nullable vendorID;
 @property (nonatomic, strong, readonly) NSString* _Nullable vendor;
 @property (nonatomic, strong, readonly) NSNumber* _Nullable memorySizeInMegabytes;
+
+-(BOOL)kextLoaded;
 
 -(BOOL)supportsMetal;
 -(VMMVideoCardMetalFeatureSet)metalFeatureSet;

@@ -582,6 +582,13 @@
     }
 }
 
+-(BOOL)kextLoaded {
+    NSString* kextInfo = self.dictionary[VMMVideoCardKextInfoKey];
+    if (kextInfo == nil) return true;
+    
+    return ![kextInfo isEqualToString:VMMVideoCardKextInfoNotLoaded];
+}
+
 -(BOOL)supportsMetal
 {
     // TODO: Metal is only supported in macOS 10.11+. This should be added here?
