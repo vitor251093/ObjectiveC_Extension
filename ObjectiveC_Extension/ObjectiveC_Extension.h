@@ -60,6 +60,7 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 #import <ObjectiveC_Extension/NKFTPManager.h>
 #import <ObjectiveC_Extension/VMMComputerInformation.h>
 #import <ObjectiveC_Extension/VMMVideoCard.h>
+#import <ObjectiveC_Extension/VMMVideoCardManager.h>
 #import <ObjectiveC_Extension/VMMDockProgressIndicator.h>
 #import <ObjectiveC_Extension/VMMLocalizationUtility.h>
 #import <ObjectiveC_Extension/VMMLogUtility.h>

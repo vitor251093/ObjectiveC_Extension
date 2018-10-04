@@ -186,7 +186,6 @@
 
 
 #import <Foundation/Foundation.h>
-#import "VMMVideoCard.h"
 #import "ObjCExtensionConfig.h"
 
 static NSString* _Nonnull const SPAirPortDataType              = @"SPAirPortDataType";
@@ -258,8 +257,26 @@ typedef enum VMMUserGroup
 } VMMUserGroup;
 
 
+// Equivalents to their MTLFeatureSet_macOS_GPUFamily*_v* counterparts
+typedef NS_ENUM(NSUInteger, VMMVideoCardMetalFeatureSet)
+{
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamilyNone    = 0,   // In case it has no Metal support
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamilyUnknown = 999, // In case it can't be deduced
+    
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v1 = 1000, // Introduced in macOS 10.11
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v2 = 1001, // Introduced in macOS 10.12
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v3 = 1003, // Introduced in macOS 10.13
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v4 = 1004, // Introduced in macOS 10.14
+    VMMVideoCardMetalFeatureSet_macOS_GPUFamily2_v1 = 1005  // Introduced in macOS 10.14
+};
+// The first number defines the GPU family. The second one defines the macOS support version.
+// References:
+// https://developer.apple.com/documentation/metal/mtlfeatureset?language=objc
+// https://developer.apple.com/metal/Metal-Feature-Set-Tables.pdf
+
+
 #if USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE == true
-@protocol VMMVideoCardMetalDevice
+@protocol VMMMetalDevice
 
 // Equivalent to MTLDevice created to support it in macOS 10.6+
 // https://developer.apple.com/documentation/metal/mtldevice?language=objc
@@ -390,27 +407,9 @@ typedef enum VMMUserGroup
 +(NSArray<id<MTLDevice>>*)metalDevices;
 #else
 #if USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE == true
-+(NSArray<id<VMMVideoCardMetalDevice>>*)metalDevices;
++(NSArray<id<VMMMetalDevice>>*)metalDevices;
 #endif
 #endif
-
-/*!
- * @discussion  Returns every available information about every available video card.
- * @return      A VMMVideoCard array with the system_profiler information related with every available video card.
- */
-+(NSArray<VMMVideoCard*>* _Nonnull)videoCards;
-
-/*!
- * @discussion  Returns every available information about the main video card.
- * @return      A VMMVideoCard with the system_profiler information related with the main video card.
- */
-+(VMMVideoCard* _Nullable)mainVideoCard;
-
-/*!
- * @discussion  Returns every available information about every unidentified video card.
- * @return      A VMMVideoCard array with the system_profiler information related with every unidentified video card.
- */
-+(NSArray<VMMVideoCard*>*)videoCardsWithMissingKext;
 
 @end
 

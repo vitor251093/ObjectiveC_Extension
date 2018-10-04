@@ -102,6 +102,8 @@
 		4E6C52881F7EA42700A187E9 /* NSArrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52851F7EA42700A187E9 /* NSArrayTests.m */; };
 		4E6C52891F7EA42700A187E9 /* NSStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6C52861F7EA42700A187E9 /* NSStringTests.m */; };
 		4E6C52941F7EB50300A187E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4E6C52961F7EB50300A187E9 /* Localizable.strings */; };
+		4E7D41B921665F2C001BEADB /* VMMVideoCardManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E7D41B721665F2C001BEADB /* VMMVideoCardManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4E7D41BA21665F2C001BEADB /* VMMVideoCardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7D41B821665F2C001BEADB /* VMMVideoCardManager.m */; };
 		4E9986701FEEC85600E434E4 /* NSApplication+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = 4E99866E1FEEC85600E434E4 /* NSApplication+Extension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4E9986711FEEC85600E434E4 /* NSApplication+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E99866F1FEEC85600E434E4 /* NSApplication+Extension.m */; };
 		4EA035A81F9532E10059C2C5 /* VMMKeyCaptureField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -237,6 +239,8 @@
 		4E6C52981F7EB52100A187E9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4E6C52991F7EB52500A187E9 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		4E6C529A1F7EB52A00A187E9 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4E7D41B721665F2C001BEADB /* VMMVideoCardManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMVideoCardManager.h; sourceTree = "<group>"; };
+		4E7D41B821665F2C001BEADB /* VMMVideoCardManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMVideoCardManager.m; sourceTree = "<group>"; };
 		4E99866E1FEEC85600E434E4 /* NSApplication+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSApplication+Extension.h"; sourceTree = "<group>"; };
 		4E99866F1FEEC85600E434E4 /* NSApplication+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+Extension.m"; sourceTree = "<group>"; };
 		4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMKeyCaptureField.h; sourceTree = "<group>"; };
@@ -429,10 +433,12 @@
 			children = (
 				4E6C52611F7E953A00A187E9 /* NKFTPManager.h */,
 				4E6C52621F7E953A00A187E9 /* NKFTPManager.m */,
-				4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */,
-				4E6C52701F7E954D00A187E9 /* VMMComputerInformation.m */,
+				4E7D41B721665F2C001BEADB /* VMMVideoCardManager.h */,
+				4E7D41B821665F2C001BEADB /* VMMVideoCardManager.m */,
 				4EE52845205EC3560005F335 /* VMMVideoCard.h */,
 				4EE52846205EC3560005F335 /* VMMVideoCard.m */,
+				4E6C526F1F7E954D00A187E9 /* VMMComputerInformation.h */,
+				4E6C52701F7E954D00A187E9 /* VMMComputerInformation.m */,
 				4E0DD3B81FD878F90033AA72 /* VMMLocalizationUtility.h */,
 				4E6C52631F7E953A00A187E9 /* VMMLogUtility.h */,
 				4EFA51951FE9710B002D68FC /* VMMLogUtility.m */,
@@ -546,6 +552,7 @@
 				4E3BD7031FAD2FCF00AF8418 /* VMMUUID.h in Headers */,
 				4E6C526D1F7E953A00A187E9 /* VMMVersion.h in Headers */,
 				4EE52847205EC3560005F335 /* VMMVideoCard.h in Headers */,
+				4E7D41B921665F2C001BEADB /* VMMVideoCardManager.h in Headers */,
 				4E1181591FB200E800D8029F /* VMMView.h in Headers */,
 				4E6C51EA1F7E90A300A187E9 /* VMMVirtualKeycode.h in Headers */,
 				4E3771061FA7A57C00E2F511 /* VMMWebView.h in Headers */,
@@ -688,6 +695,7 @@
 				4E9986711FEEC85600E434E4 /* NSApplication+Extension.m in Sources */,
 				4E6C52691F7E953A00A187E9 /* NKFTPManager.m in Sources */,
 				4E6C52721F7E954D00A187E9 /* VMMComputerInformation.m in Sources */,
+				4E7D41BA21665F2C001BEADB /* VMMVideoCardManager.m in Sources */,
 				4E6C52361F7E911000A187E9 /* NSMutableAttributedString+Extension.m in Sources */,
 				4E6C52221F7E911000A187E9 /* NSArray+Extension.m in Sources */,
 				4E6C51ED1F7E90A300A187E9 /* VMMDeviceObserver.m in Sources */,

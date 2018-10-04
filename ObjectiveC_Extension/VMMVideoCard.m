@@ -14,7 +14,7 @@
 #import "VMMVideoCard.h"
 #import "ObjCExtensionConfig.h"
 #import "NSString+Extension.h"
-#import "VMMComputerInformation.h"
+#import "VMMVideoCardManager.h"
 
 @implementation VMMVideoCard
 
@@ -452,7 +452,7 @@
             
             if (memSizeInt < VMMVideoCardMemoryMinimumSize)
             {
-                NSInteger numberOfVideoCards = [VMMComputerInformation videoCards].count;
+                NSInteger numberOfVideoCards = [VMMVideoCardManager videoCards].count;
                 if (numberOfVideoCards == 1)
                 {
                     NSArray<NSNumber*>* apiValues = _dictionary[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes];
