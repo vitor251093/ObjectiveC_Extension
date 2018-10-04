@@ -312,13 +312,4 @@
     return videoCards.firstObject;
 }
 
-+(NSArray<VMMVideoCard*>*)videoCardsWithMissingKext {
-    NSMutableArray<VMMVideoCard*>* vcs = [[NSMutableArray alloc] init];
-    NSArray<VMMVideoCard*>* videoCards = [self videoCards];
-    for (VMMVideoCard* vc in videoCards) {
-        if (!vc.kextLoaded) [vcs addObject:vc];
-    }
-    return vcs;
-}
-
 @end
