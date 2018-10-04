@@ -632,7 +632,12 @@
         NSString* type = self.type;
         if (type == nil) type = self.vendor;
         if (type == nil) type = self.vendorID;
-        graphicCard = [NSString stringWithFormat:@"%@ %@",type,self.deviceID];
+        if (type == nil) type = @"Unknown";
+        
+        NSString* deviceID = self.deviceID;
+        if (deviceID == nil) deviceID = @"unidentified video card";
+        
+        graphicCard = [NSString stringWithFormat:@"%@ %@",type,deviceID];
     }
     
     NSNumber* graphicCardSizeNumber = self.memorySizeInMegabytes;
