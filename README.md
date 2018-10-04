@@ -660,7 +660,7 @@ Memory size of the video card.
 Returns true if the video card supports Metal.
 
 ```objectivec
--(VMMVideoCardMetalFeatureSet)metalFeatureSet;
+-(VMMMetalFeatureSet)metalFeatureSet;
 ```
 
 Returns the MTLFeatureSet value of the video card, without using the Metal framework. Although, the returned values are equivalent to their MTLFeatureSet counterparts.

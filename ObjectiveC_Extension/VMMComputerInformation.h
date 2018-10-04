@@ -258,16 +258,16 @@ typedef enum VMMUserGroup
 
 
 // Equivalents to their MTLFeatureSet_macOS_GPUFamily*_v* counterparts
-typedef NS_ENUM(NSUInteger, VMMVideoCardMetalFeatureSet)
+typedef NS_ENUM(NSUInteger, VMMMetalFeatureSet)
 {
-    VMMVideoCardMetalFeatureSet_macOS_GPUFamilyNone    = 0,   // In case it has no Metal support
-    VMMVideoCardMetalFeatureSet_macOS_GPUFamilyUnknown = 999, // In case it can't be deduced
+    VMMMetalFeatureSet_macOS_GPUFamilyNone    = 0,   // In case it has no Metal support
+    VMMMetalFeatureSet_macOS_GPUFamilyUnknown = 999, // In case it can't be deduced
     
-    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v1 = 1000, // Introduced in macOS 10.11
-    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v2 = 1001, // Introduced in macOS 10.12
-    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v3 = 1003, // Introduced in macOS 10.13
-    VMMVideoCardMetalFeatureSet_macOS_GPUFamily1_v4 = 1004, // Introduced in macOS 10.14
-    VMMVideoCardMetalFeatureSet_macOS_GPUFamily2_v1 = 1005  // Introduced in macOS 10.14
+    VMMMetalFeatureSet_macOS_GPUFamily1_v1 = 1000, // Introduced in macOS 10.11
+    VMMMetalFeatureSet_macOS_GPUFamily1_v2 = 1001, // Introduced in macOS 10.12
+    VMMMetalFeatureSet_macOS_GPUFamily1_v3 = 1003, // Introduced in macOS 10.13
+    VMMMetalFeatureSet_macOS_GPUFamily1_v4 = 1004, // Introduced in macOS 10.14
+    VMMMetalFeatureSet_macOS_GPUFamily2_v1 = 1005  // Introduced in macOS 10.14
 };
 // The first number defines the GPU family. The second one defines the macOS support version.
 // References:
@@ -348,7 +348,7 @@ typedef NS_ENUM(NSUInteger, VMMVideoCardMetalFeatureSet)
 ///// MTLFence related
 //- (nullable id <MTLFence>)newFence API_AVAILABLE(macos(10.13));
 
-- (BOOL)supportsFeatureSet:(VMMVideoCardMetalFeatureSet)featureSet;
+- (BOOL)supportsFeatureSet:(VMMMetalFeatureSet)featureSet;
 - (BOOL)supportsTextureSampleCount:(NSUInteger)sampleCount;
 
 ///// MTLPixelFormat related
