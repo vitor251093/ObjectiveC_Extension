@@ -659,16 +659,16 @@
     return [validVendorIDs containsObject:vendorID];
 }
 
--(BOOL)hasMemorySize
+-(BOOL)hasValidMemorySize
 {
     NSNumber* memorySize = self.memorySizeInMegabytes;
     return memorySize != nil && memorySize.unsignedIntegerValue >= VMMVideoCardMemoryMinimumSize;
 }
 -(BOOL)isComplete
 {
-    if (self.name          == nil)   return false;
-    if (self.deviceID      == nil)   return false;
-    if (self.hasMemorySize == false) return false;
+    if (self.name     == nil) return false;
+    if (self.deviceID == nil) return false;
+    if (self.hasValidMemorySize == false) return false;
     return true;
 }
 -(BOOL)isVirtualMachineVideoCard
