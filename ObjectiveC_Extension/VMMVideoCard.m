@@ -98,7 +98,12 @@
     // problem may still happen due to the fact that the OpenGL framework is being loaded.
     //
     // TODO: A solution similar to the one that has been applied to use Metal only if the
-    // framework is available should be used here as well.
+    // framework is available should be used here as well. The following functions would
+    // need support:
+    //
+    // - CGLQueryRendererInfo
+    // - CGLDescribeRenderer
+    // - CGLDestroyRendererInfo
     //
     // References:
     // https://www.anandtech.com/show/12894/apple-deprecates-opengl-across-all-oses
