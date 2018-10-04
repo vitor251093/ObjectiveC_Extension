@@ -92,6 +92,20 @@
 
 +(NSArray<NSNumber*>*)videoCardMemorySizesInMegabytesFromOpenGLAPI
 {
+    //
+    // OpenGL is deprecated in macOS 10.14, and shouldn't even exist in macOS 10.15/11.0;
+    // The line below would just be a try to avoid problems in macOS 10.15/11.0, but the
+    // problem may still happen due to the fact that the OpenGL framework is being loaded.
+    //
+    // TODO: A solution similar to the one that has been applied to use Metal only if the
+    // framework is available should be used here as well.
+    //
+    // References:
+    // https://www.anandtech.com/show/12894/apple-deprecates-opengl-across-all-oses
+    // https://appleinsider.com/articles/18/06/04/opengl-opencl-deprecated-in-favor-of-metal-2-in-macos-1014-mojave
+    //
+    //if ([VMMComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.15"]) return @[];
+    
     // Reference:
     // https://developer.apple.com/library/content/qa/qa1168/_index.html
 
