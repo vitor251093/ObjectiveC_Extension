@@ -9,12 +9,30 @@
 //  https://github.com/codykrieger/gfxCardStatus
 //
 
-#import <OpenGL/OpenGL.h>
+
 
 #import "VMMVideoCard.h"
 #import "ObjCExtensionConfig.h"
 #import "NSString+Extension.h"
 #import "VMMVideoCardManager.h"
+
+#if IM_IMPORTING_THE_OPENGL_FRAMEWORK == true
+    #import <OpenGL/OpenGL.h>
+#else
+    #import <dlfcn.h>
+    #import "VMMLogUtility.h"
+
+    #define kCGLRPVideoMemoryMegabytes 131
+    #define kCGLRPVideoMemory          120
+
+    struct _CGLRendererInfoObject {};
+    typedef struct _CGLRendererInfoObject  *CGLRendererInfoObj;
+
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wstrict-prototypes"
+    typedef void* (*arbitrary)();
+    #pragma clang diagnostic pop
+#endif
 
 @implementation VMMVideoCard
 
@@ -35,7 +53,11 @@
     if (self)
     {
         NSMutableDictionary* newDict = [dict mutableCopy];
-        newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = [VMMVideoCard videoCardMemorySizesInMegabytesFromOpenGLAPI];
+        
+        #if USE_THE_OPENGL_FRAMEWORK_WHEN_AVAILABLE == true || IM_IMPORTING_THE_OPENGL_FRAMEWORK == true
+            newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = [VMMVideoCard videoCardMemorySizesInMegabytesFromOpenGLAPI];
+        #endif
+        
         _dictionary = newDict;
         
         nameLock                  = [[NSLock alloc] init];
@@ -90,37 +112,19 @@
     return nil;
 }
 
+#if IM_IMPORTING_THE_OPENGL_FRAMEWORK == true
 +(NSArray<NSNumber*>*)videoCardMemorySizesInMegabytesFromOpenGLAPI
 {
-    //
-    // OpenGL is deprecated in macOS 10.14, and shouldn't even exist in macOS 10.15/11.0;
-    // The line below would just be a try to avoid problems in macOS 10.15/11.0, but the
-    // problem may still happen due to the fact that the OpenGL framework is being loaded.
-    //
-    // TODO: A solution similar to the one that has been applied to use Metal only if the
-    // framework is available should be used here as well. The following functions would
-    // need support:
-    //
-    // - CGLQueryRendererInfo
-    // - CGLDescribeRenderer
-    // - CGLDestroyRendererInfo
-    //
-    // References:
-    // https://www.anandtech.com/show/12894/apple-deprecates-opengl-across-all-oses
-    // https://appleinsider.com/articles/18/06/04/opengl-opencl-deprecated-in-favor-of-metal-2-in-macos-1014-mojave
-    //
-    //if ([VMMComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.15"]) return @[];
-    
     // Reference:
     // https://developer.apple.com/library/content/qa/qa1168/_index.html
-
-    int32_t i, nrend = 0;
-    int32_t videoMemory = 0;
-    const int32_t displayMask = 0xFFFFFFFF;
+    
+    GLint i, nrend = 0;
+    GLint videoMemory = 0;
+    const GLint displayMask = 0xFFFFFFFF;
     NSMutableArray<NSNumber*>* list = [[NSMutableArray alloc] init];
     
     CGLRendererInfoObj rend;
-    CGLQueryRendererInfo((uint32_t)displayMask, &rend, &nrend);
+    CGLQueryRendererInfo((GLuint)displayMask, &rend, &nrend);
     for (i = 0; i < nrend; i++)
     {
         videoMemory = 0;
@@ -138,6 +142,60 @@
     }];
     return list;
 }
+#else
+#if USE_THE_OPENGL_FRAMEWORK_WHEN_AVAILABLE == true
++(NSArray<NSNumber*>*)videoCardMemorySizesInMegabytesFromOpenGLAPI
+{
+    NSMutableArray<NSNumber*>* list = [[NSMutableArray alloc] init];
+    
+    @autoreleasepool
+    {
+        // Loading a framework dinamically is not trivial... References:
+        // Loading Objective-C Class:   https://stackoverflow.com/a/24266440/4370893
+        // Loading C int function:      https://stackoverflow.com/a/21375580/4370893
+        // Loading C/C++ void function: https://stackoverflow.com/a/1354569/4370893
+        
+        void *openglFramework = dlopen("System/Library/Frameworks/OpenGL.framework/OpenGL", RTLD_NOW);
+        if (!openglFramework) return @[];
+        
+        int32_t i, nrend = 0;
+        int32_t videoMemory = 0;
+        const int32_t displayMask = 0xFFFFFFFF;
+        
+        CGLRendererInfoObj rend;
+        
+        arbitrary queryRendererInfo;
+        *(void**)(&queryRendererInfo) = dlsym(openglFramework, "CGLQueryRendererInfo");
+        arbitrary describeRenderer;
+        *(void**)(&describeRenderer) = dlsym(openglFramework, "CGLDescribeRenderer");
+        arbitrary destroyRendererInfo;
+        *(void**)(&destroyRendererInfo) = dlsym(openglFramework, "CGLDestroyRendererInfo");
+        
+        queryRendererInfo((uint32_t)displayMask, &rend, &nrend);
+        for (i = 0; i < nrend; i++)
+        {
+            videoMemory = 0;
+            describeRenderer(rend, i, (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR ? kCGLRPVideoMemoryMegabytes : kCGLRPVideoMemory), &videoMemory);
+            if (videoMemory != 0) [list addObject:@(videoMemory)];
+        }
+        destroyRendererInfo(rend);
+        
+        if (0 != dlclose(openglFramework)) {
+            NSDebugLog(@"dlclose failed! %s\n", dlerror());
+        }
+    }
+    
+    [list sortUsingComparator:^NSComparisonResult(NSNumber*  _Nonnull obj1, NSNumber*  _Nonnull obj2) {
+        NSInteger value1 = obj1.integerValue;
+        NSInteger value2 = obj2.integerValue;
+        if (value1 > value2) return NSOrderedAscending;
+        if (value1 < value2) return NSOrderedDescending;
+        return NSOrderedSame;
+    }];
+    return list;
+}
+#endif
+#endif
 
 -(NSString*)vendorIDFromVendorAndVendorIDKeysOnly
 {

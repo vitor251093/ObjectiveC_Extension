@@ -16,11 +16,11 @@
     #import <Metal/Metal.h>
 #else
     #import <dlfcn.h>
+    #import "VMMLogUtility.h"
 #endif
 
 #import "VMMVersion.h"
 #import "VMMPropertyList.h"
-#import "VMMLogUtility.h"
 
 #import "NSTask+Extension.h"
 #import "NSArray+Extension.h"
@@ -380,6 +380,10 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 #if IM_IMPORTING_THE_METAL_FRAMEWORK == true
 +(nonnull NSArray<id<MTLDevice>>*)metalDevices
 {
+    // References:
+    // https://developer.apple.com/documentation/metal/fundamental_components/macos_devices/getting_different_types_of_gpus?language=objc
+    // https://developer.apple.com/documentation/metal/1433367-mtlcopyalldevices?language=objc
+    
     return MTLCopyAllDevices();
 }
 #else
@@ -390,14 +394,10 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 
     @autoreleasepool
     {
-        // Loading a framework dinamically is not trivial...
-        
-        // References:
-        // https://stackoverflow.com/a/24266440/4370893
-        // https://stackoverflow.com/a/21375580/4370893
-        // https://stackoverflow.com/a/1354569/4370893
-        // https://developer.apple.com/documentation/metal/fundamental_components/macos_devices/getting_different_types_of_gpus?language=objc
-        // https://developer.apple.com/documentation/metal/1433367-mtlcopyalldevices?language=objc
+        // Loading a framework dinamically is not trivial... References:
+        // Loading Objective-C Class:   https://stackoverflow.com/a/24266440/4370893
+        // Loading C int function:      https://stackoverflow.com/a/21375580/4370893
+        // Loading C/C++ void function: https://stackoverflow.com/a/1354569/4370893
         
         void *metalFramework = dlopen("System/Library/Frameworks/Metal.framework/Metal", RTLD_NOW);
         if (!metalFramework) return @[];
