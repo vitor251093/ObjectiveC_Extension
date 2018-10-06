@@ -378,13 +378,13 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 
 
 #if IM_IMPORTING_THE_METAL_FRAMEWORK == true
-+(NSArray<id<MTLDevice>>*)metalDevices
++(nonnull NSArray<id<MTLDevice>>*)metalDevices
 {
     return MTLCopyAllDevices();
 }
 #else
 #if USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE == true
-+(NSArray<id<VMMMetalDevice>>*)metalDevices
++(nonnull NSArray<id<VMMMetalDevice>>*)metalDevices
 {
     if (!IsFrameworkMetalAvailable) return @[];
 

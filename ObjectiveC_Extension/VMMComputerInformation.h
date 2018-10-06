@@ -404,10 +404,10 @@ typedef NS_ENUM(NSUInteger, VMMMetalFeatureSet)
 
 
 #if IM_IMPORTING_THE_METAL_FRAMEWORK == true
-+(NSArray<id<MTLDevice>>*)metalDevices;
++(nonnull NSArray<id<MTLDevice>>*)metalDevices;
 #else
 #if USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE == true
-+(NSArray<id<VMMMetalDevice>>*)metalDevices;
++(nonnull NSArray<id<VMMMetalDevice>>*)metalDevices;
 #endif
 #endif
 
