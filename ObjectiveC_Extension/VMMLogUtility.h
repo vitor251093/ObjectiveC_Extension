@@ -7,9 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ObjCExtensionConfig.h"
 
 #ifdef DEBUG
-    #define NSDebugLog(FORMAT, ...) system([[NSString stringWithFormat:@"echo \"%@\" | tee -a ~/Desktop/debug.log", [[[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""] stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\0"]]] UTF8String])
+    #if NSDEBUGLOG_SHOULD_PRINT_TO_A_DESKTOP_FILE_TOO == true
+        #define NSDebugLog(FORMAT, ...) system([[NSString stringWithFormat:@"echo \"%@\" | tee -a ~/Desktop/debug.log", [[[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""] stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\0"]]] UTF8String])
+    #else
+        #define NSDebugLog(FORMAT, ...) system([[NSString stringWithFormat:@"echo \"%@\"", [[[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""] stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\0"]]] UTF8String])
+    #endif
 #else
     #define NSDebugLog(...)
 #endif
