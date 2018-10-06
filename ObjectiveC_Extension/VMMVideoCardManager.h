@@ -26,12 +26,6 @@
  */
 +(VMMVideoCard* _Nullable)mainVideoCard;
 
-/*!
- * @discussion  Returns every available information about every unidentified video card.
- * @return      A VMMVideoCard array with information related with every unidentified video card.
- */
-+(NSArray<VMMVideoCard*>*)videoCardsWithMissingKext;
-
 @end
 
 #endif
