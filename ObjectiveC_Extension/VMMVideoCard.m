@@ -114,19 +114,19 @@
     // Reference:
     // https://developer.apple.com/library/content/qa/qa1168/_index.html
 
-    GLint i, nrend = 0;
-    CGLRendererInfoObj rend;
-    const GLint displayMask = 0xFFFFFFFF;
-    CGLQueryRendererInfo((GLuint)displayMask, &rend, &nrend);
-
+    int32_t i, nrend = 0;
+    int32_t videoMemory = 0;
+    const int32_t displayMask = 0xFFFFFFFF;
     NSMutableArray<NSNumber*>* list = [[NSMutableArray alloc] init];
+    
+    CGLRendererInfoObj rend;
+    CGLQueryRendererInfo((uint32_t)displayMask, &rend, &nrend);
     for (i = 0; i < nrend; i++)
     {
-        GLint videoMemory = 0;
+        videoMemory = 0;
         CGLDescribeRenderer(rend, i, (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR ? kCGLRPVideoMemoryMegabytes : kCGLRPVideoMemory), &videoMemory);
         if (videoMemory != 0) [list addObject:@(videoMemory)];
     }
-    
     CGLDestroyRendererInfo(rend);
     
     [list sortUsingComparator:^NSComparisonResult(NSNumber*  _Nonnull obj1, NSNumber*  _Nonnull obj2) {
