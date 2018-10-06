@@ -56,6 +56,8 @@
         
         #if USE_THE_OPENGL_FRAMEWORK_WHEN_AVAILABLE == true || IM_IMPORTING_THE_OPENGL_FRAMEWORK == true
             newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = [VMMVideoCard videoCardMemorySizesInMegabytesFromOpenGLAPI];
+        #else
+            newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = @[];
         #endif
         
         _dictionary = newDict;
