@@ -15,7 +15,7 @@
 
 +(NSString*)stringWithCFTypeIDDescription:(CFTypeRef)cf_type;
 +(NSString*)stringWithCFString:(CFStringRef)cf_string;
-+(NSString*)stringWithCFNumber:(CFNumberRef)cf_number;
++(NSString*)stringWithCFNumber:(CFNumberRef)cf_number ofType:(CFNumberType)number_type;
 +(NSString*)stringWithCFType:(CFTypeRef)cf_type;
 
 -(BOOL)contains:(nonnull NSString*)string;

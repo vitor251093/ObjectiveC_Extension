@@ -36,9 +36,9 @@
     free(buffer);
     return string;
 }
-+(NSString*)stringWithCFNumber:(CFNumberRef)cf_number {
-    int number;
-    CFNumberGetValue(cf_number, kCFNumberIntType, &number);
++(NSString*)stringWithCFNumber:(CFNumberRef)cf_number ofType:(CFNumberType)number_type {
+    int number; 
+    CFNumberGetValue(cf_number, number_type, &number);
     return [NSString stringWithFormat:@"%d",number];
 }
 +(NSString*)stringWithCFType:(CFTypeRef)cf_type {
@@ -51,14 +51,19 @@
     }
     else if (type_id == CFNumberGetTypeID())
     {
-        return [self stringWithCFNumber:cf_type];
+        return [self stringWithCFNumber:cf_type ofType:kCFNumberIntType];
+    }
+    else if (type_id == CFDateGetTypeID())
+    {
+        // TODO: Not tested
+        NSDate* date = (__bridge NSDate*)cf_type;
+        return [date descriptionWithLocale:[NSLocale currentLocale]];
     }
     
-    // The types below are still unsupported:
+    // TODO: The types below are still unsupported:
     //{CFArrayGetTypeID(),"CFArray"},
     //{CFBooleanGetTypeID(),"CFBoolean"},
     //{CFDataGetTypeID(),"CFData"},
-    //{CFDateGetTypeID(),"CFDate"},
     //{CFDictionaryGetTypeID(),"CFDictionary"},
     
     return nil;
