@@ -23,21 +23,18 @@
         return nil;
     }
 }
-+(nullable id)safeUnarchiveObjectFromFile:(nonnull NSString*)wsiPath
++(nullable id)safeUnarchiveObjectFromFile:(nonnull NSString*)path
 {
-    if (![[NSFileManager defaultManager] fileExistsAtPath:wsiPath]) return nil;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) return nil;
     
     id contents = nil;
     
     @autoreleasepool
     {
-        NSData* wsiData = [NSData safeDataWithContentsOfFile:wsiPath];
-        if (!wsiData || wsiData.length == 0) return nil;
+        NSData* data = [NSData safeDataWithContentsOfFile:path];
+        if (!data || data.length == 0) return nil;
         
-        NSString* wsiString = [[NSString alloc] initWithData:wsiData encoding:NSUTF8StringEncoding];
-        if (wsiString && [wsiString hasPrefix:@"<html>"]) return nil;
-        
-        contents = [self safeUnarchiveObjectWithData:wsiData];
+        contents = [self safeUnarchiveObjectWithData:data];
     }
         
     return contents;
