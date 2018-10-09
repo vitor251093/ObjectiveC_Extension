@@ -39,18 +39,14 @@
 }
 +(nullable id)propertyListWithArchivedData:(nonnull NSData *)data
 {
-    id propertyList;
-    
     @try
     {
-        propertyList = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        return [NSKeyedUnarchiver unarchiveObjectWithData:data];
     }
     @catch (NSException* exception)
     {
         return nil;
     }
-    
-    return propertyList;
 }
 
 @end
