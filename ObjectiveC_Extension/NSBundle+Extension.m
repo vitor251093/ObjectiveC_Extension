@@ -9,6 +9,7 @@
 #import "NSBundle+Extension.h"
 
 #import "NSTask+Extension.h"
+#import "NSException+Extension.h"
 #import "NSFileManager+Extension.h"
 #import "VMMComputerInformation.h"
 
@@ -200,10 +201,17 @@ NSBundle* _originalMainBundle;
     // App Translocation description:
     // http://lapcatsoftware.com/articles/app-translocation.html
     
-    return IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR && [[self bundlePath] hasPrefix:@"/private/var/folders/"];
+    if (!IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR) return false;
+    
+    NSString* path = [self bundlePath];
+    return [path hasPrefix:@"/private/var/folders/"] || [path hasPrefix:@"/var/folders/"];
 }
 -(BOOL)disableAppTranslocation
 {
+    if (!self.isAppTranslocationActive) {
+        return true;
+    }
+    
     NSString* originalPath = [self bundlePath];
     if (originalPath == nil) return false;
     
