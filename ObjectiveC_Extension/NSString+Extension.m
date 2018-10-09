@@ -19,6 +19,51 @@
 
 @implementation NSString (VMMString)
 
++(NSString*)stringWithCFTypeIDDescription:(CFTypeRef)cf_type {
+    CFTypeID type_id = (CFTypeID) CFGetTypeID(cf_type);
+    CFStringRef typeIdDescription = CFCopyTypeIDDescription(type_id);
+    NSString* string = [self stringWithCFString:typeIdDescription];
+    CFRelease(typeIdDescription);
+    return [NSString stringWithFormat:@"<%@>",string];
+}
++(NSString*)stringWithCFString:(CFStringRef)cf_string {
+    char * buffer;
+    CFIndex len = CFStringGetLength(cf_string);
+    buffer = (char *) malloc(sizeof(char) * len + 1);
+    CFStringGetCString(cf_string, buffer, len + 1,
+                       CFStringGetSystemEncoding());
+    NSString* string = [NSString stringWithUTF8String:buffer];
+    free(buffer);
+    return string;
+}
++(NSString*)stringWithCFNumber:(CFNumberRef)cf_number {
+    int number;
+    CFNumberGetValue(cf_number, kCFNumberIntType, &number);
+    return [NSString stringWithFormat:@"%d",number];
+}
++(NSString*)stringWithCFType:(CFTypeRef)cf_type {
+    CFTypeID type_id;
+    
+    type_id = (CFTypeID) CFGetTypeID(cf_type);
+    if (type_id == CFStringGetTypeID())
+    {
+        return [self stringWithCFString:cf_type];
+    }
+    else if (type_id == CFNumberGetTypeID())
+    {
+        return [self stringWithCFNumber:cf_type];
+    }
+    
+    // The types below are still unsupported:
+    //{CFArrayGetTypeID(),"CFArray"},
+    //{CFBooleanGetTypeID(),"CFBoolean"},
+    //{CFDataGetTypeID(),"CFData"},
+    //{CFDateGetTypeID(),"CFDate"},
+    //{CFDictionaryGetTypeID(),"CFDictionary"},
+    
+    return nil;
+}
+
 -(BOOL)contains:(nonnull NSString*)string
 {
     return [self rangeOfString:string].location != NSNotFound;

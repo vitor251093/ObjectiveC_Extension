@@ -13,6 +13,11 @@
 
 @interface NSString (VMMString)
 
++(NSString*)stringWithCFTypeIDDescription:(CFTypeRef)cf_type;
++(NSString*)stringWithCFString:(CFStringRef)cf_string;
++(NSString*)stringWithCFNumber:(CFNumberRef)cf_number;
++(NSString*)stringWithCFType:(CFTypeRef)cf_type;
+
 -(BOOL)contains:(nonnull NSString*)string;
 -(BOOL)matchesWithSearchTerms:(nonnull NSArray*)searchTerms;
 -(nonnull NSArray<NSString*>*)searchTermsWithString;
