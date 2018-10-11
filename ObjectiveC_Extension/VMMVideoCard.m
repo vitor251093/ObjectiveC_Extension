@@ -432,7 +432,7 @@
             if (videoCardType != nil)
             {
                 if ([@[VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelIrisPro, VMMVideoCardTypeIntelIrisPlus,
-                       VMMVideoCardTypeIntelHD, VMMVideoCardTypeIntelUHD, VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
+                       VMMVideoCardTypeIntelHD,   VMMVideoCardTypeIntelUHD,     VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
                 {
                     _vendorID = VMMVideoCardVendorIDIntel; // Intel Vendor ID
                     return _vendorID;

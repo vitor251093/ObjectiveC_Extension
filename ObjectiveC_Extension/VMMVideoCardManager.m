@@ -259,8 +259,6 @@
                                inOrder:@[VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDIntel]];
             [videoCards sortBySelector:@selector(bus)
                                inOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
-            
-            [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"kextLoaded" ascending:NO]]];
         }
     });
     
@@ -271,8 +269,11 @@
 
 +(VMMVideoCard* _Nullable)mainVideoCard
 {
-    NSArray* videoCards = [self videoCards];
+    NSMutableArray* videoCards = [[self videoCards] mutableCopy];
     if (videoCards == nil || videoCards.count == 0) return nil;
+    
+    [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete" ascending:NO]]];
+    [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"kextLoaded" ascending:NO]]];
     return videoCards.firstObject;
 }
 
