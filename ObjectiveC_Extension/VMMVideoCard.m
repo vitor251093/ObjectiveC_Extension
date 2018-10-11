@@ -14,6 +14,7 @@
 #import "VMMVideoCard.h"
 #import "ObjCExtensionConfig.h"
 #import "NSString+Extension.h"
+#import "NSMutableString+Extension.h"
 #import "VMMVideoCardManager.h"
 
 #if IM_IMPORTING_THE_OPENGL_FRAMEWORK == true
@@ -271,6 +272,30 @@
     }
 }
 
++(NSString*)validateVideoCardName:(NSString*)name {
+    if (name == nil) return nil;
+    if (![name isKindOfClass:[NSString class]]) return nil;
+    
+    NSMutableString* trimName = [name mutableCopy];
+    [trimName trim];
+    
+    // Generic video card names
+    if ([trimName isEqualToString:@"Display"]) return nil;
+    if ([trimName isEqualToString:@"spdisplays_display"]) return nil;
+    
+    // Still don't know why that happens... but that happens
+    if ([trimName isEqualToString:@"Apple WiFi card"]) return nil;
+    
+    // NVIDIA video card wasn't properly detected and enabled by macOS
+    if ([trimName isEqualToString:@"NVIDIA Chip Model"]) return nil;
+    if ([trimName isEqualToString:@"nVidia GeForce XXXXXXXXXXX"]) return nil;
+    
+    // AMD video card wasn't properly detected and enabled by macOS
+    if ([trimName isEqualToString:@"AMD R9 xxx"]) return nil;
+    if ([trimName matchesWithRegex:@"AMD Radeon HD [6-8]xxx"]) return nil;
+    
+    return trimName;
+}
 -(nullable NSString*)name
 {
     @synchronized(nameLock)
@@ -285,27 +310,21 @@
             NSString* videoCardName = _dictionary[VMMVideoCardNameKey];
             NSString* chipsetModel  = _dictionary[VMMVideoCardRawNameKey];
             
-            NSArray* invalidVideoCardNames = @[@"Display", @"Apple WiFi card", @"spdisplays_display"];
-            BOOL validVideoCardName = (videoCardName != nil && [invalidVideoCardNames containsObject:videoCardName] == false);
-            BOOL validChipsetModel  = (chipsetModel  != nil && [invalidVideoCardNames containsObject:chipsetModel]  == false);
+            videoCardName = [VMMVideoCard validateVideoCardName:videoCardName];
+            chipsetModel  = [VMMVideoCard validateVideoCardName:chipsetModel];
             
-            if (validVideoCardName == false)
-            {
-                videoCardName = nil;
-            }
-            
-            if (validChipsetModel == true && validVideoCardName == false)
-            {
+            if (chipsetModel != nil && videoCardName == nil) {
                 videoCardName = chipsetModel;
             }
             
             if (videoCardName == nil)
             {
                 NSString* vendorID = [self vendorIDFromVendorAndVendorIDKeysOnly];
-                NSString* deviceID = [self deviceID];
                 
                 if (vendorID != nil)
                 {
+                    NSString* deviceID = [self deviceID];
+                    
                     if ([vendorID isEqualToString:VMMVideoCardVendorIDVirtualBox] &&
                         [deviceID isEqualToString:VMMVideoCardDeviceIDVirtualBox])
                     {

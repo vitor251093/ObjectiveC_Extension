@@ -15,6 +15,8 @@
 
 -(void)replaceOccurrencesOfString:(nonnull NSString *)target withString:(nonnull NSString *)replacement;
 
+-(void)trim;
+
 @end
 
 #endif
