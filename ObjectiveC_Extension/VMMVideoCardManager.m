@@ -264,16 +264,24 @@
     
     return videoCards;
 }
++(NSArray<VMMVideoCard*>* _Nonnull)videoCardsWithKext
+{
+    NSMutableArray* videoCards = [[self videoCards] mutableCopy];
+    [videoCards replaceObjectsWithVariation:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
+        return object.kextLoaded ? object : nil;
+    }];
+    [videoCards removeObject:[NSNull null]];
+    return videoCards;
+}
 
 
 
 +(VMMVideoCard* _Nullable)mainVideoCard
 {
-    NSMutableArray* videoCards = [[self videoCards] mutableCopy];
+    NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
     if (videoCards == nil || videoCards.count == 0) return nil;
     
     [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete" ascending:NO]]];
-    [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"kextLoaded" ascending:NO]]];
     return videoCards.firstObject;
 }
 

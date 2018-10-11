@@ -550,8 +550,8 @@
             
             if (memSizeInt < VMMVideoCardMemoryMinimumSize)
             {
-                NSInteger numberOfVideoCards = [VMMVideoCardManager videoCards].count;
-                if (numberOfVideoCards == 1)
+                NSInteger numberOfVideoCards = [VMMVideoCardManager videoCardsWithKext].count;
+                if (numberOfVideoCards == 1 && self.kextLoaded)
                 {
                     NSArray<NSNumber*>* apiValues = _dictionary[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes];
                     if (apiValues.count > 0 && [[apiValues firstObject] intValue] >= VMMVideoCardMemoryMinimumSize)
@@ -745,6 +745,10 @@
         graphicCard = [NSString stringWithFormat:@"%@ (%lu MB)",graphicCard,graphicCardSize];
     }
     
+    if (!self.kextLoaded) {
+        graphicCard = [NSString stringWithFormat:@"%@ (No Kext)",graphicCard];
+    }
+    
     return graphicCard;
 }
 
@@ -788,6 +792,7 @@
     [data addObject:[NSString stringWithFormat:@"Vendor ID: %@",self.vendorID]];
     [data addObject:[NSString stringWithFormat:@"Vendor: %@",self.vendor]];
     [data addObject:[NSString stringWithFormat:@"Memory size: %@",self.memorySizeInMegabytes]];
+    [data addObject:[NSString stringWithFormat:@"Kext Loaded: %@",self.kextLoaded ? @"true" : @"false"]];
     [data addObject:[NSString stringWithFormat:@"Data: %@",self.dictionary]];
     NSString* string = [data componentsJoinedByString:@", "];
     return [NSString stringWithFormat:@"{%@}",string];

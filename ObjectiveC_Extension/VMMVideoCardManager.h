@@ -20,6 +20,8 @@
  */
 +(NSArray<VMMVideoCard*>* _Nonnull)videoCards;
 
++(NSArray<VMMVideoCard*>* _Nonnull)videoCardsWithKext;
+
 /*!
  * @discussion  Returns every available information about the main video card.
  * @return      A VMMVideoCard with information related with the main video card.
