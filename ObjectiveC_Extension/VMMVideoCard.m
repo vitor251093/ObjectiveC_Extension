@@ -736,8 +736,8 @@
         if (type == nil) {
             type = (self.vendorID != nil) ? self.vendorID : nil;
             if (type != nil) {
-                NSString* deviceID = [NSString stringWithFormat:@"Device with ID %@",self.deviceID];
-                if (deviceID == nil) deviceID = @"Unidentified video card";
+                NSString* deviceID = (self.deviceID == nil) ? @"Unidentified video card" :
+                                                              [NSString stringWithFormat:@"Device with ID %@",self.deviceID];
                 return [NSString stringWithFormat:@"%@ from vendor with ID %@",deviceID,type];
             }
         }
