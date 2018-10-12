@@ -127,7 +127,7 @@ static NSString * _Nonnull const VMMVideoCardTemporaryKeyMetalApiMemorySizes  = 
 -(NSString* _Nonnull)descriptiveName;
 -(NSString* _Nonnull)veryDescriptiveName;
 
--(BOOL)isReal;
+-(BOOL)hasRealVendorID;
 -(BOOL)isComplete;
 -(BOOL)isVirtualMachineVideoCard;
 

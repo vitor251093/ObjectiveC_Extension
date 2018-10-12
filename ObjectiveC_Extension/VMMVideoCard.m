@@ -769,7 +769,7 @@
     return graphicCard;
 }
 
--(BOOL)isReal
+-(BOOL)hasRealVendorID
 {
     NSString* vendorID = self.vendorID;
     if (vendorID == nil) return false;
