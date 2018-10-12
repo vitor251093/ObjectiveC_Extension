@@ -749,18 +749,18 @@
         graphicCard = [NSString stringWithFormat:@"%@ %@",type,deviceID];
     }
     
-    return graphicCard;
-}
--(NSString* _Nonnull)veryDescriptiveName
-{
-    NSString* graphicCard = self.descriptiveName;
-    
     NSNumber* graphicCardSizeNumber = self.memorySizeInMegabytes;
     if (graphicCardSizeNumber != nil)
     {
         NSUInteger graphicCardSize = graphicCardSizeNumber.unsignedIntegerValue;
         graphicCard = [NSString stringWithFormat:@"%@ (%lu MB)",graphicCard,graphicCardSize];
     }
+    
+    return graphicCard;
+}
+-(NSString* _Nonnull)veryDescriptiveName
+{
+    NSString* graphicCard = self.descriptiveName;
     
     if (!self.kextLoaded) {
         graphicCard = [NSString stringWithFormat:@"%@ (No Kext)",graphicCard];
