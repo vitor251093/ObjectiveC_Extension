@@ -81,8 +81,6 @@ NSColor* _Nullable RGB(CGFloat r, CGFloat g, CGFloat b)
             
             result = [NSString stringWithFormat:@"%@%@%@", redHexValue, greenHexValue, blueHexValue];
         }
-        
-        result = nil;
     }
     
     return result;
