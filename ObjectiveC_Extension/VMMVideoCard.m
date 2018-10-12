@@ -55,11 +55,15 @@
     {
         NSMutableDictionary* newDict = [dict mutableCopy];
         
-        #if USE_THE_OPENGL_FRAMEWORK_WHEN_AVAILABLE == true || IM_IMPORTING_THE_OPENGL_FRAMEWORK == true
-            newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = [VMMVideoCard videoCardMemorySizesInMegabytesFromOpenGLAPI];
-        #else
-            newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = @[];
-        #endif
+        // The if below only exists for testing purposes, in case you want to override that value
+        if (newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] == nil)
+        {
+            #if USE_THE_OPENGL_FRAMEWORK_WHEN_AVAILABLE == true || IM_IMPORTING_THE_OPENGL_FRAMEWORK == true
+                newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = [VMMVideoCard videoCardMemorySizesInMegabytesFromOpenGLAPI];
+            #else
+                newDict[VMMVideoCardTemporaryKeyOpenGlApiMemorySizes] = @[];
+            #endif
+        }
         
         _dictionary = newDict;
         
@@ -722,21 +726,34 @@
     return VMMMetalFeatureSet_macOS_GPUFamilyUnknown;
 }
 
--(NSString* _Nonnull)descriptorName
+-(NSString* _Nonnull)descriptiveName
 {
     NSString* graphicCard = self.name;
     if (graphicCard == nil)
     {
         NSString* type = self.type;
         if (type == nil) type = self.vendor;
-        if (type == nil) type = self.vendorID;
+        if (type == nil) {
+            type = (self.vendorID != nil) ? self.vendorID : nil;
+            if (type != nil) {
+                NSString* deviceID = [NSString stringWithFormat:@"Device with ID %@",self.deviceID];
+                if (deviceID == nil) deviceID = @"Unidentified video card";
+                return [NSString stringWithFormat:@"%@ from vendor with ID %@",deviceID,type];
+            }
+        }
         if (type == nil) type = @"Unknown";
         
-        NSString* deviceID = self.deviceID;
+        NSString* deviceID = [NSString stringWithFormat:@"with device ID %@",self.deviceID];
         if (deviceID == nil) deviceID = @"unidentified video card";
         
         graphicCard = [NSString stringWithFormat:@"%@ %@",type,deviceID];
     }
+    
+    return graphicCard;
+}
+-(NSString* _Nonnull)veryDescriptiveName
+{
+    NSString* graphicCard = self.descriptiveName;
     
     NSNumber* graphicCardSizeNumber = self.memorySizeInMegabytes;
     if (graphicCardSizeNumber != nil)
