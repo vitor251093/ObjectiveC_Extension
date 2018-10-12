@@ -25,6 +25,7 @@
 #import "NSTask+Extension.h"
 #import "NSArray+Extension.h"
 #import "NSString+Extension.h"
+#import "NSMutableString+Extension.h"
 #import "NSFileManager+Extension.h"
 #import "NSMutableArray+Extension.h"
 
@@ -75,13 +76,6 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     
     return hardwareDictionary;
 }
-
-+(NSString*)stringByRemovingSpacesInBegginingOfString:(NSString*)string
-{
-    while ([string hasPrefix:@" "]) string = [string substringFromIndex:1];
-    return string;
-}
-
 +(long long int)hardDiskSize
 {
     NSDictionary *hdAttributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:@"/" error:nil];
@@ -113,20 +107,20 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     NSString* vm_stat = [NSTask runCommand:@[@"vm_stat"]];
     
     int pageSize = getpagesize();
-    NSString* activeSizeWithSpaces     = [vm_stat getFragmentAfter:@"Pages active:"                 andBefore:@"."];
-    NSString* wiredSizeWithSpaces      = [vm_stat getFragmentAfter:@"Pages wired down:"             andBefore:@"."];
-    NSString* purgeableSizeWithSpaces  = [vm_stat getFragmentAfter:@"Pages purgeable:"              andBefore:@"."];
-    NSString* compressedSizeWithSpaces = [vm_stat getFragmentAfter:@"Pages occupied by compressor:" andBefore:@"."];
+    NSMutableString* activeSizeWithSpaces     = [[vm_stat getFragmentAfter:@"Pages active:"                 andBefore:@"."] mutableCopy];
+    NSMutableString* wiredSizeWithSpaces      = [[vm_stat getFragmentAfter:@"Pages wired down:"             andBefore:@"."] mutableCopy];
+    NSMutableString* purgeableSizeWithSpaces  = [[vm_stat getFragmentAfter:@"Pages purgeable:"              andBefore:@"."] mutableCopy];
+    NSMutableString* compressedSizeWithSpaces = [[vm_stat getFragmentAfter:@"Pages occupied by compressor:" andBefore:@"."] mutableCopy];
     
-    if (activeSizeWithSpaces == nil)     activeSizeWithSpaces     = @"0";
-    if (wiredSizeWithSpaces == nil)      wiredSizeWithSpaces      = @"0";
-    if (purgeableSizeWithSpaces == nil)  purgeableSizeWithSpaces  = @"0";
-    if (compressedSizeWithSpaces == nil) compressedSizeWithSpaces = @"0";
+    if (activeSizeWithSpaces == nil)     activeSizeWithSpaces     = [[NSMutableString alloc] initWithString:@"0"];
+    if (wiredSizeWithSpaces == nil)      wiredSizeWithSpaces      = [[NSMutableString alloc] initWithString:@"0"];
+    if (purgeableSizeWithSpaces == nil)  purgeableSizeWithSpaces  = [[NSMutableString alloc] initWithString:@"0"];
+    if (compressedSizeWithSpaces == nil) compressedSizeWithSpaces = [[NSMutableString alloc] initWithString:@"0"];
     
-    activeSizeWithSpaces     = [self stringByRemovingSpacesInBegginingOfString:activeSizeWithSpaces];
-    wiredSizeWithSpaces      = [self stringByRemovingSpacesInBegginingOfString:wiredSizeWithSpaces];
-    purgeableSizeWithSpaces  = [self stringByRemovingSpacesInBegginingOfString:purgeableSizeWithSpaces];
-    compressedSizeWithSpaces = [self stringByRemovingSpacesInBegginingOfString:compressedSizeWithSpaces];
+    [activeSizeWithSpaces     trim];
+    [wiredSizeWithSpaces      trim];
+    [purgeableSizeWithSpaces  trim];
+    [compressedSizeWithSpaces trim];
     
     return ([activeSizeWithSpaces longLongValue]    + [wiredSizeWithSpaces longLongValue] +
             [purgeableSizeWithSpaces longLongValue] + [compressedSizeWithSpaces longLongValue])*pageSize;
@@ -176,7 +170,9 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     double cpuUsageSum = 0.0;
     for (NSString* process in [ps componentsSeparatedByString:@"\n"])
     {
-        cpuUsageSum += [[self stringByRemovingSpacesInBegginingOfString:process] doubleValue];
+        NSMutableString* mutableProcess = [process mutableCopy];
+        [mutableProcess trim];
+        cpuUsageSum += [mutableProcess doubleValue];
     }
     
     NSString* numberOfCpus = [NSTask runCommand:@[@"sysctl", @"hw.physicalcpu"]];
