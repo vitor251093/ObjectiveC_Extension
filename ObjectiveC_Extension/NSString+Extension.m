@@ -156,34 +156,37 @@
 }
 -(BOOL)matchesWithSearchTerms:(nonnull NSArray*)searchTerms
 {
-    NSCharacterSet* unitingSetItem    = [NSCharacterSet characterSetWithCharactersInString:@"'."];
-    NSCharacterSet* separatingSetItem = [NSCharacterSet characterSetWithCharactersInString:@"&"];
-    
-    NSString* string = [self.lowercaseString stringByTrimmingCharactersInSet:unitingSetItem];
-    string = [[string componentsSeparatedByCharactersInSet:separatingSetItem] componentsJoinedByString:@" "];
-    
-    for (NSString* term in searchTerms)
+    @autoreleasepool
     {
-        if (![string contains:term] && ![string containsAbbreviation:term])
+        NSCharacterSet* unitingSetItem    = [NSCharacterSet characterSetWithCharactersInString:@"'."];
+        NSCharacterSet* separatingSetItem = [NSCharacterSet characterSetWithCharactersInString:@"&"];
+        
+        NSString* string = [self.lowercaseString stringByTrimmingCharactersInSet:unitingSetItem];
+        string = [[string componentsSeparatedByCharactersInSet:separatingSetItem] componentsJoinedByString:@" "];
+        
+        for (NSString* term in searchTerms)
         {
-            NSArray* synonymsPairs = @[@[@"&",@"and"],@[@"vs",@"versus"],
-                                       @[@"i",    @"1"],@[@"ii",   @"2"],@[@"iii", @"3"],@[@"iv",  @"4"],@[@"v",    @"5"],@[@"vi",    @"6"],
-                                       @[@"vii",  @"7"],@[@"viii", @"8"],@[@"ix",  @"9"],@[@"x",  @"10"],@[@"xi",  @"11"],@[@"xii",  @"12"],
-                                       @[@"xiii",@"13"],@[@"xiv", @"14"],@[@"xv", @"15"],@[@"xvi",@"16"],@[@"xvii",@"17"],@[@"xviii",@"18"],
-                                       @[@"xix", @"19"]];
-            
-            BOOL hadASynonym = NO;
-            
-            for (NSArray* pair in synonymsPairs)
+            if (![string contains:term] && ![string containsAbbreviation:term])
             {
-                if ([pair containsObject:term])
+                NSArray* synonymsPairs = @[@[@"&",@"and"],@[@"vs",@"versus"],
+                                           @[@"i",    @"1"],@[@"ii",   @"2"],@[@"iii",   @"3"],@[@"iv",  @"4"],@[@"v",   @"5"],
+                                           @[@"vi",   @"6"],@[@"vii",  @"7"],@[@"viii",  @"8"],@[@"ix",  @"9"],@[@"x",  @"10"],
+                                           @[@"xi",  @"11"],@[@"xii", @"12"],@[@"xiii", @"13"],@[@"xiv",@"14"],@[@"xv", @"15"],
+                                           @[@"xvi", @"16"],@[@"xvii",@"17"],@[@"xviii",@"18"],@[@"xix",@"19"]];
+                
+                BOOL hadASynonym = NO;
+                
+                for (NSArray* pair in synonymsPairs)
                 {
-                    hadASynonym = YES;
-                    if (![string containsOneOfSynonyms:pair]) return NO;
+                    if ([pair containsObject:term])
+                    {
+                        hadASynonym = YES;
+                        if (![string containsOneOfSynonyms:pair]) return NO;
+                    }
                 }
+                
+                if (!hadASynonym) return NO;
             }
-            
-            if (!hadASynonym) return NO;
         }
     }
     
@@ -327,9 +330,15 @@
 
 -(nonnull NSString*)hexadecimalUTF8String
 {
-    const char* cString = [self cStringUsingEncoding:NSUTF8StringEncoding];
-    NSString* hexStr = [NSString stringWithFormat:@"%@", [NSData dataWithBytes:cString length:strlen(cString)]];
-    hexStr = [hexStr stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<> "]];
+    NSString* hexStr;
+    
+    @autoreleasepool
+    {
+        const char* cString = [self cStringUsingEncoding:NSUTF8StringEncoding];
+        hexStr = [NSString stringWithFormat:@"%@", [NSData dataWithBytes:cString length:strlen(cString)]];
+        hexStr = [hexStr stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<> "]];
+    }
+    
     return hexStr;
 }
 +(nullable NSString*)stringWithHexadecimalUTF8String:(nonnull NSString*)string
@@ -387,23 +396,30 @@
 
 -(NSRange)rangeAfterString:(nullable NSString*)before andBeforeString:(nullable NSString*)after
 {
-    NSRange beforeRange = before ? [self rangeOfString:before] : NSMakeRange(0, 0);
+    NSRange result;
     
-    if (beforeRange.location == NSNotFound)
+    @autoreleasepool
     {
-        return NSMakeRange(NSNotFound, 0);
+        NSRange beforeRange = before ? [self rangeOfString:before] : NSMakeRange(0, 0);
+        
+        if (beforeRange.location == NSNotFound)
+        {
+            return NSMakeRange(NSNotFound, 0);
+        }
+        
+        CGFloat afterBeforeRangeStart = beforeRange.location + beforeRange.length;
+        NSRange afterBeforeRange = NSMakeRange(afterBeforeRangeStart, self.length - afterBeforeRangeStart);
+        NSRange afterRange = after ? [self rangeOfString:after options:0 range:afterBeforeRange] : NSMakeRange(NSNotFound, 0);
+        
+        if (afterRange.location == NSNotFound)
+        {
+            return afterBeforeRange;
+        }
+        
+        result = NSMakeRange(afterBeforeRangeStart, afterRange.location - afterBeforeRangeStart);
     }
     
-    CGFloat afterBeforeRangeStart = beforeRange.location + beforeRange.length;
-    NSRange afterBeforeRange = NSMakeRange(afterBeforeRangeStart, self.length - afterBeforeRangeStart);
-    NSRange afterRange = after ? [self rangeOfString:after options:0 range:afterBeforeRange] : NSMakeRange(NSNotFound, 0);
-    
-    if (afterRange.location == NSNotFound)
-    {
-        return afterBeforeRange;
-    }
-    
-    return NSMakeRange(afterBeforeRangeStart, afterRange.location - afterBeforeRangeStart);
+    return result;
 }
 -(nullable NSString*)getFragmentAfter:(nullable NSString*)before andBefore:(nullable NSString*)after
 {

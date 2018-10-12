@@ -51,16 +51,21 @@
 
 +(NSImage*)quickLookImageWithMaximumSize:(int)size forFileAtPath:(NSString*)arquivo
 {
-    NSImage* img = [[NSWorkspace sharedWorkspace] iconForFile:arquivo];
+    NSImage* img;
     
-    [NSTask runCommand:@[@"qlmanage", @"-t", @"-s",[NSString stringWithFormat:@"%d",size], @"-o.", arquivo]
-             atRunPath:[arquivo stringByDeletingLastPathComponent]];
-    
-    NSString* newFile = [NSString stringWithFormat:@"%@.png",arquivo];
-    if ([[NSFileManager defaultManager] regularFileExistsAtPath:newFile])
+    @autoreleasepool
     {
-        img = [[NSImage alloc] initWithContentsOfFile:newFile];
-        [[NSFileManager defaultManager] removeItemAtPath:newFile];
+        img = [[NSWorkspace sharedWorkspace] iconForFile:arquivo];
+        
+        [NSTask runCommand:@[@"qlmanage", @"-t", @"-s",[NSString stringWithFormat:@"%d",size], @"-o.", arquivo]
+                 atRunPath:[arquivo stringByDeletingLastPathComponent]];
+        
+        NSString* newFile = [NSString stringWithFormat:@"%@.png",arquivo];
+        if ([[NSFileManager defaultManager] regularFileExistsAtPath:newFile])
+        {
+            img = [[NSImage alloc] initWithContentsOfFile:newFile];
+            [[NSFileManager defaultManager] removeItemAtPath:newFile];
+        }
     }
     
     return img;
@@ -69,21 +74,24 @@
 {
     NSImage *img;
     
-    if ([[NSImage imageFileTypes] containsObject:arquivo.pathExtension.lowercaseString])
+    @autoreleasepool
     {
-        img = [[NSImage alloc] initWithContentsOfFile:arquivo];
-    }
-    
-    if (img == nil)
-    {
-        // 100000 is an arbitrary number, choosen for been a size bigger enought to
-        // take the maximum quality of every possible image or icon.
-        img = [self quickLookImageWithMaximumSize:100000 forFileAtPath:arquivo];
-    }
-    
-    if (img == nil)
-    {
-        img = [[NSWorkspace sharedWorkspace] iconForFile:arquivo];
+        if ([[NSImage imageFileTypes] containsObject:arquivo.pathExtension.lowercaseString])
+        {
+            img = [[NSImage alloc] initWithContentsOfFile:arquivo];
+        }
+        
+        if (img == nil)
+        {
+            // 100000 is an arbitrary number, choosen for been a size bigger enought to
+            // take the maximum quality of every possible image or icon.
+            img = [self quickLookImageWithMaximumSize:100000 forFileAtPath:arquivo];
+        }
+        
+        if (img == nil)
+        {
+            img = [[NSWorkspace sharedWorkspace] iconForFile:arquivo];
+        }
     }
     
     return img;
@@ -102,17 +110,20 @@
 
 -(BOOL)isTransparent
 {
-    NSData *tempData = [[NSData alloc] initWithData:[self TIFFRepresentation]];
-    NSBitmapImageRep *repIcon = [[NSBitmapImageRep alloc] initWithData:tempData];
-    int x, y;
-    
-    for (y=0; y<self.size.height; y++)
+    @autoreleasepool
     {
-        for (x=0; x<self.size.width; x++)
+        NSData *tempData = [[NSData alloc] initWithData:[self TIFFRepresentation]];
+        NSBitmapImageRep *repIcon = [[NSBitmapImageRep alloc] initWithData:tempData];
+        int x, y;
+        
+        for (y=0; y<self.size.height; y++)
         {
-            if ([repIcon isTransparentAtX:x andY:y] == false)
+            for (x=0; x<self.size.width; x++)
             {
-                return false;
+                if ([repIcon isTransparentAtX:x andY:y] == false)
+                {
+                    return false;
+                }
             }
         }
     }
@@ -213,26 +224,29 @@
 
 -(BOOL)writeToFile:(NSString*)file atomically:(BOOL)useAuxiliaryFile
 {
-    NSString* extension = file.pathExtension.lowercaseString;
-    NSDictionary* typeForExtension = @{@"bmp" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeBMP      : NSBMPFileType     ),
-                                       @"gif" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeGIF      : NSGIFFileType     ),
-                                       @"jpg" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeJPEG     : NSJPEGFileType    ),
-                                       @"jp2" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeJPEG2000 : NSJPEG2000FileType),
-                                       @"png" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypePNG      : NSPNGFileType     ),
-                                       @"tiff": @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeTIFF     : NSTIFFFileType    )};
-    
-    if ([typeForExtension.allKeys containsObject:extension] == false)
+    @autoreleasepool
     {
-        @throw exception(NSInvalidArgumentException,
-                         [NSString stringWithFormat:@"Invalid extension for saving image file: %@",extension]);
-        return false;
+        NSString* extension = file.pathExtension.lowercaseString;
+        NSDictionary* typeForExtension = @{@"bmp" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeBMP      : NSBMPFileType     ),
+                                           @"gif" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeGIF      : NSGIFFileType     ),
+                                           @"jpg" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeJPEG     : NSJPEGFileType    ),
+                                           @"jp2" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeJPEG2000 : NSJPEG2000FileType),
+                                           @"png" : @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypePNG      : NSPNGFileType     ),
+                                           @"tiff": @(IS_SYSTEM_MAC_OS_10_12_OR_SUPERIOR ? NSBitmapImageFileTypeTIFF     : NSTIFFFileType    )};
+        
+        if ([typeForExtension.allKeys containsObject:extension] == false)
+        {
+            @throw exception(NSInvalidArgumentException,
+                             [NSString stringWithFormat:@"Invalid extension for saving image file: %@",extension]);
+            return false;
+        }
+        
+        NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:[self TIFFRepresentation]];
+        NSData* data = [imageRep representationUsingType:(NSBitmapImageFileType)[typeForExtension[extension] unsignedLongValue] properties:@{}];
+        if (data == nil) return false;
+        
+        return [data writeToFile:file atomically:useAuxiliaryFile];
     }
-    
-    NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:[self TIFFRepresentation]];
-    NSData* data = [imageRep representationUsingType:(NSBitmapImageFileType)[typeForExtension[extension] unsignedLongValue] properties:@{}];
-    if (data == nil) return false;
-    
-    return [data writeToFile:file atomically:useAuxiliaryFile];
 }
 
 @end

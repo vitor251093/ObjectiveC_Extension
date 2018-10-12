@@ -12,21 +12,31 @@
 
 +(nullable id)propertyListWithUnarchivedString:(nonnull NSString*)string
 {
-    NSData* data = [string dataUsingEncoding:NSUTF8StringEncoding];
-    return [self propertyListWithUnarchivedData:data];
+    id result;
+    
+    @autoreleasepool
+    {
+        NSData* data = [string dataUsingEncoding:NSUTF8StringEncoding];
+        result = [self propertyListWithUnarchivedData:data];
+    }
+    
+    return result;
     
 }
 +(nullable id)propertyListWithUnarchivedData:(nonnull NSData*)data
 {
     id propertyList;
     
-    NSError *error;
-    NSPropertyListFormat format;
-    propertyList = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable
-                                                              format:&format error:&error];
-    if (propertyList == nil || error != nil)
+    @autoreleasepool
     {
-        return nil;
+        NSError *error;
+        NSPropertyListFormat format;
+        propertyList = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable
+                                                                  format:&format error:&error];
+        if (propertyList == nil || error != nil)
+        {
+            return nil;
+        }
     }
     
     return propertyList;
@@ -34,8 +44,15 @@
 
 +(nullable id)propertyListWithArchivedString:(nonnull NSString *)string
 {
-    NSData* data = [string dataUsingEncoding:NSUTF8StringEncoding];
-    return [self propertyListWithArchivedData:data];
+    id result;
+    
+    @autoreleasepool
+    {
+        NSData* data = [string dataUsingEncoding:NSUTF8StringEncoding];
+        result = [self propertyListWithArchivedData:data];
+    }
+    
+    return result;
 }
 +(nullable id)propertyListWithArchivedData:(nonnull NSData *)data
 {

@@ -104,26 +104,33 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 {
     // TODO: Not confirmed to be accurate yet
     
-    NSString* vm_stat = [NSTask runCommand:@[@"vm_stat"]];
+    long long int result;
     
-    int pageSize = getpagesize();
-    NSMutableString* activeSizeWithSpaces     = [[vm_stat getFragmentAfter:@"Pages active:"                 andBefore:@"."] mutableCopy];
-    NSMutableString* wiredSizeWithSpaces      = [[vm_stat getFragmentAfter:@"Pages wired down:"             andBefore:@"."] mutableCopy];
-    NSMutableString* purgeableSizeWithSpaces  = [[vm_stat getFragmentAfter:@"Pages purgeable:"              andBefore:@"."] mutableCopy];
-    NSMutableString* compressedSizeWithSpaces = [[vm_stat getFragmentAfter:@"Pages occupied by compressor:" andBefore:@"."] mutableCopy];
+    @autoreleasepool
+    {
+        NSString* vm_stat = [NSTask runCommand:@[@"vm_stat"]];
+        
+        int pageSize = getpagesize();
+        NSMutableString* activeSizeWithSpaces     = [[vm_stat getFragmentAfter:@"Pages active:"                 andBefore:@"."] mutableCopy];
+        NSMutableString* wiredSizeWithSpaces      = [[vm_stat getFragmentAfter:@"Pages wired down:"             andBefore:@"."] mutableCopy];
+        NSMutableString* purgeableSizeWithSpaces  = [[vm_stat getFragmentAfter:@"Pages purgeable:"              andBefore:@"."] mutableCopy];
+        NSMutableString* compressedSizeWithSpaces = [[vm_stat getFragmentAfter:@"Pages occupied by compressor:" andBefore:@"."] mutableCopy];
+        
+        if (activeSizeWithSpaces == nil)     activeSizeWithSpaces     = [[NSMutableString alloc] initWithString:@"0"];
+        if (wiredSizeWithSpaces == nil)      wiredSizeWithSpaces      = [[NSMutableString alloc] initWithString:@"0"];
+        if (purgeableSizeWithSpaces == nil)  purgeableSizeWithSpaces  = [[NSMutableString alloc] initWithString:@"0"];
+        if (compressedSizeWithSpaces == nil) compressedSizeWithSpaces = [[NSMutableString alloc] initWithString:@"0"];
+        
+        [activeSizeWithSpaces     trim];
+        [wiredSizeWithSpaces      trim];
+        [purgeableSizeWithSpaces  trim];
+        [compressedSizeWithSpaces trim];
+        
+        result = ([activeSizeWithSpaces longLongValue]    + [wiredSizeWithSpaces longLongValue] +
+                [purgeableSizeWithSpaces longLongValue] + [compressedSizeWithSpaces longLongValue])*pageSize;
+    }
     
-    if (activeSizeWithSpaces == nil)     activeSizeWithSpaces     = [[NSMutableString alloc] initWithString:@"0"];
-    if (wiredSizeWithSpaces == nil)      wiredSizeWithSpaces      = [[NSMutableString alloc] initWithString:@"0"];
-    if (purgeableSizeWithSpaces == nil)  purgeableSizeWithSpaces  = [[NSMutableString alloc] initWithString:@"0"];
-    if (compressedSizeWithSpaces == nil) compressedSizeWithSpaces = [[NSMutableString alloc] initWithString:@"0"];
-    
-    [activeSizeWithSpaces     trim];
-    [wiredSizeWithSpaces      trim];
-    [purgeableSizeWithSpaces  trim];
-    [compressedSizeWithSpaces trim];
-    
-    return ([activeSizeWithSpaces longLongValue]    + [wiredSizeWithSpaces longLongValue] +
-            [purgeableSizeWithSpaces longLongValue] + [compressedSizeWithSpaces longLongValue])*pageSize;
+    return result;
 }
 +(nullable NSString*)processorNameAndSpeed
 {
@@ -164,22 +171,27 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 {
     // TODO: Not confirmed to be accurate yet
     
-    NSString* ps = [NSTask runCommand:@[@"ps", @"-A", @"-o" ,@"%cpu"]];
-    ps = [ps stringByReplacingOccurrencesOfString:@"," withString:@"."];
-    
     double cpuUsageSum = 0.0;
-    for (NSString* process in [ps componentsSeparatedByString:@"\n"])
+    
+    @autoreleasepool
     {
-        NSMutableString* mutableProcess = [process mutableCopy];
-        [mutableProcess trim];
-        cpuUsageSum += [mutableProcess doubleValue];
+        NSString* ps = [NSTask runCommand:@[@"ps", @"-A", @"-o" ,@"%cpu"]];
+        ps = [ps stringByReplacingOccurrencesOfString:@"," withString:@"."];
+        
+        for (NSString* process in [ps componentsSeparatedByString:@"\n"])
+        {
+            NSMutableString* mutableProcess = [process mutableCopy];
+            [mutableProcess trim];
+            cpuUsageSum += [mutableProcess doubleValue];
+        }
+        
+        NSString* numberOfCpus = [NSTask runCommand:@[@"sysctl", @"hw.physicalcpu"]];
+        numberOfCpus = [numberOfCpus getFragmentAfter:@" " andBefore:nil];
+        if (!numberOfCpus || numberOfCpus.intValue == 0) return -1;
+        
+        cpuUsageSum = cpuUsageSum/numberOfCpus.intValue;
     }
     
-    NSString* numberOfCpus = [NSTask runCommand:@[@"sysctl", @"hw.physicalcpu"]];
-    numberOfCpus = [numberOfCpus getFragmentAfter:@" " andBefore:nil];
-    if (!numberOfCpus || numberOfCpus.intValue == 0) return -1;
-    
-    cpuUsageSum = cpuUsageSum/numberOfCpus.intValue;
     return cpuUsageSum / 100;
 }
 +(nullable NSString*)macModel

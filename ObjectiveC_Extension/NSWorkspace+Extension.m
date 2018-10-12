@@ -16,18 +16,21 @@
 {
     NSMutableArray* list = [[NSMutableArray alloc] init];
     
-    for (NSRunningApplication* runningApp in [self runningApplications])
+    @autoreleasepool
     {
-        NSString* binLocalPath = [[runningApp executableURL] path];
-        
-        if (![binLocalPath hasPrefix:bundlePath] && [bundlePath hasPrefix:@"/private"])
+        for (NSRunningApplication* runningApp in [self runningApplications])
         {
-            binLocalPath = [@"/private" stringByAppendingString:binLocalPath];
-        }
-        
-        if ([binLocalPath hasPrefix:bundlePath])
-        {
-            [list addObject:runningApp];
+            NSString* binLocalPath = [[runningApp executableURL] path];
+            
+            if (![binLocalPath hasPrefix:bundlePath] && [bundlePath hasPrefix:@"/private"])
+            {
+                binLocalPath = [@"/private" stringByAppendingString:binLocalPath];
+            }
+            
+            if ([binLocalPath hasPrefix:bundlePath])
+            {
+                [list addObject:runningApp];
+            }
         }
     }
     

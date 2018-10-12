@@ -17,14 +17,18 @@
 -(NSArray<NSDictionary*>*)visibleWindows
 {
     NSMutableArray* appWindows = [[NSMutableArray alloc] init];
-    NSMutableArray* windows = (NSMutableArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID));
     
-    for (NSDictionary *window in windows)
+    @autoreleasepool
     {
-        int ownerPid = [window[@"kCGWindowOwnerPID"] intValue];
-        if (ownerPid == self.processIdentifier)
+        NSMutableArray* windows = (NSMutableArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID));
+        
+        for (NSDictionary *window in windows)
         {
-            [appWindows addObject:window];
+            int ownerPid = [window[@"kCGWindowOwnerPID"] intValue];
+            if (ownerPid == self.processIdentifier)
+            {
+                [appWindows addObject:window];
+            }
         }
     }
     

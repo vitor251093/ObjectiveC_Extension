@@ -128,15 +128,20 @@
 }
 -(nullable NSArray<NSString*>*)subpathsAtPath:(nonnull NSString *)path ofFilesNamed:(nonnull NSString*)fileName
 {
-    NSString* matchesOutputString = [NSTask runProgram:@"find" withFlags:@[path,@"-name",fileName]];
-    NSMutableArray* matchesOutput = [[matchesOutputString componentsSeparatedByString:@"\n"] mutableCopy];
+    NSMutableArray* matchesOutput;
     
-    [matchesOutput replaceObjectsWithVariation:^id(NSString* object, NSUInteger index)
-    {
-        if ([object hasPrefix:@"find: "]) return nil;
-        return [object stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
-    }];
-    [matchesOutput removeObject:[NSNull null]];
+    @autoreleasepool
+    {    
+        NSString* matchesOutputString = [NSTask runProgram:@"find" withFlags:@[path,@"-name",fileName]];
+        matchesOutput = [[matchesOutputString componentsSeparatedByString:@"\n"] mutableCopy];
+        
+        [matchesOutput replaceObjectsWithVariation:^id(NSString* object, NSUInteger index)
+        {
+            if ([object hasPrefix:@"find: "]) return nil;
+            return [object stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
+        }];
+        [matchesOutput removeObject:[NSNull null]];
+    }
     
     return matchesOutput;
 }

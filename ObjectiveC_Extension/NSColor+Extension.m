@@ -24,56 +24,68 @@ NSColor* _Nullable RGB(CGFloat r, CGFloat g, CGFloat b)
 +(nullable NSColor*)colorWithHexColorString:(nonnull NSString*)inColorString
 {
     NSColor* result = nil;
-    unsigned colorCode = 0;
-    unsigned char redByte, greenByte, blueByte;
     
-    if (inColorString.length == 7 && [inColorString hasPrefix:@"#"])
+    @autoreleasepool
     {
-        inColorString = [inColorString substringFromIndex:1];
+        unsigned colorCode = 0;
+        unsigned char redByte, greenByte, blueByte;
+        
+        if (inColorString.length == 7 && [inColorString hasPrefix:@"#"])
+        {
+            inColorString = [inColorString substringFromIndex:1];
+        }
+        
+        if (inColorString.length != 6)
+        {
+            @throw exception(NSInvalidArgumentException,
+                             @"colorWithHexColorString: only accepts hexadecimal colors, with 6 or 7 characters (eg. 000000 or #000000)");
+        }
+        
+        NSScanner* scanner = [NSScanner scannerWithString:inColorString];
+        (void) [scanner scanHexInt:&colorCode]; // ignore error
+        
+        redByte = (unsigned char)(colorCode >> 16);
+        greenByte = (unsigned char)(colorCode >> 8);
+        blueByte = (unsigned char)(colorCode); // masks off high bits
+        
+        result = RGB((CGFloat)redByte, (CGFloat)greenByte, (CGFloat)blueByte);
     }
     
-    if (inColorString.length != 6)
-    {
-        @throw exception(NSInvalidArgumentException,
-                         @"colorWithHexColorString: only accepts hexadecimal colors, with 6 or 7 characters (eg. 000000 or #000000)");
-    }
-    
-    NSScanner* scanner = [NSScanner scannerWithString:inColorString];
-    (void) [scanner scanHexInt:&colorCode]; // ignore error
-    
-    redByte = (unsigned char)(colorCode >> 16);
-    greenByte = (unsigned char)(colorCode >> 8);
-    blueByte = (unsigned char)(colorCode); // masks off high bits
-    
-    result = RGB((CGFloat)redByte, (CGFloat)greenByte, (CGFloat)blueByte);
     return result;
 }
 -(nullable NSString*)hexColorString
 {
-    // https://developer.apple.com/library/content/qa/qa1576/_index.html
+    NSString* result = nil;
     
-    CGFloat redFloatValue, greenFloatValue, blueFloatValue;
-    int redIntValue, greenIntValue, blueIntValue;
-    NSString *redHexValue, *greenHexValue, *blueHexValue;
-    
-    NSColor *convertedColor = [self colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-    
-    if (convertedColor != nil)
+    @autoreleasepool
     {
-        [convertedColor getRed:&redFloatValue green:&greenFloatValue blue:&blueFloatValue alpha:NULL];
+        // https://developer.apple.com/library/content/qa/qa1576/_index.html
         
-        redIntValue   = redFloatValue   * 255.99999f;
-        greenIntValue = greenFloatValue * 255.99999f;
-        blueIntValue  = blueFloatValue  * 255.99999f;
+        NSString *redHexValue,  *greenHexValue,  *blueHexValue;
+        CGFloat   redFloatValue, greenFloatValue, blueFloatValue;
+        int        redIntValue,  greenIntValue,   blueIntValue;
         
-        redHexValue   = [NSString stringWithFormat:@"%02x", redIntValue];
-        greenHexValue = [NSString stringWithFormat:@"%02x", greenIntValue];
-        blueHexValue  = [NSString stringWithFormat:@"%02x", blueIntValue];
+        NSColor *convertedColor = [self colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
         
-        return [NSString stringWithFormat:@"%@%@%@", redHexValue, greenHexValue, blueHexValue];
+        if (convertedColor != nil)
+        {
+            [convertedColor getRed:&redFloatValue green:&greenFloatValue blue:&blueFloatValue alpha:NULL];
+            
+            redIntValue   = redFloatValue   * 255.99999f;
+            greenIntValue = greenFloatValue * 255.99999f;
+            blueIntValue  = blueFloatValue  * 255.99999f;
+            
+            redHexValue   = [NSString stringWithFormat:@"%02x", redIntValue];
+            greenHexValue = [NSString stringWithFormat:@"%02x", greenIntValue];
+            blueHexValue  = [NSString stringWithFormat:@"%02x", blueIntValue];
+            
+            result = [NSString stringWithFormat:@"%@%@%@", redHexValue, greenHexValue, blueHexValue];
+        }
+        
+        result = nil;
     }
     
-    return nil;
+    return result;
 }
 
 @end

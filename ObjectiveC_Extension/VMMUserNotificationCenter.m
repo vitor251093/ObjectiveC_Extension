@@ -84,36 +84,43 @@ static VMMUserNotificationCenter *_sharedInstance;
 
 -(BOOL)deliverGrowlNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message icon:(nullable NSImage*)icon
 {
-    NSURL* iconFileUrl;
-    BOOL doesGrowlSupportImageFromLocation = (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR == false);
-    BOOL useIcon = doesGrowlSupportImageFromLocation && (icon != nil);
+    BOOL sent = false;
     
-    if (useIcon)
+    @autoreleasepool
     {
-        NSString* iconFilePath = [NSString stringWithFormat:@"%@growlTemp%@.png",NSTemporaryDirectory(),VMMUUIDCreate()];
-        [icon writeToFile:iconFilePath atomically:YES];
-        iconFileUrl = [NSURL fileURLWithPath:iconFilePath];
+        NSURL* iconFileUrl;
+        BOOL doesGrowlSupportImageFromLocation = (IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR == false);
+        BOOL useIcon = doesGrowlSupportImageFromLocation && (icon != nil);
+        
+        if (useIcon)
+        {
+            NSString* iconFilePath = [NSString stringWithFormat:@"%@growlTemp%@.png",NSTemporaryDirectory(),VMMUUIDCreate()];
+            [icon writeToFile:iconFilePath atomically:YES];
+            iconFileUrl = [NSURL fileURLWithPath:iconFilePath];
+        }
+        
+        NSString* appName = [[NSBundle originalMainBundle] bundleName];
+        NSArray* growlScript = @[                           @"tell application id \"com.Growl.GrowlHelperApp\"",
+                                                            @"\tset the allNotificationsList to {\"Notification\"}",
+                                                            @"\tset the enabledNotificationsList to {\"Notification\"}",
+                                                            @"\tregister as application ¬",
+                                 [NSString stringWithFormat:@"\t\t\"%@\" all notifications allNotificationsList ¬",appName],
+                                                            @"\t\tdefault notifications enabledNotificationsList ¬",
+                                 [NSString stringWithFormat:@"\t\ticon of application \"%@\"",appName],
+                                                            @"\t",
+                                                            @"\tnotify with ¬",
+                                                            @"\t\tname \"Notification\"  ¬",
+                (title != nil) ? [NSString stringWithFormat:@"\t\ttitle \"%@\"  ¬",title] : @"\t\t¬",
+              (message != nil) ? [NSString stringWithFormat:@"\t\tdescription \"%@\"  ¬",message] : @"\t\t¬",
+                                 [NSString stringWithFormat:@"\t\tapplication name \"%@\" ¬",appName],
+                     (useIcon) ? [NSString stringWithFormat:@"\t\timage from location \"%@\"",iconFileUrl.absoluteString] : @"\t\t",
+                                                            @"end tell"];
+        NSAppleScript* notification = [[NSAppleScript alloc] initWithSource:[growlScript componentsJoinedByString:@"\n"]];
+        NSAppleEventDescriptor* notificationSent = [notification executeAndReturnError:nil];
+        sent = (notificationSent != nil);
     }
     
-    NSString* appName = [[NSBundle originalMainBundle] bundleName];
-    NSArray* growlScript = @[                           @"tell application id \"com.Growl.GrowlHelperApp\"",
-                                                        @"\tset the allNotificationsList to {\"Notification\"}",
-                                                        @"\tset the enabledNotificationsList to {\"Notification\"}",
-                                                        @"\tregister as application ¬",
-                             [NSString stringWithFormat:@"\t\t\"%@\" all notifications allNotificationsList ¬",appName],
-                                                        @"\t\tdefault notifications enabledNotificationsList ¬",
-                             [NSString stringWithFormat:@"\t\ticon of application \"%@\"",appName],
-                                                        @"\t",
-                                                        @"\tnotify with ¬",
-                                                        @"\t\tname \"Notification\"  ¬",
-            (title != nil) ? [NSString stringWithFormat:@"\t\ttitle \"%@\"  ¬",title] : @"\t\t¬",
-          (message != nil) ? [NSString stringWithFormat:@"\t\tdescription \"%@\"  ¬",message] : @"\t\t¬",
-                             [NSString stringWithFormat:@"\t\tapplication name \"%@\" ¬",appName],
-                 (useIcon) ? [NSString stringWithFormat:@"\t\timage from location \"%@\"",iconFileUrl.absoluteString] : @"\t\t",
-                                                        @"end tell"];
-    NSAppleScript* notification = [[NSAppleScript alloc] initWithSource:[growlScript componentsJoinedByString:@"\n"]];
-    NSAppleEventDescriptor* notificationSent = [notification executeAndReturnError:nil];
-    return (notificationSent != nil);
+    return sent;
 }
 -(void)deliverNativeNotificationWithTitle:(nullable NSString*)title message:(nullable NSString*)message userInfo:(nullable NSObject*)info icon:(nullable NSImage*)icon actionButtonText:(nullable NSString*)actionButton
 {

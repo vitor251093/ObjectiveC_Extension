@@ -87,107 +87,110 @@ NSBundle* _originalMainBundle;
     {
         NSString* bundlePathBeforeAppTranslocation;
         
-        NSString* appBinaryPath = [self executablePath];
-        NSString* appBundleFileName = [[self bundlePath] lastPathComponent];
-        if (!appBinaryPath || !appBundleFileName) return nil;
-        
-        NSString* appBinaryChecksum = [[NSFileManager defaultManager] checksum:NSChecksumTypeMD5 ofFileAtPath:appBinaryPath];
-        if (!appBinaryChecksum) return nil;
-        
-        NSString* applicationsFolderPath = @"/Applications/";
-        NSString* desktopFolderPath = [NSString stringWithFormat:@"%@/Desktop/",NSHomeDirectory()];
-        NSString* downloadsFolderPath = [NSString stringWithFormat:@"%@/Downloads/",NSHomeDirectory()];
-        
-        NSString* applicationInDesktopFolderPath = [desktopFolderPath stringByAppendingString:appBundleFileName];
-        if ([self doesBundleAtPath:applicationInDesktopFolderPath executableMatchesWithMD5Checksum:appBinaryChecksum])
-        {
-            bundlePathBeforeAppTranslocation = applicationInDesktopFolderPath;
-        }
-        
-        if (bundlePathBeforeAppTranslocation == nil)
-        {
-            NSString* applicationInDownloadsFolderPath = [downloadsFolderPath stringByAppendingString:appBundleFileName];
-            if ([self doesBundleAtPath:applicationInDownloadsFolderPath executableMatchesWithMD5Checksum:appBinaryChecksum])
-            {
-                bundlePathBeforeAppTranslocation = applicationInDownloadsFolderPath;
-            }
-        }
-        
-        if (bundlePathBeforeAppTranslocation == nil)
-        {
-            NSString* applicationInApplicationsFolderPath = [applicationsFolderPath stringByAppendingString:appBundleFileName];
-            if ([self doesBundleAtPath:applicationInApplicationsFolderPath executableMatchesWithMD5Checksum:appBinaryChecksum])
-            {
-                bundlePathBeforeAppTranslocation = applicationInApplicationsFolderPath;
-            }
-        }
-        
-        if (bundlePathBeforeAppTranslocation == nil)
-        {
-            NSArray* desktopFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:desktopFolderPath
-                                                                             ofFilesNamed:appBundleFileName];
-            for (NSString* desktopFilesMatch in desktopFilesMatches)
-            {
-                if ([self doesBundleAtPath:desktopFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
-                {
-                    bundlePathBeforeAppTranslocation = desktopFilesMatch;
-                    break;
-                }
-            }
-        }
-        
-        if (bundlePathBeforeAppTranslocation == nil)
-        {
-            NSArray* downloadsFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:downloadsFolderPath
-                                                                               ofFilesNamed:appBundleFileName];
-            for (NSString* downloadsFilesMatch in downloadsFilesMatches)
-            {
-                if ([self doesBundleAtPath:downloadsFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
-                {
-                    bundlePathBeforeAppTranslocation = downloadsFilesMatch;
-                    break;
-                }
-            }
-        }
-        
-        if (bundlePathBeforeAppTranslocation == nil)
-        {
-            NSArray* applicationsFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:applicationsFolderPath
-                                                                                  ofFilesNamed:appBundleFileName];
-            for (NSString* applicationsFilesMatch in applicationsFilesMatches)
-            {
-                if ([self doesBundleAtPath:applicationsFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
-                {
-                    bundlePathBeforeAppTranslocation = applicationsFilesMatch;
-                    break;
-                }
-            }
-        }
-        
-        if (bundlePathBeforeAppTranslocation == nil)
-        {
-            NSArray* homeFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:@"~" ofFilesNamed:appBundleFileName];
+        @autoreleasepool
+        {    
+            NSString* appBinaryPath = [self executablePath];
+            NSString* appBundleFileName = [[self bundlePath] lastPathComponent];
+            if (!appBinaryPath || !appBundleFileName) return nil;
             
-            for (NSString* homeFilesMatch in homeFilesMatches)
+            NSString* appBinaryChecksum = [[NSFileManager defaultManager] checksum:NSChecksumTypeMD5 ofFileAtPath:appBinaryPath];
+            if (!appBinaryChecksum) return nil;
+            
+            NSString* applicationsFolderPath = @"/Applications/";
+            NSString* desktopFolderPath = [NSString stringWithFormat:@"%@/Desktop/",NSHomeDirectory()];
+            NSString* downloadsFolderPath = [NSString stringWithFormat:@"%@/Downloads/",NSHomeDirectory()];
+            
+            NSString* applicationInDesktopFolderPath = [desktopFolderPath stringByAppendingString:appBundleFileName];
+            if ([self doesBundleAtPath:applicationInDesktopFolderPath executableMatchesWithMD5Checksum:appBinaryChecksum])
             {
-                if ([self doesBundleAtPath:homeFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
+                bundlePathBeforeAppTranslocation = applicationInDesktopFolderPath;
+            }
+            
+            if (bundlePathBeforeAppTranslocation == nil)
+            {
+                NSString* applicationInDownloadsFolderPath = [downloadsFolderPath stringByAppendingString:appBundleFileName];
+                if ([self doesBundleAtPath:applicationInDownloadsFolderPath executableMatchesWithMD5Checksum:appBinaryChecksum])
                 {
-                    bundlePathBeforeAppTranslocation = homeFilesMatch;
-                    break;
+                    bundlePathBeforeAppTranslocation = applicationInDownloadsFolderPath;
                 }
             }
-        }
-        
-        if (bundlePathBeforeAppTranslocation == nil)
-        {
-            NSArray* diskFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:@"/" ofFilesNamed:appBundleFileName];
             
-            for (NSString* diskFilesMatch in diskFilesMatches)
+            if (bundlePathBeforeAppTranslocation == nil)
             {
-                if ([self doesBundleAtPath:diskFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
+                NSString* applicationInApplicationsFolderPath = [applicationsFolderPath stringByAppendingString:appBundleFileName];
+                if ([self doesBundleAtPath:applicationInApplicationsFolderPath executableMatchesWithMD5Checksum:appBinaryChecksum])
                 {
-                    bundlePathBeforeAppTranslocation = diskFilesMatch;
-                    break;
+                    bundlePathBeforeAppTranslocation = applicationInApplicationsFolderPath;
+                }
+            }
+            
+            if (bundlePathBeforeAppTranslocation == nil)
+            {
+                NSArray* desktopFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:desktopFolderPath
+                                                                                 ofFilesNamed:appBundleFileName];
+                for (NSString* desktopFilesMatch in desktopFilesMatches)
+                {
+                    if ([self doesBundleAtPath:desktopFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
+                    {
+                        bundlePathBeforeAppTranslocation = desktopFilesMatch;
+                        break;
+                    }
+                }
+            }
+            
+            if (bundlePathBeforeAppTranslocation == nil)
+            {
+                NSArray* downloadsFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:downloadsFolderPath
+                                                                                   ofFilesNamed:appBundleFileName];
+                for (NSString* downloadsFilesMatch in downloadsFilesMatches)
+                {
+                    if ([self doesBundleAtPath:downloadsFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
+                    {
+                        bundlePathBeforeAppTranslocation = downloadsFilesMatch;
+                        break;
+                    }
+                }
+            }
+            
+            if (bundlePathBeforeAppTranslocation == nil)
+            {
+                NSArray* applicationsFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:applicationsFolderPath
+                                                                                      ofFilesNamed:appBundleFileName];
+                for (NSString* applicationsFilesMatch in applicationsFilesMatches)
+                {
+                    if ([self doesBundleAtPath:applicationsFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
+                    {
+                        bundlePathBeforeAppTranslocation = applicationsFilesMatch;
+                        break;
+                    }
+                }
+            }
+            
+            if (bundlePathBeforeAppTranslocation == nil)
+            {
+                NSArray* homeFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:@"~" ofFilesNamed:appBundleFileName];
+                
+                for (NSString* homeFilesMatch in homeFilesMatches)
+                {
+                    if ([self doesBundleAtPath:homeFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
+                    {
+                        bundlePathBeforeAppTranslocation = homeFilesMatch;
+                        break;
+                    }
+                }
+            }
+            
+            if (bundlePathBeforeAppTranslocation == nil)
+            {
+                NSArray* diskFilesMatches = [[NSFileManager defaultManager] subpathsAtPath:@"/" ofFilesNamed:appBundleFileName];
+                
+                for (NSString* diskFilesMatch in diskFilesMatches)
+                {
+                    if ([self doesBundleAtPath:diskFilesMatch executableMatchesWithMD5Checksum:appBinaryChecksum])
+                    {
+                        bundlePathBeforeAppTranslocation = diskFilesMatch;
+                        break;
+                    }
                 }
             }
         }
