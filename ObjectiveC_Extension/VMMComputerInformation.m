@@ -240,8 +240,17 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
                     macSerial = [macSerial substringFromIndex:8];
                     
                     NSString* macInfoURL = [NSString stringWithFormat:@"http://support-sp.apple.com/sp/product?cc=%@",macSerial];
-                    NSString* macInfo = [NSString stringWithContentsOfURL:[NSURL URLWithString:macInfoURL] encoding:NSUTF8StringEncoding
-                                                          timeoutInterval:_appleSupportMacModelRequestTimeOut];
+                    
+                    __block NSString* macInfo = nil;
+                    [NSString stringWithContentsOfURL:[NSURL URLWithString:macInfoURL] encoding:NSUTF8StringEncoding
+                                      timeoutInterval:_appleSupportMacModelRequestTimeOut withCompletionHandler:
+                     ^(NSUInteger statusCode, NSString *string, NSError *error)
+                    {
+                        if (!error && statusCode >= 200 && statusCode < 300)
+                        {
+                            macInfo = string;
+                        }
+                    }];
                     
                     if (macInfo != nil && macInfo.length > 0)
                     {

@@ -17,7 +17,8 @@
 #import "VMMLocalizationUtility.h"
 
 @implementation NSData (VMMData)
-+(nullable NSData*)dataWithContentsOfURL:(nonnull NSURL *)url timeoutInterval:(long long int)timeoutInterval
+
++(void)dataWithContentsOfURL:(nonnull NSURL *)url timeoutInterval:(long long int)timeoutInterval withCompletionHandler:(void (^)(NSUInteger statusCode, NSData* data, NSError* error))completion
 {
     NSData* stringData;
     
@@ -33,9 +34,9 @@
         {
             stringData = nil;
         }
+        
+        completion(response.statusCode, stringData, error);
     }
-    
-    return stringData;
 }
 +(nullable NSData*)safeDataWithContentsOfFile:(nonnull NSString*)filePath
 {

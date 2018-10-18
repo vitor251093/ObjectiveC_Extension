@@ -484,18 +484,17 @@
     
     return string;
 }
-+(nullable NSString*)stringWithContentsOfURL:(nonnull NSURL *)url encoding:(NSStringEncoding)enc timeoutInterval:(long long int)timeoutInterval
++(void)stringWithContentsOfURL:(nonnull NSURL *)url encoding:(NSStringEncoding)enc timeoutInterval:(long long int)timeoutInterval withCompletionHandler:(void (^)(NSUInteger statusCode, NSString* string, NSError* error))completion
 {
-    NSString* stringValue;
-    
     @autoreleasepool
     {
-        NSData* stringData = [NSData dataWithContentsOfURL:url timeoutInterval:timeoutInterval];
-        
-        stringValue = stringData ? [[NSString alloc] initWithData:stringData encoding:enc] : nil;
+        [NSData dataWithContentsOfURL:url timeoutInterval:timeoutInterval withCompletionHandler:
+         ^(NSUInteger statusCode, NSData *data, NSError *error)
+        {
+            NSString* stringValue = (data != nil) ? [[NSString alloc] initWithData:data encoding:enc] : nil;
+            completion(statusCode, stringValue, error);
+        }];
     }
-    
-    return stringValue;
 }
 
 -(BOOL)writeToFile:(nonnull NSString*)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc
