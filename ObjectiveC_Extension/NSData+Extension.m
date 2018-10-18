@@ -30,10 +30,6 @@
         NSError *error = nil;
         NSHTTPURLResponse *response = nil;
         stringData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-        if (error || response.statusCode < 200 || response.statusCode >= 300)
-        {
-            stringData = nil;
-        }
         
         completion(response.statusCode, stringData, error);
     }
