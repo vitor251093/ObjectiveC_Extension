@@ -255,6 +255,7 @@
                 videoCards = [systemProfilerVideoCards mutableCopy];
             }
             
+            [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"memorySizeInMegabytes" ascending:NO]]];
             [videoCards sortBySelector:@selector(vendorID)
                                inOrder:@[VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDIntel]];
             [videoCards sortBySelector:@selector(bus)

@@ -242,6 +242,7 @@
 		4E7D41B821665F2C001BEADB /* VMMVideoCardManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMVideoCardManager.m; sourceTree = "<group>"; };
 		4E99866E1FEEC85600E434E4 /* NSApplication+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSApplication+Extension.h"; sourceTree = "<group>"; };
 		4E99866F1FEEC85600E434E4 /* NSApplication+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSApplication+Extension.m"; sourceTree = "<group>"; };
+		4E9C67642180C43800F6C17E /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		4EA035A61F9532E10059C2C5 /* VMMKeyCaptureField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMMKeyCaptureField.h; sourceTree = "<group>"; };
 		4EA035A71F9532E10059C2C5 /* VMMKeyCaptureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VMMKeyCaptureField.m; sourceTree = "<group>"; };
 		4EA69BD21FC8DDEA00C70100 /* NSWorkspace+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWorkspace+Extension.h"; sourceTree = "<group>"; };
@@ -459,6 +460,7 @@
 		4E6C52731F7E9D6400A187E9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4E9C67642180C43800F6C17E /* Metal.framework */,
 				4E4CD93720897CF5008CF4F7 /* OpenGL.framework */,
 				4E6C527C1F7E9E4C00A187E9 /* Carbon.framework */,
 				4E6C527A1F7E9E4000A187E9 /* CoreImage.framework */,
@@ -886,6 +888,12 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					Metal,
+					"-weak_framework",
+					OpenGL,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.vitormm.ObjectiveC-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -908,6 +916,12 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					Metal,
+					"-weak_framework",
+					OpenGL,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.vitormm.ObjectiveC-Extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

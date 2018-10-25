@@ -50,18 +50,6 @@
 
 
 
-#define USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE  true
-//
-// If you set this to TRUE, VMMComputerInformation will use the Metal framework to check
-// the Metal devices only if the Metal framework is available.
-//
-// If you set this to FALSE, you will need to import the Metal framework (and enable the
-// define below) to use the metalDevices function of VMMComputerInformation.
-//
-// WARNING: Setting this to TRUE will make your app be rejected
-// in the Apple Store.
-//
-
 #define USE_THE_OPENGL_FRAMEWORK_WHEN_AVAILABLE  true
 //
 // If you set this to TRUE, VMMComputerInformation will use the OpenGL framework to look
@@ -75,17 +63,6 @@
 //
 
 
-
-#define IM_IMPORTING_THE_METAL_FRAMEWORK  false
-//
-// If you import the Metal Framework, your app will be macOS 10.11+ compatible only.
-// https://developer.apple.com/documentation/metal
-//
-// If you want to use the VMMComputerInformation metalDevices function and still be
-// released in the Apple Store, set this to TRUE and add the Metal Framework to this project.
-// Otherwise, you can safely set this function to FALSE. If this and USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE
-// are set to FALSE, the metalDevices function won't be available.
-//
 
 #define IM_IMPORTING_THE_OPENGL_FRAMEWORK  false
 //
@@ -106,7 +83,6 @@
 
 #if I_WANT_TO_BE_RELEASED_IN_APPLE_STORE == true
     #define USER_NOTIFICATIONS_SHOULD_SHOW_A_BIGGER_ICON  false
-    #define USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE        false
     #define USE_THE_OPENGL_FRAMEWORK_WHEN_AVAILABLE       false
 #endif
 

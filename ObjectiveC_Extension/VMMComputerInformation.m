@@ -12,13 +12,6 @@
 
 #import "VMMComputerInformation.h"
 
-#if IM_IMPORTING_THE_METAL_FRAMEWORK == true
-    #import <Metal/Metal.h>
-#else
-    #import <dlfcn.h>
-    #import "VMMLogUtility.h"
-#endif
-
 #import "VMMVersion.h"
 #import "VMMPropertyList.h"
 
@@ -28,6 +21,8 @@
 #import "NSMutableString+Extension.h"
 #import "NSFileManager+Extension.h"
 #import "NSMutableArray+Extension.h"
+
+extern NSArray* MTLCopyAllDevices(void) __attribute__((weak_import));
 
 @implementation VMMComputerInformation
 
@@ -393,46 +388,18 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     return [userGroups containsObject:[NSString stringWithFormat:@"%d",userGroup]];
 }
 
-
-#if IM_IMPORTING_THE_METAL_FRAMEWORK == true
-+(nonnull NSArray<id<MTLDevice>>*)metalDevices
++(nonnull NSArray*)metalDevices
 {
     // References:
     // https://developer.apple.com/documentation/metal/fundamental_components/macos_devices/getting_different_types_of_gpus?language=objc
     // https://developer.apple.com/documentation/metal/1433367-mtlcopyalldevices?language=objc
     
-    return MTLCopyAllDevices();
-}
-#else
-#if USE_THE_METAL_FRAMEWORK_WHEN_AVAILABLE == true
-+(nonnull NSArray<id<VMMMetalDevice>>*)metalDevices
-{
-    if (!IsFrameworkMetalAvailable) return @[];
-
-    @autoreleasepool
-    {
-        // Loading a framework dinamically is not trivial... References:
-        // Loading Objective-C Class:   https://stackoverflow.com/a/24266440/4370893
-        // Loading C int function:      https://stackoverflow.com/a/21375580/4370893
-        // Loading C/C++ void function: https://stackoverflow.com/a/1354569/4370893
-        
-        void *metalFramework = dlopen("System/Library/Frameworks/Metal.framework/Metal", RTLD_NOW);
-        if (!metalFramework) return @[];
-        
-        NSArray<id>* (*metalCopyAllDevicesWithObserver)(void) = dlsym(metalFramework, "MTLCopyAllDevices");
-        NSArray<id>* deviceList = metalCopyAllDevicesWithObserver();
-        
-        if (0 != dlclose(metalFramework)) {
-            NSDebugLog(@"dlclose failed! %s\n", dlerror());
-        }
-        
-        return deviceList;
+    if (MTLCopyAllDevices != NULL) {
+        return MTLCopyAllDevices();
     }
-
+    
     return @[];
 }
-#endif
-#endif
 
 @end
 
