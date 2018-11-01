@@ -19,14 +19,14 @@
 
 @implementation NSString (VMMString)
 
-+(NSString*)stringWithCFTypeIDDescription:(CFTypeRef)cf_type {
++(nonnull NSString*)stringWithCFTypeIDDescription:(CFTypeRef _Nonnull)cf_type {
     CFTypeID type_id = (CFTypeID) CFGetTypeID(cf_type);
     CFStringRef typeIdDescription = CFCopyTypeIDDescription(type_id);
     NSString* string = [self stringWithCFString:typeIdDescription];
     CFRelease(typeIdDescription);
     return [NSString stringWithFormat:@"<%@>",string];
 }
-+(NSString*)stringWithCFString:(CFStringRef)cf_string {
++(nullable NSString*)stringWithCFString:(CFStringRef _Nonnull)cf_string {
     char * buffer;
     CFIndex len = CFStringGetLength(cf_string);
     buffer = (char *) malloc(sizeof(char) * len + 1);
@@ -36,12 +36,12 @@
     free(buffer);
     return string;
 }
-+(NSString*)stringWithCFNumber:(CFNumberRef)cf_number ofType:(CFNumberType)number_type {
++(nonnull NSString*)stringWithCFNumber:(CFNumberRef _Nonnull)cf_number ofType:(CFNumberType)number_type {
     int number; 
     CFNumberGetValue(cf_number, number_type, &number);
     return [NSString stringWithFormat:@"%d",number];
 }
-+(NSString*)stringWithCFType:(CFTypeRef)cf_type {
++(nullable NSString*)stringWithCFType:(CFTypeRef _Nonnull)cf_type {
     CFTypeID type_id;
     
     type_id = (CFTypeID) CFGetTypeID(cf_type);
@@ -492,7 +492,10 @@
          ^(NSUInteger statusCode, NSData *data, NSError *error)
         {
             NSString* stringValue = (data != nil) ? [[NSString alloc] initWithData:data encoding:enc] : nil;
-            completion(statusCode, stringValue, error);
+
+            if (completion != nil) {
+                completion(statusCode, stringValue, error);
+            }
         }];
     }
 }

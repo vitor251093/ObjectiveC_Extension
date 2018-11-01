@@ -18,7 +18,7 @@
 
 @implementation NSData (VMMData)
 
-+(void)dataWithContentsOfURL:(nonnull NSURL *)url timeoutInterval:(long long int)timeoutInterval withCompletionHandler:(void (^)(NSUInteger statusCode, NSData* data, NSError* error))completion
++(void)dataWithContentsOfURL:(nonnull NSURL *)url timeoutInterval:(long long int)timeoutInterval withCompletionHandler:(void (^_Nullable)(NSUInteger statusCode, NSData* _Nullable data, NSError* _Nullable error))completion
 {
     NSData* stringData;
     
@@ -31,7 +31,9 @@
         NSHTTPURLResponse *response = nil;
         stringData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
         
-        completion(response.statusCode, stringData, error);
+        if (completion != nil) {
+            completion(response.statusCode, stringData, error);
+        }
     }
 }
 +(nullable NSData*)safeDataWithContentsOfFile:(nonnull NSString*)filePath

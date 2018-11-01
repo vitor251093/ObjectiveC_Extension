@@ -13,10 +13,10 @@
 
 @interface NSString (VMMString)
 
-+(NSString*)stringWithCFTypeIDDescription:(CFTypeRef)cf_type;
-+(NSString*)stringWithCFString:(CFStringRef)cf_string;
-+(NSString*)stringWithCFNumber:(CFNumberRef)cf_number ofType:(CFNumberType)number_type;
-+(NSString*)stringWithCFType:(CFTypeRef)cf_type;
++(nonnull  NSString*)stringWithCFTypeIDDescription:(CFTypeRef _Nonnull)cf_type;
++(nullable NSString*)stringWithCFString:(CFStringRef _Nonnull)cf_string;
++(nonnull  NSString*)stringWithCFNumber:(CFNumberRef _Nonnull)cf_number ofType:(CFNumberType)number_type;
++(nullable NSString*)stringWithCFType:(CFTypeRef _Nonnull)cf_type;
 
 -(BOOL)contains:(nonnull NSString*)string;
 -(BOOL)matchesWithSearchTerms:(nonnull NSArray*)searchTerms;
@@ -40,7 +40,7 @@
 
 +(nullable NSString*)stringWithContentsOfFile:(nonnull NSString*)file;
 +(nullable NSString*)stringWithContentsOfFile:(nonnull NSString*)file encoding:(NSStringEncoding)enc;
-+(void)stringWithContentsOfURL:(nonnull NSURL *)url encoding:(NSStringEncoding)enc timeoutInterval:(long long int)timeoutInterval withCompletionHandler:(void (^)(NSUInteger statusCode, NSString* string, NSError* error))completion;
++(void)stringWithContentsOfURL:(nonnull NSURL *)url encoding:(NSStringEncoding)enc timeoutInterval:(long long int)timeoutInterval withCompletionHandler:(void (^_Nullable)(NSUInteger statusCode, NSString* _Nullable string, NSError* _Nullable error))completion;
 
 -(BOOL)writeToFile:(nonnull NSString*)path atomically:(BOOL)useAuxiliaryFile encoding:(NSStringEncoding)enc;
 
