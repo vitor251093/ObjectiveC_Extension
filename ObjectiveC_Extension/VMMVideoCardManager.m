@@ -256,10 +256,13 @@
             }
             
             [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"memorySizeInMegabytes" ascending:NO]]];
+            
             [videoCards sortBySelector:@selector(vendorID)
                                inOrder:@[VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA, VMMVideoCardVendorIDIntel]];
             [videoCards sortBySelector:@selector(bus)
                                inOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
+            
+            [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"eGpu" ascending:NO]]];
         }
     });
     

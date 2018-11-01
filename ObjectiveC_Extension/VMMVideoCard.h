@@ -17,7 +17,7 @@
 
 static NSString * _Nonnull const VMMVideoCardNameKey =                       @"sppci_model";
 static NSString * _Nonnull const VMMVideoCardRawNameKey =                    @"_name";
-static NSString * _Nonnull const VMMVideoCardTypeKey =                       @"sppci_device_type";      // eg. 'GPU'
+static NSString * _Nonnull const VMMVideoCardDeviceTypeKey =                 @"sppci_device_type";      // eg. 'GPU'
 static NSString * _Nonnull const VMMVideoCardBusKey =                        @"sppci_bus";              // eg. VMMVideoCardBusPCIe
 static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInAlternateKey = @"_spdisplays_vram";       // eg. '1536 MB'
 static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInKey =          @"spdisplays_vram_shared"; // eg. '1536 MB'
@@ -38,6 +38,9 @@ static NSString * _Nonnull const VMMVideoCardTypeIntelIrisPlus =  @"Intel Iris P
 static NSString * _Nonnull const VMMVideoCardTypeIntelGMA =       @"Intel GMA";
 static NSString * _Nonnull const VMMVideoCardTypeATIAMD =         @"ATI/AMD";
 static NSString * _Nonnull const VMMVideoCardTypeNVIDIA =         @"NVIDIA";
+
+static NSString * _Nonnull const VMMVideoCardDeviceTypeGPU  = @"spdisplays_gpu";
+static NSString * _Nonnull const VMMVideoCardDeviceTypeeGPU = @"spdisplays_egpu";
 
 static NSString * _Nonnull const VMMVideoCardBusPCIe =        @"spdisplays_pcie_device";
 static NSString * _Nonnull const VMMVideoCardBusPCI =         @"sppci_pci_device";
@@ -120,6 +123,8 @@ static NSString * _Nonnull const VMMVideoCardTemporaryKeyMetalApiMemorySizes  = 
 @property (nonatomic, strong, readonly) NSNumber* _Nullable memorySizeInMegabytes;
 
 -(BOOL)kextLoaded;
+
+-(BOOL)eGpu;
 
 -(BOOL)supportsMetal;
 -(VMMMetalFeatureSet)metalFeatureSet;

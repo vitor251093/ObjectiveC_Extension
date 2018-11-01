@@ -691,6 +691,13 @@
     return ![kextInfo isEqualToString:VMMVideoCardKextInfoNotLoaded];
 }
 
+-(BOOL)eGpu {
+    NSString* type = self.dictionary[VMMVideoCardDeviceTypeKey];
+    if (type == nil) return false;
+    
+    return [type isEqualToString:VMMVideoCardDeviceTypeeGPU];
+}
+
 -(BOOL)supportsMetal
 {
     // TODO: Metal is only supported in macOS 10.11+. This should be added here?
