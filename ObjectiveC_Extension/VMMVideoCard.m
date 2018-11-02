@@ -691,7 +691,7 @@
     return ![kextInfo isEqualToString:VMMVideoCardKextInfoNotLoaded];
 }
 
--(BOOL)eGpu {
+-(BOOL)isExternalGpu {
     NSString* type = self.dictionary[VMMVideoCardDeviceTypeKey];
     if (type == nil) return false;
     

@@ -8,9 +8,6 @@
 //  References:
 //  https://lists.denx.de/pipermail/u-boot/2015-May/215147.html
 //
-//  TODO: Support eGPUs
-//  https://github.com/goalque/automate-eGPU
-//
 
 #import <Foundation/Foundation.h>
 #import "VMMComputerInformation.h"
@@ -124,7 +121,7 @@ static NSString * _Nonnull const VMMVideoCardTemporaryKeyMetalApiMemorySizes  = 
 
 -(BOOL)kextLoaded;
 
--(BOOL)eGpu;
+-(BOOL)isExternalGpu;
 
 -(BOOL)supportsMetal;
 -(VMMMetalFeatureSet)metalFeatureSet;

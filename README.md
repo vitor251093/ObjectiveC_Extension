@@ -597,7 +597,7 @@ True if the user is member of a specific user group in his computer.
 List of the computer video cards. Possibly requires non-sandboxed application.
 
 ```objectivec
-+(VMMVideoCard* _Nullable)mainVideoCard;
++(VMMVideoCard* _Nullable)bestVideoCard;
 ```
 
 Most powerful video card of the computer. Possibly requires non-sandboxed application.

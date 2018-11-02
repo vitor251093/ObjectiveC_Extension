@@ -262,7 +262,8 @@
             [videoCards sortBySelector:@selector(bus)
                                inOrder:@[VMMVideoCardBusPCIe, VMMVideoCardBusPCI, VMMVideoCardBusBuiltIn]];
             
-            [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"eGpu" ascending:NO]]];
+            [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete"    ascending:NO]]];
+            [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isExternalGpu" ascending:NO]]];
         }
     });
     
@@ -279,13 +280,43 @@
 }
 
 
-
-+(VMMVideoCard* _Nullable)mainVideoCard
++(VMMVideoCard* _Nullable)bestVideoCard
 {
     NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
     if (videoCards == nil || videoCards.count == 0) return nil;
     
-    [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete" ascending:NO]]];
+    [videoCards replaceObjectsWithVariation:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
+        return object.isComplete ? object : nil;
+    }];
+    [videoCards removeObject:[NSNull null]];
+    if (videoCards.count == 0) return nil;
+    
+    return videoCards.firstObject;
+}
++(VMMVideoCard* _Nullable)bestInternalVideoCard
+{
+    NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
+    if (videoCards == nil || videoCards.count == 0) return nil;
+    
+    [videoCards replaceObjectsWithVariation:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
+        return (object.isComplete && !object.isExternalGpu) ? object : nil;
+    }];
+    [videoCards removeObject:[NSNull null]];
+    if (videoCards.count == 0) return nil;
+    
+    return videoCards.firstObject;
+}
++(VMMVideoCard* _Nullable)bestExternalVideoCard
+{
+    NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
+    if (videoCards == nil || videoCards.count == 0) return nil;
+    
+    [videoCards replaceObjectsWithVariation:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
+        return (object.isComplete && object.isExternalGpu) ? object : nil;
+    }];
+    [videoCards removeObject:[NSNull null]];
+    if (videoCards.count == 0) return nil;
+    
     return videoCards.firstObject;
 }
 
