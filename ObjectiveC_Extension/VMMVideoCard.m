@@ -769,6 +769,10 @@
 {
     NSString* graphicCard = self.descriptiveName;
     
+    if (self.isExternalGpu) {
+        graphicCard = [NSString stringWithFormat:@"%@ (eGPU)",graphicCard];
+    }
+    
     if (!self.kextLoaded) {
         graphicCard = [NSString stringWithFormat:@"%@ (No Kext)",graphicCard];
     }
@@ -812,6 +816,7 @@
     [data addObject:[NSString stringWithFormat:@"Name: %@",self.name]];
     [data addObject:[NSString stringWithFormat:@"Type: %@",self.type]];
     [data addObject:[NSString stringWithFormat:@"Bus: %@",self.bus]];
+    [data addObject:[NSString stringWithFormat:@"eGPU: %@",self.isExternalGpu ? @"true" : @"false"]];
     [data addObject:[NSString stringWithFormat:@"Device ID: %@",self.deviceID]];
     [data addObject:[NSString stringWithFormat:@"Vendor ID: %@",self.vendorID]];
     [data addObject:[NSString stringWithFormat:@"Vendor: %@",self.vendor]];
