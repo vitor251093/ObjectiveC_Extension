@@ -275,6 +275,15 @@ typedef NS_ENUM(NSUInteger, VMMMetalFeatureSet)
 // https://developer.apple.com/metal/Metal-Feature-Set-Tables.pdf
 
 
+typedef NS_ENUM(NSUInteger, VMMExternalGPUCompatibilityWithMacOS)
+{
+    VMMExternalGPUCompatibilityWithMacOS_None      = 0,
+    VMMExternalGPUCompatibilityWithMacOS_MajorHack = 1,
+    VMMExternalGPUCompatibilityWithMacOS_MinorHack = 2,
+    VMMExternalGPUCompatibilityWithMacOS_Supported = 3
+};
+
+
 @interface VMMComputerInformation : NSObject
 
 +(nullable NSArray<NSDictionary*>*)systemProfilerItemsForDataType:(nonnull NSString*)dataType;
@@ -297,6 +306,8 @@ typedef NS_ENUM(NSUInteger, VMMMetalFeatureSet)
 +(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup;
 
 +(nonnull NSArray*)metalDevices;
+
++(VMMExternalGPUCompatibilityWithMacOS)macOsCompatibilityWithExternalGPU;
 
 @end
 

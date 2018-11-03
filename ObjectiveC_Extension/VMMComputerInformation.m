@@ -401,5 +401,33 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     return @[];
 }
 
++(VMMExternalGPUCompatibilityWithMacOS)macOsCompatibilityWithExternalGPU
+{
+    if ([self isSystemMacOsEqualOrSuperiorTo:@"10.13.4"]) {
+        // Full support
+        // https://support.apple.com/en-us/HT208544
+        return VMMExternalGPUCompatibilityWithMacOS_Supported;
+    }
+    if ([self isSystemMacOsEqualOrSuperiorTo:@"10.13"]) {
+        // Partial support / needs a different kind of hack
+        // https://github.com/learex/macOS-eGPU
+        // https://egpu.io/macos-high-sierra-official-external-gpu/
+        return VMMExternalGPUCompatibilityWithMacOS_MinorHack;
+    }
+    if ([self isSystemMacOsEqualOrSuperiorTo:@"10.9"]) {
+        // No support, but works with hacks
+        // http://forum.notebookreview.com/threads/diy-egpu-macos-experiences.660311/page-11
+        // https://odd-one-out.serek.eu/projects/egpu-osx-maverick-nvidia-gtx-760-using-pe4l/
+        // https://egpu.io/forums/mac-setup/automate-egpu-sh-is-reborn-with-amd-polaris-fiji-support-for-macos/
+        // https://www.techinferno.com/index.php?/forums/topic/7657-guide-enabling-egpu-display-output-in-yosemite/
+        // http://forum.netkas.org/index.php?topic=11140.0
+        // https://egpu.io/setup-guide-external-graphics-card-mac/
+        return VMMExternalGPUCompatibilityWithMacOS_MajorHack;
+    }
+    
+    // No support and no hacks
+    return VMMExternalGPUCompatibilityWithMacOS_None;
+}
+
 @end
 
