@@ -10,6 +10,8 @@
 
 @interface NSBundle (VMMBundle)
 
+-(NSUserDefaults*)userDefaults;
+
 -(nonnull NSString*)bundleName;
 -(nullable NSImage*)bundleIcon;
 
@@ -17,5 +19,8 @@
 -(BOOL)disableAppTranslocation;
 
 +(nullable NSBundle*)originalMainBundle;
+
+-(BOOL)preferExternalGPU;
+-(void)setPreferExternalGPU:(BOOL)prefer;
 
 @end

@@ -12,4 +12,7 @@
 
 -(nonnull id)objectForKey:(nonnull NSString *)key withDefaultValue:(nonnull id)value;
 
+-(BOOL)preferExternalGPU;
+-(void)setPreferExternalGPU:(BOOL)prefer;
+
 @end

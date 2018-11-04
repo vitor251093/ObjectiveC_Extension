@@ -11,6 +11,9 @@
 #import "NSTask+Extension.h"
 #import "NSException+Extension.h"
 #import "NSFileManager+Extension.h"
+#import "NSString+Extension.h"
+#import "NSUserDefaults+Extension.h"
+
 #import "VMMComputerInformation.h"
 
 #include <stdlib.h>
@@ -21,6 +24,13 @@ static NSString* const BUNDLE_NAME_PLACEHOLDER = @"App";
 @implementation NSBundle (VMMBundle)
 
 NSBundle* _originalMainBundle;
+
+-(NSUserDefaults*)userDefaults
+{
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] init];
+    [defaults addSuiteNamed:[self bundleIdentifier]];
+    return defaults;
+}
 
 -(nonnull NSString*)bundleName
 {
@@ -245,6 +255,18 @@ NSBundle* _originalMainBundle;
         
         return [NSBundle mainBundle];
     }
+}
+
+-(BOOL)preferExternalGPU
+{
+    NSUserDefaults* defaults = [self userDefaults];
+    return [defaults preferExternalGPU];
+}
+-(void)setPreferExternalGPU:(BOOL)prefer
+{
+    NSUserDefaults* defaults = [self userDefaults];
+    [defaults setPreferExternalGPU:prefer];
+    [defaults synchronize];
 }
 
 @end
