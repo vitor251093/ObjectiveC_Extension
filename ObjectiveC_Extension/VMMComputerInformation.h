@@ -307,6 +307,10 @@ typedef NS_ENUM(NSUInteger, VMMExternalGPUCompatibilityWithMacOS)
 
 +(nonnull NSArray*)metalDevices;
 
++(BOOL)isSystemIntegrityProtectionEnabled;
+
++(NSArray<NSDictionary*>*)thunderboltPorts;
+
 +(VMMExternalGPUCompatibilityWithMacOS)macOsCompatibilityWithExternalGPU;
 
 @end

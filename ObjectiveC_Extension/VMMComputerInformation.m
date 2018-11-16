@@ -401,6 +401,44 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     return @[];
 }
 
++(BOOL)isSystemIntegrityProtectionEnabled
+{
+    NSString* output = [NSTask runProgram:@"csrutil" withFlags:@[@"status"]];
+    return [output contains:@" enabled."];
+}
+
++(NSArray<NSDictionary*>*)thunderboltPorts
+{
+    NSMutableArray* thunderboltOutput = [[NSMutableArray alloc] init];
+    
+    CFMutableDictionaryRef matchDict = IOServiceMatching("AppleThunderboltHAL");
+    
+    io_iterator_t iterator;
+    if (IOServiceGetMatchingServices(kIOMasterPortDefault,matchDict,&iterator) == kIOReturnSuccess)
+    {
+        io_registry_entry_t regEntry;
+        while ((regEntry = IOIteratorNext(iterator)))
+        {
+            CFMutableDictionaryRef serviceDictionary;
+            if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess)
+            {
+                IOObjectRelease(regEntry);
+                continue;
+            }
+            
+            NSMutableDictionary* service = (__bridge NSMutableDictionary*)serviceDictionary;
+            [thunderboltOutput addObject:service];
+            CFRelease(serviceDictionary);
+            
+            IOObjectRelease(regEntry);
+        }
+        
+        IOObjectRelease(iterator);
+    }
+    
+    return thunderboltOutput;
+}
+
 +(VMMExternalGPUCompatibilityWithMacOS)macOsCompatibilityWithExternalGPU
 {
     if ([self isSystemMacOsEqualOrSuperiorTo:@"10.13.4"]) {
