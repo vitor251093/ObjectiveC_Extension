@@ -826,8 +826,10 @@
         for (NSString* key in _dictionary.allKeys) {
             newDict[key] = _dictionary[key];
         }
+        newDict[VMMVideoCardTemporaryKeyIOServiceValues] = [[NSMutableDictionary alloc] init];
         for (NSString* key in vc.dictionary.allKeys) {
             if (newDict[key] == nil) newDict[key] = vc.dictionary[key];
+            else newDict[VMMVideoCardTemporaryKeyIOServiceValues][key] = vc.dictionary[key];
         }
         
         _dictionary = newDict;
