@@ -810,6 +810,37 @@
     return [vms containsObject:type];
 }
 
+-(BOOL)isSameVideoCard:(VMMVideoCard*)vc
+{
+    if (self.vendorID == nil) return false;
+    if (self.deviceID == nil) return false;
+    if (vc.vendorID   == nil) return false;
+    if (vc.deviceID   == nil) return false;
+    return [self.vendorID isEqualToString:vc.vendorID] && [self.deviceID isEqualToString:vc.deviceID];
+}
+-(void)mergeWithVideoCard:(VMMVideoCard*)vc
+{
+    @autoreleasepool
+    {
+        NSMutableDictionary* newDict = [[NSMutableDictionary alloc] init];
+        for (NSString* key in _dictionary.allKeys) {
+            newDict[key] = _dictionary[key];
+        }
+        for (NSString* key in vc.dictionary.allKeys) {
+            if (newDict[key] == nil) newDict[key] = vc.dictionary[key];
+        }
+        
+        _dictionary = newDict;
+        _name = nil;
+        _type = nil;
+        _bus = nil;
+        _deviceID = nil;
+        _vendorID = nil;
+        _vendor = nil;
+        _memorySizeInMegabytes = nil;
+    }
+}
+
 -(NSString*)description
 {
     NSMutableArray* data = [[NSMutableArray alloc] init];

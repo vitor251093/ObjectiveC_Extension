@@ -13,7 +13,7 @@
 
 @implementation VMMVideoCardManager
 
-+(NSArray<VMMVideoCard*>* _Nullable)systemProfilerVideoCards
++(NSMutableArray<VMMVideoCard*>* _Nullable)systemProfilerVideoCards
 {
     NSArray* displayOutput = [VMMComputerInformation systemProfilerItemsForDataType:SPDisplaysDataType];
     
@@ -224,15 +224,6 @@
 
 
 
-+(BOOL)anyVideoCardDictionaryIsCompleteInArray:(NSArray<VMMVideoCard*>* _Nonnull)videoCards
-{
-    for (VMMVideoCard* vc in videoCards)
-    {
-        if (vc.isComplete) return true;
-    }
-    
-    return false;
-}
 +(NSArray<VMMVideoCard*>* _Nonnull)videoCards
 {
     static NSMutableArray<VMMVideoCard*>* videoCards = nil;
@@ -241,19 +232,21 @@
     dispatch_once(&onceToken, ^{
         @autoreleasepool
         {
-            NSArray<VMMVideoCard*>* systemProfilerVideoCards = [self systemProfilerVideoCards];
+            NSMutableArray<VMMVideoCard*>* videoCards = [self systemProfilerVideoCards];
+            NSMutableArray<VMMVideoCard*>* extraVideoCards = [[NSMutableArray alloc] init];
             
-            if (systemProfilerVideoCards == nil || systemProfilerVideoCards.count == 0 ||
-                [self anyVideoCardDictionaryIsCompleteInArray:systemProfilerVideoCards] == false)
-            {
-                NSMutableArray<VMMVideoCard*>* computerGraphicCardDictionary = [self videoCardsFromIOServiceMatch];
-                if (systemProfilerVideoCards != nil) [computerGraphicCardDictionary addObjectsFromArray:systemProfilerVideoCards];
-                videoCards = computerGraphicCardDictionary;
+            NSArray<VMMVideoCard*>* ioVideoCards = [self videoCardsFromIOServiceMatch];
+            for (VMMVideoCard* iovc in ioVideoCards) {
+                BOOL found = false;
+                for (VMMVideoCard* spvc in videoCards) {
+                    if ([spvc isSameVideoCard:iovc]) {
+                        found = true;
+                        [spvc mergeWithVideoCard:iovc];
+                    }
+                }
+                if (!found) [extraVideoCards addObject:iovc];
             }
-            else
-            {
-                videoCards = [systemProfilerVideoCards mutableCopy];
-            }
+            [videoCards addObjectsFromArray:extraVideoCards];
             
             [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"memorySizeInMegabytes" ascending:NO]]];
             
