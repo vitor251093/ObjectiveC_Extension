@@ -232,7 +232,7 @@
     dispatch_once(&onceToken, ^{
         @autoreleasepool
         {
-            NSMutableArray<VMMVideoCard*>* videoCards = [self systemProfilerVideoCards];
+            videoCards = [self systemProfilerVideoCards];
             NSMutableArray<VMMVideoCard*>* extraVideoCards = [[NSMutableArray alloc] init];
             
             NSArray<VMMVideoCard*>* ioVideoCards = [self videoCardsFromIOServiceMatch];
