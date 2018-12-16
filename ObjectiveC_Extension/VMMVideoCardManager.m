@@ -19,15 +19,15 @@
     
     if (displayOutput == nil)
     {
-        return nil;
+        return [[NSMutableArray alloc] init];
     }
     
     NSMutableArray* cards = [displayOutput mutableCopy];
     
     [cards replaceObjectsWithVariation:^id _Nullable(NSDictionary*  _Nonnull object, NSUInteger index)
-     {
-         return [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
-     }];
+    {
+        return [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
+    }];
     
     [cards removeObject:[NSNull null]];
     
