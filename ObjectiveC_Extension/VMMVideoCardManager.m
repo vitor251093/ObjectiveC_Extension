@@ -13,7 +13,7 @@
 
 @implementation VMMVideoCardManager
 
-+(NSMutableArray<VMMVideoCard*>* _Nullable)systemProfilerVideoCards
++(NSMutableArray<VMMVideoCard*>* _Nonnull)systemProfilerVideoCards
 {
     NSArray* displayOutput = [VMMComputerInformation systemProfilerItemsForDataType:SPDisplaysDataType];
     
