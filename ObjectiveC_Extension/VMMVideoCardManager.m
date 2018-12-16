@@ -276,23 +276,27 @@
 +(VMMVideoCard* _Nullable)bestVideoCard
 {
     NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
-    if (videoCards == nil || videoCards.count == 0) return nil;
+    if (videoCards == nil || videoCards.count == 0)
+    {
+        videoCards = [[self videoCards] mutableCopy];
+        if (videoCards == nil || videoCards.count == 0) return nil;
+    }
     
-    [videoCards replaceObjectsWithVariation:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
-        return object.isComplete ? object : nil;
-    }];
-    [videoCards removeObject:[NSNull null]];
-    if (videoCards.count == 0) return nil;
-    
+    [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete" ascending:NO]]];
     return videoCards.firstObject;
 }
 +(VMMVideoCard* _Nullable)bestInternalVideoCard
 {
     NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
-    if (videoCards == nil || videoCards.count == 0) return nil;
+    if (videoCards == nil || videoCards.count == 0)
+    {
+        videoCards = [[self videoCards] mutableCopy];
+        if (videoCards == nil || videoCards.count == 0) return nil;
+    }
     
+    [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete" ascending:NO]]];
     [videoCards replaceObjectsWithVariation:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
-        return (object.isComplete && !object.isExternalGpu) ? object : nil;
+        return (!object.isExternalGpu) ? object : nil;
     }];
     [videoCards removeObject:[NSNull null]];
     if (videoCards.count == 0) return nil;
