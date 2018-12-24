@@ -215,7 +215,6 @@
                 // Reference:
                 // https://gist.github.com/JonnyJD/6126680
                 
-                NSMutableArray* regEntryKeys = [[NSMutableArray alloc] init];
                 CFMutableDictionaryRef properties;
                 CFIndex count;
                 CFTypeRef *keys;
@@ -233,15 +232,12 @@
                     CFTypeRef cf_type = keys[i];
                     NSString* key = [NSString stringWithCFType:cf_type];
                     if (key == nil) key = [NSString stringWithCFTypeIDDescription:cf_type];
-                    [regEntryKeys addObject:key];
                     
                     id keyVal = service[key];
                     keyVal = [self getValuesFromRegistryEntryObject:keyVal];
                     graphicCardDict[[@"IOPCIDevice_" stringByAppendingString:key]] = keyVal;
                 }
                 free(keys);
-                
-                graphicCardDict[VMMVideoCardTemporaryKeyRegKeys] = [regEntryKeys componentsJoinedByString:@", "];
                 
                 CFRelease(serviceDictionary);
                 [graphicCardDicts addObject:graphicCardDict];

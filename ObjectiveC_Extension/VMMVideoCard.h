@@ -92,10 +92,8 @@ static NSString * _Nonnull const VMMVideoCardDeviceIDNVIDIAGeForce320M_5 = @"0x0
 
 static NSInteger const VMMVideoCardMemoryMinimumSize = 64;
 
-static NSString * _Nonnull const VMMVideoCardTemporaryKeyRegKeys              = @"RawRegEntryKeys";
 static NSString * _Nonnull const VMMVideoCardTemporaryKeyIOServiceValues      = @"RawRegIOServiceValues";
 static NSString * _Nonnull const VMMVideoCardTemporaryKeyOpenGlApiMemorySizes = @"temp_memory_size_opengl_api_values";
-static NSString * _Nonnull const VMMVideoCardTemporaryKeyMetalApiMemorySizes  = @"temp_memory_size_metal_api_values";
 
 @interface VMMVideoCard : NSObject
 {
