@@ -828,8 +828,15 @@
         }
         newDict[VMMVideoCardTemporaryKeyIOServiceValues] = [[NSMutableDictionary alloc] init];
         for (NSString* key in vc.dictionary.allKeys) {
-            if (newDict[key] == nil) newDict[key] = vc.dictionary[key];
-            else newDict[VMMVideoCardTemporaryKeyIOServiceValues][key] = vc.dictionary[key];
+            if (newDict[key] == nil && ![key hasPrefix:@"IOPCIDevice_"]) {
+                newDict[key] = vc.dictionary[key];
+            }
+            
+            if (![key isEqualToString:VMMVideoCardTemporaryKeyRegKeys]) {
+                if ([key hasPrefix:@"IOPCIDevice_"]) {
+                    newDict[VMMVideoCardTemporaryKeyIOServiceValues][[key substringFromIndex:12]] = vc.dictionary[key];
+                }
+            }
         }
         
         _dictionary = newDict;

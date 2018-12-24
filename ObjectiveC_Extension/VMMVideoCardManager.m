@@ -34,6 +34,58 @@
     return cards;
 }
 
++(id)getValuesFromRegistryEntryObject:(id)keyData
+{
+    if (keyData == nil) {
+        return nil;
+    }
+
+    if ([keyData isKindOfClass:[NSData class]])
+    {
+        NSString* keyDataString;
+        NSString* keyDataAsciiString = [[NSString alloc] initWithData:keyData encoding:NSASCIIStringEncoding];
+        if (!keyDataAsciiString)
+        {
+            keyDataString = [[NSString alloc] initWithData:keyData encoding:NSUTF8StringEncoding];
+        }
+        else
+        {
+            NSString* keyDataUtf8String = [[NSString alloc] initWithData:keyData encoding:NSUTF8StringEncoding];
+            if (keyDataUtf8String != nil && [keyDataUtf8String length] < [keyDataAsciiString length]) {
+                keyDataString = keyDataUtf8String;
+            }
+            else {
+                keyDataString = keyDataAsciiString;
+            }
+        }
+        
+        return @[keyDataString,keyData];
+    }
+    
+    if ([keyData isKindOfClass:[NSDictionary class]])
+    {
+        NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
+        for (NSString* key in ((NSDictionary*)keyData).allKeys)
+        {
+            NSObject* newVal = [self getValuesFromRegistryEntryObject:[((NSDictionary*)keyData) objectForKey:key]];
+            if (newVal != nil) dict[key] = newVal;
+        }
+        return dict;
+    }
+    
+    if ([keyData isKindOfClass:[NSArray class]])
+    {
+        NSMutableArray* array = [[NSMutableArray alloc] init];
+        for (NSString* val in ((NSArray*)keyData))
+        {
+            NSObject* newVal = [self getValuesFromRegistryEntryObject:val];
+            if (newVal != nil) [array addObject:newVal];
+        }
+        return array;
+    }
+    
+    return keyData;
+}
 +(NSMutableArray<VMMVideoCard*>* _Nonnull)videoCardsFromIOServiceMatch
 {
     NSMutableArray* graphicCardDicts = [[NSMutableArray alloc] init];
@@ -130,7 +182,7 @@
                                                                kCFAllocatorDefault, kIORegistryIterateRecursively);
                 }
                 
-                if (vramSize)
+                if (vramSize != NULL)
                 {
                     mach_vm_size_t size = 0;
                     CFTypeID type = CFGetTypeID(vramSize);
@@ -156,40 +208,42 @@
                     if (vramValueInBytes) size >>= 20;
                     
                     graphicCardDict[VMMVideoCardMemorySizeBuiltInKey] = [NSString stringWithFormat:@"%llu MB", size];
+                    
+                    CFRelease(vramSize);
                 }
-                else
+                
+                // Reference:
+                // https://gist.github.com/JonnyJD/6126680
+                
+                NSMutableArray* regEntryKeys = [[NSMutableArray alloc] init];
+                CFMutableDictionaryRef properties;
+                CFIndex count;
+                CFTypeRef *keys;
+                CFTypeRef *values;
+                int i;
+                
+                IORegistryEntryCreateCFProperties(regEntry, &properties, kCFAllocatorDefault, kNilOptions);
+                count = CFDictionaryGetCount(properties);
+                keys = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
+                values = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
+                CFDictionaryGetKeysAndValues(properties, (const void **) keys, (const void **) values);
+                free(values);
+                for (i = 0; i < count; i++)
                 {
-                    // Reference:
-                    // https://gist.github.com/JonnyJD/6126680
+                    CFTypeRef cf_type = keys[i];
+                    NSString* key = [NSString stringWithCFType:cf_type];
+                    if (key == nil) key = [NSString stringWithCFTypeIDDescription:cf_type];
+                    [regEntryKeys addObject:key];
                     
-                    NSMutableArray* regEntryKeys = [[NSMutableArray alloc] init];
-                    CFMutableDictionaryRef properties;
-                    CFIndex count;
-                    CFTypeRef *keys;
-                    CFTypeRef *values;
-                    int i;
-                    
-                    IORegistryEntryCreateCFProperties(regEntry, &properties, kCFAllocatorDefault, kNilOptions);
-                    count = CFDictionaryGetCount(properties);
-                    keys = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
-                    values = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
-                    CFDictionaryGetKeysAndValues(properties, (const void **) keys, (const void **) values);
-                    free(values);
-                    for (i = 0; i < count; i++)
-                    {
-                        CFTypeRef cf_type = keys[i];
-                        NSString* key = [NSString stringWithCFType:cf_type];
-                        if (key == nil) key = [NSString stringWithCFTypeIDDescription:cf_type];
-                        [regEntryKeys addObject:key];
-                    }
-                    free(keys);
-                    
-                    graphicCardDict[VMMVideoCardTemporaryKeyRegKeys] = [regEntryKeys componentsJoinedByString:@", "];
+                    id keyVal = service[key];
+                    keyVal = [self getValuesFromRegistryEntryObject:keyVal];
+                    graphicCardDict[[@"IOPCIDevice_" stringByAppendingString:key]] = keyVal;
                 }
+                free(keys);
                 
-                if (vramSize != NULL) CFRelease(vramSize);
+                graphicCardDict[VMMVideoCardTemporaryKeyRegKeys] = [regEntryKeys componentsJoinedByString:@", "];
+                
                 CFRelease(serviceDictionary);
-                
                 [graphicCardDicts addObject:graphicCardDict];
             }
             
