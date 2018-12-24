@@ -818,7 +818,7 @@
     if (vc.deviceID   == nil) return false;
     return [self.vendorID isEqualToString:vc.vendorID] && [self.deviceID isEqualToString:vc.deviceID];
 }
--(void)mergeWithVideoCard:(VMMVideoCard*)vc
+-(void)mergeWithIOPCIVideoCard:(VMMVideoCard*)vc
 {
     @autoreleasepool
     {
@@ -828,14 +828,11 @@
         }
         newDict[VMMVideoCardTemporaryKeyIOServiceValues] = [[NSMutableDictionary alloc] init];
         for (NSString* key in vc.dictionary.allKeys) {
-            if (newDict[key] == nil && ![key hasPrefix:@"IOPCIDevice_"]) {
-                newDict[key] = vc.dictionary[key];
+            if (![key hasPrefix:@"IOPCIDevice_"]) {
+                if (newDict[key] == nil) newDict[key] = vc.dictionary[key];
             }
-            
-            if (![key isEqualToString:VMMVideoCardTemporaryKeyRegKeys]) {
-                if ([key hasPrefix:@"IOPCIDevice_"]) {
-                    newDict[VMMVideoCardTemporaryKeyIOServiceValues][[key substringFromIndex:12]] = vc.dictionary[key];
-                }
+            else {
+                newDict[VMMVideoCardTemporaryKeyIOServiceValues][[key substringFromIndex:12]] = vc.dictionary[key];
             }
         }
         

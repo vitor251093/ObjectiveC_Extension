@@ -295,7 +295,7 @@
                 for (VMMVideoCard* spvc in videoCards) {
                     if ([spvc isSameVideoCard:iovc]) {
                         found = true;
-                        [spvc mergeWithVideoCard:iovc];
+                        [spvc mergeWithIOPCIVideoCard:iovc];
                     }
                 }
                 if (!found) [extraVideoCards addObject:iovc];
