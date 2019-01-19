@@ -17,5 +17,13 @@
     [theRunLoop addTimer:timer forMode:runLoopMode];
     return timer;
 }
++(nonnull NSTimer*)scheduledTimerWithRunLoopMode:(nonnull NSRunLoopMode)runLoopMode timeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)(NSTimer* timer))block
+{
+    NSTimer* timer = [NSTimer timerWithTimeInterval:interval repeats:repeats block:block];
+    NSRunLoop* theRunLoop = [NSRunLoop currentRunLoop];
+    [theRunLoop addTimer:timer forMode:runLoopMode];
+    return timer;
+}
+
 
 @end
