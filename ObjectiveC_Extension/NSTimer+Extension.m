@@ -7,6 +7,15 @@
 //
 
 #import "NSTimer+Extension.h"
+#import "VMMComputerInformation.h"
+
+@implementation VMMTimerListener
+
+-(void)listen {
+    _block(_timer);
+}
+
+@end
 
 @implementation NSTimer (VMMTimer)
 
@@ -17,13 +26,17 @@
     [theRunLoop addTimer:timer forMode:runLoopMode];
     return timer;
 }
-+(nonnull NSTimer*)scheduledTimerWithRunLoopMode:(nonnull NSRunLoopMode)runLoopMode timeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)(NSTimer* timer))block
+
++(nonnull VMMTimerListener*)scheduledTimerWithRunLoopMode:(nonnull NSRunLoopMode)runLoopMode timeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)(NSTimer* timer))block
 {
-    NSTimer* timer = [NSTimer timerWithTimeInterval:interval repeats:repeats block:block];
+    VMMTimerListener* listener = [[VMMTimerListener alloc] init];
+    listener.block = block;
+    listener.timer = [NSTimer timerWithTimeInterval:interval target:listener selector:@selector(listen) userInfo:nil repeats:repeats];
+    
     NSRunLoop* theRunLoop = [NSRunLoop currentRunLoop];
-    [theRunLoop addTimer:timer forMode:runLoopMode];
-    return timer;
+    [theRunLoop addTimer:listener.timer forMode:runLoopMode];
+    return listener;
 }
 
-
 @end
+
