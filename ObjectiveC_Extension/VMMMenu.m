@@ -1,15 +1,12 @@
 //
-//  NSMenu+Extension.m
+//  VMMMenu.m
 //  ObjectiveC_Extension
 //
-//  Created by Vitor Marques de Miranda on 16/02/17.
-//  Copyright © 2017 Vitor Marques de Miranda. All rights reserved.
-//
-//  Reference NSMenu+Dark:
-//  https://github.com/swillits/NSMenu-Dark
+//  Created by Vitor Marques de Miranda on 03/02/19.
+//  Copyright © 2019 VitorMM. All rights reserved.
 //
 
-#import "NSMenu+Extension.h"
+#import "VMMMenu.h"
 
 #import <Carbon/Carbon.h>
 #import <objc/runtime.h>
@@ -46,45 +43,57 @@ extern void SetMenuItemProperty(MenuRef         menu,
 - (id)initWithMenu:(NSMenu *)menu;
 @end
 
+@implementation VMMMenu
 
-@implementation NSMenu (VMMMenu)
 static int MAKE_DARK_KEY;
 
-- (instancetype)initDarkMenu
+static BOOL FORCE_LIGHT;
+static BOOL FORCE_DARK;
+
++ (void)forceLightMenu {
+    FORCE_LIGHT = true;
+    FORCE_DARK = false;
+}
++ (void)forceDarkMenu {
+    FORCE_LIGHT = false;
+    FORCE_DARK = true;
+}
++ (void)forceSystemMenu {
+    FORCE_LIGHT = false;
+    FORCE_DARK = false;
+}
+
+-(instancetype)init
 {
-    self = [self init];
-    if (self)
-    {
-        [self setDark];
+    self = [super init];
+    if (self) {
+        NSMenuDarkMaker * maker = [[NSMenuDarkMaker alloc] initWithMenu:self];
+        objc_setAssociatedObject(self, &MAKE_DARK_KEY, maker, OBJC_ASSOCIATION_RETAIN);
     }
     return self;
 }
 
-- (void)setDark;
+- (void)makeDark
 {
-    NSMenuDarkMaker * maker = [[NSMenuDarkMaker alloc] initWithMenu:self];
-    objc_setAssociatedObject(self, &MAKE_DARK_KEY, maker, OBJC_ASSOCIATION_RETAIN);
-}
-
-- (void)makeDark;
-{
-    id impl = [self _menuImpl];
-    if ([impl respondsToSelector:@selector(_principalMenuRef)]) {
-        MenuRef m = [impl _principalMenuRef];
-        if (m) {
-            char on = 1;
-            SetMenuItemProperty(m, 0, 'dock', 'dark', 1, &on);
-        }
-    }
-    
-    for (NSMenuItem * item in self.itemArray)
+    if (FORCE_LIGHT || FORCE_DARK)
     {
-        [item.submenu makeDark];
+        id impl = [self _menuImpl];
+        if ([impl respondsToSelector:@selector(_principalMenuRef)]) {
+            MenuRef m = [impl _principalMenuRef];
+            if (m) {
+                char on = FORCE_DARK ? 1 : 0;
+                SetMenuItemProperty(m, 0, 'dock', 'dark', 1, &on);
+            }
+        }
+        
+        for (NSMenuItem * item in self.itemArray)
+        {
+            [item.submenu makeDark];
+        }
     }
 }
 
 @end
-
 
 @implementation NSMenuDarkMaker
 

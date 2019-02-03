@@ -36,7 +36,6 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 #import <ObjectiveC_Extension/NSException+Extension.h>
 #import <ObjectiveC_Extension/NSFileManager+Extension.h>
 #import <ObjectiveC_Extension/NSImage+Extension.h>
-#import <ObjectiveC_Extension/NSMenu+Extension.h>
 #import <ObjectiveC_Extension/NSMenuItem+Extension.h>
 #import <ObjectiveC_Extension/NSMutableArray+Extension.h>
 #import <ObjectiveC_Extension/NSMutableAttributedString+Extension.h>
@@ -73,6 +72,7 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 
 // Views
 #import <ObjectiveC_Extension/VMMKeyCaptureField.h>
+#import <ObjectiveC_Extension/VMMMenu.h>
 #import <ObjectiveC_Extension/VMMView.h>
 #import <ObjectiveC_Extension/VMMWebView.h>
 #import <ObjectiveC_Extension/VMMTextFileView.h>

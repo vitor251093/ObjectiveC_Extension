@@ -465,19 +465,6 @@ Write the existing `NSImage` at the specified path in the icns (macOS icon) form
 
 Write the existing `NSImage` at the specified path in the format specified by the extension of the last component of the given path. Compatible extensions are **bmp**, **gif**, **jpg**, **jp2**, **png** and **tiff**.
 
-### NSMenu
-Based in `NSMenu+Dark` (https://github.com/swillits/NSMenu-Dark). 
-
-```objectivec
-- (instancetype)initDarkMenu;
-```
-
-Init a `NSMenu` with the dark color of the Dock right-click menu.
-
-```objectivec
-- (void)setDark;
-```
-
 Changes the color of an existing `NSMenu` to the dark color of the Dock right-click menu.
 
 ### NSMenuItem
@@ -787,6 +774,27 @@ Protocol for `VMMUserNotificationCenter`  delegate.
 
 If `NSUserNotificationCenter` or `NSAlert` is used, that function is called when the action button is pressed, and the user information is provided.
 
+
+### VMMMenu
+Based in `NSMenu+Dark` (https://github.com/swillits/NSMenu-Dark). 
+
+```objectivec
++ (void)forceLightMenu;
+```
+
+Gives every VMMMenu (which is basically a  `NSMenu`) the light color of the Aqua appearance, even during Mojave's dark mode.
+
+```objectivec
++ (void)forceDarkMenu;
+```
+
+Gives every VMMMenu (which is basically a  `NSMenu`) the dark color of the Dock right-click menu, even in macOS 10.6.
+
+```objectivec
++ (void)forceSystemMenu;
+```
+
+Gives every VMMMenu (which is basically a  `NSMenu`) the regular system color.
 
 ### NKFTPManager
 
