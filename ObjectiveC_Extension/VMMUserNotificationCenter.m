@@ -17,7 +17,7 @@
 
 #import "VMMComputerInformation.h"
 
-#import "NSAlert+Extension.h"
+#import "VMMAlert.h"
 #import "NSBundle+Extension.h"
 #import "NSFileManager+Extension.h"
 #import "NSImage+Extension.h"
@@ -204,7 +204,7 @@ static VMMUserNotificationCenter *_sharedInstance;
         // NSAlert (with action)
         if (actionButton != nil && self.delegate != nil)
         {
-            BOOL runAction = [NSAlert confirmationDialogWithTitle:title message:message andSettings:^(NSAlert *alert)
+            BOOL runAction = [VMMAlert confirmationDialogWithTitle:title message:message andSettings:^(VMMAlert *alert)
             {
                 [alert.buttons.firstObject setTitle:actionButton];
                 [alert setIcon:icon];
@@ -221,7 +221,7 @@ static VMMUserNotificationCenter *_sharedInstance;
         // NSAlert (with no action)
         if (allowNotificationWithNoAction)
         {
-            [NSAlert showAlertWithTitle:title message:message andSettings:^(NSAlert *alert)
+            [VMMAlert showAlertWithTitle:title message:message andSettings:^(VMMAlert *alert)
             {
                 [alert setIcon:icon];
             }];

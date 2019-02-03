@@ -25,7 +25,6 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 #import <ObjectiveC_Extension/VMMUsageKeycode.h>
 
 // Extensions
-#import <ObjectiveC_Extension/NSAlert+Extension.h>
 #import <ObjectiveC_Extension/NSApplication+Extension.h>
 #import <ObjectiveC_Extension/NSArray+Extension.h>
 #import <ObjectiveC_Extension/NSAttributedString+Extension.h>
@@ -72,6 +71,7 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 
 // Views
 #import <ObjectiveC_Extension/VMMKeyCaptureField.h>
+#import <ObjectiveC_Extension/VMMAlert.h>
 #import <ObjectiveC_Extension/VMMMenu.h>
 #import <ObjectiveC_Extension/VMMView.h>
 #import <ObjectiveC_Extension/VMMWebView.h>

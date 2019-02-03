@@ -8,7 +8,7 @@
 
 #import "NSFileManager+Extension.h"
 
-#import "NSAlert+Extension.h"
+#import "VMMAlert.h"
 #import "NSData+Extension.h"
 #import "NSTask+Extension.h"
 #import "NSString+Extension.h"
@@ -27,7 +27,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while creating symbolic link: %@"), error.localizedDescription]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while creating symbolic link: %@"), error.localizedDescription]];
     }
     
     return created;
@@ -39,7 +39,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while creating folder: %@"), error.localizedDescription]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while creating folder: %@"), error.localizedDescription]];
     }
     
     return created;
@@ -56,7 +56,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError
+        [VMMAlert showAlertOfType:VMMAlertTypeError
             withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while moving file: %@"), error.localizedDescription]];
     }
     
@@ -69,7 +69,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while copying file: %@"), error.localizedDescription]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while copying file: %@"), error.localizedDescription]];
     }
     
     return created;
@@ -83,7 +83,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while removing file: %@"), error.localizedDescription]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while removing file: %@"), error.localizedDescription]];
     }
     
     return created;
@@ -102,13 +102,13 @@
 {
     if (![self fileExistsAtPath:path])
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while listing folder contents: %@ doesn't exist."), path.lastPathComponent]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while listing folder contents: %@ doesn't exist."), path.lastPathComponent]];
         return @[];
     }
     
     if (![self directoryExistsAtPath:path])
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while listing folder contents: %@ is not a folder."), path.lastPathComponent]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while listing folder contents: %@ is not a folder."), path.lastPathComponent]];
         return @[];
     }
     
@@ -117,7 +117,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while listing folder contents: %@"), error.localizedDescription]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while listing folder contents: %@"), error.localizedDescription]];
         return @[];
     }
     
@@ -152,7 +152,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while retrieving symbolic link destination: %@"),error.localizedDescription]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while retrieving symbolic link destination: %@"),error.localizedDescription]];
     }
     
     return destination;

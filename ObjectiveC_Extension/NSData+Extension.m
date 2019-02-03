@@ -10,7 +10,7 @@
 
 #import "SZJsonParser.h"
 
-#import "NSAlert+Extension.h"
+#import "VMMAlert.h"
 #import "NSMutableString+Extension.h"
 
 #import "VMMComputerInformation.h"
@@ -49,7 +49,7 @@
         
         if (error != nil)
         {
-            [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while loading file data: %@"), error.localizedDescription]];
+            [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while loading file data: %@"), error.localizedDescription]];
         }
     }
     

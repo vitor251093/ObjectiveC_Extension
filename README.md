@@ -127,80 +127,6 @@ Name of keyboard key with specific usage keycode.
 
 ## Extensions
 
-### NSAlert
-
-```objectivec
--(NSUInteger)runThreadSafeModal;
-```
-
-Equivalent to `runModal`, but always runs `NSAlert` in the main thread, avoiding concurrency problems.
-
-```objectivec
-+(NSUInteger)runThreadSafeModalWithAlert:(NSAlert* (^)(void))alert;
-```
-
-Lets you declared a `NSAlert` inside a block (which will run in the main thread) and returns its value. Equivalent to `runThreadSafeModal`, but lets you declare objects needed by your `NSAlert` in the main thread as well, avoiding concurrency problems.
-
-```objectivec
-+(void)showAlertMessageWithException:(NSException*)exception;
-```
-
-Creates an "Ok alert" with the useful information of a `NSException`. Very useful to reduce the size of `catch`es in try/catch. That alert uses the thread safe modal.
-
-```objectivec
-+(void)showAlertOfType:(NSAlertType)alertType withMessage:(NSString*)message;
-```
-
-Creates an "Ok alert" with the specified message, with a title and an icon defined by the `alertType` (Sucess, Warning, Error, Critical and Custom). That alert uses the thread safe modal.
-
-```objectivec
-+(void)showAlertMessage:(NSString*)message withTitle:(NSString*)title withSettings:(void (^)(NSAlert* alert))optionsForAlert;
-```
-
-Creates an "Ok alert" with the specified message and title, and lets you do anything with the alert in the block before running its modal. That alert uses the thread safe modal.
-
-```objectivec
-+(void)showAlertAttributedMessage:(NSAttributedString*)message withTitle:(NSString*)title withSubtitle:(NSString*)subtitle;
-```
-
-Creates an "Ok alert" with the specified title, subtitle and message, where the message is an attributed string. That alert uses the thread safe modal.
-
-```objectivec
-+(BOOL)showBooleanAlertMessage:(NSString*)message withTitle:(NSString*)title withDefault:(BOOL)yesDefault;
-```
-
-Creates an "Yes/No alert" with the specified title, message and default value (which will be the selectable key by pressing Return). That alert uses the thread safe modal.
-
-```objectivec
-+(BOOL)showBooleanAlertOfType:(NSAlertType)alertType withMessage:(NSString*)message withDefault:(BOOL)yesDefault;
-```
-
-Creates an "Yes/No alert" with the specified message and default value (which will be the selectable key by pressing Return), with a title and an icon defined by the `alertType` (Sucess, Warning, Error, Critical and Custom). That alert uses the thread safe modal.
-
-```objectivec
-+(BOOL)showBooleanAlertMessage:(NSString*)message withTitle:(NSString*)title withDefault:(BOOL)yesDefault withSettings:(void (^)(NSAlert* alert))setAlertSettings;
-```
-
-Creates an "Yes/No alert" with the specified title, message and default value (which will be the selectable key by pressing Return), and lets you do anything with the alert in the block before running its modal. That alert uses the thread safe modal.
-
-```objectivec
-+(BOOL)confirmationDialogWithTitle:(NSString*)prompt message:(NSString*)message withSettings:(void (^)(NSAlert* alert))setAlertSettings;
-```
-
-Creates an "Ok/Cancel alert" with the specified title and message, and lets you do anything with the alert in the block before running its modal. That alert uses the thread safe modal.
-
-```objectivec
-+(NSString*)inputDialogWithTitle:(NSString*)prompt message:(NSString*)message defaultValue:(NSString*)defaultValue;
-```
-
-Creates an "Ok/Cancel input alert" with the specified title, message and default value (which will be the initial value of the text input field of the alert). Any input provided in the field will be returned by the function. That alert uses the thread safe modal.
-
-```objectivec
-+(NSString*)showAlertWithButtonOptions:(NSArray*)options withTitle:(NSString*)title withText:(NSString*)text withIconForEachOption:(NSImage* (^)(NSString* option))iconForOption;
-```
-
-Creates an "Multiple buttons alert" with the specified title, message and options (which will become squared buttons with the icon specified in the block). The selected option will be returned by the function. That alert uses the thread safe modal.
-
 ### NSArray
 
 ```objectivec
@@ -477,6 +403,80 @@ Equivalent to `alloc` + `initWithTitle:action:keyEquivalent:` + `setTarget:`, wi
 
 
 ## New Classes (misc)
+
+### VMMAlert
+
+```objectivec
+-(NSUInteger)runThreadSafeModal;
+```
+
+Equivalent to `runModal`, but always runs `VMMAlert` in the main thread, avoiding concurrency problems.
+
+```objectivec
++(NSUInteger)runThreadSafeModalWithAlert:(VMMAlert* (^)(void))alert;
+```
+
+Lets you declared a `VMMAlert` inside a block (which will run in the main thread) and returns its value. Equivalent to `runThreadSafeModal`, but lets you declare objects needed by your `VMMAlert` in the main thread as well, avoiding concurrency problems.
+
+```objectivec
++(void)showAlertMessageWithException:(NSException*)exception;
+```
+
+Creates an "Ok alert" with the useful information of a `NSException`. Very useful to reduce the size of `catch`es in try/catch. That alert uses the thread safe modal.
+
+```objectivec
++(void)showAlertOfType:(VMMAlertType)alertType withMessage:(NSString*)message;
+```
+
+Creates an "Ok alert" with the specified message, with a title and an icon defined by the `alertType` (Sucess, Warning, Error, Critical and Custom). That alert uses the thread safe modal.
+
+```objectivec
++(void)showAlertMessage:(NSString*)message withTitle:(NSString*)title withSettings:(void (^)(VMMAlert* alert))optionsForAlert;
+```
+
+Creates an "Ok alert" with the specified message and title, and lets you do anything with the alert in the block before running its modal. That alert uses the thread safe modal.
+
+```objectivec
++(void)showAlertAttributedMessage:(NSAttributedString*)message withTitle:(NSString*)title withSubtitle:(NSString*)subtitle;
+```
+
+Creates an "Ok alert" with the specified title, subtitle and message, where the message is an attributed string. That alert uses the thread safe modal.
+
+```objectivec
++(BOOL)showBooleanAlertMessage:(NSString*)message withTitle:(NSString*)title withDefault:(BOOL)yesDefault;
+```
+
+Creates an "Yes/No alert" with the specified title, message and default value (which will be the selectable key by pressing Return). That alert uses the thread safe modal.
+
+```objectivec
++(BOOL)showBooleanAlertOfType:(VMMAlertType)alertType withMessage:(NSString*)message withDefault:(BOOL)yesDefault;
+```
+
+Creates an "Yes/No alert" with the specified message and default value (which will be the selectable key by pressing Return), with a title and an icon defined by the `alertType` (Sucess, Warning, Error, Critical and Custom). That alert uses the thread safe modal.
+
+```objectivec
++(BOOL)showBooleanAlertMessage:(NSString*)message withTitle:(NSString*)title withDefault:(BOOL)yesDefault withSettings:(void (^)(VMMAlert* alert))setAlertSettings;
+```
+
+Creates an "Yes/No alert" with the specified title, message and default value (which will be the selectable key by pressing Return), and lets you do anything with the alert in the block before running its modal. That alert uses the thread safe modal.
+
+```objectivec
++(BOOL)confirmationDialogWithTitle:(NSString*)prompt message:(NSString*)message withSettings:(void (^)(VMMAlert* alert))setAlertSettings;
+```
+
+Creates an "Ok/Cancel alert" with the specified title and message, and lets you do anything with the alert in the block before running its modal. That alert uses the thread safe modal.
+
+```objectivec
++(NSString*)inputDialogWithTitle:(NSString*)prompt message:(NSString*)message defaultValue:(NSString*)defaultValue;
+```
+
+Creates an "Ok/Cancel input alert" with the specified title, message and default value (which will be the initial value of the text input field of the alert). Any input provided in the field will be returned by the function. That alert uses the thread safe modal.
+
+```objectivec
++(NSString*)showAlertWithButtonOptions:(NSArray*)options withTitle:(NSString*)title withText:(NSString*)text withIconForEachOption:(NSImage* (^)(NSString* option))iconForOption;
+```
+
+Creates an "Multiple buttons alert" with the specified title, message and options (which will become squared buttons with the icon specified in the block). The selected option will be returned by the function. That alert uses the thread safe modal.
 
 ### VMMComputerInformation
 Used to retrieve informations about the computer hardware and software.

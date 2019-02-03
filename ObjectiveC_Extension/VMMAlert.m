@@ -1,5 +1,5 @@
 //
-//  NSAlert+Extension.m
+//  VMMAlert.m
 //  ObjectiveC_Extension
 //
 //  Created by Vitor Marques de Miranda on 22/02/17.
@@ -8,8 +8,9 @@
 //  Reference for runModalWithWindow:
 //  https://github.com/adobe/brackets-app/blob/master/src/mac/cefclient/NSAlert%2BSynchronousSheet.m
 
-#import "NSAlert+Extension.h"
+#import "VMMAlert.h"
 
+#import "NSApplication+Extension.h"
 #import "NSBundle+Extension.h"
 #import "NSThread+Extension.h"
 #import "NSMutableAttributedString+Extension.h"
@@ -77,43 +78,55 @@
 }
 @end
 
-@implementation NSAlert (VMMAlert)
+@implementation VMMAlert
 
-+(NSString*)titleForAlertType:(NSAlertType)alertType
+-(instancetype)init
+{
+    self = [super init];
+    if (self) {
+        NSString* appearance = [NSApplication appearance];
+        if (appearance != nil) {
+            [self.window setAppearance:[NSAppearance appearanceNamed:appearance]];
+        }
+    }
+    return self;
+}
+
++(NSString*)titleForAlertType:(VMMAlertType)alertType
 {
     switch (alertType)
     {
-        case NSAlertTypeSuccess:
+        case VMMAlertTypeSuccess:
             return VMMLocalizedString(@"Success");
             
-        case NSAlertTypeWarning:
+        case VMMAlertTypeWarning:
             return VMMLocalizedString(@"Warning");
             
-        case NSAlertTypeError:
+        case VMMAlertTypeError:
             return VMMLocalizedString(@"Error");
             
-        case NSAlertTypeCritical:
+        case VMMAlertTypeCritical:
             return VMMLocalizedString(@"Error");
             
-        case NSAlertTypeCustom:
+        case VMMAlertTypeCustom:
         default: break;
     }
     
     return [[NSBundle mainBundle] bundleName];
 }
--(void)setIconWithAlertType:(NSAlertType)alertType
+-(void)setIconWithAlertType:(VMMAlertType)alertType
 {
     switch (alertType)
     {
-        case NSAlertTypeWarning:
+        case VMMAlertTypeWarning:
             [self setAlertStyle:NSCriticalAlertStyle];
             break;
             
-        case NSAlertTypeError:
+        case VMMAlertTypeError:
             [self setIcon:[NSImage cautionIcon]];
             break;
             
-        case NSAlertTypeCritical:
+        case VMMAlertTypeCritical:
             [self setIcon:[NSImage stopProgressIcon]];
             break;
             
@@ -183,12 +196,12 @@
 
 -(NSUInteger)runThreadSafeModal
 {
-    return [NSAlert runThreadSafeModalWithAlert:^NSAlert*
+    return [VMMAlert runThreadSafeModalWithAlert:^VMMAlert*
     {
         return self;
     }];
 }
-+(NSUInteger)runThreadSafeModalWithAlert:(NSAlert* (^)(void))alert
++(NSUInteger)runThreadSafeModalWithAlert:(VMMAlert* (^)(void))alert
 {
     if ([NSThread isMainThread])
     {
@@ -214,25 +227,25 @@
 
 +(void)showErrorAlertWithException:(NSException*)exception
 {
-    [self showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:@"%@: %@", exception.name, exception.reason]];
+    [self showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:@"%@: %@", exception.name, exception.reason]];
 }
-+(void)showAlertOfType:(NSAlertType)alertType withMessage:(NSString*)message
++(void)showAlertOfType:(VMMAlertType)alertType withMessage:(NSString*)message
 {
     @autoreleasepool
     {
         NSString* alertTitle = [self titleForAlertType:alertType];
         
-        [self showAlertWithTitle:alertTitle message:message andSettings:^(NSAlert* alert)
+        [self showAlertWithTitle:alertTitle message:message andSettings:^(VMMAlert* alert)
         {
             [alert setIconWithAlertType:alertType];
         }];
     }
 }
-+(void)showAlertWithTitle:(NSString*)title message:(NSString*)message andSettings:(void (^)(NSAlert* alert))optionsForAlert
++(void)showAlertWithTitle:(NSString*)title message:(NSString*)message andSettings:(void (^)(VMMAlert* alert))optionsForAlert
 {
-    [self runThreadSafeModalWithAlert:^NSAlert *
+    [self runThreadSafeModalWithAlert:^VMMAlert *
     {
-        NSAlert* msgBox = [[NSAlert alloc] init];
+        VMMAlert* msgBox = [[VMMAlert alloc] init];
         [msgBox setMessageText:title];
         [msgBox addButtonWithTitle:VMMLocalizedString(@"OK")];
         if (message != nil) [msgBox setInformativeText:message];
@@ -263,7 +276,7 @@
     if (width > screenLimit) width = screenLimit;
     [informativeText setFrame:NSMakeRect(0, 0, width, informativeText.textStorage.size.height)];
     
-    [self showAlertWithTitle:title message:subtitle andSettings:^(NSAlert *alert)
+    [self showAlertWithTitle:title message:subtitle andSettings:^(VMMAlert *alert)
     {
         [alert setAccessoryView:informativeText];
     }];
@@ -275,12 +288,12 @@
     
     @autoreleasepool
     {
-        result = [self showBooleanAlertWithTitle:title message:message highlighting:highlight withSettings:^(NSAlert* alert) {}];
+        result = [self showBooleanAlertWithTitle:title message:message highlighting:highlight withSettings:^(VMMAlert* alert) {}];
     }
     
     return result;
 }
-+(BOOL)showBooleanAlertOfType:(NSAlertType)alertType withMessage:(NSString*)message highlighting:(BOOL)highlight
++(BOOL)showBooleanAlertOfType:(VMMAlertType)alertType withMessage:(NSString*)message highlighting:(BOOL)highlight
 {
     BOOL result;
     
@@ -288,7 +301,7 @@
     {
         NSString* alertTitle = [self titleForAlertType:alertType];
         
-        result = [self showBooleanAlertWithTitle:alertTitle message:message highlighting:highlight withSettings:^(NSAlert* alert)
+        result = [self showBooleanAlertWithTitle:alertTitle message:message highlighting:highlight withSettings:^(VMMAlert* alert)
         {
             [alert setIconWithAlertType:alertType];
         }];
@@ -296,7 +309,7 @@
     
     return result;
 }
-+(BOOL)showBooleanAlertWithTitle:(NSString*)title message:(NSString*)message highlighting:(BOOL)highlight withSettings:(void (^)(NSAlert* alert))optionsForAlert
++(BOOL)showBooleanAlertWithTitle:(NSString*)title message:(NSString*)message highlighting:(BOOL)highlight withSettings:(void (^)(VMMAlert* alert))optionsForAlert
 {
     BOOL value = !highlight;
     NSString* defaultButton;
@@ -313,9 +326,9 @@
         alternateButton = VMMLocalizedString(@"Yes");
     }
     
-    NSUInteger alertResult = [self runThreadSafeModalWithAlert:^NSAlert *
+    NSUInteger alertResult = [self runThreadSafeModalWithAlert:^VMMAlert *
     {
-        NSAlert* alert = [[NSAlert alloc] init];
+        VMMAlert* alert = [[VMMAlert alloc] init];
         [alert setMessageText:title != nil ? title : @""];
         [alert addButtonWithTitle:defaultButton];
         [alert addButtonWithTitle:alternateButton];
@@ -328,15 +341,15 @@
     return value;
 }
 
-+(BOOL)confirmationDialogWithTitle:(NSString*)prompt message:(NSString*)message andSettings:(void (^)(NSAlert* alert))optionsForAlert
++(BOOL)confirmationDialogWithTitle:(NSString*)prompt message:(NSString*)message andSettings:(void (^)(VMMAlert* alert))optionsForAlert
 {
     NSUInteger alertResult;
     
     @autoreleasepool
     {
-        alertResult = [self runThreadSafeModalWithAlert:^NSAlert *
+        alertResult = [self runThreadSafeModalWithAlert:^VMMAlert *
         {
-            NSAlert *alert = [[NSAlert alloc] init];
+            VMMAlert *alert = [[VMMAlert alloc] init];
             [alert setMessageText:prompt];
             [alert addButtonWithTitle:VMMLocalizedString(@"OK")];
             [alert addButtonWithTitle:VMMLocalizedString(@"Cancel")];
@@ -357,7 +370,7 @@
     {
         if ([NSThread isMainThread])
         {
-            NSAlert *alert = [[NSAlert alloc] init];
+            VMMAlert *alert = [[VMMAlert alloc] init];
             [alert setMessageText:prompt];
             [alert addButtonWithTitle:VMMLocalizedString(@"OK")];
             [alert addButtonWithTitle:VMMLocalizedString(@"Cancel")];
@@ -380,7 +393,7 @@
             __block NSString* value = nil;
             [NSThread dispatchBlockInMainQueue:^
              {
-                 NSAlert *alert = [[NSAlert alloc] init];
+                 VMMAlert *alert = [[VMMAlert alloc] init];
                  [alert setMessageText:prompt];
                  [alert addButtonWithTitle:VMMLocalizedString(@"OK")];
                  [alert addButtonWithTitle:VMMLocalizedString(@"Cancel")];
@@ -409,7 +422,7 @@
     return result;
 }
 
-static NSAlert* _alertWithButtonOptions;
+static VMMAlert* _alertWithButtonOptions;
 +(void)selectAlertButton:(NSButton*)sender
 {
     sender.tag = true;
@@ -500,9 +513,9 @@ static NSAlert* _alertWithButtonOptions;
             [sourcesView addSubview:button];
         }
         
-        [self runThreadSafeModalWithAlert:^NSAlert *
+        [self runThreadSafeModalWithAlert:^VMMAlert *
         {
-            _alertWithButtonOptions = [[NSAlert alloc] init];
+            _alertWithButtonOptions = [[VMMAlert alloc] init];
             [_alertWithButtonOptions setMessageText:title];
             [_alertWithButtonOptions addButtonWithTitle:VMMLocalizedString(@"Cancel")];
             [_alertWithButtonOptions setInformativeText:message];

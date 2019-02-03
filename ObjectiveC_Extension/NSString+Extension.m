@@ -10,7 +10,7 @@
 
 #import "NSData+Extension.h"
 #import "NSTask+Extension.h"
-#import "NSAlert+Extension.h"
+#import "VMMAlert.h"
 #import "NSFileManager+Extension.h"
 
 #import "VMMComputerInformation.h"
@@ -480,7 +480,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while reading file text: %@"), error.localizedDescription]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while reading file text: %@"), error.localizedDescription]];
     }
     
     return string;
@@ -513,7 +513,7 @@
     
     if (error != nil)
     {
-        [NSAlert showAlertOfType:NSAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while writting file: %@"), error.localizedDescription]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Error while writting file: %@"), error.localizedDescription]];
     }
     
     return created;

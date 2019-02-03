@@ -8,7 +8,7 @@
 
 #import "NSTask+Extension.h"
 
-#import "NSAlert+Extension.h"
+#import "VMMAlert.h"
 #import "NSThread+Extension.h"
 #import "NSFileManager+Extension.h"
 
@@ -71,8 +71,8 @@ static NSMutableDictionary* binaryPaths;
         
         if (newProgramPath == nil)
         {
-            [NSAlert showAlertOfType:NSAlertTypeError
-                         withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Path for %@ not found."), program]];
+            [VMMAlert showAlertOfType:VMMAlertTypeError
+                          withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Path for %@ not found."), program]];
             return @"";
         }
         
@@ -90,22 +90,22 @@ static NSMutableDictionary* binaryPaths;
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:program])
     {
-        [NSAlert showAlertOfType:NSAlertTypeError
-                     withMessage:[NSString stringWithFormat:VMMLocalizedString(@"File %@ not found."), program]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError
+                      withMessage:[NSString stringWithFormat:VMMLocalizedString(@"File %@ not found."), program]];
         return @"";
     }
     
     if (![[NSFileManager defaultManager] isExecutableFileAtPath:program])
     {
-        [NSAlert showAlertOfType:NSAlertTypeError
-                     withMessage:[NSString stringWithFormat:VMMLocalizedString(@"File %@ not runnable."), program]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError
+                      withMessage:[NSString stringWithFormat:VMMLocalizedString(@"File %@ not runnable."), program]];
         return @"";
     }
     
     if (path && ![[NSFileManager defaultManager] directoryExistsAtPath:path])
     {
-        [NSAlert showAlertOfType:NSAlertTypeError
-                     withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Directory %@ does not exists."), path]];
+        [VMMAlert showAlertOfType:VMMAlertTypeError
+                      withMessage:[NSString stringWithFormat:VMMLocalizedString(@"Directory %@ does not exists."), path]];
         return @"";
     }
     
