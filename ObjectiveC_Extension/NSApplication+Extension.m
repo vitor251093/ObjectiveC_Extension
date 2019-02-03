@@ -19,4 +19,32 @@
     exit(0);
 }
 
++(VMMAppearanceName)appearance
+{
+    if (VMMAppearanceDarkPreMojaveCompatible == false) {
+        return nil;
+    }
+    
+    NSAppearance* nsappearance = [[NSApp mainWindow] appearance];
+    if (nsappearance == nil) {
+        return nil;
+    }
+    
+    return nsappearance.name;
+}
++(BOOL)setAppearance:(VMMAppearanceName)appearance
+{
+    if (VMMAppearanceDarkPreMojaveCompatible == false) {
+        return false;
+    }
+    
+    NSAppearance* nsappearance = appearance != nil ? [NSAppearance appearanceNamed:appearance] : nil;
+    
+    for (NSWindow* window in [NSApp windows]) {
+        [window setAppearance:nsappearance];
+    }
+    
+    return true;
+}
+
 @end
