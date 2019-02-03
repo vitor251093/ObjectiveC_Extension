@@ -653,9 +653,8 @@
                 // there is no use in fixing that manually, since it would require a manual
                 // fix for every known NVIDIA video card that may have the issue.
                 //
-                // We can't detect the real video memory size with system_profiler or
-                // IOServiceMatching("IOPCIDevice"), and the API method may fail if there
-                // are two video cards or more.
+                // We can't detect the real video memory size with system_profiler.
+                // IOServiceMatching("IOPCIDevice") seems to work though.
                 //
                 // The same bug may also happen in old legitimate Apple computers, and
                 // it also seems to happen only with NVIDIA video cards.
@@ -700,10 +699,6 @@
 
 -(BOOL)supportsMetal
 {
-    // TODO: Metal is only supported in macOS 10.11+. This should be added here?
-    // Reference:
-    // https://support.apple.com/en-us/HT205073
-    
     NSString* metalSupport = self.dictionary[VMMVideoCardMetalSupportKey];
     if (metalSupport == nil) return false;
     
