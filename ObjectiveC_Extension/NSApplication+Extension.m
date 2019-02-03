@@ -25,7 +25,7 @@
         return nil;
     }
     
-    NSAppearance* nsappearance = [[NSApp mainWindow] appearance];
+    NSAppearance* nsappearance = [NSApp appearance];
     if (nsappearance == nil) {
         return nil;
     }
@@ -39,11 +39,7 @@
     }
     
     NSAppearance* nsappearance = appearance != nil ? [NSAppearance appearanceNamed:appearance] : nil;
-    
-    for (NSWindow* window in [NSApp windows]) {
-        [window setAppearance:nsappearance];
-    }
-    
+    [NSApp setAppearance:nsappearance];
     return true;
 }
 

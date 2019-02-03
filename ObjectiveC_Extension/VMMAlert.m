@@ -80,18 +80,6 @@
 
 @implementation VMMAlert
 
--(instancetype)init
-{
-    self = [super init];
-    if (self) {
-        NSString* appearance = [NSApplication appearance];
-        if (appearance != nil) {
-            [self.window setAppearance:[NSAppearance appearanceNamed:appearance]];
-        }
-    }
-    return self;
-}
-
 +(NSString*)titleForAlertType:(VMMAlertType)alertType
 {
     switch (alertType)
