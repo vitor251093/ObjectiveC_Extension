@@ -10,6 +10,7 @@
 
 #import "NSMutableArray+Extension.h"
 #import "NSString+Extension.h"
+#import "VMMLogUtility.h"
 
 @implementation VMMVideoCardManager
 
@@ -98,153 +99,160 @@
         io_registry_entry_t regEntry;
         while ((regEntry = IOIteratorNext(iterator)))
         {
-            CFStringRef gpuName = IORegistryEntrySearchCFProperty(regEntry, kIOServicePlane, CFSTR("IOName"),
-                                                                  kCFAllocatorDefault, kNilOptions);
-            if (gpuName && CFStringCompare(gpuName, CFSTR("display"), 0) == kCFCompareEqualTo)
-            {
-                NSMutableDictionary* graphicCardDict = [[NSMutableDictionary alloc] init];
-                
-                CFMutableDictionaryRef serviceDictionary;
-                if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess)
+            CFStringRef gpuName;
+            @try {
+                gpuName = IORegistryEntrySearchCFProperty(regEntry, kIOServicePlane, CFSTR("IOName"),
+                                                                      kCFAllocatorDefault, kNilOptions);
+                if (gpuName && CFStringCompare(gpuName, CFSTR("display"), 0) == kCFCompareEqualTo)
                 {
-                    IOObjectRelease(regEntry);
-                    CFRelease(gpuName);
-                    continue;
-                }
-                NSMutableDictionary* service = (__bridge NSMutableDictionary*)serviceDictionary;
-                
-                NSData* gpuModel = service[@"model"];
-                if (gpuModel != nil && [gpuModel isKindOfClass:[NSData class]])
-                {
-                    NSString *gpuModelString = [[NSString alloc] initWithData:gpuModel encoding:NSASCIIStringEncoding];
-                    if (gpuModelString != nil)
+                    NSMutableDictionary* graphicCardDict = [[NSMutableDictionary alloc] init];
+                    
+                    CFMutableDictionaryRef serviceDictionary;
+                    if (IORegistryEntryCreateCFProperties(regEntry, &serviceDictionary, kCFAllocatorDefault, kNilOptions) != kIOReturnSuccess)
                     {
-                        gpuModelString = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@" "];
-                        gpuModelString = [gpuModelString stringByReplacingOccurrencesOfString:@"  " withString:@" "];
-                        graphicCardDict[VMMVideoCardNameKey] = gpuModelString;
+                        IOObjectRelease(regEntry);
+                        CFRelease(gpuName);
+                        continue;
                     }
-                }
-                
-                NSData* deviceID = service[@"device-id"];
-                if (deviceID != nil && [deviceID isKindOfClass:[NSData class]])
-                {
-                    NSString* hexDeviceIDString = [NSString stringWithFormat:@"%@",deviceID];
-                    if (hexDeviceIDString.length > 5)
+                    NSMutableDictionary* service = (__bridge NSMutableDictionary*)serviceDictionary;
+                    
+                    NSData* gpuModel = service[@"model"];
+                    if (gpuModel != nil && [gpuModel isKindOfClass:[NSData class]])
                     {
-                        NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(3, 2)];
-                        NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(1, 2)];
-                        hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
-                        hexDeviceIDString = hexDeviceIDString.lowercaseString;
-                        
-                        if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
+                        NSString *gpuModelString = [[NSString alloc] initWithData:gpuModel encoding:NSASCIIStringEncoding];
+                        if (gpuModelString != nil)
                         {
-                            graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
+                            gpuModelString = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@" "];
+                            gpuModelString = [gpuModelString stringByReplacingOccurrencesOfString:@"  " withString:@" "];
+                            graphicCardDict[VMMVideoCardNameKey] = gpuModelString;
                         }
                     }
-                }
-                
-                NSData* vendorID = service[@"vendor-id"];
-                if (vendorID != nil && [vendorID isKindOfClass:[NSData class]])
-                {
-                    NSString* vendorIDString = [NSString stringWithFormat:@"%@",vendorID];
-                    if (vendorIDString.length > 5)
+                    
+                    NSData* deviceID = service[@"device-id"];
+                    if (deviceID != nil && [deviceID isKindOfClass:[NSData class]])
                     {
-                        NSString* firstPart  = [vendorIDString substringWithRange:NSMakeRange(3, 2)];
-                        NSString* secondPart = [vendorIDString substringWithRange:NSMakeRange(1, 2)];
-                        vendorIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
-                        vendorIDString = vendorIDString.lowercaseString;
-                        
-                        if ([vendorIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
+                        NSString* hexDeviceIDString = [NSString stringWithFormat:@"%@",deviceID];
+                        if (hexDeviceIDString.length > 5)
                         {
-                            graphicCardDict[VMMVideoCardVendorIDKey] = vendorIDString;
+                            NSString* firstPart  = [hexDeviceIDString substringWithRange:NSMakeRange(3, 2)];
+                            NSString* secondPart = [hexDeviceIDString substringWithRange:NSMakeRange(1, 2)];
+                            hexDeviceIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
+                            hexDeviceIDString = hexDeviceIDString.lowercaseString;
+                            
+                            if ([hexDeviceIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
+                            {
+                                graphicCardDict[VMMVideoCardDeviceIDKey] = hexDeviceIDString;
+                            }
                         }
                     }
-                }
-                
-                graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusPCI;
-                NSData* hdaGfx = service[@"hda-gfx"];
-                if (hdaGfx != nil && [hdaGfx isKindOfClass:[NSData class]])
-                {
-                    NSString* hdaGfxString = [[NSString alloc] initWithData:hdaGfx encoding:NSASCIIStringEncoding];
-                    if (hdaGfxString != nil && [hdaGfxString isEqualToString:@"onboard-1"])
+                    
+                    NSData* vendorID = service[@"vendor-id"];
+                    if (vendorID != nil && [vendorID isKindOfClass:[NSData class]])
                     {
-                        graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusBuiltIn;
-                    }
-                }
-                
-                _Bool vramValueInBytes = TRUE;
-                CFTypeRef vramSize = IORegistryEntrySearchCFProperty(regEntry, kIOServicePlane, CFSTR("VRAM,totalsize"),
-                                                                     kCFAllocatorDefault, kIORegistryIterateRecursively);
-                if (!vramSize)
-                {
-                    vramValueInBytes = FALSE;
-                    vramSize = IORegistryEntrySearchCFProperty(regEntry, kIOServicePlane, CFSTR("VRAM,totalMB"),
-                                                               kCFAllocatorDefault, kIORegistryIterateRecursively);
-                }
-                
-                if (vramSize != NULL)
-                {
-                    mach_vm_size_t size = 0;
-                    CFTypeID type = CFGetTypeID(vramSize);
-                    if (type == CFDataGetTypeID())
-                    {
-                        if (CFDataGetLength(vramSize) == sizeof(uint32_t))
+                        NSString* vendorIDString = [NSString stringWithFormat:@"%@",vendorID];
+                        if (vendorIDString.length > 5)
                         {
-                            size = (mach_vm_size_t)*(const uint32_t*)CFDataGetBytePtr(vramSize);
+                            NSString* firstPart  = [vendorIDString substringWithRange:NSMakeRange(3, 2)];
+                            NSString* secondPart = [vendorIDString substringWithRange:NSMakeRange(1, 2)];
+                            vendorIDString = [NSString stringWithFormat:@"0x%@%@",firstPart,secondPart];
+                            vendorIDString = vendorIDString.lowercaseString;
+                            
+                            if ([vendorIDString matchesWithRegex:@"0x[0-9a-f]{4}"])
+                            {
+                                graphicCardDict[VMMVideoCardVendorIDKey] = vendorIDString;
+                            }
+                        }
+                    }
+                    
+                    graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusPCI;
+                    NSData* hdaGfx = service[@"hda-gfx"];
+                    if (hdaGfx != nil && [hdaGfx isKindOfClass:[NSData class]])
+                    {
+                        NSString* hdaGfxString = [[NSString alloc] initWithData:hdaGfx encoding:NSASCIIStringEncoding];
+                        if (hdaGfxString != nil && [hdaGfxString isEqualToString:@"onboard-1"])
+                        {
+                            graphicCardDict[VMMVideoCardBusKey] = VMMVideoCardBusBuiltIn;
+                        }
+                    }
+                    
+                    _Bool vramValueInBytes = TRUE;
+                    CFTypeRef vramSize = IORegistryEntrySearchCFProperty(regEntry, kIOServicePlane, CFSTR("VRAM,totalsize"),
+                                                                         kCFAllocatorDefault, kIORegistryIterateRecursively);
+                    if (!vramSize)
+                    {
+                        vramValueInBytes = FALSE;
+                        vramSize = IORegistryEntrySearchCFProperty(regEntry, kIOServicePlane, CFSTR("VRAM,totalMB"),
+                                                                   kCFAllocatorDefault, kIORegistryIterateRecursively);
+                    }
+                    
+                    if (vramSize != NULL)
+                    {
+                        mach_vm_size_t size = 0;
+                        CFTypeID type = CFGetTypeID(vramSize);
+                        if (type == CFDataGetTypeID())
+                        {
+                            if (CFDataGetLength(vramSize) == sizeof(uint32_t))
+                            {
+                                size = (mach_vm_size_t)*(const uint32_t*)CFDataGetBytePtr(vramSize);
+                            }
+                            else
+                            {
+                                size = *(const uint64_t*)CFDataGetBytePtr(vramSize);
+                            }
                         }
                         else
                         {
-                            size = *(const uint64_t*)CFDataGetBytePtr(vramSize);
+                            if (type == CFNumberGetTypeID())
+                            {
+                                CFNumberGetValue(vramSize, kCFNumberSInt64Type, &size);
+                            }
                         }
+                        
+                        if (vramValueInBytes) size >>= 20;
+                        
+                        graphicCardDict[VMMVideoCardMemorySizeBuiltInKey] = [NSString stringWithFormat:@"%llu MB", size];
+                        
+                        CFRelease(vramSize);
                     }
-                    else
+                    
+                    // Reference:
+                    // https://gist.github.com/JonnyJD/6126680
+                    
+                    CFMutableDictionaryRef properties;
+                    CFIndex count;
+                    CFTypeRef *keys;
+                    CFTypeRef *values;
+                    int i;
+                    
+                    IORegistryEntryCreateCFProperties(regEntry, &properties, kCFAllocatorDefault, kNilOptions);
+                    count = CFDictionaryGetCount(properties);
+                    keys = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
+                    values = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
+                    CFDictionaryGetKeysAndValues(properties, (const void **) keys, (const void **) values);
+                    free(values);
+                    for (i = 0; i < count; i++)
                     {
-                        if (type == CFNumberGetTypeID())
-                        {
-                            CFNumberGetValue(vramSize, kCFNumberSInt64Type, &size);
-                        }
+                        CFTypeRef cf_type = keys[i];
+                        NSString* key = [NSString stringWithCFType:cf_type];
+                        if (key == nil) key = [NSString stringWithCFTypeIDDescription:cf_type];
+                        
+                        id keyVal = service[key];
+                        keyVal = [self getValuesFromRegistryEntryObject:keyVal];
+                        graphicCardDict[[@"IOPCIDevice_" stringByAppendingString:key]] = keyVal;
                     }
+                    free(keys);
                     
-                    if (vramValueInBytes) size >>= 20;
-                    
-                    graphicCardDict[VMMVideoCardMemorySizeBuiltInKey] = [NSString stringWithFormat:@"%llu MB", size];
-                    
-                    CFRelease(vramSize);
+                    CFRelease(serviceDictionary);
+                    [graphicCardDicts addObject:graphicCardDict];
                 }
-                
-                // Reference:
-                // https://gist.github.com/JonnyJD/6126680
-                
-                CFMutableDictionaryRef properties;
-                CFIndex count;
-                CFTypeRef *keys;
-                CFTypeRef *values;
-                int i;
-                
-                IORegistryEntryCreateCFProperties(regEntry, &properties, kCFAllocatorDefault, kNilOptions);
-                count = CFDictionaryGetCount(properties);
-                keys = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
-                values = (CFTypeRef *) malloc(sizeof(CFTypeRef) * count);
-                CFDictionaryGetKeysAndValues(properties, (const void **) keys, (const void **) values);
-                free(values);
-                for (i = 0; i < count; i++)
-                {
-                    CFTypeRef cf_type = keys[i];
-                    NSString* key = [NSString stringWithCFType:cf_type];
-                    if (key == nil) key = [NSString stringWithCFTypeIDDescription:cf_type];
-                    
-                    id keyVal = service[key];
-                    keyVal = [self getValuesFromRegistryEntryObject:keyVal];
-                    graphicCardDict[[@"IOPCIDevice_" stringByAppendingString:key]] = keyVal;
-                }
-                free(keys);
-                
-                CFRelease(serviceDictionary);
-                [graphicCardDicts addObject:graphicCardDict];
             }
-            
-            if (gpuName != NULL) CFRelease(gpuName);
-            IOObjectRelease(regEntry);
+            @catch (NSException* exc) {
+                NSDebugLog(@"%@: %@", exc.name, exc.reason);
+            }
+            @finally {
+                if (gpuName != NULL) CFRelease(gpuName);
+                IOObjectRelease(regEntry);
+            }
         }
         
         IOObjectRelease(iterator);
