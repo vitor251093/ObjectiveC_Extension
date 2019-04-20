@@ -71,7 +71,8 @@ static NSString* _Nonnull const VMMParentalControlsContentFilterWhiteListAddress
 {
     NSNumber* valueNumber = [self parentalControlsValueForAppWithDomain:VMMParentalControlsAppDomainItunes
                                                                 keyName:VMMParentalControlsItunesGamesAgeLimit];
-    if (valueNumber == nil || [valueNumber isKindOfClass:[NSNumber class]] == FALSE) return VMMParentalControlsItunesGamesAgeRestrictionNone;
+    if (valueNumber == nil || [valueNumber isKindOfClass:[NSNumber class]] == FALSE)
+        return VMMParentalControlsItunesGamesAgeRestrictionNone;
     
     NSInteger value = valueNumber.integerValue;
     if (value == 0) return VMMParentalControlsItunesGamesAgeRestrictionNone;

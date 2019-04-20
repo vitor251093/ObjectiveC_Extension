@@ -831,7 +831,7 @@ The JSON string is created manually since `NSJSONSerialization` was not availabl
 The JSON data is created based in the function above, since `NSJSONSerialization` was not available before macOS 10.7.
 
 ### - ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) [(NSData*)object jsonObject] (macOS = 10.6)
-The JSON object is created using `SZJsonParser` since `NSJSONSerialization` was not available before macOS 10.7. Some changes were in `SZJsonParser` to support the existence of base64 strings inside the JSON.
+The JSON object is created using `SZJsonParser` since `NSJSONSerialization` was not available before macOS 10.7. Some changes were make in `SZJsonParser` to support the existence of base64 strings inside the JSON.
 
 ### - ![#0000ff](https://placehold.it/15/0000ff/000000?text=+) [(NSImage*)img saveAsIcnsAtPath:path] (macOS = 10.6)
 In macOS 10.7+ systems, icns files are created with `iconutil`, using `tiff2icns` only if the first one does not return a valid image. macOS 10.6 systems create using `tiff2icns` only, since `iconutil` was introduced in macOS 10.7. The only consequence of that is that the icons created in macOS 10.6 are going to have only one size, which makes them look a bit bugged if you move them to a macOS 10.12+ computer and show them in Finder with the list view mode.
