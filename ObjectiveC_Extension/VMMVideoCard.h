@@ -27,14 +27,15 @@ static NSString * _Nonnull const VMMVideoCardKextInfoKey =                   @"s
 
 static NSString * _Nonnull const VMMVideoCardKextInfoNotLoaded =  @"sppci_kextnotloaded";
 
-static NSString * _Nonnull const VMMVideoCardTypeIntelHD =        @"Intel HD";
-static NSString * _Nonnull const VMMVideoCardTypeIntelUHD =       @"Intel UHD";
-static NSString * _Nonnull const VMMVideoCardTypeIntelIris =      @"Intel Iris";
-static NSString * _Nonnull const VMMVideoCardTypeIntelIrisPro =   @"Intel Iris Pro";
-static NSString * _Nonnull const VMMVideoCardTypeIntelIrisPlus =  @"Intel Iris Plus";
-static NSString * _Nonnull const VMMVideoCardTypeIntelGMA =       @"Intel GMA";
-static NSString * _Nonnull const VMMVideoCardTypeATIAMD =         @"ATI/AMD";
-static NSString * _Nonnull const VMMVideoCardTypeNVIDIA =         @"NVIDIA";
+static NSString * _Nonnull const VMMVideoCardTypeIntelHD =         @"Intel HD";
+static NSString * _Nonnull const VMMVideoCardTypeIntelUHD =        @"Intel UHD";
+static NSString * _Nonnull const VMMVideoCardTypeIntelIris =       @"Intel Iris";
+static NSString * _Nonnull const VMMVideoCardTypeIntelIrisPro =    @"Intel Iris Pro";
+static NSString * _Nonnull const VMMVideoCardTypeIntelIrisPlus =   @"Intel Iris Plus";
+static NSString * _Nonnull const VMMVideoCardTypeIntelGMA =        @"Intel GMA";
+static NSString * _Nonnull const VMMVideoCardTypeIntelCoffeeLake = @"Intel Coffee Lake";
+static NSString * _Nonnull const VMMVideoCardTypeATIAMD =          @"ATI/AMD";
+static NSString * _Nonnull const VMMVideoCardTypeNVIDIA =          @"NVIDIA";
 
 static NSString * _Nonnull const VMMVideoCardDeviceTypeGPU  = @"spdisplays_gpu";
 static NSString * _Nonnull const VMMVideoCardDeviceTypeeGPU = @"spdisplays_egpu";

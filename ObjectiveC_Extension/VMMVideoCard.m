@@ -94,6 +94,9 @@
             if ([graphicCardNameComponents containsObject:@"PLUS"]) return VMMVideoCardTypeIntelIrisPlus;
             return VMMVideoCardTypeIntelIris;
         }
+        if ([graphicCardNameComponents containsObject:@"COFFEE"] && [graphicCardNameComponents containsObject:@"LAKE"]) {
+            return VMMVideoCardTypeIntelCoffeeLake;
+        }
         
         for (NSString* component in graphicCardNameComponents)
         {
@@ -418,9 +421,14 @@
             NSString* localVendorID = [self vendorIDFromVendorAndVendorIDKeysOnly];
             if (localVendorID != nil)
             {
-                if ([@[VMMVideoCardVendorIDIntel,      VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA,
-                       VMMVideoCardVendorIDVirtualBox, VMMVideoCardVendorIDVMware, VMMVideoCardVendorIDParallelsDesktop,
-                       VMMVideoCardVendorIDQemu,       VMMVideoCardVendorIDMicrosoftRemoteDesktop] containsObject:localVendorID])
+                if ([@[VMMVideoCardVendorIDIntel,
+                       VMMVideoCardVendorIDATIAMD,
+                       VMMVideoCardVendorIDNVIDIA,
+                       VMMVideoCardVendorIDVirtualBox,
+                       VMMVideoCardVendorIDVMware,
+                       VMMVideoCardVendorIDParallelsDesktop,
+                       VMMVideoCardVendorIDQemu,
+                       VMMVideoCardVendorIDMicrosoftRemoteDesktop] containsObject:localVendorID])
                 {
                     _vendorID = localVendorID;
                     return _vendorID;
@@ -435,8 +443,13 @@
             NSString* videoCardType = self.type;
             if (videoCardType != nil)
             {
-                if ([@[VMMVideoCardTypeIntelIris, VMMVideoCardTypeIntelIrisPro, VMMVideoCardTypeIntelIrisPlus,
-                       VMMVideoCardTypeIntelHD,   VMMVideoCardTypeIntelUHD,     VMMVideoCardTypeIntelGMA] containsObject:videoCardType])
+                if ([@[VMMVideoCardTypeIntelIris,
+                       VMMVideoCardTypeIntelIrisPro,
+                       VMMVideoCardTypeIntelIrisPlus,
+                       VMMVideoCardTypeIntelHD,
+                       VMMVideoCardTypeIntelUHD,
+                       VMMVideoCardTypeIntelGMA,
+                       VMMVideoCardTypeIntelCoffeeLake] containsObject:videoCardType])
                 {
                     _vendorID = VMMVideoCardVendorIDIntel; // Intel Vendor ID
                     return _vendorID;
