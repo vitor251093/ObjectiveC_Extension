@@ -12,8 +12,8 @@
 #import <Foundation/Foundation.h>
 #import "VMMComputerInformation.h"
 
-static NSString * _Nonnull const VMMVideoCardNameKey =                       @"sppci_model";
-static NSString * _Nonnull const VMMVideoCardRawNameKey =                    @"_name";
+static NSString * _Nonnull const VMMVideoCardModelNameKey =                  @"sppci_model";
+static NSString * _Nonnull const VMMVideoCardChipsetNameKey =                @"_name";
 static NSString * _Nonnull const VMMVideoCardDeviceTypeKey =                 @"sppci_device_type";      // eg. 'GPU'
 static NSString * _Nonnull const VMMVideoCardBusKey =                        @"sppci_bus";              // eg. VMMVideoCardBusPCIe
 static NSString * _Nonnull const VMMVideoCardMemorySizeBuiltInAlternateKey = @"_spdisplays_vram";       // eg. '1536 MB'
@@ -111,7 +111,8 @@ static NSString * _Nonnull const VMMVideoCardTemporaryKeyOpenGlApiMemorySizes = 
 
 @property (nonatomic, strong, readonly) NSDictionary* _Nonnull dictionary;
 
-@property (nonatomic, strong, readonly) NSString* _Nullable name;
+@property (nonatomic, strong, readonly) NSString* _Nullable modelName;
+@property (nonatomic, strong, readonly) NSString* _Nullable chipsetName;
 @property (nonatomic, strong, readonly) NSString* _Nullable type;
 @property (nonatomic, strong, readonly) NSString* _Nullable bus;
 @property (nonatomic, strong, readonly) NSString* _Nullable deviceID;

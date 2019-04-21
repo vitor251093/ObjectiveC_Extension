@@ -124,7 +124,7 @@
                         {
                             gpuModelString = [gpuModelString stringByReplacingOccurrencesOfString:@"\0" withString:@" "];
                             gpuModelString = [gpuModelString stringByReplacingOccurrencesOfString:@"  " withString:@" "];
-                            graphicCardDict[VMMVideoCardNameKey] = gpuModelString;
+                            graphicCardDict[VMMVideoCardModelNameKey] = gpuModelString;
                         }
                     }
                     

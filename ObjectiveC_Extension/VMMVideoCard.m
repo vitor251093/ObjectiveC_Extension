@@ -38,7 +38,8 @@
 @implementation VMMVideoCard
 
 @synthesize dictionary = _dictionary;
-@synthesize name = _name;
+@synthesize modelName = _modelName;
+@synthesize chipsetName = _chipsetName;
 @synthesize type = _type;
 @synthesize bus = _bus;
 @synthesize deviceID = _deviceID;
@@ -303,71 +304,83 @@
     
     return trimName;
 }
--(nullable NSString*)name
+-(void)loadModelNameAndChipsetName
 {
     @synchronized(nameLock)
     {
-        if (_name != nil)
+        if (_modelName != nil || _chipsetName != nil)
         {
-            return _name;
+            return;
         }
         
         @autoreleasepool
         {
-            NSString* videoCardName = _dictionary[VMMVideoCardNameKey];
-            NSString* chipsetModel  = _dictionary[VMMVideoCardRawNameKey];
+            NSString* videoCardName = _dictionary[VMMVideoCardModelNameKey];
+            NSString* chipsetModel  = _dictionary[VMMVideoCardChipsetNameKey];
             
-            videoCardName = [VMMVideoCard validateVideoCardName:videoCardName];
-            chipsetModel  = [VMMVideoCard validateVideoCardName:chipsetModel];
+            _modelName   = [VMMVideoCard validateVideoCardName:videoCardName];
+            _chipsetName = [VMMVideoCard validateVideoCardName:chipsetModel];
             
-            if (chipsetModel != nil && videoCardName == nil) {
-                videoCardName = chipsetModel;
+            if (_modelName == nil && _chipsetName != nil)
+            {
+                _modelName = _chipsetName;
             }
             
-            if (videoCardName == nil)
+            if (_modelName != nil)
             {
-                NSString* vendorID = [self vendorIDFromVendorAndVendorIDKeysOnly];
+                return;
+            }
+            
+            NSString* vendorID = [self vendorIDFromVendorAndVendorIDKeysOnly];
+            
+            if (vendorID != nil)
+            {
+                NSString* deviceID = [self deviceID];
                 
-                if (vendorID != nil)
+                if ([vendorID isEqualToString:VMMVideoCardVendorIDVirtualBox] &&
+                    [deviceID isEqualToString:VMMVideoCardDeviceIDVirtualBox])
                 {
-                    NSString* deviceID = [self deviceID];
-                    
-                    if ([vendorID isEqualToString:VMMVideoCardVendorIDVirtualBox] &&
-                        [deviceID isEqualToString:VMMVideoCardDeviceIDVirtualBox])
-                    {
-                        videoCardName = VMMVideoCardNameVirtualBox;
-                    }
-                    
-                    if ([vendorID isEqualToString:VMMVideoCardVendorIDVMware])
-                    {
-                        videoCardName = VMMVideoCardNameVMware;
-                    }
-                    
-                    if ([vendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
-                    {
-                        videoCardName = VMMVideoCardNameParallelsDesktop;
-                    }
-                    
-                    if ([vendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
-                    {
-                        videoCardName = VMMVideoCardNameMicrosoftRemoteDesktop;
-                    }
-                    
-                    if ([vendorID isEqualToString:VMMVideoCardVendorIDQemu] &&
-                        [deviceID isEqualToString:VMMVideoCardDeviceIDQemu])
-                    {
-                        videoCardName = VMMVideoCardNameQemu;
-                    }
+                    videoCardName = VMMVideoCardNameVirtualBox;
+                }
+                
+                if ([vendorID isEqualToString:VMMVideoCardVendorIDVMware])
+                {
+                    videoCardName = VMMVideoCardNameVMware;
+                }
+                
+                if ([vendorID isEqualToString:VMMVideoCardVendorIDParallelsDesktop])
+                {
+                    videoCardName = VMMVideoCardNameParallelsDesktop;
+                }
+                
+                if ([vendorID isEqualToString:VMMVideoCardVendorIDMicrosoftRemoteDesktop])
+                {
+                    videoCardName = VMMVideoCardNameMicrosoftRemoteDesktop;
+                }
+                
+                if ([vendorID isEqualToString:VMMVideoCardVendorIDQemu] &&
+                    [deviceID isEqualToString:VMMVideoCardDeviceIDQemu])
+                {
+                    videoCardName = VMMVideoCardNameQemu;
                 }
             }
             
             // TODO: Maybe this link can be used in the future to improve detection of the name
             // http://pci-ids.ucw.cz/
             
-            _name = videoCardName;
-            return _name;
+            _modelName = videoCardName;
         }
     }
+}
+-(nullable NSString*)modelName
+{
+    [self loadModelNameAndChipsetName];
+    return _modelName == nil ? _chipsetName : _modelName;
+}
+-(nullable NSString*)chipsetName
+{
+    [self loadModelNameAndChipsetName];
+    return _chipsetName;
 }
 
 -(nullable NSString*)type
@@ -381,7 +394,7 @@
         
         @autoreleasepool
         {
-            NSString* videoCardType = [VMMVideoCard typeForVideoCardWithName:self.name];
+            NSString* videoCardType = [VMMVideoCard typeForVideoCardWithName:self.modelName];
             if (videoCardType != nil)
             {
                 _type = videoCardType;
@@ -743,7 +756,7 @@
 
 -(NSString* _Nonnull)descriptiveName
 {
-    NSString* graphicCard = self.name;
+    NSString* graphicCard = self.modelName;
     if (graphicCard == nil)
     {
         NSString* type = self.type;
@@ -804,8 +817,8 @@
 }
 -(BOOL)isComplete
 {
-    if (self.name     == nil) return false;
-    if (self.deviceID == nil) return false;
+    if (self.modelName == nil) return false;
+    if (self.deviceID  == nil) return false;
     if (self.hasValidMemorySize == false) return false;
     return true;
 }
@@ -845,7 +858,8 @@
         }
         
         _dictionary = newDict;
-        _name = nil;
+        _modelName = nil;
+        _chipsetName = nil;
         _type = nil;
         _bus = nil;
         _deviceID = nil;
@@ -858,7 +872,8 @@
 -(NSString*)description
 {
     NSMutableArray* data = [[NSMutableArray alloc] init];
-    [data addObject:[NSString stringWithFormat:@"Name: %@",self.name]];
+    [data addObject:[NSString stringWithFormat:@"Model name: %@",self.modelName]];
+    [data addObject:[NSString stringWithFormat:@"Chipset name: %@",self.chipsetName]];
     [data addObject:[NSString stringWithFormat:@"Type: %@",self.type]];
     [data addObject:[NSString stringWithFormat:@"Bus: %@",self.bus]];
     [data addObject:[NSString stringWithFormat:@"eGPU: %@",self.isExternalGpu ? @"true" : @"false"]];
