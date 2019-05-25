@@ -24,6 +24,7 @@ static VMMAppearanceName _Nonnull const VMMAppearanceNameDark          = @"NSApp
 @interface NSApplication (VMMApplication)
 
 +(void)restart;
++(void)restartInLanguage:(NSString*)language;
 
 +(VMMAppearanceName)appearance;
 +(BOOL)setAppearance:(VMMAppearanceName)appearance;
