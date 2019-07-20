@@ -89,7 +89,6 @@
     if ([graphicCardNameComponents containsObject:@"INTEL"])
     {
         if ([graphicCardNameComponents containsObject:@"HD"])   return VMMVideoCardTypeIntelHD;
-        if ([graphicCardNameComponents containsObject:@"UHD"])  return VMMVideoCardTypeIntelUHD;
         if ([graphicCardNameComponents containsObject:@"IRIS"]) {
             if ([graphicCardNameComponents containsObject:@"PRO"])  return VMMVideoCardTypeIntelIrisPro;
             if ([graphicCardNameComponents containsObject:@"PLUS"]) return VMMVideoCardTypeIntelIrisPlus;
@@ -105,11 +104,6 @@
         }
     }
     
-    for (NSString* model in @[@"GMA"])
-    {
-        if ([graphicCardNameComponents containsObject:model]) return VMMVideoCardTypeIntelGMA;
-    }
-    
     for (NSString* model in @[@"AMD",@"ATI",@"RADEON"])
     {
         if ([graphicCardNameComponents containsObject:model]) return VMMVideoCardTypeATIAMD;
@@ -119,6 +113,9 @@
     {
         if ([graphicCardNameComponents containsObject:model]) return VMMVideoCardTypeNVIDIA;
     }
+    
+    if ([graphicCardNameComponents containsObject:@"GMA"]) return VMMVideoCardTypeIntelGMA;
+    if ([graphicCardNameComponents containsObject:@"UHD"]) return VMMVideoCardTypeIntelUHD;
     
     return nil;
 }
