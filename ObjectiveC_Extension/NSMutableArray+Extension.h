@@ -14,7 +14,10 @@
 -(void)sortAlphabeticallyAscending:(BOOL)ascending;
 -(void)sortDictionariesWithKey:(nonnull NSString *)key orderingByValuesOrder:(nonnull NSArray*)value;
 
--(void)map:(_Nullable id (^_Nonnull)(ObjectType _Nonnull object, NSUInteger index))newObjectForObject;
+-(instancetype)map:(_Nullable id (^_Nonnull)(id _Nonnull object))newObjectForObject;
+-(instancetype)mapWithIndex:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject;
+-(instancetype)filter:(BOOL (^_Nonnull)(id _Nonnull object))newObjectForObject;
+-(instancetype)filterWithIndex:(BOOL (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject;
 
 -(void)sortBySelector:(SEL _Nonnull)selector inOrder:(NSArray* _Nonnull)order;
 

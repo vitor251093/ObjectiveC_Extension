@@ -67,8 +67,7 @@ long IOHIDDeviceGetVendorID(IOHIDDeviceRef _Nullable device)
     actionDelegate.hidManager = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
     
     NSMutableArray* deviceTypes = [types mutableCopy];
-    [deviceTypes map:^id(id object, NSUInteger index)
-    {
+    [deviceTypes map:^id(id object) {
         return @{@(kIOHIDDeviceUsagePageKey): @(kHIDPage_GenericDesktop), @(kIOHIDDeviceUsageKey): object};
     }];
     

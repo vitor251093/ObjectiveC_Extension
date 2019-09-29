@@ -135,12 +135,8 @@
         NSString* matchesOutputString = [NSTask runProgram:@"find" withFlags:@[path,@"-name",fileName]];
         matchesOutput = [[matchesOutputString componentsSeparatedByString:@"\n"] mutableCopy];
         
-        [matchesOutput map:^id(NSString* object, NSUInteger index)
-        {
-            if ([object hasPrefix:@"find: "]) return nil;
-            return [object stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
-        }];
-        [matchesOutput removeObject:[NSNull null]];
+        [[matchesOutput filter:^BOOL(NSString* object) { return ![object hasPrefix:@"find: "]; }]
+                           map:^id(NSString* object)   { return  [object stringByReplacingOccurrencesOfString:@"//" withString:@"/"];}];
     }
     
     return matchesOutput;

@@ -25,7 +25,7 @@
     }
 }
 
--(void)trim
+-(NSMutableString*)trim
 {
     // We used to use the method below, but the method in use today is about 2 to 5 times faster
     
@@ -37,7 +37,7 @@
     @autoreleasepool
     {
         NSUInteger stringLength = self.length;
-        if (stringLength == 0) return;
+        if (stringLength == 0) return self;
         
         NSUInteger indexBegin = 0;
         unichar invalidCharacters[] = {' ', '\n', '\t', '\0'};
@@ -58,7 +58,7 @@
         if (indexBegin > 0) {
             [self replaceCharactersInRange:NSMakeRange(0, indexBegin) withString:@""];
         }
-        if (indexBegin == stringLength) return;
+        if (indexBegin == stringLength) return self;
         
         
         stringLength = self.length;
@@ -77,6 +77,8 @@
             [self replaceCharactersInRange:NSMakeRange(indexEnd + 1, stringLength - indexEnd - 1) withString:@""];
         }
     }
+    
+    return self;
 }
 
 @end

@@ -37,13 +37,51 @@
     }];
 }
 
--(void)map:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
+-(instancetype)map:(_Nullable id (^_Nonnull)(id _Nonnull object))newObjectForObject
+{
+    for (NSUInteger index = 0; index < self.count; index++)
+    {
+        id newObject = newObjectForObject([self objectAtIndex:index]);
+        [self replaceObjectAtIndex:index withObject:newObject ? newObject : [NSNull null]];
+    }
+    return self;
+}
+-(instancetype)mapWithIndex:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
 {
     for (NSUInteger index = 0; index < self.count; index++)
     {
         id newObject = newObjectForObject([self objectAtIndex:index], index);
         [self replaceObjectAtIndex:index withObject:newObject ? newObject : [NSNull null]];
     }
+    return self;
+}
+-(instancetype)filter:(BOOL (^_Nonnull)(id _Nonnull object))newObjectForObject
+{
+    NSUInteger size = self.count;
+    for (NSUInteger index = 0; index < size; index++)
+    {
+        BOOL preserve = newObjectForObject([self objectAtIndex:index]);
+        if (!preserve) {
+            [self removeObjectAtIndex:index];
+            index--;
+            size--;
+        }
+    }
+    return self;
+}
+-(instancetype)filterWithIndex:(BOOL (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
+{
+    NSUInteger size = self.count;
+    for (NSUInteger index = 0; index < size; index++)
+    {
+        BOOL preserve = newObjectForObject([self objectAtIndex:index], index);
+        if (!preserve) {
+            [self removeObjectAtIndex:index];
+            index--;
+            size--;
+        }
+    }
+    return self;
 }
 
 -(void)sortBySelector:(SEL _Nonnull)selector inOrder:(NSArray* _Nonnull)order

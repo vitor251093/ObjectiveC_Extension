@@ -17,21 +17,16 @@
 +(NSMutableArray<VMMVideoCard*>* _Nonnull)systemProfilerVideoCards
 {
     NSArray* displayOutput = [VMMComputerInformation systemProfilerItemsForDataType:SPDisplaysDataType];
-    
     if (displayOutput == nil)
     {
         return [[NSMutableArray alloc] init];
     }
     
     NSMutableArray* cards = [displayOutput mutableCopy];
-    
-    [cards map:^id _Nullable(NSDictionary*  _Nonnull object, NSUInteger index)
-    {
+    [cards filter:^BOOL(NSDictionary*  _Nonnull object) { return object.count > 0; }];
+    [cards map:^id _Nullable(NSDictionary*  _Nonnull object) {
         return [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
     }];
-    
-    [cards removeObject:[NSNull null]];
-    
     return cards;
 }
 
@@ -258,25 +253,20 @@
         IOObjectRelease(iterator);
     }
     
-    [graphicCardDicts map:^VMMVideoCard* _Nonnull(NSDictionary* _Nonnull object, NSUInteger index)
-    {
-         VMMVideoCard* vc = [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
-         if (vc != nil && [vc.vendorID isEqualToString:VMMVideoCardVendorIDIntel] && [vc.deviceID isEqualToString:@"0x27a6"])
-         {
-             // This video card should be ignored:
-             // Intel Corporation Mobile 945GM/GMS/GME, 943/940GML Express Integrated Graphics Controller
-             // https://steamcommunity.com/app/259680/discussions/1/405692224243163860/
-             // https://www.overclockers.com/forums/showthread.php/656895-can-this-intel-core-2-duo-processor-be-oc
-             // https://ubuntuforums.org/archive/index.php/t-1287852.html
-             // https://lists.opensuse.org/opensuse/2009-06/msg00099.html
-             
-             return nil;
-         }
-         return vc;
+    [graphicCardDicts filter:^BOOL(NSDictionary* _Nonnull object) { return object.count > 0; }];
+    [graphicCardDicts map:^VMMVideoCard* _Nonnull(NSDictionary* _Nonnull object) {
+        return [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
     }];
-    
-    [graphicCardDicts removeObject:[NSNull null]];
-    
+    [graphicCardDicts filter:^BOOL(VMMVideoCard* _Nonnull vc) {
+        // This video card should be ignored:
+        // Intel Corporation Mobile 945GM/GMS/GME, 943/940GML Express Integrated Graphics Controller
+        // https://steamcommunity.com/app/259680/discussions/1/405692224243163860/
+        // https://www.overclockers.com/forums/showthread.php/656895-can-this-intel-core-2-duo-processor-be-oc
+        // https://ubuntuforums.org/archive/index.php/t-1287852.html
+        // https://lists.opensuse.org/opensuse/2009-06/msg00099.html
+         
+        return !([vc.vendorID isEqualToString:VMMVideoCardVendorIDIntel] && [vc.deviceID isEqualToString:@"0x27a6"]);
+    }];
     return graphicCardDicts;
 }
 
@@ -322,23 +312,15 @@
 }
 +(NSArray<VMMVideoCard*>* _Nonnull)videoCardsWithKext
 {
-    NSMutableArray* videoCards = [[self videoCards] mutableCopy];
-    [videoCards map:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
-        return object.kextLoaded ? object : nil;
-    }];
-    [videoCards removeObject:[NSNull null]];
-    return videoCards;
+    return [[[self videoCards] mutableCopy] filter:^BOOL(VMMVideoCard * _Nonnull object) { return object.kextLoaded; }];
 }
 
 
 +(VMMVideoCard* _Nullable)bestVideoCard
 {
     NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
-    if (videoCards == nil || videoCards.count == 0)
-    {
-        videoCards = [[self videoCards] mutableCopy];
-        if (videoCards == nil || videoCards.count == 0) return nil;
-    }
+    if (videoCards.count == 0) videoCards = [[self videoCards] mutableCopy];
+    if (videoCards.count == 0) return nil;
     
     [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete" ascending:NO]]];
     return videoCards.firstObject;
@@ -346,19 +328,13 @@
 +(VMMVideoCard* _Nullable)bestInternalVideoCard
 {
     NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
-    if (videoCards == nil || videoCards.count == 0)
-    {
-        videoCards = [[self videoCards] mutableCopy];
-        if (videoCards == nil || videoCards.count == 0) return nil;
-    }
-    
-    [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete" ascending:NO]]];
-    [videoCards map:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
-        return (!object.isExternalGpu) ? object : nil;
-    }];
-    [videoCards removeObject:[NSNull null]];
+    if (videoCards.count == 0) videoCards = [[self videoCards] mutableCopy];
     if (videoCards.count == 0) return nil;
     
+    [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete" ascending:NO]]];
+    [videoCards filter:^BOOL(VMMVideoCard * _Nonnull object) { return !object.isExternalGpu; }];
+    
+    if (videoCards.count == 0) return nil;
     return videoCards.firstObject;
 }
 +(VMMVideoCard* _Nullable)bestExternalVideoCard
@@ -366,12 +342,9 @@
     NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
     if (videoCards == nil || videoCards.count == 0) return nil;
     
-    [videoCards map:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
-        return (object.isComplete && object.isExternalGpu) ? object : nil;
-    }];
-    [videoCards removeObject:[NSNull null]];
-    if (videoCards.count == 0) return nil;
+    [videoCards filter:^BOOL(VMMVideoCard * _Nonnull object) { return object.isComplete && object.isExternalGpu; }];
     
+    if (videoCards.count == 0) return nil;
     return videoCards.firstObject;
 }
 
