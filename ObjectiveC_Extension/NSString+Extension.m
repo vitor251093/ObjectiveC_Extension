@@ -69,6 +69,10 @@
     return nil;
 }
 
+-(NSString*)trim
+{
+    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
 -(BOOL)contains:(nonnull NSString*)string
 {
     return [self rangeOfString:string].location != NSNotFound;
