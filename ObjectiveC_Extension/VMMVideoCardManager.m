@@ -25,7 +25,7 @@
     
     NSMutableArray* cards = [displayOutput mutableCopy];
     
-    [cards replaceObjectsWithVariation:^id _Nullable(NSDictionary*  _Nonnull object, NSUInteger index)
+    [cards map:^id _Nullable(NSDictionary*  _Nonnull object, NSUInteger index)
     {
         return [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
     }];
@@ -258,7 +258,7 @@
         IOObjectRelease(iterator);
     }
     
-    [graphicCardDicts replaceObjectsWithVariation:^VMMVideoCard* _Nonnull(NSDictionary* _Nonnull object, NSUInteger index)
+    [graphicCardDicts map:^VMMVideoCard* _Nonnull(NSDictionary* _Nonnull object, NSUInteger index)
     {
          VMMVideoCard* vc = [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
          if (vc != nil && [vc.vendorID isEqualToString:VMMVideoCardVendorIDIntel] && [vc.deviceID isEqualToString:@"0x27a6"])
@@ -323,7 +323,7 @@
 +(NSArray<VMMVideoCard*>* _Nonnull)videoCardsWithKext
 {
     NSMutableArray* videoCards = [[self videoCards] mutableCopy];
-    [videoCards replaceObjectsWithVariation:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
+    [videoCards map:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
         return object.kextLoaded ? object : nil;
     }];
     [videoCards removeObject:[NSNull null]];
@@ -353,7 +353,7 @@
     }
     
     [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete" ascending:NO]]];
-    [videoCards replaceObjectsWithVariation:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
+    [videoCards map:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
         return (!object.isExternalGpu) ? object : nil;
     }];
     [videoCards removeObject:[NSNull null]];
@@ -366,7 +366,7 @@
     NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
     if (videoCards == nil || videoCards.count == 0) return nil;
     
-    [videoCards replaceObjectsWithVariation:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
+    [videoCards map:^id _Nullable(VMMVideoCard * _Nonnull object, NSUInteger index) {
         return (object.isComplete && object.isExternalGpu) ? object : nil;
     }];
     [videoCards removeObject:[NSNull null]];
