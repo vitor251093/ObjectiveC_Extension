@@ -9,11 +9,11 @@
 #import "NSFileManager+Extension.h"
 
 #import "VMMAlert.h"
+#import "NSArray+Extension.h"
 #import "NSData+Extension.h"
 #import "NSTask+Extension.h"
 #import "NSString+Extension.h"
 #import "NSThread+Extension.h"
-#import "NSMutableArray+Extension.h"
 
 #import "VMMComputerInformation.h"
 #import "VMMLocalizationUtility.h"
@@ -128,18 +128,12 @@
 }
 -(nullable NSArray<NSString*>*)subpathsAtPath:(nonnull NSString *)path ofFilesNamed:(nonnull NSString*)fileName
 {
-    NSMutableArray* matchesOutput;
-    
     @autoreleasepool
-    {    
-        NSString* matchesOutputString = [NSTask runProgram:@"find" withFlags:@[path,@"-name",fileName]];
-        matchesOutput = [[matchesOutputString componentsSeparatedByString:@"\n"] mutableCopy];
-        
-        [[matchesOutput filter:^BOOL(NSString* object) { return ![object hasPrefix:@"find: "]; }]
-                           map:^id(NSString* object)   { return  [object stringByReplacingOccurrencesOfString:@"//" withString:@"/"];}];
+    {
+        return [[[[NSTask runProgram:@"find" withFlags:@[path,@"-name",fileName]] componentsSeparatedByString:@"\n"]
+                    filter:^BOOL(NSString* object) { return ![object hasPrefix:@"find: "]; }]
+                       map:^id(NSString* object)   { return  [object stringByReplacingOccurrencesOfString:@"//" withString:@"/"];}];
     }
-    
-    return matchesOutput;
 }
 -(nullable NSString*)destinationOfSymbolicLinkAtPath:(nonnull NSString *)path
 {

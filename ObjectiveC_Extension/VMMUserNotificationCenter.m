@@ -18,6 +18,7 @@
 #import "VMMComputerInformation.h"
 
 #import "VMMAlert.h"
+#import "NSArray+Extension.h"
 #import "NSBundle+Extension.h"
 #import "NSFileManager+Extension.h"
 #import "NSImage+Extension.h"

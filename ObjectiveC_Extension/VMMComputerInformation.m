@@ -175,9 +175,7 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
         
         for (NSString* process in [ps componentsSeparatedByString:@"\n"])
         {
-            NSMutableString* mutableProcess = [process mutableCopy];
-            [mutableProcess trim];
-            cpuUsageSum += [mutableProcess doubleValue];
+            cpuUsageSum += [[[process mutableCopy] trim] doubleValue];
         }
         
         NSString* numberOfCpus = [NSTask runCommand:@[@"sysctl", @"hw.physicalcpu"]];

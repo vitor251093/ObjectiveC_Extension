@@ -9,6 +9,7 @@
 #import "VMMVideoCardManager.h"
 
 #import "NSMutableArray+Extension.h"
+#import "NSArray+Extension.h"
 #import "NSString+Extension.h"
 #import "VMMLogUtility.h"
 
@@ -17,17 +18,14 @@
 +(NSMutableArray<VMMVideoCard*>* _Nonnull)systemProfilerVideoCards
 {
     NSArray* displayOutput = [VMMComputerInformation systemProfilerItemsForDataType:SPDisplaysDataType];
-    if (displayOutput == nil)
-    {
+    if (displayOutput == nil) {
         return [[NSMutableArray alloc] init];
     }
     
-    NSMutableArray* cards = [displayOutput mutableCopy];
-    [cards filter:^BOOL(NSDictionary*  _Nonnull object) { return object.count > 0; }];
-    [cards map:^id _Nullable(NSDictionary*  _Nonnull object) {
+    return [[displayOutput filter:^BOOL(NSDictionary*  _Nonnull object) { return object.count > 0; }]
+                              map:^id _Nullable(NSDictionary*  _Nonnull object) {
         return [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
     }];
-    return cards;
 }
 
 +(id)getValuesFromRegistryEntryObject:(id)keyData
@@ -253,11 +251,13 @@
         IOObjectRelease(iterator);
     }
     
-    [graphicCardDicts filter:^BOOL(NSDictionary* _Nonnull object) { return object.count > 0; }];
-    [graphicCardDicts map:^VMMVideoCard* _Nonnull(NSDictionary* _Nonnull object) {
+    return [[[graphicCardDicts filter:^BOOL(NSDictionary* _Nonnull object) {
+        return object.count > 0;
+        
+    }] map:^VMMVideoCard* _Nonnull(NSDictionary* _Nonnull object) {
         return [[VMMVideoCard alloc] initVideoCardWithDictionary:object];
-    }];
-    [graphicCardDicts filter:^BOOL(VMMVideoCard* _Nonnull vc) {
+        
+    }] filter:^BOOL(VMMVideoCard* _Nonnull vc) {
         // This video card should be ignored:
         // Intel Corporation Mobile 945GM/GMS/GME, 943/940GML Express Integrated Graphics Controller
         // https://steamcommunity.com/app/259680/discussions/1/405692224243163860/
@@ -267,7 +267,6 @@
          
         return !([vc.vendorID isEqualToString:VMMVideoCardVendorIDIntel] && [vc.deviceID isEqualToString:@"0x27a6"]);
     }];
-    return graphicCardDicts;
 }
 
 
@@ -332,7 +331,7 @@
     if (videoCards.count == 0) return nil;
     
     [videoCards sortUsingDescriptors:@[[[NSSortDescriptor alloc] initWithKey:@"isComplete" ascending:NO]]];
-    [videoCards filter:^BOOL(VMMVideoCard * _Nonnull object) { return !object.isExternalGpu; }];
+    videoCards = [videoCards filter:^BOOL(VMMVideoCard * _Nonnull object) { return !object.isExternalGpu; }];
     
     if (videoCards.count == 0) return nil;
     return videoCards.firstObject;
@@ -342,7 +341,7 @@
     NSMutableArray* videoCards = [[self videoCardsWithKext] mutableCopy];
     if (videoCards == nil || videoCards.count == 0) return nil;
     
-    [videoCards filter:^BOOL(VMMVideoCard * _Nonnull object) { return object.isComplete && object.isExternalGpu; }];
+    videoCards = [videoCards filter:^BOOL(VMMVideoCard * _Nonnull object) { return object.isComplete && object.isExternalGpu; }];
     
     if (videoCards.count == 0) return nil;
     return videoCards.firstObject;

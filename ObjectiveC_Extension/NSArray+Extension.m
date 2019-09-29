@@ -10,6 +10,64 @@
 
 @implementation NSArray (VMMArray)
 
+-(NSMutableArray*)map:(_Nullable id (^_Nonnull)(id _Nonnull object))newObjectForObject
+{
+    NSMutableArray* this = [self mutableCopy];
+    for (NSUInteger index = 0; index < this.count; index++)
+    {
+        id newObject = newObjectForObject([this objectAtIndex:index]);
+        [this replaceObjectAtIndex:index withObject:newObject ? newObject : [NSNull null]];
+    }
+    return this;
+}
+-(NSMutableArray*)mapWithIndex:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
+{
+    NSMutableArray* this = [self mutableCopy];
+    for (NSUInteger index = 0; index < this.count; index++)
+    {
+        id newObject = newObjectForObject([this objectAtIndex:index], index);
+        [this replaceObjectAtIndex:index withObject:newObject ? newObject : [NSNull null]];
+    }
+    return this;
+}
+-(NSMutableArray*)filter:(BOOL (^_Nonnull)(id _Nonnull object))newObjectForObject
+{
+    NSMutableArray* this = [self mutableCopy];
+    NSUInteger size = this.count;
+    for (NSUInteger index = 0; index < size; index++)
+    {
+        BOOL preserve = newObjectForObject([this objectAtIndex:index]);
+        if (!preserve) {
+            [this removeObjectAtIndex:index];
+            index--;
+            size--;
+        }
+    }
+    return this;
+}
+-(NSMutableArray*)filterWithIndex:(BOOL (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
+{
+    NSMutableArray* this = [self mutableCopy];
+    NSUInteger size = this.count;
+    for (NSUInteger index = 0; index < size; index++)
+    {
+        BOOL preserve = newObjectForObject([this objectAtIndex:index], index);
+        if (!preserve) {
+            [this removeObjectAtIndex:index];
+            index--;
+            size--;
+        }
+    }
+    return this;
+}
+-(instancetype)forEach:(void (^_Nonnull)(id _Nonnull object))newObjectForObject
+{
+    for (id object in self) {
+        newObjectForObject(object);
+    }
+    return self;
+}
+
 -(nonnull NSArray*)arrayByRemovingRepetitions
 {
     return [NSSet setWithArray:self].allObjects;

@@ -8,6 +8,7 @@
 
 #import "VMMDeviceObserver.h"
 
+#import "NSArray+Extension.h"
 #import "NSMutableArray+Extension.h"
 
 #import "VMMLogUtility.h"
@@ -66,8 +67,7 @@ long IOHIDDeviceGetVendorID(IOHIDDeviceRef _Nullable device)
     
     actionDelegate.hidManager = IOHIDManagerCreate(kCFAllocatorDefault, kIOHIDOptionsTypeNone);
     
-    NSMutableArray* deviceTypes = [types mutableCopy];
-    [deviceTypes map:^id(id object) {
+    NSMutableArray* deviceTypes = [types map:^id(id object) {
         return @{@(kIOHIDDeviceUsagePageKey): @(kHIDPage_GenericDesktop), @(kIOHIDDeviceUsageKey): object};
     }];
     
