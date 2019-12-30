@@ -10,7 +10,7 @@
 
 @implementation NSArray (VMMArray)
 
--(NSMutableArray*)map:(_Nullable id (^_Nonnull)(id _Nonnull object))newObjectForObject
+-(nonnull NSMutableArray*)map:(_Nullable id (^_Nonnull)(id _Nonnull object))newObjectForObject
 {
     NSMutableArray* this = [self mutableCopy];
     for (NSUInteger index = 0; index < this.count; index++)
@@ -20,7 +20,7 @@
     }
     return this;
 }
--(NSMutableArray*)mapWithIndex:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
+-(nonnull NSMutableArray*)mapWithIndex:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
 {
     NSMutableArray* this = [self mutableCopy];
     for (NSUInteger index = 0; index < this.count; index++)
@@ -30,7 +30,7 @@
     }
     return this;
 }
--(NSMutableArray*)filter:(BOOL (^_Nonnull)(id _Nonnull object))newObjectForObject
+-(nonnull NSMutableArray*)filter:(BOOL (^_Nonnull)(id _Nonnull object))newObjectForObject
 {
     NSMutableArray* this = [self mutableCopy];
     NSUInteger size = this.count;
@@ -45,7 +45,7 @@
     }
     return this;
 }
--(NSMutableArray*)filterWithIndex:(BOOL (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
+-(nonnull NSMutableArray*)filterWithIndex:(BOOL (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject
 {
     NSMutableArray* this = [self mutableCopy];
     NSUInteger size = this.count;
@@ -60,7 +60,7 @@
     }
     return this;
 }
--(instancetype)forEach:(void (^_Nonnull)(id _Nonnull object))newObjectForObject
+-(nonnull instancetype)forEach:(void (^_Nonnull)(id _Nonnull object))newObjectForObject
 {
     for (id object in self) {
         newObjectForObject(object);

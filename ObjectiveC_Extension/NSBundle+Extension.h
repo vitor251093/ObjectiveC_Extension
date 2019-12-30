@@ -10,7 +10,7 @@
 
 @interface NSBundle (VMMBundle)
 
--(NSUserDefaults*)userDefaults;
+-(nonnull NSUserDefaults*)userDefaults;
 
 -(nonnull NSString*)bundleName;
 -(nullable NSImage*)bundleIcon;

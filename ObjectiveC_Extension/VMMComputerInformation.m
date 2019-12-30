@@ -405,7 +405,7 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     return [output contains:@" enabled."];
 }
 
-+(NSArray<NSDictionary*>*)thunderboltPorts
++(nonnull NSArray<NSDictionary*>*)thunderboltPorts
 {
     NSMutableArray* thunderboltOutput = [[NSMutableArray alloc] init];
     

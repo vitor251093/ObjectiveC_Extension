@@ -22,7 +22,7 @@
     exit(0);
 }
 
-+(void)restartInLanguage:(NSString*)language
++(void)restartInLanguage:(nonnull NSString*)language
 {
     if ([VMMComputerInformation isSystemMacOsEqualOrSuperiorTo:@"10.6.2"] == false) {
         // The '--args' parameter in 'open' was only introduced in macOS 10.6.2
@@ -56,7 +56,7 @@
     exit(0);
 }
 
-+(VMMAppearanceName)appearance
++(nullable VMMAppearanceName)appearance
 {
     if (VMMAppearanceDarkPreMojaveCompatible == false) {
         return nil;
@@ -69,7 +69,7 @@
     
     return nsappearance.name;
 }
-+(BOOL)setAppearance:(VMMAppearanceName)appearance
++(BOOL)setAppearance:(nullable VMMAppearanceName)appearance
 {
     if (VMMAppearanceDarkPreMojaveCompatible == false) {
         return false;

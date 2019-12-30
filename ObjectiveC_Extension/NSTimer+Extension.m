@@ -27,7 +27,7 @@
     return timer;
 }
 
-+(nonnull VMMTimerListener*)scheduledTimerWithRunLoopMode:(nonnull NSRunLoopMode)runLoopMode timeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)(NSTimer* timer))block
++(nonnull VMMTimerListener*)scheduledTimerWithRunLoopMode:(nonnull NSRunLoopMode)runLoopMode timeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)(NSTimer* _Nonnull timer))block
 {
     VMMTimerListener* listener = [[VMMTimerListener alloc] init];
     listener.block = block;

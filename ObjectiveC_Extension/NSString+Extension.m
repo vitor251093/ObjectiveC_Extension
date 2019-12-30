@@ -69,7 +69,38 @@
     return nil;
 }
 
--(NSString*)trim
+-(NSRange)rangeOfUnescapedChar:(char)character
+{
+    return [self rangeOfUnescapedChar:character range:NSMakeRange(0, self.length)];
+}
+-(NSRange)rangeOfUnescapedChar:(char)character range:(NSRange)rangeOfReceiverToSearch
+{
+    NSString* characterString = [NSString stringWithFormat:@"%c",character];
+    
+    NSUInteger index = rangeOfReceiverToSearch.location;
+    NSRange range = [self rangeOfString:characterString options:NSCaseInsensitiveSearch
+                                  range:NSMakeRange(index, rangeOfReceiverToSearch.length - index)];
+    while (range.location != NSNotFound) {
+        BOOL isEscaped = false;
+        NSUInteger escapeIndex = range.location-1;
+        while (escapeIndex != -1 && [self characterAtIndex:escapeIndex] == '\\') {
+            escapeIndex--;
+            isEscaped = !isEscaped;
+        }
+        if (!isEscaped) {
+            return range; // SUCCESS (found)
+        }
+        if (rangeOfReceiverToSearch.length == range.location + 1) return range; // FAILURE (last character reached)
+        
+        index = range.location + 1;
+        range = [self rangeOfString:characterString options:NSCaseInsensitiveSearch
+                              range:NSMakeRange(index, rangeOfReceiverToSearch.length - index)];
+    }
+    
+    return range; // FAILURE (don't exist)
+}
+
+-(nonnull NSString*)trim
 {
     return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }

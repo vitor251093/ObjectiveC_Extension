@@ -134,7 +134,7 @@ static NSString * _Nonnull const VMMVideoCardTemporaryKeyOpenGlApiMemorySizes = 
 -(BOOL)isComplete;
 -(BOOL)isVirtualMachineVideoCard;
 
--(BOOL)isSameVideoCard:(VMMVideoCard*)vc;
--(void)mergeWithIOPCIVideoCard:(VMMVideoCard*)vc;
+-(BOOL)isSameVideoCard:(nonnull VMMVideoCard*)vc;
+-(void)mergeWithIOPCIVideoCard:(nonnull VMMVideoCard*)vc;
 
 @end

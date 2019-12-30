@@ -25,7 +25,7 @@ static NSString* const BUNDLE_NAME_PLACEHOLDER = @"App";
 
 NSBundle* _originalMainBundle;
 
--(NSUserDefaults*)userDefaults
+-(nonnull NSUserDefaults*)userDefaults
 {
     NSUserDefaults *defaults = [[NSUserDefaults alloc] init];
     [defaults addSuiteNamed:[self bundleIdentifier]];

@@ -18,7 +18,10 @@
 +(nonnull  NSString*)stringWithCFNumber:(CFNumberRef _Nonnull)cf_number ofType:(CFNumberType)number_type;
 +(nullable NSString*)stringWithCFType:(CFTypeRef _Nonnull)cf_type;
 
--(NSString*)trim;
+-(NSRange)rangeOfUnescapedChar:(char)character;
+-(NSRange)rangeOfUnescapedChar:(char)character range:(NSRange)rangeOfReceiverToSearch;
+
+-(nonnull NSString*)trim;
 -(BOOL)contains:(nonnull NSString*)string;
 -(BOOL)matchesWithSearchTerms:(nonnull NSArray*)searchTerms;
 -(nonnull NSArray<NSString*>*)searchTermsWithString;

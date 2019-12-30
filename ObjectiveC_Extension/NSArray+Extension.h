@@ -10,11 +10,11 @@
 
 @interface NSArray<ObjectType> (VMMArray)
 
--(NSMutableArray*)map:(_Nullable id (^_Nonnull)(id _Nonnull object))newObjectForObject;
--(NSMutableArray*)mapWithIndex:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject;
--(NSMutableArray*)filter:(BOOL (^_Nonnull)(id _Nonnull object))newObjectForObject;
--(NSMutableArray*)filterWithIndex:(BOOL (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject;
--(instancetype)forEach:(void (^_Nonnull)(id _Nonnull object))newObjectForObject;
+-(nonnull NSMutableArray*)map:(_Nullable id (^_Nonnull)(id _Nonnull object))newObjectForObject;
+-(nonnull NSMutableArray*)mapWithIndex:(_Nullable id (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject;
+-(nonnull NSMutableArray*)filter:(BOOL (^_Nonnull)(id _Nonnull object))newObjectForObject;
+-(nonnull NSMutableArray*)filterWithIndex:(BOOL (^_Nonnull)(id _Nonnull object, NSUInteger index))newObjectForObject;
+-(nonnull instancetype)forEach:(void (^_Nonnull)(id _Nonnull object))newObjectForObject;
 
 -(nonnull NSArray<ObjectType>*)arrayByRemovingRepetitions;
 -(nonnull NSArray<ObjectType>*)arrayByRemovingObjectsFromArray:(nonnull NSArray<ObjectType>*)otherArray;

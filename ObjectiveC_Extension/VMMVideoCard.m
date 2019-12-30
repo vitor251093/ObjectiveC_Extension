@@ -826,7 +826,7 @@
     return [vms containsObject:type];
 }
 
--(BOOL)isSameVideoCard:(VMMVideoCard*)vc
+-(BOOL)isSameVideoCard:(nonnull VMMVideoCard*)vc
 {
     if (self.vendorID == nil) return false;
     if (self.deviceID == nil) return false;
@@ -834,7 +834,7 @@
     if (vc.deviceID   == nil) return false;
     return [self.vendorID isEqualToString:vc.vendorID] && [self.deviceID isEqualToString:vc.deviceID];
 }
--(void)mergeWithIOPCIVideoCard:(VMMVideoCard*)vc
+-(void)mergeWithIOPCIVideoCard:(nonnull VMMVideoCard*)vc
 {
     @autoreleasepool
     {

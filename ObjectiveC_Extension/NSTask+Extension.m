@@ -9,6 +9,7 @@
 #import "NSTask+Extension.h"
 
 #import "VMMAlert.h"
+#import "NSString+Extension.h"
 #import "NSThread+Extension.h"
 #import "NSFileManager+Extension.h"
 
@@ -18,6 +19,48 @@
 @implementation NSTask (VMMTask)
 
 static NSMutableDictionary* binaryPaths;
+
++(NSArray*)componentsFromFlagsString:(NSString*)initialFlags
+{
+    NSMutableArray* flagComponents = [[NSMutableArray alloc] init];
+    
+    NSString* flags = initialFlags.trim;
+    NSRange quoteRange = [flags rangeOfUnescapedChar:'"'];
+    NSRange spaceRange = [flags rangeOfString:@" "];
+    while (quoteRange.location != NSNotFound || spaceRange.location != NSNotFound) {
+        
+        if (quoteRange.location == flags.length - 1) {
+            return nil; // Invalid string
+        }
+        
+        if (quoteRange.location != NSNotFound && (spaceRange.location == -1 || spaceRange.location > quoteRange.location)) {
+            NSRange nextQuoteRange = [flags rangeOfUnescapedChar:'"'
+                                            range:NSMakeRange(quoteRange.location + 1, flags.length - (quoteRange.location + 1))];
+            if (nextQuoteRange.location == NSNotFound) {
+                return nil; // Invalid string
+            }
+            NSString* comp = [flags substringWithRange:NSMakeRange(quoteRange.location + 1,
+                                                                   nextQuoteRange.location - (quoteRange.location + 1))];
+            [flagComponents addObject:comp];
+            flags = [flags substringFromIndex:nextQuoteRange.location+1].trim;
+        }
+        else (spaceRange.location != -1) {
+            NSString* comp = [flags substringToIndex:spaceRange.location];
+            [flagComponents addObject:comp];
+            flags = [flags substringFromIndex:spaceRange.location].trim;
+        }
+        
+        
+        quoteRange = [flags rangeOfUnescapedChar:'"'];
+        spaceRange = [flags rangeOfString:@" "];
+    }
+    
+    if (flags.length > 0) {
+        [flagComponents addObject:flags];
+    }
+    
+    return flagComponents;
+}
 
 +(NSString*)runCommand:(NSArray<NSString*>*)programAndFlags
 {
@@ -38,6 +81,10 @@ static NSMutableDictionary* binaryPaths;
     [self runCommand:programAndFlags atRunPath:nil andWait:NO];
 }
 
++(NSString*)runProgram:(NSString*)program
+{
+    return [self runProgram:program withFlags:nil atRunPath:nil andWaiting:YES];
+}
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags
 {
     return [self runProgram:program withFlags:flags atRunPath:nil andWaiting:YES];
@@ -57,17 +104,33 @@ static NSMutableDictionary* binaryPaths;
     return [self runProgram:program withFlags:flags atRunPath:@"/" withEnvironment:env
                  andWaiting:YES forTimeInterval:0 outputEncoding:NSUTF8StringEncoding];
 }
++(NSString*)runProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env
+{
+    return [self runProgram:program withFlags:flags atRunPath:path withEnvironment:env
+                 andWaiting:YES forTimeInterval:0 outputEncoding:NSUTF8StringEncoding];
+}
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags waitingForTimeInterval:(unsigned int)timeout
 {
     return [self runProgram:program withFlags:flags atRunPath:@"/" withEnvironment:nil
                  andWaiting:YES forTimeInterval:timeout outputEncoding:NSUTF8StringEncoding];
 }
 
++(void)runAsynchronousProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags withEnvironment:(NSDictionary*)env
+{
+    [self runProgram:program withFlags:flags atRunPath:@"/" withEnvironment:env
+          andWaiting:NO forTimeInterval:0 outputEncoding:NSUTF8StringEncoding];
+}
++(void)runAsynchronousProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env
+{
+    [self runProgram:program withFlags:flags atRunPath:path withEnvironment:env
+          andWaiting:NO forTimeInterval:0 outputEncoding:NSUTF8StringEncoding];
+}
+
 +(NSString*)runProgram:(NSString*)program withFlags:(NSArray<NSString*>*)flags atRunPath:(NSString*)path withEnvironment:(NSDictionary*)env andWaiting:(BOOL)wait forTimeInterval:(unsigned int)timeout outputEncoding:(NSStringEncoding)encoding
 {
     if (program && ![program hasPrefix:@"/"])
     {
-        NSString* newProgramPath = [self getPathOfProgram:program];
+        NSString* newProgramPath = [self getPathOfProgram:program withEnvironment:env];
         
         if (newProgramPath == nil)
         {
@@ -184,13 +247,17 @@ static NSMutableDictionary* binaryPaths;
         @catch (NSException* exception)
         {
             // Sometimes (very rarely) the app might fail to retrieve the output of a command; with that, your app won't stop
-            NSDebugLog(@"Failed to retrieve instruction output");
+            NSDebugLog(@"Failed to retrieve instruction output: %@", exception.reason);
             return @"";
         }
     }
 }
 
 +(NSString*)getPathOfProgram:(NSString*)programName
+{
+    return [self getPathOfProgram:programName withEnvironment:nil];
+}
++(NSString*)getPathOfProgram:(NSString*)programName withEnvironment:(NSDictionary*)env
 {
     if (programName == nil) return nil;
     if (binaryPaths != nil && binaryPaths[programName]) return binaryPaths[programName];
@@ -201,7 +268,7 @@ static NSMutableDictionary* binaryPaths;
     {
         if (binaryPaths == nil) binaryPaths = [[NSMutableDictionary alloc] init];
         
-        programPath = [self runCommand:@[@"/usr/bin/type", @"-a", programName]];
+        programPath = [self runProgram:@"/usr/bin/type" withFlags:@[@"-a",programName] withEnvironment:env];
         if (programPath == nil) return nil;
         
         programPath = [[programPath componentsSeparatedByString:@" "] lastObject];

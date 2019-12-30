@@ -10,7 +10,7 @@
 
 @interface VMMTimerListener : NSObject
 
-@property (nonatomic, strong) NSTimer* timer;
+@property (nonatomic, strong) NSTimer* _Nullable timer;
 @property (nonatomic, strong) void (^block)(NSTimer* timer);
 
 @end
@@ -19,6 +19,6 @@
 
 +(nonnull NSTimer*)scheduledTimerWithRunLoopMode:(nonnull NSRunLoopMode)runLoopMode timeInterval:(NSTimeInterval)interval target:(nonnull id)target selector:(nonnull SEL)selector userInfo:(nullable id)userInfo;
 
-+(nonnull VMMTimerListener*)scheduledTimerWithRunLoopMode:(nonnull NSRunLoopMode)runLoopMode timeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)(NSTimer* timer))block;
++(nonnull VMMTimerListener*)scheduledTimerWithRunLoopMode:(nonnull NSRunLoopMode)runLoopMode timeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats block:(void (^)(NSTimer* _Nonnull timer))block;
 
 @end
