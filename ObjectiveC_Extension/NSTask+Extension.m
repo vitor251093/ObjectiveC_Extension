@@ -33,7 +33,7 @@ static NSMutableDictionary* binaryPaths;
             return nil; // Invalid string
         }
         
-        if (quoteRange.location != NSNotFound && (spaceRange.location == -1 || spaceRange.location > quoteRange.location)) {
+        if (quoteRange.location != NSNotFound && (spaceRange.location == NSNotFound || spaceRange.location > quoteRange.location)) {
             NSRange nextQuoteRange = [flags rangeOfUnescapedChar:'"'
                                             range:NSMakeRange(quoteRange.location + 1, flags.length - (quoteRange.location + 1))];
             if (nextQuoteRange.location == NSNotFound) {
@@ -44,12 +44,11 @@ static NSMutableDictionary* binaryPaths;
             [flagComponents addObject:comp];
             flags = [flags substringFromIndex:nextQuoteRange.location+1].trim;
         }
-        else (spaceRange.location != -1) {
+        else if (spaceRange.location != NSNotFound) {
             NSString* comp = [flags substringToIndex:spaceRange.location];
             [flagComponents addObject:comp];
             flags = [flags substringFromIndex:spaceRange.location].trim;
         }
-        
         
         quoteRange = [flags rangeOfUnescapedChar:'"'];
         spaceRange = [flags rangeOfString:@" "];
