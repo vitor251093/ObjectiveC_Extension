@@ -386,6 +386,11 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
     return [userGroups containsObject:[NSString stringWithFormat:@"%d",userGroup]];
 }
 
++(BOOL)isSipEnabled
+{
+    return [[NSTask runCommand:@[@"csrutil", @"status"]] contains:@" enabled"];
+}
+
 +(nonnull NSArray*)metalDevices
 {
     // References:
