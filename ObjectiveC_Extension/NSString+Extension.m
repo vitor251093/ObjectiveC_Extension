@@ -196,7 +196,7 @@
         NSCharacterSet* unitingSetItem    = [NSCharacterSet characterSetWithCharactersInString:@"'."];
         NSCharacterSet* separatingSetItem = [NSCharacterSet characterSetWithCharactersInString:@"&"];
         
-        NSString* string = [self.lowercaseString stringByTrimmingCharactersInSet:unitingSetItem];
+        NSString* string = [self.lowercaseString stringByReplacingCharactersInSet:unitingSetItem withString:@" "];
         string = [[string componentsSeparatedByCharactersInSet:separatingSetItem] componentsJoinedByString:@" "];
         
         for (NSString* term in searchTerms)
@@ -371,7 +371,7 @@
     {
         const char* cString = [self cStringUsingEncoding:NSUTF8StringEncoding];
         hexStr = [NSString stringWithFormat:@"%@", [NSData dataWithBytes:cString length:strlen(cString)]];
-        hexStr = [hexStr stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<> "]];
+        hexStr = [hexStr stringByRemovingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<> "]];
     }
     
     return hexStr;
@@ -583,6 +583,22 @@
     }
     
     return isValid;
+}
+
+-(NSString*)stringByReplacingCharactersInSet:(NSCharacterSet *)characterset withString:(NSString *)string
+{
+    NSString *result = self;
+    NSRange range = [result rangeOfCharacterFromSet:characterset];
+    
+    while (range.location != NSNotFound) {
+        result = [result stringByReplacingCharactersInRange:range withString:string];
+        range = [result rangeOfCharacterFromSet:characterset];
+    }
+    return result;
+}
+-(NSString*)stringByRemovingCharactersInSet:(NSCharacterSet *)characterset
+{
+    return [self stringByReplacingCharactersInSet:characterset withString:@""];
 }
 
 @end

@@ -52,6 +52,9 @@
 
 -(BOOL)isAValidURL;
 
+-(NSString*)stringByReplacingCharactersInSet:(NSCharacterSet *)characterset withString:(NSString *)string;
+-(NSString*)stringByRemovingCharactersInSet:(NSCharacterSet *)characterset;
+
 @end
 
 #endif
