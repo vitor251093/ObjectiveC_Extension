@@ -22,14 +22,17 @@
         {
             NSString* binLocalPath = [[runningApp executableURL] path];
             
-            if (![binLocalPath hasPrefix:bundlePath] && [bundlePath hasPrefix:@"/private"])
+            if (binLocalPath != nil)
             {
-                binLocalPath = [@"/private" stringByAppendingString:binLocalPath];
-            }
-            
-            if ([binLocalPath hasPrefix:bundlePath])
-            {
-                [list addObject:runningApp];
+                if (![binLocalPath hasPrefix:bundlePath] && [bundlePath hasPrefix:@"/private"])
+                {
+                    binLocalPath = [@"/private" stringByAppendingString:binLocalPath];
+                }
+                
+                if ([binLocalPath hasPrefix:bundlePath])
+                {
+                    [list addObject:runningApp];
+                }
             }
         }
     }
