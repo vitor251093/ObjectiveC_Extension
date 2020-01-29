@@ -12,6 +12,7 @@
 #import "NSTask+Extension.h"
 #import "VMMAlert.h"
 #import "NSFileManager+Extension.h"
+#import "NSMutableString+Extension.h"
 
 #import "VMMComputerInformation.h"
 #import "VMMLocalizationUtility.h"
@@ -102,7 +103,7 @@
 
 -(nonnull NSString*)trim
 {
-    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    return [[self mutableCopy] trim];
 }
 -(BOOL)contains:(nonnull NSString*)string
 {
