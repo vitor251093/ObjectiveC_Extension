@@ -82,6 +82,8 @@
     NSString* graphicCardName = [videoCardName uppercaseString];
     if (graphicCardName == nil) return nil;
     
+    NSCharacterSet* charactersThatShouldBecomeSpaces = [NSCharacterSet characterSetWithCharactersInString:@"(),"];
+    graphicCardName = [graphicCardName stringByReplacingCharactersInSet:charactersThatShouldBecomeSpaces withString:@" "];
     NSArray<NSString*>* graphicCardNameComponents = [graphicCardName componentsSeparatedByString:@" "];
     
     if ([graphicCardNameComponents containsObject:@"INTEL"])
