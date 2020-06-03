@@ -390,6 +390,10 @@ static unsigned int _appleSupportMacModelRequestTimeOut = 5;
 {
     return [[NSTask runCommand:@[@"csrutil", @"status"]] contains:@" enabled"];
 }
++(BOOL)isNvramBootArgNo32ExecEnabled
+{
+    return ![[NSTask runCommand:@[@"nvram", @"boot-args"]] contains:@"no32exec=0"];
+}
 
 +(nonnull NSArray*)metalDevices
 {
