@@ -101,10 +101,6 @@
     return range; // FAILURE (don't exist)
 }
 
--(nonnull NSString*)trim
-{
-    return [[self mutableCopy] trim];
-}
 -(BOOL)contains:(nonnull NSString*)string
 {
     return [self rangeOfString:string].location != NSNotFound;

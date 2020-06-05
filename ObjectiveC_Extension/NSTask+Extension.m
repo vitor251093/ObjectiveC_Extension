@@ -9,7 +9,7 @@
 #import "NSTask+Extension.h"
 
 #import "VMMAlert.h"
-#import "NSString+Extension.h"
+#import "NSMutableString+Extension.h"
 #import "NSThread+Extension.h"
 #import "NSFileManager+Extension.h"
 
@@ -24,7 +24,7 @@ static NSMutableDictionary* binaryPaths;
 {
     NSMutableArray* flagComponents = [[NSMutableArray alloc] init];
     
-    NSString* flags = initialFlags.trim;
+    NSString* flags = [[initialFlags mutableCopy] trim];
     NSRange quoteRange = [flags rangeOfUnescapedChar:'"'];
     NSRange spaceRange = [flags rangeOfString:@" "];
     while (quoteRange.location != NSNotFound || spaceRange.location != NSNotFound) {
@@ -42,12 +42,12 @@ static NSMutableDictionary* binaryPaths;
             NSString* comp = [flags substringWithRange:NSMakeRange(quoteRange.location + 1,
                                                                    nextQuoteRange.location - (quoteRange.location + 1))];
             [flagComponents addObject:comp];
-            flags = [flags substringFromIndex:nextQuoteRange.location+1].trim;
+            flags = [[[flags substringFromIndex:nextQuoteRange.location+1] mutableCopy] trim];
         }
         else if (spaceRange.location != NSNotFound) {
             NSString* comp = [flags substringToIndex:spaceRange.location];
             [flagComponents addObject:comp];
-            flags = [flags substringFromIndex:spaceRange.location].trim;
+            flags = [[[flags substringFromIndex:spaceRange.location] mutableCopy] trim];
         }
         
         quoteRange = [flags rangeOfUnescapedChar:'"'];
@@ -148,7 +148,7 @@ static NSMutableDictionary* binaryPaths;
     else if (!path && !flags) NSDebugLog(@"Running %@",program);
 #endif
     
-    if (path && ![path hasSuffix:@"/"]) path = [path stringByAppendingString:@"/"];
+    if (path != nil && ![path hasSuffix:@"/"]) path = [path stringByAppendingString:@"/"];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:program])
     {
