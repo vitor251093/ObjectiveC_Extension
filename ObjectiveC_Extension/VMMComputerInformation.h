@@ -317,7 +317,7 @@ typedef NS_ENUM(NSUInteger, VMMExternalGPUCompatibilityWithMacOS)
 +(BOOL)isUserMemberOfUserGroup:(VMMUserGroup)userGroup;
 
 +(BOOL)isSipEnabled;
-+(BOOL)isNvramBootArgNo32ExecEnabled;
++(BOOL)are32bitProcessesEnabled;
 
 +(nonnull NSArray*)metalDevices;
 
