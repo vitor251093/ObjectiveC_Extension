@@ -221,10 +221,6 @@ NSBundle* _originalMainBundle;
 }
 -(BOOL)disableAppTranslocation
 {
-    if (!self.isAppTranslocationActive) {
-        return true;
-    }
-    
     NSString* originalPath = [self bundlePath];
     if (originalPath == nil) return false;
     
