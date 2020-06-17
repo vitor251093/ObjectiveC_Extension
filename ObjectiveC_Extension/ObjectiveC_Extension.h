@@ -19,10 +19,12 @@ FOUNDATION_EXPORT const unsigned char ObjectiveC_ExtensionVersionString[];
 #import <ObjectiveC_Extension/ObjCExtensionConfig.h>
 
 // Devices
+#if KEEP_DEVICE_CLASSES == true
 #import <ObjectiveC_Extension/VMMVirtualKeycode.h>
 #import <ObjectiveC_Extension/VMMDeviceObserver.h>
 #import <ObjectiveC_Extension/VMMDeviceSimulator.h>
 #import <ObjectiveC_Extension/VMMUsageKeycode.h>
+#endif
 
 // Extensions
 #import <ObjectiveC_Extension/NSApplication+Extension.h>
