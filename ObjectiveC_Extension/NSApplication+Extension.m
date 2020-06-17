@@ -75,9 +75,13 @@
         return false;
     }
     
-    NSAppearance* nsappearance = appearance != nil ? [NSAppearance appearanceNamed:appearance] : nil;
-    [NSApp setAppearance:nsappearance];
-    return true;
+    @try {
+        NSAppearance* nsappearance = appearance != nil ? [NSAppearance appearanceNamed:appearance] : nil;
+        [NSApp setAppearance:nsappearance];
+        return true;
+    } @catch (NSException *exception) {
+        return false;
+    }
 }
 
 @end
