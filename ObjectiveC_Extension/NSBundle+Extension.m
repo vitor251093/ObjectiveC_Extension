@@ -93,6 +93,10 @@ NSBundle* _originalMainBundle;
 }
 -(NSString*)bundlePathBeforeAppTranslocation
 {
+    if (IS_SYSTEM_MAC_OS_10_15_OR_SUPERIOR) {
+        return nil;
+    }
+
     @synchronized(self)
     {
         NSString* bundlePathBeforeAppTranslocation;
