@@ -96,6 +96,8 @@
 #define IsFrameworkCoreMLAvailable                      IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR
 #define IsFrameworkVisionAvailable                      IS_SYSTEM_MAC_OS_10_13_OR_SUPERIOR
 
+#define IsFrameworkOpenGLAvailable                      !IS_SYSTEM_MAC_OS_10_14_OR_SUPERIOR
+
 
 // Checks if new classes are available
 #define IsClassNSDraggingImageComponentAvailable        IS_SYSTEM_MAC_OS_10_7_OR_SUPERIOR
