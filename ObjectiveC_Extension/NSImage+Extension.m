@@ -222,6 +222,11 @@
     return result;
 }
 
+-(NSData*)dataForImageWithType:(NSBitmapImageFileType)type {
+    NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:[self TIFFRepresentation]];
+    return [imageRep representationUsingType:type properties:@{}];
+}
+
 -(BOOL)writeToFile:(NSString*)file atomically:(BOOL)useAuxiliaryFile
 {
     @autoreleasepool
@@ -241,8 +246,7 @@
             return false;
         }
         
-        NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:[self TIFFRepresentation]];
-        NSData* data = [imageRep representationUsingType:(NSBitmapImageFileType)[typeForExtension[extension] unsignedLongValue] properties:@{}];
+        NSData* data = [self dataForImageWithType:(NSBitmapImageFileType)[typeForExtension[extension] unsignedLongValue]];
         if (data == nil) return false;
         
         return [data writeToFile:file atomically:useAuxiliaryFile];
