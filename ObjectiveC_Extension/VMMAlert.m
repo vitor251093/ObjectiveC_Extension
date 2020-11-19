@@ -420,6 +420,26 @@ static VMMAlert* _alertWithButtonOptions;
 }
 +(NSString*)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonOptions:(NSArray<NSString*>*)options andIconForEachOption:(NSImage* (^)(NSString* option))iconForOption
 {
+    if (IS_SYSTEM_MAC_OS_10_15_OR_SUPERIOR) {
+        NSUInteger alertResult = [VMMAlert runThreadSafeModalWithAlert:^VMMAlert *
+          {
+              VMMAlert *alert = [[VMMAlert alloc] init];
+              [alert setMessageText:title];
+              [alert setInformativeText:message];
+              
+              for (NSString* button in options) {
+                    [alert addButtonWithTitle:button];
+              }
+              [alert addButtonWithTitle:VMMLocalizedString(@"Cancel")];
+              
+              return alert;
+          }] - NSAlertFirstButtonReturn;
+        if (options.count == alertResult) {
+            return nil;
+        }
+        return [options objectAtIndex:alertResult];
+    }
+    
     NSString* result = nil;
     
     @autoreleasepool
