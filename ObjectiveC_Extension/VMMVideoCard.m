@@ -231,6 +231,10 @@
         localVendor = [localVendor stringByReplacingOccurrencesOfString:@"sppci_vendor_" withString:@""];
         localVendor = localVendor.uppercaseString;
         
+        if ([localVendor contains:@"APPLE"])
+        {
+            return VMMVideoCardVendorIDApple;
+        }
         if ([localVendor contains:@"NVIDIA"])
         {
             return VMMVideoCardVendorIDNVIDIA;
@@ -400,13 +404,15 @@
             
             NSString* localVendorID = [self vendorIDFromVendorAndVendorIDKeysOnly];
             
-            NSDictionary* vendorIDType = @{VMMVideoCardVendorIDATIAMD:                 VMMVideoCardTypeATIAMD,
-                                           VMMVideoCardVendorIDNVIDIA:                 VMMVideoCardTypeNVIDIA,
-                                           VMMVideoCardVendorIDVirtualBox:             VMMVideoCardTypeVirtualBox,
-                                           VMMVideoCardVendorIDVMware:                 VMMVideoCardTypeVMware,
-                                           VMMVideoCardVendorIDParallelsDesktop:       VMMVideoCardTypeParallelsDesktop,
-                                           VMMVideoCardVendorIDMicrosoftRemoteDesktop: VMMVideoCardTypeMicrosoftRemoteDesktop,
-                                           VMMVideoCardVendorIDQemu:                   VMMVideoCardTypeQemu };
+            NSDictionary* vendorIDType = @{
+               VMMVideoCardVendorIDApple:                  VMMVideoCardTypeApple,
+               VMMVideoCardVendorIDATIAMD:                 VMMVideoCardTypeATIAMD,
+               VMMVideoCardVendorIDNVIDIA:                 VMMVideoCardTypeNVIDIA,
+               VMMVideoCardVendorIDVirtualBox:             VMMVideoCardTypeVirtualBox,
+               VMMVideoCardVendorIDVMware:                 VMMVideoCardTypeVMware,
+               VMMVideoCardVendorIDParallelsDesktop:       VMMVideoCardTypeParallelsDesktop,
+               VMMVideoCardVendorIDMicrosoftRemoteDesktop: VMMVideoCardTypeMicrosoftRemoteDesktop,
+               VMMVideoCardVendorIDQemu:                   VMMVideoCardTypeQemu };
             
             _type = vendorIDType[localVendorID];
         }
@@ -431,7 +437,8 @@
             NSString* localVendorID = [self vendorIDFromVendorAndVendorIDKeysOnly];
             if (localVendorID != nil)
             {
-                if ([@[VMMVideoCardVendorIDIntel,
+                if ([@[VMMVideoCardVendorIDApple,
+                       VMMVideoCardVendorIDIntel,
                        VMMVideoCardVendorIDATIAMD,
                        VMMVideoCardVendorIDNVIDIA,
                        VMMVideoCardVendorIDVirtualBox,
@@ -453,6 +460,12 @@
             NSString* videoCardType = self.type;
             if (videoCardType != nil)
             {
+                if ([@[VMMVideoCardTypeApple] containsObject:videoCardType])
+                {
+                    _vendorID = VMMVideoCardVendorIDApple; // Apple Vendor ID
+                    return _vendorID;
+                }
+                
                 if ([@[VMMVideoCardTypeIntelIris,
                        VMMVideoCardTypeIntelIrisPro,
                        VMMVideoCardTypeIntelIrisPlus,
@@ -494,6 +507,12 @@
         @autoreleasepool
         {
             NSString* vendorID = self.vendorID;
+            
+            if ([vendorID isEqualToString:VMMVideoCardVendorIDApple])
+            {
+                _vendor = VMMVideoCardVendorApple;
+                return _vendor;
+            }
             
             if ([vendorID isEqualToString:VMMVideoCardVendorIDIntel])
             {
@@ -563,15 +582,17 @@
             int memSizeInt = -1;
             
             NSString* memSize = [_dictionary[VMMVideoCardMemorySizePciOrPcieKey] uppercaseString];
-            if (memSize == nil || memSize.length == 0) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
-            if (memSize == nil || memSize.length == 0) memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInAlternateKey] uppercaseString];
+            if (memSize == nil || memSize.length == 0) {
+                memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInKey] uppercaseString];
+            }
+            if (memSize == nil || memSize.length == 0) {
+                memSize = [_dictionary[VMMVideoCardMemorySizeBuiltInAlternateKey] uppercaseString];
+            }
             
-            if (memSize != nil && [memSize contains:@" MB"])
-            {
+            if (memSize != nil && [memSize contains:@" MB"]) {
                 memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" MB"] intValue];
             }
-            else if (memSize != nil && [memSize contains:@" GB"])
-            {
+            else if (memSize != nil && [memSize contains:@" GB"]) {
                 memSizeInt = [[memSize getFragmentAfter:nil andBefore:@" GB"] intValue]*1024;
             }
             
@@ -601,6 +622,11 @@
                     NSString* type = self.type ? self.type : @"";
                     NSString* deviceID = self.deviceID ? self.deviceID : @"";
                     long long int ramMemoryGbSize = ((([VMMComputerInformation ramMemorySize]/1024)/1024)/1024);
+                    
+                    if ([type isEqualToString:VMMVideoCardTypeApple])
+                    {
+                        memSizeInt = ((int)ramMemoryGbSize)*1024;
+                    }
                     
                     if ([type isEqualToString:VMMVideoCardTypeIntelIris] ||
                         [type isEqualToString:VMMVideoCardTypeIntelIrisPro] ||
@@ -803,7 +829,8 @@
     NSString* vendorID = self.vendorID;
     if (vendorID == nil) return false;
     
-    NSArray* validVendorIDs = @[VMMVideoCardVendorIDIntel, VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA];
+    NSArray* validVendorIDs = @[VMMVideoCardVendorIDApple, VMMVideoCardVendorIDIntel,
+                                VMMVideoCardVendorIDATIAMD, VMMVideoCardVendorIDNVIDIA];
     return [validVendorIDs containsObject:vendorID];
 }
 
@@ -824,7 +851,8 @@
     NSString* type = self.type;
     if (type == nil) return false;
     
-    NSArray* vms = @[VMMVideoCardTypeVirtualBox, VMMVideoCardTypeVMware, VMMVideoCardTypeParallelsDesktop, VMMVideoCardTypeQemu];
+    NSArray* vms = @[VMMVideoCardTypeVirtualBox, VMMVideoCardTypeVMware,
+                     VMMVideoCardTypeParallelsDesktop, VMMVideoCardTypeQemu];
     return [vms containsObject:type];
 }
 
